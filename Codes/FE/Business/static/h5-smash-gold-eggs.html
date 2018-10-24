@@ -1,0 +1,576 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8 ">
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no" />
+    <!--uc-->
+    <meta name="layoutmode" content="standard" />
+    <link rel="shortcut icon" href="../MidWay/public/favicon.ico" />
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+
+    <!-- <script src="../bower_components/jquery/dist/jquery.min.js"></script> -->
+    <link rel="stylesheet" href="../MidWay/public/bower_components/weui/dist/style/weui.css">
+    <link rel="stylesheet" href="../MidWay/public/bower_components/animate.css/animate.min.css">
+    <script src="../MidWay/public/bower_components/zepto/zepto.min.js"></script>
+    <script src="../MidWay/public/bower_components/layer.mobile-v2.0/layer_mobile/layer.js"></script>
+    <style>
+        .page-body {
+            position: relative;
+            overflow: hidden;
+            margin: 0px auto;
+            width: 10rem;
+        }
+
+        .page-body .page-panel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: white;
+            -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.24);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.24);
+        }
+
+        .page-body .page-panel .page-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .popup-btn {
+            position: absolute;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .popup-btn .btn-info {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            border-radius: 50%;
+        }
+
+        .popup-btn .btn-info.icon-activity {
+            background-image: url('../MidWay/public/images/yes.png');
+        }
+
+        .popup-btn .btn-info.icon-prize {
+            background-image: url('../MidWay/public/images/btn_up.png');
+        }
+
+        .popup-btn .btn-info.icon-qrcode {
+            background-image: url('../MidWay/public/images/close2.png');
+        }
+
+        .layui-m-layer0 .layer-activity-readme {
+            position: relative;
+            width: 8.4rem;
+            height: auto;
+            max-width: 10rem;
+            color: #fff;
+            padding-bottom: 0.88rem;
+        }
+
+        /* 文字居左对齐 */
+
+        .layer-activity-readme .text-left {
+            text-align: left;
+        }
+
+        /* 小号文字 */
+
+        .layer-activity-readme .small-font {
+            font-size: 12px;
+        }
+
+        [data-dpr="2"] .layer-activity-readme .small-font {
+            font-size: 24px;
+        }
+
+        [data-dpr="3"] .layer-activity-readme .small-font {
+            font-size: 36px;
+        }
+
+        /* 中号文字 */
+
+        .layer-activity-readme .medium-font {
+            font-size: 14px;
+        }
+
+        [data-dpr="2"] .layer-activity-readme .medium-font {
+            font-size: 28px;
+        }
+
+        [data-dpr="3"] .layer-activity-readme .medium-font {
+            font-size: 42px;
+        }
+
+        /* 重置layercont默认的padding */
+
+        .layer-activity-readme .layui-m-layercont {
+            padding: 0;
+        }
+
+        /* 内容区容器 */
+        .layer-smashGoldEggs{
+            background: none;
+        }
+        .layer-smashGoldEggs .layui-m-layercont{
+            padding:0;
+        }
+        .smashGoldEgg{
+            height:100%;
+            width:100%;
+            text-align: center;
+        }
+        .smashGoldEgg-bg{
+        position: relative;
+        width:100%;
+        height:8rem;
+        margin:auto;
+    }
+    .smashGoldEgg-bg .colouredRibbon{
+        position: absolute;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+        background:no-repeat top center;
+        background-size: 80% auto;
+    }
+    
+    .smashGoldEgg-bg .egg{
+        position: absolute;
+        width: 8rem;
+        height: 8rem;
+        bottom:0;
+        left:50%;
+        margin-left:-4rem;
+        animation: shakeEgg 1.5s ease-in-out;
+        background: url("../MidWay/public/images/smash-gold-eggs/egg1.png") no-repeat bottom center;
+        background-size: 100% auto;  
+        transition:background-image;
+        transition-delay:.4s;
+    }
+    .smashGoldEgg-bg .hammer{
+        position: absolute;
+        width: 8rem;
+        height: 8rem;
+        bottom:0;
+        left:50%;
+        margin-left:-4rem;
+        transition:display;
+        transition-delay:1.2s;
+        
+    }
+    .smashGoldEgg-bg .hammer>img{
+        display: block;
+        position: absolute;
+        top:0rem;
+        right:2rem;
+        height:2rem;
+        animation: movehammer 1.5s ease-in-out;
+    }
+    .smashGoldEgg-bg.smashing .egg{
+        background-image: url(../MidWay/public/images/smash-gold-eggs/egg2.png);
+    }
+    .smashGoldEgg-bg.smashing .hammer>img{
+        transform-origin: 100% 100%;
+        transform:rotate(-30deg) ;
+        animation: hammerSmash .4s ease-in-out;
+    }
+    .smashGoldEgg-bg.smashed .egg{
+        background-image: url(../MidWay/public/images/smash-gold-eggs/egg3.png);
+    }
+    .smashGoldEgg-bg.smashed .colouredRibbon{
+         background-image: url(../MidWay/public/images/smash-gold-eggs/colouredRibbon2.png);
+         animation: showColouredRibbon .6s ease-in;
+    }
+    .smashGoldEgg-bg.smashed .hammer{
+        display: none;
+    }
+    .smashGoldEgg-bg.finished .egg{
+        background-image: url(../MidWay/public/images/smash-gold-eggs/egg4.png);
+    }
+    .smashGoldEgg-bg.finished .colouredRibbon{
+         background-image: url(../MidWay/public/images/smash-gold-eggs/colouredRibbon1.png);
+         background-size:100% auto; 
+    }
+    .smashGoldEgg .closeBtn{
+        margin-top:2.5rem;
+        height:1.1rem;
+    }
+    @-webkit-keyframes shakeEgg{
+        0%{
+           transform: scale(.5);
+        }
+       100%{
+           transform: scale(1);
+        }
+    }
+    @-webkit-keyframes movehammer{
+        0%{
+           right:-2rem;
+        }
+       100%{
+          right:2rem;
+        }
+    }
+   @-webkit-keyframes hammerSmash{
+       0%{
+            transform:rotate(0deg) ;    
+       }
+       50%{
+            transform:rotate(30deg) ;
+       }
+       100%{
+            transform:rotate(-30deg) ;
+       }
+    }
+    @-webkit-keyframes showColouredRibbon{
+        0%{
+            transform: scale(0);
+        }
+        100%{
+            transform: scale(1);
+        }
+    }
+    /*  游戏排行*/
+    .layer-gameRankings{
+         background:none;
+    }
+    .layer-gameRankings .layui-m-layercont{
+        padding: 0;
+    }
+    .layer-gameRankings .rankTop{
+       background: url('../MidWay/public/images/game-ranks/top-bg.png') no-repeat bottom left;
+       background-size:100% auto;
+       height:2.7rem;
+       position: relative;
+    }
+    .layer-gameRankings .rankTop>h1{
+        width: 100%;
+        position: absolute;
+        top:-1.1rem;
+        left: -.3rem;
+    }
+    .layer-gameRankings .rankTop>h1>img{
+        width: 100%;
+    }
+     .layer-gameRankings .rankTop .myselfInfo{
+         width: 100%;
+         height: 100%;
+         text-align: left;
+         padding:.65rem 1rem;
+         box-sizing: border-box;
+         color:#066461;
+         line-height: 1.4rem;
+         font-size: .49rem;
+    }
+    .layer-gameRankings .rankTop .myselfFace{
+        float: left;
+        background: url(../MidWay/public/images/game-ranks/headportraitBg1.png) no-repeat top left;
+        background-size:cover;
+        width:1.4rem ;
+        height:1.4rem ;
+        margin-right: .5rem;
+        overflow: hidden;
+    }
+    .layer-gameRankings .rankTop .myselfFace>img{
+        height: 100%;
+        width: 100%;
+
+    }
+    .layer-gameRankings .rankList{
+        width:100%;
+        background: url('../MidWay/public/images/game-ranks/bg.png') no-repeat bottom left;
+        background-size:100% auto;
+        height: 10rem;
+        margin-top:-.5rem;
+        box-sizing: border-box;
+        padding:.6rem 1rem;
+        overflow-y: auto;
+    }
+    .layer-gameRankings .rankList table,
+    .layer-gameRankings .rankList thead,
+    .layer-gameRankings .rankList tbody,
+    .layer-gameRankings .rankList tr{
+        width: 100%;
+      }
+      .layer-gameRankings .rankList table{
+          table-layout:fixed;
+      }
+   .layer-gameRankings .rankList th, .layer-gameRankings .rankList td{
+       width: 25%;
+       text-align: center;
+   }
+    .layer-gameRankings .rankList td{ 
+         height:2rem;
+        color:#fff;
+        line-height:100%;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+   .layer-gameRankings .rankList th>img{
+       display: block;
+       width: 100%;
+   }
+   .layer-gameRankings .rankList .faceImg{
+       background: url('../MidWay/public/images/game-ranks/headportraitBg1.png') no-repeat bottom left;
+       width: 1.2rem;
+       height: 1.2rem;
+       background-size: cover;
+       margin:auto;
+   }
+   .layer-gameRankings .rankList .faceImg>img{
+       width: 100%;
+       height: 100%;
+   }
+   .layer-gameRankings .rankList .rank{
+       font-size: .5rem;
+       font-weight: bold;
+   }
+    .layer-gameRankings .closeBtn{
+    height: 2rem;
+    margin-top: -.3rem;
+    }
+    /* 拆红包 */
+    .layer-dismantRedEnvelopes{
+        background: none;
+    }
+    .layer-dismantRedEnvelopes .layui-m-layercont{
+        padding:0;
+    }
+    .layer-dismantRedEnvelopes .dismantRedEnvelopes>img{
+        display: block;
+    }
+    .layer-dismantRedEnvelopes .dismantRedEnvelopes .redEnvelopes{
+        width:7.6rem;
+        animation: shake 1s linear 1;
+        margin:auto; 
+    }
+    .layer-dismantRedEnvelopes .dismantRedEnvelopes .closeBtn{
+        margin-right:auto;
+        margin-left:auto;
+        margin-top:1rem;
+        height:1.1rem;
+    }
+    @keyframes shake{
+        10% {
+            transform: rotate(15deg);
+        }
+        20% {
+            transform: rotate(-10deg);
+        }
+        30% {
+            transform: rotate(5deg);
+        }
+        40% {
+            transform: rotate(-5deg);
+        }
+        50%,100% {
+            transform: rotate(0deg);
+        }
+    }
+    </style>
+</head>
+
+<body class="page-body">
+    <div class="page-panel" style="height:16.5rem">
+        <div class="page-content">
+            <div id="framework-popup-btns">
+                <!-- 活动说明 -->
+                <div class="popup-btn" style="top: 2rem; right: 0.5rem;">
+                    <div class="btn-info icon-activity"></div>
+                </div>
+                <!-- 我的奖品 -->
+                <div class="popup-btn" style="top: 3.5rem; right: 0.5rem;">
+                    <div class="btn-info icon-prize"></div>
+                </div>
+                <!-- 关注二维码 -->
+                <div class="popup-btn" style="top: 5rem; right: 0.5rem;">
+                    <div class="btn-info icon-qrcode"></div>
+                </div>
+            </div>
+            <a href="javascript:;" class="weui-btn weui-btn_primary">页面主操作 Normal</a>
+        </div>
+    </div>
+    <!-- Templates -->
+    <div id="templates" style="display: none;">
+        <!-- Readme -->
+        <div class="smashGoldEgg">
+            <div class="smashGoldEgg-bg" >
+                <div class="colouredRibbon"></div>
+                <div class="egg"></div>
+                <div class="hammer">
+                    <img src="../MidWay/public/images/smash-gold-eggs/hammer.png">
+                </div>
+            </div>
+            <img src="../MidWay/public/images/smash-gold-eggs/close.png" alt="" class="closeBtn">
+        </div>
+    </div>
+    <div id='gameRankings' style="display: none;">
+        <div class="gameRankings">
+            <div class="rankTop">
+                <h1 title="游戏排行"><img src="../MidWay/public/images/game-ranks/top.png" alt=""></h1>
+                <div class="myselfInfo">
+                    <div class="myselfFace"><img src="" alt="" ></div>
+                    <div>当前排名：<span></span>位</div>
+                </div>
+            </div>
+            <div class="rankList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><img src="../MidWay/public/images/game-ranks/rank.png" title="排名"></th>
+                            <th><img src="../MidWay/public/images/game-ranks/headportrait.png" title="头像"></th>
+                            <th><img src="../MidWay/public/images/game-ranks/nickname.png" title="昵称"></th>
+                            <th><img src="../MidWay/public/images/game-ranks/score.png" title="成绩"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rank">
+                                <img src="../MidWay/public/images/game-ranks/first.png" alt="" class="rankImg">
+                            </td>
+                            <td>
+                                <div class="faceImg"></div>
+                            </td>
+                            <td>ddddddddddddddddddd</td>
+                            <td>ddd</td>
+                        </tr>
+                        <tr>
+                            <td class="rank">
+                               2
+                            </td>
+                            <td>
+                                <div class="faceImg"></div>
+                            </td>
+                            <td>ddddddddddddddddddd</td>
+                            <td>ddd</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <img src="../MidWay/public/images/game-ranks/close.png" alt=""  class="closeBtn">
+        </div>
+    </div>
+    <div id="dismantRedEnvelopes" style='display: none;'>
+        <div class="dismantRedEnvelopes">
+            <img src="../MidWay/public/images/dismant-red-envelopes/redEnvelopes1.png" class="redEnvelopes">
+            <img src="../MidWay/public/images/dismant-red-envelopes/close.png" class="closeBtn">
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        (function () {
+            var getPlatform = function () {
+                var userAgentInfo = navigator.userAgent;
+                var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+                var flag = "pc";
+                for (var v = 0; v < Agents.length; v++) {
+                    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                        flag = "mobile";
+                        break;
+                    }
+                }
+                return flag;
+            }
+            if (getPlatform() == "pc" && !document.referrer) {
+                $("html").css({ "background-color": "rgb(137, 150, 160)" });
+                $("body").css({ "overflow-y": "auto" });
+            }
+
+            //绑定动画
+            var bindAnim = function (obj, x, callback) {//obj--要加动画的对象  x--动画类型，对应annimate.css里面的动画类型  callback--动画完毕的回调
+                $(obj).addClass(x + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                    $(this).removeClass(x + ' animated');
+                    !!callback && callback();
+                });
+            };
+
+            // 绑定按钮功能
+            var $btns = $("#framework-popup-btns");
+            $btns.find(".icon-activity").on("touchend", function (event) {//拆红包
+               layer.open({
+                    type: 0,
+                   anim: false,
+                   content: $("#dismantRedEnvelopes").html(),
+                   className: "layer-dismantRedEnvelopes",
+                   shadeClose: false,
+                   shade: 'background-color: rgba(0,0,0,.6)',
+                   success: function (elem) {
+                       $(elem).find('.redEnvelopes').on("touchend", function (e) {
+                           $(this).attr('src','../MidWay/public/images/dismant-red-envelopes/redEnvelopes2.png')
+                            e.preventDefault();
+                        })
+                       $(elem).find('.closeBtn').on("touchend", function (e) {
+                           e.preventDefault();
+                           layer.closeAll();
+                       })
+                   }
+               })
+                event.preventDefault();
+            });
+            $btns.find(".icon-qrcode").on("touchend", function (event) {//游戏排行
+                layer.open({
+                    type: 0,
+                    anim: false,
+                    content: $("#gameRankings").html(),
+                    className: "layer-gameRankings",
+                    shadeClose:false,
+                    shade: 'background-color: rgba(0,0,0,.6)',
+                    success: function (elem) {
+                        $(elem).find('.closeBtn').on("touchend", function (e) {
+                            e.preventDefault();
+                            layer.closeAll();
+                        })
+                    }
+                })
+                 event.preventDefault();
+            });
+            $btns.find(".icon-prize").on('touchend',function (event) {
+                //弹出砸金蛋
+               layer.open({
+                    type: 0,
+                    anim: false,
+                    content: $("#templates").html(),
+                    shadeClose:false,
+                    className: "layer-smashGoldEggs",
+                    shade: 'background-color: rgba(0,0,0,.6)',
+                    success: function (elem) {
+                        $(elem).find('.closeBtn').on("touchend",function (e) {
+                            e.preventDefault();
+                            layer.closeAll();
+                        })
+                        $(elem).find('.hammer').on("touchend",function (e) {
+                             e.preventDefault();
+                             $(elem).find('.smashGoldEgg-bg').addClass("smashing");
+                             setTimeout(function () {
+                                 $(elem).find('.smashGoldEgg-bg').removeClass("smashing");
+                                 $(elem).find('.smashGoldEgg-bg').addClass("smashed");
+                                 setTimeout(function(){
+                                      $(elem).find('.smashGoldEgg-bg').addClass("finished");
+                                 },800);
+                             },800)
+                        })
+                    }
+                }) 
+                event.preventDefault();
+            })
+
+        })();
+
+    </script>
+</body>
+
+</html>

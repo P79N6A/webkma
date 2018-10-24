@@ -1,0 +1,57 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PrizeEgg",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.6666666666666666,
+  "sample": 30,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "scale": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 0.01,
+            "y": 0.01
+          }
+        },
+        {
+          "frame": 0.5,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1,
+            "y": 1
+          },
+          "curve": "constant"
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 0.01,
+            "y": 0.01
+          }
+        }
+      ],
+      "rotation": [
+        {
+          "frame": 0,
+          "value": 165
+        },
+        {
+          "frame": 0.5,
+          "value": -25,
+          "curve": "constant"
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": 165
+        }
+      ]
+    }
+  },
+  "events": []
+}

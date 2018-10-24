@@ -1,0 +1,134 @@
+<div>
+  <div class="materialAddDire" style="display: none;"><!--<div class="materialAddDire">-->
+    <div style="width: 100%;height:100%;min-height: 200px;">
+      <div class="pop_top_tit clearfix">
+        <span>添加素材</span>
+        <i class="pull-right" ng-click="closeDom('materialAddDire')">×</i>
+      </div>
+      <div class="txt_content clearfix">
+        <div class="materNav">
+          <label ng-click="addMateType('img')" ng-class="{'curr':thisMateType=='img'}">图片素材</label>
+          <label ng-click="addMateType('svg')" ng-class="{'curr':thisMateType=='svg'}">svg素材</label>
+        </div>
+        <div class="materBtnBox">
+          <div class="pull-right" style="position: relative;">
+            <form enctype="multipart/form-data">
+              <input type="file" name="img" multiple="multiple" style="width: 80px;left: 6px;"
+                     accept="image/png,image/jpeg,image/gif" class="input-upload detailUpImg"/>
+              <button type="button" class="btn btn-primary green pull-right" ng-show="thisMateType=='img'"
+                      style="margin-left:5px;" ng-click="uploadImg($event)">上传素材
+              </button>
+            </form>
+          </div>
+          <button type="button" class="btn btn-primary green pull-right"
+                  style="margin-left:5px;" ng-click="svg_show()">添加svg
+          </button>
+        </div>
+        <div class="refuse-box materListBox" style="width: 90%;max-height: 360px;overflow: auto;"
+             ng-hide="materialObj.materialTypeId != 'tpl_materList';">
+          <table class="materListTab">
+            <tr>
+              <th>素材编号</th>
+              <th>缩略图</th>
+              <th>格式</th>
+              <th>添加日期</th>
+              <th>操作</th>
+            </tr>
+            <tr ng-show="tpl_materialList.length <= 0">
+              <td colspan="5">暂无数据</td>
+            </tr>
+            <tr ng-repeat="row in tpl_materialList">
+              <td>{{row.materialId}}</td>
+              <td>
+                <img style="width: 30px;height: 30px;cursor: pointer;" ng-src="{{row.thumbnail}}" alt=""
+                     img-preview-dire="{{row.thumbnail}}"/>
+              </td>
+              <td>{{row.materialTypeName}}</td>
+              <td>{{row.createtime.split(' ')[0]}}</td>
+              <td>
+                <button type="button" class="btn btn-primary green" style="margin-left:5px;" ng-click="delMaterial(row)">删除</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="svg_modal_box" style="display: none;">
+    <div style="width: 100%;height:100%;min-height: 220px;">
+      <div class="pop_top_tit clearfix">
+        <span>{{addFireTitle}}svg素材</span>
+        <i class="pull-right" ng-click="closeDom('svg_modal_box')">×</i>
+      </div>
+      <table class="svgEditTab">
+        <tr>
+          <td width="80px;" style="text-align: right;">上传源文件</td>
+          <td><div title="{{svgObjList.source.id}}" style="white-space: nowrap;text-overflow:ellipsis;width: 200px;overflow: hidden;">{{svgObjList.source.id}}</div></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div class="pull-left" style="position: relative;margin-left: 30px;">
+              <form enctype="multipart/form-data">
+                <input type="file" name="fileName" multiple="multiple" data-type="0" style="width: 50px;left: 6px;"
+                        class="input-upload detailUpImg"/>
+                <a class="btn pull-right" style="margin-left:5px;" ng-click="uploadImg($event)">上传</a>
+              </form>
+            </div>
+            <a target="_blank" ng-href="{{svgObjList.source.downUrl}}">下载</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">上传模板</td>
+          <td><div title="{{svgObjList.template.id}}" style="white-space: nowrap;text-overflow:ellipsis;width: 200px;overflow: hidden;">{{svgObjList.template.id}}</div></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div class="pull-left" style="position: relative;margin-left: 30px;">
+              <form enctype="multipart/form-data">
+                <input type="file" name="fileName" multiple="multiple" data-type="1" style="width: 50px;left: 6px;"
+                       class="input-upload detailUpImg"/>
+                <a class="btn pull-right" style="margin-left:5px;" ng-click="uploadImg($event)">上传</a>
+              </form>
+            </div>
+            <a target="_blank" ng-href="{{svgObjList.template.downUrl}}">下载</a>
+          </td>
+        </tr>
+        <tr>
+        <tr>
+          <td colspan="2">
+            <div class="refuse-box" ng-show="editSvgData.type == 'edit'">
+                <textarea class="dis_reason ng-pristine ng-untouched ng-valid ng-empty"
+                          ng-model="pageControl.mtrRemark"
+                          placeholder="请输入备注信息"></textarea>
+            </div>
+          </td>
+        </tr>
+        <td colspan="2">
+          <div class="btn_box" style="margin: 20px auto;">
+            <button style="line-height: 25px;" class="check_return check_btn" ng-click="closeDom('svg_modal_box')">取消
+            </button>
+            <button style="line-height: 25px;" class="check_true check_btn check_btn1" ng-click="svgEditSure()">确定
+            </button>
+          </div>
+        </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+<div class="del_material_box_bg" style="display: none;z-index:10000;position: fixed;width: 100%;height: 100%;left: 0;top: 0;background: #333;opacity: 0.5;"></div>
+  <div class="del_material_box" style="display: none;min-height: 120px;z-index: 10001;">
+    <div style="width: 100%;height:100%;min-height: 120px;">
+      <div class="txt_content clearfix">
+        <div class="refuse-box">
+          <p class="fz-14" style="text-align: center;font-size: 16px;">确定要删除该素材吗?</p>
+          <div class="btn_box">
+            <button class="check_return check_btn" ng-click="deloffFn()">取消</button>
+            <button class="check_true check_btn check_btn1" ng-click="delOneSureFn()">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

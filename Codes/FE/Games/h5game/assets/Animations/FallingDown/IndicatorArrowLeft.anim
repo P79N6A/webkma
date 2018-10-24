@@ -1,0 +1,80 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "IndicatorArrowLeft",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 3.033333333333333,
+  "sample": 30,
+  "speed": 2,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "arrow1": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 3,
+              "value": -120,
+              "curve": "constant"
+            },
+            {
+              "frame": 3.033333333333333,
+              "value": 60
+            }
+          ]
+        }
+      },
+      "arrow2": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 2,
+              "value": -120,
+              "curve": "constant"
+            },
+            {
+              "frame": 2.033333333333333,
+              "value": 60
+            },
+            {
+              "frame": 3,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "arrow3": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": -60
+            },
+            {
+              "frame": 1,
+              "value": -120,
+              "curve": "constant"
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": 60
+            },
+            {
+              "frame": 3,
+              "value": -60
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

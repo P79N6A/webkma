@@ -1,0 +1,59 @@
+﻿<div ng-controller="PartnerShopCtrl" style="min-width:1440px;">
+    <!-- BEGIN HEADER -->
+    <div class="page-header navbar navbar-fixed-top">
+        <!-- BEGIN HEADER INNER -->
+        <div class="page-header-inner ">
+            <!-- BEGIN LOGO -->
+            <div class="page-logo">
+                <a href="javascript:void(0);">
+                    <img src="/images/logo_white.png" alt="logo" class="logo-default" style="margin-top:8px;height: 30px;" />
+                </a>
+            </div>
+            <!-- END LOGO -->
+        </div>
+        <!-- END HEADER INNER -->
+    </div>
+    <!-- END HEADER -->
+    <!-- BEGIN HEADER & CONTENT DIVIDER -->
+    <div class="clearfix"> </div>
+    <!-- END HEADER & CONTENT DIVIDER -->
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <!-- BEGIN CONTENT BODY -->
+            <div class="page-content" style="margin-left:0px;" ng-if="tpl_status.access == 'valid'">
+                <div ng-include="'views/project/member-shop_tpl.html'"></div>
+            </div>
+
+            <!-- BEGIN : ERROR MESSAGE-->
+            <div class="page-content" style="margin-left:0px;" ng-if="tpl_status.access == 'invalid' || tpl_status.access == 'error'">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light portlet-fit bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-warning font-red"></i>
+                                    <span class="caption-subject font-red bold uppercase">警告</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h2>无效的链接！请通过正确途径进入该页面。</h2>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END : ERROR MESSAGE-->
+            <!-- END CONTENT BODY -->
+        </div>
+        <!-- END CONTENT -->
+    </div>
+    <!-- END CONTAINER -->
+</div>
+

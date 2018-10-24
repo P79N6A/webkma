@@ -1,0 +1,63 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>短信列表
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll" style="overflow:hidden;">
+                <div class="portlet-body flip-scroll">
+                    <div>
+                        <div class="col-md-12 col-clear-padding">
+                            <div class="col-md-5 col-clear-padding">
+
+                            </div>
+                            <div class="col-md-5 input-group pull-right">
+                                <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;margin-bottom:10px;" ng-click="searchActivities()">搜索
+                                </button>
+                                <input type="text" id="typeahead_example_1" name="typeahead_example_1" class="form-control pull-right" placeholder="请输入短信内容进行关键字查询"
+                                    ng-model="pageControl.search" style="width: 300px;" />
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-striped table-hover tab-pane">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th width="20%"> 短信内容</th>
+                                    <th width="15%"> 发送商家</th>
+                                    <th width="10%"> 发送时间</th>
+                                    <th width="10%"> 预计发送量</th>
+                                    <th width="5%"> 实际发送量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in pageControl.data">
+                                    <td>
+                                        <p style="width:300px;word-break:break-all;">{{row.templateContent}}</p>
+                                    </td>
+                                    <td>
+                                        <p style="width:130px;word-break:break-all;">{{row.companyName}}</p>
+                                    </td>
+                                    <td> {{row.sendTime}}</td>
+                                    <td> {{row.phoneQuantity}}</td>
+                                    <td> {{row.smsQuantitySuccess}}</td>
+                                </tr>
+                                <tr ng-if="pageControl.data.length == 0">
+                                    <td colspan="9" class="text-center"> 暂无数据 </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row" ng-if="pagination.total>0" style="padding-right:16px;">
+                            <ui-pagination my-where="BusinessListCtrlflip" pagesize="{{pagination.pageSize}}" pageindex="{{pagination.pageIndex}}" totalcount="{{pagination.total}}"
+                                textalign="text-right"></ui-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

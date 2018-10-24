@@ -1,0 +1,18 @@
+.templateList {
+}
+.templateList .templateTitle{
+    font-size:16px;
+    font-weight:bolder;
+    padding:20px 0px ;
+}
+.templateList .templateCondition{
+    border-bottom:1px solid #e7ecf1;
+}
+.templateList .templateListContent .templateSearch{
+    margin:20px 0px;
+}
+
+
+
+
+

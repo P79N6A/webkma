@@ -1,0 +1,107 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>活动列表
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll" style="overflow:hidden;">
+                <div class="portlet-body flip-scroll">
+                    <div>
+                        <div class="col-md-12 col-clear-padding">
+                            <div class="col-md-5 col-clear-padding">
+
+                            </div>
+                            <div class="col-md-5 input-group pull-right">
+                                <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;margin-bottom:10px;" ng-click="searchActivities()">搜索
+                                </button>
+                                <input type="text" id="typeahead_example_1" name="typeahead_example_1" class="form-control pull-right" placeholder="请输入活动名称/模板名称关键字进行搜索"
+                                    ng-model="pageControl.search" style="width: 300px;" />
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-striped table-hover tab-pane">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th width="20%"> 活动名称</th>
+                                    <th width="10%"> 封面缩略图</th>
+                                    <th width="10%"> 发布时间</th>
+                                    <th width="10%"> 使用模板</th>
+                                    <th width="5%"> 活动排序</th>
+                                    <th width="7%"> 
+                                        累计分享数
+                                        <span class="sort-icon">
+                                            <i class="icon-up" ng-class="{'active': pageControl.totalShare == 'asc'}" ng-click="orderBy('totalShare', 'asc')"></i>
+                                            <i class="icon-down" ng-class="{'active': pageControl.totalShare == 'desc'}" ng-click="orderBy('totalShare', 'desc')"></i>
+                                        </span>
+                                    </th>
+                                    <th width="7%"> 
+                                        累计访客数
+                                        <span class="sort-icon">
+                                            <i class="icon-up" ng-class="{'active': pageControl.totalVisitor == 'asc'}" ng-click="orderBy('totalVisitor', 'asc')"></i>
+                                            <i class="icon-down" ng-class="{'active': pageControl.totalVisitor == 'desc'}" ng-click="orderBy('totalVisitor', 'desc')"></i>
+                                        </span>
+                                    </th>
+                                    <th width="7%"> 
+                                        累计访问数
+                                        <span class="sort-icon">
+                                            <i class="icon-up" ng-class="{'active': pageControl.totalAccess == 'asc'}" ng-click="orderBy('totalAccess', 'asc')"></i>
+                                            <i class="icon-down" ng-class="{'active': pageControl.totalAccess == 'desc'}" ng-click="orderBy('totalAccess', 'desc')"></i>
+                                        </span>
+                                    </th>
+                                    <th width="10%"> 状态</th>
+                                    <th width="15%"> 操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in pageControl.data">
+                                    <td>
+                                        <p style="width:300px;word-break:break-all;">{{row.name}}</p>
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px;height: 30px;cursor: pointer;" 
+                                        ng-src="{{!!row.cover?row.cover+'@w_100,h_100':row.cover}}" alt=""
+                                        img-preview-dire="{{row.cover}}" />
+                                    </td>
+                                    <!-- <td>
+                                        <p style="width:130px;word-break:break-all;">{{row.businessName}}</p>
+                                    </td> -->
+                                    <td> {{row.createTime}}</td>
+                                    <td> {{row.sourceName}}</td>
+                                    <td class="text-center"> 
+                                        <span ng-if="!row.sortEdit" ng-click="row.sortEdit = true;">{{row.sort}}</span>
+                                        <input style="width:80px;" ng-if="!!row.sortEdit" type="text" ng-model="row.sort"  ng-blur="addSortNum(row)" ng-keyup="addSortNum(row, $event)">
+                                    </td>
+                                    <td> {{row.totalShare}}</td>
+                                    <td> {{row.totalVisitor}}</td>
+                                    <td> {{row.totalAccess}}</td>
+                                    <td>
+                                        <slide-btn slide-type="enableHandler" my-default="row" slide-map="stateOpt" prop-key="enable"></slide-btn>
+                                    </td>
+                                    <td>
+                                        <div class="pull-left" ng-if="row.enable !=0 ">
+                                            <slide-btn slide-type="recommend" my-default="row" active-text="推荐" inactive-text="未推" prop-key="recommend" slide-map="recommendOpt"></slide-btn>
+                                        </div>
+                                        <span class="pull-left" style="color: #40b6ff;margin:4px 0 0 20px;" ng-click="preview(row)">预览</span>
+
+                                    </td>
+                                </tr>
+                                <tr ng-if="pageControl.data.length == 0">
+                                    <td colspan="10" class="text-center"> 暂无数据 </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row" ng-if="pagination.total>0" style="padding-right:16px;">
+                            <ui-pagination my-where="BusinessListCtrlflip" pagesize="{{pagination.pageSize}}" pageindex="{{pagination.pageIndex}}" totalcount="{{pagination.total}}"
+                                textalign="text-right"></ui-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

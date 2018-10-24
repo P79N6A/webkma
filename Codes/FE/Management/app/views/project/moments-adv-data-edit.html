@@ -1,0 +1,319 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>数据报告
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll" style="overflow:hidden;">
+                <!-- 添加数据报告 -->
+                <div class="add-business-block" ng-if="pageControl.edit == 'false' && !pageControl.data.id">
+                    <div class="business-block-title">
+                        <i class="icon-settings font-dark"></i>添加数据报告</div>
+                    <div class="business-block-body">
+                        <div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">数据报告名称</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入数据报告名称" ng-model="pageControl.data.name">
+                                    <span class="help-inline"> 必填，字符在1-20个之间</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">数据统计时间</label>
+                                <div class="col-md-9">
+                                    <div class="input-group input-large date-picker input-daterange" data-date="10/11/2012"
+                                        data-date-format="mm/dd/yyyy">
+                                        <input type="text" class="form-control" readonly="readonly" placeholder="请选择开始日期"
+                                            uib-datepicker-popup
+                                            ng-model="pageControl.startTime.value"
+                                            is-open="pageControl.startTime.opened"
+                                            datepicker-options="pageControl.startTime.options"
+                                            show-button-bar="false"
+                                            ng-click="pageControl.startTime.opened = true"
+                                            ng-change="pageControl.endTime.options = { minDate: pageControl.startTime.value }" />
+                                        <span class="input-group-addon"> 到 </span>
+                                        <input type="text" class="form-control" readonly="readonly" name="to" placeholder="请选择结束日期"
+                                            uib-datepicker-popup
+                                            ng-model="pageControl.endTime.value"
+                                            is-open="pageControl.endTime.opened"
+                                            datepicker-options="pageControl.endTime.options"
+                                            show-button-bar="false"
+                                            ng-click="pageControl.endTime.opened = true"
+                                            ng-change="pageControl.startTime.options = { maxDate: pageControl.endTime.value }" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">所属推广计划</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.promotionPlanName}} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">花费推广费用</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入花费推广费用" ng-model="pageControl.data.extensionCost">
+                                    <span class="help-inline"> 必填，仅支持输入数字 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">曝光次数</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入曝光次数" ng-model="pageControl.data.exposureCount" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                    <span class="help-inline"> 必填，仅支持输入数字 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">点击次数</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入点击次数" ng-model="pageControl.data.clickCount" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                    <span class="help-inline"> 必填，仅支持输入数字 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">点击率</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入点击率" ng-model="pageControl.data.clickRate" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                    <span class="help-inline"> 必填，输入范围为1-100 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">转化指标</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入转化指标" ng-model="pageControl.data.conversionIndex" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                    <span class="help-inline"> 必填，仅支持数据数字 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">转化成本</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入转化成本" ng-model="pageControl.data.conversionCost">
+                                    <span class="help-inline"> 必填，仅支持数据数字 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">广告诊断</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入广告诊断" ng-model="pageControl.data.advertisementDiagnosis" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                    <span class="help-inline"> 必填，输入范围1~10；衡量标准：优秀8~10 分，较好4~7 分，一般1~3 分 </span>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12 form-group helper-middile">
+                                <label class="col-md-3 control-label text-right">关键指标趋势图</label>
+                                <div class="col-md-9">
+                                    <div class="col-md-6  no-padding bus-img-panel bus-img-cover">
+                                        <img-upload-dire multiple="false" model="pageControl.data.keyIndicatorsImg" image-type="jpg,jpeg,gif,png" file-size="5M">
+                                        </img-upload-dire>
+                                        <img class="bus-logo" ng-src="{{pageControl.data.keyIndicatorsImg}}" />
+                                        <div class="tips"> 重新上传 </div>
+                                    </div>
+                                    <div class="col-md-6 helper-middile ">
+                                        <span class="help-inline"> 上传图片必须为jpg、jpeg、gif、png格式文件且文件大小不超过5M</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 编辑数据报告 -->
+                <div class="add-business-block" ng-if="pageControl.edit == 'true'">
+                        <div class="business-block-title">
+                            <i class="icon-settings font-dark"></i>添加数据报告</div>
+                        <div class="business-block-body">
+                            <div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">数据报告名称</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入数据报告名称" ng-model="pageControl.data.name">
+                                        <span class="help-inline"> 必填，字符在1-20个之间</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">数据统计时间</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group input-large date-picker input-daterange" data-date="10/11/2012"
+                                            data-date-format="mm/dd/yyyy">
+                                            <input type="text" class="form-control" readonly="readonly" placeholder="请选择开始日期"
+                                                uib-datepicker-popup
+                                                ng-model="pageControl.startTime.value"
+                                                is-open="pageControl.startTime.opened"
+                                                datepicker-options="pageControl.startTime.options"
+                                                show-button-bar="false"
+                                                ng-click="pageControl.startTime.opened = true"
+                                                ng-change="pageControl.endTime.options = { minDate: pageControl.startTime.value }" />
+                                            <span class="input-group-addon"> 到 </span>
+                                            <input type="text" class="form-control" readonly="readonly" name="to" placeholder="请选择结束日期"
+                                                uib-datepicker-popup
+                                                ng-model="pageControl.endTime.value"
+                                                is-open="pageControl.endTime.opened"
+                                                datepicker-options="pageControl.endTime.options"
+                                                show-button-bar="false"
+                                                ng-click="pageControl.endTime.opened = true"
+                                                ng-change="pageControl.startTime.options = { maxDate: pageControl.endTime.value }" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">所属推广计划</label>
+                                    <div class="col-md-9">
+                                        <span class="help-inline"> {{pageControl.promotionPlanName}} </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">花费推广费用</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入花费推广费用" ng-model="pageControl.data.extensionCost">
+                                        <span class="help-inline"> 必填，仅支持输入数字 </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">曝光次数</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入曝光次数" ng-model="pageControl.data.exposureCount" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                        <span class="help-inline"> 必填，仅支持输入数字 </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">点击次数</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入点击次数" ng-model="pageControl.data.clickCount" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                        <span class="help-inline"> 必填，仅支持输入数字 </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">点击率</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入点击率" ng-model="pageControl.data.clickRate" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                        <span class="help-inline"> 必填，输入范围为1-100 </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">转化指标</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入转化指标" ng-model="pageControl.data.conversionIndex" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                        <span class="help-inline"> 必填，仅支持数据数字 </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">转化成本</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入转化成本" ng-model="pageControl.data.conversionCost">
+                                        <span class="help-inline"> 必填，仅支持数据数字 </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="col-md-3 control-label text-right">广告诊断</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control input-inline input-large" placeholder="请输入广告诊断" ng-model="pageControl.data.advertisementDiagnosis" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                        <span class="help-inline"> 必填，输入范围1~10；衡量标准：优秀8~10 分，较好4~7 分，一般1~3 分 </span>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-12 form-group helper-middile">
+                                    <label class="col-md-3 control-label text-right">关键指标趋势图</label>
+                                    <div class="col-md-9">
+                                        <div class="col-md-6  no-padding bus-img-panel bus-img-cover">
+                                            <img-upload-dire multiple="false" model="pageControl.data.keyIndicatorsImg" image-type="jpg,jpeg,gif,png" file-size="5M">
+                                            </img-upload-dire>
+                                            <img class="bus-logo" ng-src="{{pageControl.data.keyIndicatorsImg}}" />
+                                            <div class="tips"> 重新上传 </div>
+                                        </div>
+                                        <div class="col-md-6 helper-middile ">
+                                            <span class="help-inline"> 上传图片必须为jpg、jpeg、gif、png格式文件且文件大小不超过5M</span>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                </div>
+                <!-- 数据报告详情 -->
+                <div class="add-business-block" ng-if="pageControl.edit == 'false' && !!pageControl.data.id">
+                    <div class="business-block-title">
+                        <i class="icon-settings font-dark"></i>数据报告详情</div>
+                    <div class="business-block-body">
+                        <div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">数据报告名称</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.name}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">数据统计时间</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.startTime.value}} - {{pageControl.endTime.value}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">所属推广计划</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.promotionPlanName}} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">花费推广费用</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.extensionCost}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">曝光次数</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.exposureCount}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">点击次数</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.clickCount}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">点击率</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.clickRate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">转化指标</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.conversionIndex}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">转化成本</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.conversionCost}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">广告诊断</label>
+                                <div class="col-md-9">
+                                    <span class="help-inline"> {{pageControl.data.advertisementDiagnosis}}</span>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12 form-group helper-middile">
+                                <label class="col-md-3 control-label text-right">关键指标趋势图</label>
+                                <div class="col-md-9">
+                                    <img class="bus-logo" ng-src="{{pageControl.data.keyIndicatorsImg}}" style="width: 100px;height: 100px;" />
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="save_btn" ng-click="btnAction('goback')" style="margin-right:20px;">返回</button>
+            <button class="save_btn" ng-click="btnAction('submit')" ng-if="(pageControl.edit == 'false' && !pageControl.data.id) || pageControl.edit == 'true'">提交</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

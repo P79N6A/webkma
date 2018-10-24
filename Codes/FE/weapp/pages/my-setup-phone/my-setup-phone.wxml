@@ -1,0 +1,37 @@
+<view class="page">
+    <view class="topImage">
+          <image src="/images/phone.png" mode="aspectFit"/>
+    </view>
+    <view class="formControl">
+      <view class="weui-flex inputControl">
+          <view>+86</view>
+          <input class="weui-input weui-flex__item marginL10" id="phone" bindinput="bindInput" placeholder-class="phcolor" placeholder="手机号码" disabled='{{action == "unbind"}}' value="{{phone}}" />
+      </view>
+         <!--
+      <view class="weui-cell weui-cell_input weui-cell_vcode">
+        <view class="weui-cell__hd">
+          <view class="weui-label icon">
+            <image style='width:40rpx; height:40rpx;' src='/images/vcode.png'></image>
+          </view>
+        </view>
+      <view class="weui-cell__bd">
+          <input class="weui-input" id="vcodeImgCode" bindinput="bindInput" placeholder-class="phcolor" placeholder="图片验证码" value='{{vcodeImgCode}}' />
+        </view>
+        <view class="weui-cell__ft" bindtap="refreshVCode">
+          <image class="weui-vcode-img" src="{{vcodeImgSrc}}" ></image>
+        </view>
+      </view> 
+      -->
+      <view class="jigsawPuzzle">
+      <comp-slider-validation bind:compTouchend="compTouchend"  id="jigsawPuzzle"></comp-slider-validation>
+      </view>
+      <view class="weui-flex inputControl">
+        <input class="weui-input weui-flex__item" id="vcodeSMSCode" bindinput="bindInput" placeholder-class="phcolor" placeholder="手机验证码" />
+        <button disabled="{{!!smsBtnDisabled}}" plain="true" class="weui-vcode-btn" bindtap="smsVCode">{{vcodeSMSTitle}}</button>
+      </view>
+    </view>
+    <view class="formControl marginT66" >
+      <button class="weui-btn" hover-class='btn-blue-hover' disabled="{{!!submitDisabled}}" type="primary" wx:if="{{action == 'bind'}}" bindtap="bindPhone">确认绑定</button>
+      <button class="weui-btn" hover-class='btn-blue-hover' disabled="{{!!submitDisabled}}" type="primary" wx:if="{{action == 'unbind'}}" bindtap="unbindPhone">解除绑定</button>
+    </view>
+</view>

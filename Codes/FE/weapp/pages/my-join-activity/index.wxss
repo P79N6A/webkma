@@ -1,0 +1,6 @@
+/* pages/my/index.wxss */
+
+.ac-body{
+  padding: 50rpx 25rpx 0;
+}
+

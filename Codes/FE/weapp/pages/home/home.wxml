@@ -1,0 +1,41 @@
+<view class="container">
+ <view class=" pg-index-main">
+    <view class="page-header-bg" wx:if="{{taskList.length>0}}">
+      <view class="page-default-bg"></view>
+      <view class='my-head-decorate'></view>
+    </view>
+    <view class="pg-index-list" >
+      <comp-list-card list-data="{{taskList}}" 
+        show-publish-time="{{true}}"
+        show-join-count="{{true}}"
+        bind:tapEvent="onTapEvent" 
+        >
+      </comp-list-card>
+      <view class='weui-loadmore'>
+        <text class="weui-loading"  wx:if="{{loadingOpj.loadingText=='加载中...'}}"></text>
+        <text class="weui-loadmore__tips">{{loadingOpj.loadingText}}</text>
+      </view>
+   </view>
+  </view>
+</view>
+<comp-tabbar current-page="{{currentPage}}" user-bind-info="{{userBindInfo}}"></comp-tabbar>
+
+<!-- <view class="tabbar-placeholder"> 
+  <view class="tabbar" >
+    <view class="tabbar-item item-home {{currentPage==='home'?'active':''}}"  catchtap="onSwitchTab" data-page="/pages/home/home">
+      <image class='tabbar-icon' src='{{iconHome}}' ></image>
+      <view> 活动广场</view>
+    </view>
+    <view class="tabbar-item item-marketing {{currentPage==='marketing'?'active':''}}"  catchtap="onSwitchTab" data-page="/pages/marketing/marketing" wx:if="{{!!userBindInfo&&userBindInfo.state==0}}"> 
+    <image class='tabbar-icon' src='{{iconMarketing}}'></image>
+    <view>推广中心</view>
+    </view>
+    <view class="tabbar-item item-my {{currentPage==='my'?'active':''}}"  catchtap="onSwitchTab" data-page="/pages/my/index">
+     <image class='tabbar-icon' src='{{iconMy}}'></image>
+      <view>个人中心</view> 
+    </view>
+  </view>
+</view> -->
+
+
+

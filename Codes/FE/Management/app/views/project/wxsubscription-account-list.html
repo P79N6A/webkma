@@ -1,0 +1,56 @@
+<div class="row template-style">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>公众号管理
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div>
+                    <div class="col-md-12 col-clear-padding temp-search">
+                        <div class="col-md-5 input-group pull-right">
+                            <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;"
+                                ng-click="action('search')">搜索
+                            </button>
+                            <input type="text" class="form-control pull-right" placeholder="请输入公众号名称/商家名称进行搜索" style="width: 300px;"
+                                ng-model='searchKeyword' />
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover tab-pane">
+                        <thead class="flip-content">
+                            <tr>
+                                <th>公众号名称</th>
+                                <th>原始ID</th>
+                                <th>创建时间</th>
+                                <th>商家信息</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in dataList" ng-if="dataList.length>0">
+                                <td>{{item.appName}}</td>
+                                <td>{{item.appId}}</td>
+                                <td>{{item.createtime}}</td>
+                                <td>{{item.businessName}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary green" ng-click="action('detail',item)">投放详情</button>
+                                </td>
+                            </tr>
+                            <tr ng-if="dataList.length==0">
+                                <td colspan="5" class="text-center"> 暂无数据 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" ng-hide="pagination.totalCount==0" style="padding-right:16px;">
+                        <ui-pagination my-where="listCtrlflip" pagesize="{{pagination.pageSize}}" pageindex="{{pagination.pageIndex}}"
+                            totalcount="{{pagination.totalCount}}" textalign="text-right"></ui-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+<div class="row template-style">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>模板管理
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div>
+                    <div class="col-md-12 col-clear-padding temp-search">
+                        <div class="col-md-5 input-group pull-right">
+                            <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;" ng-click="action('search')">搜索
+                            </button>
+                            <input type="text" class="form-control pull-right" placeholder="请输入模板名称、设计师" style="width: 300px;" ng-model='searchKeyword.module'
+                            />
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover tab-pane">
+                        <thead class="flip-content">
+                            <tr>
+                                <th width="17%"> 模板名称</th>
+                                <th width="22%"> 制作设计师</th>
+                                <th width="15%"> 发布时间</th>
+                                <th width="7%"> 分发属性</th>
+                                <th width="8%"> 分发商家数</th>
+                                <th width="8%"> 活动采用数</th>
+                                <th width="18%"> 操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in tempList" ng-if="tempList.length>0">
+                                <td>{{item.name}}</td>
+                                <td>{{item.operator}}</td>
+                                <td>{{item.operatorDate}}</td>
+                                <td>{{item.distribution==null?'-':(item.distribution==1?'专用':'公用')}}</td>
+                                <td>{{item.businessTotal}}</td>
+                                <td>{{item.useTotal==null?'-':item.useTotal}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary green" ng-click="action('preview',item)">预览</button>
+                                    <button class="btn btn-sm btn-primary green" ng-click="action('handout',item)">分发</button>
+                                    <button class="btn btn-sm btn-primary red-mint" ng-click="action('del',item.id)">删除</button>
+                                </td>
+                            </tr>
+                            <tr ng-if="tempList.length==0">
+                                <td colspan="7" class="text-center"> 暂无数据 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" ng-hide="pagination.totalCount==0" style="padding-right:16px;">
+                        <ui-pagination my-where="TemplateListCtrlflip" pagesize="{{pagination.pageSize}}" pageindex="{{pagination.pageIndex}}" totalcount="{{pagination.totalCount}}"
+                            textalign="text-right"></ui-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checkBox {{prompt.tpl=='handout'?'checkBoxBg':''}}" style="display: none;">
+        <div style="width: 100%;height:100%;min-height: 200px;">
+            <div class="pop_top_tit clearfix">
+                <span>{{prompt.title}}</span>
+            </div>
+            <div class="txt_content clearfix">
+                <div class="case-wrap" ng-if="prompt.tpl=='handout'">
+                    <div calss="case-box">
+                        <div class="business-title">设置分发属性</div>
+                        <label for="">
+                            <input type="radio" name="distributionAttr" value="0" ng-model="business.type" ng-change="action('selectDis')">
+                            <span>公用
+                                <span>(选择公用将分发到所有商家)</span>
+                            </span>
+                        </label>
+                        <label for="">
+                            <input type="radio" name="distributionAttr" value="1" ng-model="business.type" ng-change="action('selectDis')">
+                            <span>专用
+                                <span>(选择专用将只分发所选择的商家)</span>
+                            </span>
+                        </label>
+                        <div ng-if="business.type=='1'">
+                            <div class="templateCondition tabbable-line">
+                                <ul class="nav nav-tabs">
+                                    <li role="button" class="nav-item {{business.distribution==0?'active':''}}" ng-click="action('selectSpecialType',0)">
+                                        <a>未分发商家</a>
+                                    </li>
+                                    <li role="button" class="nav-item {{business.distribution==1?'active':''}}" ng-click="action('selectSpecialType',1)">
+                                        <a>已分发商家</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="businessTable" id="case_wrap" >
+                                <table class="table table-striped table-hover tab-pane">
+                                    <thead class="flip-content">
+                                        <tr>
+                                            <td width="10%"></td>
+                                            <td width="20%">账号</td>
+                                            <td width="40%">公司名称</td>
+                                            <td width="20%" class="table-cell">
+                                                <span class="search-box-style">
+                                                    <input type="text" class="appSerhInput ng-pristine ng-untouched ng-valid ng-empty" placeholder="请输入账号和公司名搜索" ng-model="searchKeyword.business">
+                                                    <i class="app_serh_btn" ng-click="action('searchBusiness')"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr class="case" ng-repeat="item in business.list" ng-show="business.list.length>0">
+                                            <td>
+                                                <input type="checkbox" name='{{postHandout.type}}' ng-checked="item.checked" ng-click="action('selcetCheckBox',$index)">
+                                            </td>
+                                            <td>{{item.businessPhone}}</td>
+                                            <td>{{item.businessName}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr ng-if='business.list.length==0'>
+                                            <td colspan="4" class='text-center'>{{(searchKeyword.business!=''?'未搜索到':'暂无')+(business.distribution==0?'未分发':'已分发')}}商家!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <label class="selectAll" ng-click="action('selcetCheckBoxAll')" ng-if='business.list.length>0'>
+                                <input type="checkbox" ng-checked="business.selectAll">
+                                <span>全选</span>
+                            </label>
+                        </div>
+                        <div class="btn_box">
+                            <button class="check_return check_btn" ng-click="done()">取消</button>
+                            <button class="check_true check_btn check_btn1" ng-click="action('handoutBusiness')">{{business.type==1?(business.distribution==0?'分发':'撤销'):'确认'}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class='case-wrap del-model text-center' ng-if="prompt.tpl=='del'">
+                    <div>
+                        <img src="/images/warning.png" alt="">
+                    </div>
+                    <div class="case-box warning-text">
+                        删除后该模板数据将不可恢复,是否确认删除?
+                    </div>
+                    <div class="fn-cl-aaa">(请注意模板素材以及分发信息的备份)</div>
+                    <div class="btn_box">
+                        <button class="check_return check_btn" ng-click="done()">取消</button>
+                        <button class="check_true check_btn check_btn1" ng-click="delTemplate()">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+﻿<ul class="page-breadcrumb">
+    <li ng-repeat="route in routePath">
+        <a href="javascript:void(0);" ng-click="btnTransfer(route)" ng-if="!!route.url">{{route.title}}</a>
+        <span ng-if="!route.url">{{route.title}}</span>
+        <i class="fa fa-circle" ng-if="$index < routePath.length - 1"></i> <!-- 最后一个节点不加图标 -->
+    </li>
+</ul>

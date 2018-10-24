@@ -1,0 +1,19 @@
+
+<view class='pg-index-main' >
+  <view class="page-header-bg" wx-if="{{taskList.length>0}}">
+    <view class="page-default-bg"></view>
+    <view class='my-head-decorate'></view>
+  </view>
+  <view class='ac-body'>
+      <view>
+        <comp-list-card list-data="{{taskList}}" 
+        show-publish-time="{{true}}"
+        show-join-count="{{true}}"
+        bind:tapEvent="onTapEvent">
+        </comp-list-card>
+      </view>
+    </view>
+  
+</view>
+
+

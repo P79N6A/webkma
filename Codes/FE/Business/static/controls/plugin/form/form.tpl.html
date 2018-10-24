@@ -1,0 +1,80 @@
+﻿<div style="width:100%;height:100%;">
+    <form style="width:100%;height:100%;">
+
+        {{{each data.rows as row index}}}
+        <div class="form-row" row-type="{{{row.type}}}" row-category="{{{row.category}}}">
+
+            {{{if row.type == "text"}}} <!-- 单行文本 -->
+            <input class="form-control form-input" type="text" validator="{{{row.category}}}" maxlength="100" placeholder="{{{row.name}}}" name="{{{row.name}}}" style="border:0.03125rem {{{data.backColor}}} solid;">
+            <span class="err_msg"></span>
+
+
+            {{{else if row.type == "textarea"}}} <!-- 多行文本 -->
+            <textarea class="form-control form-input" name="{{{row.name}}}" maxlength="500" placeholder="{{{row.name}}}" style="border:0.03125rem {{{data.backColor}}} solid;"></textarea>
+            <span class="err_msg"></span>
+
+
+            {{{else if row.type == "radio" && row.category == "text"}}} <!-- 文字单选组合 -->
+            <div>{{{row.name}}}</div>
+            <div class="err_row"><span class="err_msg"></span></div>
+            <div style="margin-left:1rem;">
+                {{{each row.options as item idx}}}
+                <div class="radio">
+                    <label>
+                        <i class="iconfont icon-radio" name="{{{row.name}}}" value="{{{item.value}}}"></i>{{{item.value}}}
+                    </label>
+                </div>
+                {{{/each}}}
+            </div>
+
+
+            {{{else if row.type == "radio" && row.category == "image"}}} <!-- 图文单选组合 -->
+            <div>{{{row.name}}}</div>
+            <div class="err_row"><span class="err_msg"></span></div>
+            <div class="image_group">
+                {{{each row.options as item idx}}}
+                <label class="image_option radio">
+                    <div class="text-center"><img class="option_img" src="{{{item.img}}}" /></div>
+                    <div style="margin:2px 0 10px 1rem;"><i class="iconfont icon-radio" name="{{{row.name}}}" value="{{{item.value}}}"></i>{{{item.value}}}</div>
+                </label>
+                {{{/each}}}
+            </div>
+
+
+            {{{else if row.type == "checkbox" && row.category == "text"}}} <!-- 文字多选组合 -->
+            <div>{{{row.name}}}</div>
+            <div class="err_row"><span class="err_msg"></span></div>
+            <div style="margin-left:1rem;">
+                {{{each row.options as item idx}}}
+                <div class="checkbox">
+                    <label>
+                        <i class="iconfont icon-checkbox" name="{{{row.name}}}" value="{{{item.value}}}"></i>{{{item.value}}}
+                    </label>
+                </div>
+                {{{/each}}}
+            </div>
+
+
+            {{{else if row.type == "checkbox" && row.category == "image"}}} <!-- 图文多选组合 -->
+            <div>{{{row.name}}}</div>
+            <div class="err_row"><span class="err_msg"></span></div>
+            <div class="image_group">
+                {{{each row.options as item idx}}}
+                <label class="image_option checkbox">
+                    <div class="text-center"><img class="option_img" src="{{{item.img}}}" /></div>
+                    <div style="margin:2px 0 10px 1rem;"><i class="iconfont icon-checkbox" name="{{{row.name}}}" value="{{{item.value}}}"></i>{{{item.value}}}</div>
+                </label>
+                {{{/each}}}
+            </div>
+
+            {{{/if}}}
+
+        </div>
+        {{{/each}}}
+
+        <div class="form-row">
+            <button type="button" class="btn btn-submit form-input" style="background-color:{{{data.backColor}}};color:{{{data.fontColor}}};">{{{data.submit.text}}}</button>
+            <input id="hid_feedback" type="hidden" value="{{{data.submit.feedback}}}" />
+        </div>
+    </form>
+</div>

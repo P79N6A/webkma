@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html>
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>推小宝后台管理系统</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="renderer" content="webkit">
+    <!--[if IE]><meta name="renderer" content="ie-stand"><!-->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <meta property="qc:admins" content="205334576561743606375" />
+    <meta property="wb:webmaster" content="8b13267dd5b89def" />
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <!-- build:css(app) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/messenger/build/css/messenger.css" />
+    <link rel="stylesheet" href="bower_components/messenger/build/css/messenger-theme-future.css" />
+    <link rel="stylesheet" href="bower_components/messenger/build/css/messenger-theme-flat.css" />
+    <link rel="stylesheet" href="bower_components/messenger/build/css/messenger-theme-block.css" />
+    <link rel="stylesheet" href="bower_components/messenger/build/css/messenger-theme-air.css" />
+    <link rel="stylesheet" href="bower_components/messenger/build/css/messenger-theme-ice.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="bower_components/summernote/dist/summernote.css" />
+    <!-- endbower -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/jquery.uniform/dist/css/default.css" />
+    <!-- endbuild -->
+    <!-- build:css(app) styles/main.css -->
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link rel="stylesheet" href="styles/googleapi-open-sans.css">
+    <link rel="stylesheet" href="assets/global/plugins/simple-line-icons/simple-line-icons.css" type="text/css" />
+    <!--<link rel="stylesheet" href="assets/global/plugins/uniform/css/uniform.default.css" type="text/css" />-->
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link rel="stylesheet" href="assets/global/plugins/morris/morris.css" type="text/css" />
+    <link rel="stylesheet" href="assets/global/plugins/jqvmap/jqvmap/jqvmap.css" type="text/css" />
+    <link rel="stylesheet" href="assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.css" type="text/css" />
+    <link rel="stylesheet" href="assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.skinModern.css" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link rel="stylesheet" href="assets/global/css/components.css" id="style_components" type="text/css" />
+    <link rel="stylesheet" href="assets/global/css/plugins.min.css" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link rel="stylesheet" href="assets/layouts/layout/css/layout.min.css" type="text/css" />
+    <link rel="stylesheet" href="assets/layouts/layout/css/themes/darkblue.css" type="text/css" id="style_color" />
+    <link rel="stylesheet" href="assets/layouts/layout/css/custom.min.css" type="text/css" />
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="stylesheet" href="assets/pages/css/login-4.css" type="text/css" />
+    <link rel="stylesheet" href="styles/iconfont.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/project/template-list.css">
+
+    <!-- endbuild -->
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white" ng-class="{'page-full-width': urlParams.partner_id && urlParams.sign && urlParams.timestamp}" ng-app="managementApp" ng-controller="IndexCtrl" style="display:none;">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Add your site or application content here -->
+
+    <div ng-if="urlParams.partner_id && urlParams.sign && urlParams.timestamp" ng-include="'views/partner-shop.html'"></div>
+
+    <div ng-if="!urlParams.partner_id || !urlParams.sign || !urlParams.timestamp">
+        <!-- BEGIN LOGIN TEMPLATE -->
+        <div ng-include="'views/login.html'" ng-if="!$root.userInfo&&!$root.loginSeo"></div>
+        <div ng-include="'views/login-seo.html'" ng-if="$root.loginSeo"></div>
+        <!-- END LOGIN TEMPLATE -->
+        <div ng-show="$root.userInfo">
+            <!-- BEGIN HEADER -->
+            <div class="page-header navbar navbar-fixed-top">
+                <div class="page-header-inner ">
+                    <!-- BEGIN LOGO -->
+                    <div class="page-logo">
+                        <a href="index.html">
+                            <img src="/images/logo_white.png" alt="logo" class="logo-default" style="margin-top:8px;height: 30px;" />
+                        </a>
+                        <div class="menu-toggler sidebar-toggler"> </div>
+                    </div>
+                    <!-- END LOGO -->
+                    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                    <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
+                    <!-- END RESPONSIVE MENU TOGGLER -->
+                    <!-- BEGIN TOP NAVIGATION MENU -->
+                    <master-top-user-dropdown></master-top-user-dropdown>
+                    <!-- END TOP NAVIGATION MENU -->
+                </div>
+            </div>
+            <!-- END HEADER -->
+            <div class="clearfix"> </div>
+            <!-- BEGIN CONTAINER -->
+            <div class="page-container">
+                <master-left-sidebar></master-left-sidebar>
+                <div class="page-content-wrapper">
+                    <div class="page-content">
+                        <div class="page-bar">
+                            <master-bread-crumbs></master-bread-crumbs>
+                        </div>
+                        <div style="margin-top:15px;">
+                            <div ng-view=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTAINER -->
+            <div class="page-footer">
+                <div class="page-footer-inner" style="display: block;text-align: center;float: none;">
+                    版权所有 &copy;2018 万商云集（成都）科技股份有限公司
+                </div>
+                <div class="scroll-to-top">
+                    <i class="icon-arrow-up"></i>
+                </div>
+            </div>
+            <!-- END FOOTER -->
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="assets/global/plugins/respond.min.js"></script>
+    <script src="assets/global/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- build:js(app) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/messenger/build/js/messenger.js"></script>
+    <script src="bower_components/messenger/build/js/messenger-theme-future.js"></script>
+    <script src="bower_components/messenger/build/js/messenger-theme-flat.js"></script>
+    <script src="bower_components/jquery.uniform/dist/js/jquery.uniform.standalone.js"></script>
+    <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="bower_components/jqvmap/dist/jquery.vmap.min.js"></script>
+    <script src="bower_components/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/blockUI/jquery.blockUI.js"></script>
+    <script src="bower_components/Flot/jquery.flot.js"></script>
+    <script src="bower_components/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="bower_components/jquery-backstretch/jquery.backstretch.js"></script>
+    <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/summernote/dist/summernote.js"></script>
+    <!-- endbower -->
+    <script src="bower_components/async/dist/async.js"></script>
+    <script src="bower_components/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="bower_components/qrcodejs/qrcode.min.js"></script>
+    <!-- BEGIN CORE PLUGINS -->
+    <!--<script src="assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>-->
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/radar.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/ammap/ammap.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="assets/global/scripts/app.js" type="text/javascript"></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+    <script src="assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/ion.rangeslider/js/ion.rangeSlider.min.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    <script src="assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
+    <script src="bower_components/summernote/lang/summernote-zh-CN.js"></script>
+    <!-- END THEME LAYOUT SCRIPTS -->
+    <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/metronic/layout/layout.js"></script>
+
+    <script src="scripts/config.js"></script>
+    <script src="scripts/startup.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/http.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/province-list.js"></script>
+    <script src="scripts/common/scroll.js"></script>
+
+    <script src="scripts/controllers/index.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/login-seo.js"></script>
+    <script src="scripts/controllers/project/material-list.js"></script>
+    <script src="scripts/controllers/project/material-shap.js"></script>
+    <script src="scripts/controllers/project/material-text.js"></script>
+    <script src="scripts/controllers/project/material-background.js"></script>
+    <script src="scripts/controllers/project/material-tag.js"></script>
+    <script src="scripts/controllers/project/business-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/member-management-ctrl.js"></script>
+    <script src="scripts/controllers/project/designer-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/quesition-feedback-ctrl.js"></script>
+    <script src="scripts/controllers/project/sys-config.js"></script>
+    <script src="scripts/controllers/project/template-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/activity-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/designer-management-ctrl.js"></script>
+    <script src="scripts/controllers/project/sms-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/template-sms-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/template-promotion-list-ctrl.js"></script>
+    <script src="scripts/controllers/project/template-promotion-detail-ctrl.js"></script>
+    <script src="scripts/controllers/project/moments-adv-data-edit.js"></script>
+    <script src="scripts/controllers/project/moments-adv-data-list.js"></script>
+    <script src="scripts/controllers/project/wxsubscription-account-list.js"></script>
+
+    <script src="scripts/directives/master-left-sidebar.js"></script>
+    <script src="scripts/directives/master-bread-crumbs.js"></script>
+    <script src="scripts/directives/master-top-user-dropdown.js"></script>
+    <script src="scripts/directives/responsive-table.js"></script>
+    <script src="scripts/directives/img-preview-dire.js"></script>
+    <script src="scripts/directives/tab-crumbs-handover.js"></script>
+    <script src="scripts/directives/material-add-dire.js"></script>
+    <script src="scripts/directives/material-detail-list.js"></script>
+    <script src="scripts/directives/ion-range-slider.js"></script>
+    <script src="scripts/directives/ui-pagination.js"></script>
+    <script src="scripts/directives/img-upload-dire.js"></script>
+    <script src="scripts/directives/slide-btn.js"></script>
+
+    <script src="scripts/services/common/messenger.js"></script>
+    <script src="scripts/services/user-info.js"></script>
+    <script src="scripts/services/menu-info.js"></script>
+    <script src="scripts/services/template-list.js"></script>
+    <script src="scripts/services/tag-list.js"></script>
+    <script src="scripts/services/user-list.js"></script>
+    <script src="scripts/services/material-list.js"></script>
+    <script src="scripts/services/designers-info.js"></script>
+    <script src="scripts/services/paid-config.js"></script>
+    <script src="scripts/services/data-statistics.js"></script>
+    <script src="scripts/services/collection-trade.js"></script>
+    <script src="scripts/services/partner.js"></script>
+    <script src="scripts/services/md5.min.js"></script>
+    <script src="scripts/services/feedback-list.js"></script>
+    <script src="scripts/services/survey-intention.js"></script>
+    <script src="scripts/services/authorized-user.js"></script>
+    <script src="scripts/services/syscase.js"></script>
+    <script src="scripts/services/common/verification-code.js"></script>
+    <script src="scripts/services/manuscript/category.js"></script>
+    <script src="scripts/services/seo-info.js"></script>
+    <script src="scripts/services/sys-config.js"></script>
+    <script src="scripts/services/business-list.js"></script>
+    <script src="scripts/services/template.js"></script>
+    <script src="scripts/services/manuscript/activitiy.js"></script>
+    <script src="scripts/services/sms.js"></script>
+    <script src="scripts/services/promotion.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

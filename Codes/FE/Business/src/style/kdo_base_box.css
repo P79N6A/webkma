@@ -1,0 +1,283 @@
+﻿.box {
+    position: absolute;
+    min-width: 3px;
+    min-height: 3px;
+    border: 0px none;
+    background: none;
+}
+
+    .box .ui-widget-content {
+        background: transparent 50% 50% repeat-x;
+    }
+
+    .box .ui-resizable-handle {
+        display: none;
+    }
+
+    .box .module_border {
+        position: absolute;
+        z-index: 2;
+        display: none;
+    }
+
+    .box.on .ui-resizable-handle,
+    .box.on .module_border,
+    .box.single:hover .module_border,
+    .box.group:hover .module_border {
+        display: block;
+    }
+
+    /*.box.group .box.single .module_border {
+        display: none;
+    }*/
+    /*----------单模块边框 START----------*/
+    .box.single > .module_border.top,
+    .box.group > .module_border.top {
+        width: 100%;
+        border-top: 1px solid #3899ec;
+    }
+
+    .box.single > .module_border.right,
+    .box.group > .module_border.right {
+        height: 100%;
+        border-right: 1px solid #3899ec;
+    }
+
+    .box.single > .module_border.bottom,
+    .box.group > .module_border.bottom {
+        width: 100%;
+        border-bottom: 1px solid #3899ec;
+    }
+
+    .box.single > .module_border.left,
+    .box.group > .module_border.left {
+        height: 100%;
+        border-left: 1px solid #3899ec;
+    }
+
+    .box.single > .module_border.cover,
+    .box.group > .module_border.cover {
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+        background-color: rgba(255, 255, 255, 0);
+    }
+    /*----------单模块边框 END----------*/
+
+    /*----------共享模块边框 START----------*/
+
+    .box.single.share > .module_border.top,
+    .box.group.share > .module_border.top {
+        border-top: 1px solid #00ba2d;
+    }
+
+    .box.single.share > .module_border.right,
+    .box.group.share > .module_border.right {
+        border-right: 1px solid #00ba2d;
+    }
+
+    .box.single.share > .module_border.bottom,
+    .box.group.share > .module_border.bottom {
+        border-bottom: 1px solid #00ba2d;
+    }
+
+    .box.single.share > .module_border.left,
+    .box.group.share > .module_border.left {
+        border-left: 1px solid #00ba2d;
+    }
+    /*----------共享模块边框 END----------*/
+
+    /*----------临时组合边框 START----------*/
+    .box.temp > .module_border {
+        display: block !important;
+    }
+
+        .box.temp > .module_border.top {
+            width: 100%;
+            border-top: 1px dashed #797979;
+        }
+
+        .box.temp > .module_border.right {
+            height: 100%;
+            border-right: 1px dashed #797979;
+        }
+
+        .box.temp > .module_border.bottom {
+            width: 100%;
+            border-bottom: 1px dashed #797979;
+        }
+
+        .box.temp > .module_border.left {
+            height: 100%;
+            border-left: 1px dashed #797979;
+        }
+    /*----------临时组合边框 END----------*/
+
+    /*----------选中模块出现圆点 START----------*/
+    .ui-widget-content .ui-resizable-handle,
+    .module-group .ui-resizable-handle,
+    .box .ui-resizable-handle {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background-color: #fff;
+        border: 1px solid #3899ec;
+        border-radius: 90%;
+        position: absolute;
+        z-index: 20;
+    }
+
+    .ui-widget-content.share .ui-resizable-handle,
+    .module-group.share .ui-resizable-handle,
+    .box.share .ui-resizable-handle {
+        border: 1px solid #00ba2d;
+    }
+
+    .box.lock .ui-resizable-handle {
+        width: 0px;
+        border: 0px none;
+    }
+
+    .ui-widget-content .ui-resizable-nw,
+    .module-group .ui-resizable-nw,
+    .box .ui-resizable-nw {
+        cursor: nwse-resize;
+        /*left: -4px;
+        top: -4px;*/
+    }
+
+    .ui-widget-content .ui-resizable-ne,
+    .module-group .ui-resizable-ne,
+    .box .ui-resizable-ne {
+        cursor: nesw-resize;
+        /*right: -4px;
+        top: -4px;*/
+    }
+
+    .ui-widget-content .ui-resizable-sw,
+    .module-group .ui-resizable-sw,
+    .box .ui-resizable-sw {
+        cursor: nesw-resize;
+        /*left: -4px;
+        bottom: -4px;*/
+    }
+
+    .ui-widget-content .ui-resizable-se,
+    .module-group .ui-resizable-se,
+    .box .ui-resizable-se {
+        cursor: nwse-resize;
+        /*right: -4px;
+        bottom: -4px;*/
+    }
+
+    .ui-widget-content .ui-resizable-n,
+    .module-group .ui-resizable-n,
+    .box .ui-resizable-n {
+        cursor: ns-resize;
+        /*left: 50%;
+        top: -4px;
+        margin-left: -4.5px;*/
+    }
+
+    .ui-widget-content .ui-resizable-e,
+    .module-group .ui-resizable-e,
+    .box .ui-resizable-e {
+        cursor: ew-resize;
+        /*right: -4px;
+        top: 50%;
+        margin-top: -4.5px;*/
+    }
+
+    .ui-widget-content .ui-resizable-w,
+    .module-group .ui-resizable-w,
+    .box .ui-resizable-w {
+        cursor: ew-resize;
+        /*left: -4px;
+        top: 50%;
+        margin-top: -4.5px;*/
+    }
+
+    .ui-widget-content .ui-resizable-s,
+    .module-group .ui-resizable-s,
+    .box .ui-resizable-s {
+        cursor: ns-resize;
+        /*left: 50%;
+        bottom: -4px;
+        margin-left: -4.5px;*/
+    }
+
+    .ui-widget-content .ui-resizable-none,
+    .module-group .ui-resizable-none,
+    .box .ui-resizable-none {
+        width: 0px;
+        border: 0px none;
+    }
+
+    .ui-widget-content .ui-resizable-handle.lt,
+    .module-group .ui-resizable-handle.lt,
+    .box .ui-resizable-handle.lt {
+        left: -4px;
+        top: -4px;
+    }
+
+    .ui-widget-content .ui-resizable-handle.rt,
+    .module-group .ui-resizable-handle.rt,
+    .box .ui-resizable-handle.rt {
+        right: -4px;
+        top: -4px;
+        left: initial;
+    }
+
+    .ui-widget-content .ui-resizable-handle.lb,
+    .module-group .ui-resizable-handle.lb,
+    .box .ui-resizable-handle.lb {
+        left: -4px;
+        bottom: -4px;
+        top: initial;
+    }
+
+    .ui-widget-content .ui-resizable-handle.rb,
+    .module-group .ui-resizable-handle.rb,
+    .box .ui-resizable-handle.rb {
+        right: -4px;
+        bottom: -4px;
+        left: initial;
+        top: initial;
+    }
+
+    .ui-widget-content .ui-resizable-handle.tm,
+    .module-group .ui-resizable-handle.tm,
+    .box .ui-resizable-handle.tm {
+        left: 50%;
+        top: -4px;
+        margin-left: -4.5px;
+    }
+
+    .ui-widget-content .ui-resizable-handle.rm,
+    .module-group .ui-resizable-handle.rm,
+    .box .ui-resizable-handle.rm {
+        right: -4px;
+        top: 50%;
+        margin-top: -4.5px;
+        left: initial;
+    }
+
+    .ui-widget-content .ui-resizable-handle.lm,
+    .module-group .ui-resizable-handle.lm,
+    .box .ui-resizable-handle.lm {
+        left: -4px;
+        top: 50%;
+        margin-top: -4.5px;
+    }
+
+    .ui-widget-content .ui-resizable-handle.bm,
+    .module-group .ui-resizable-handle.bm,
+    .box .ui-resizable-handle.bm {
+        left: 50%;
+        bottom: -4px;
+        margin-left: -4.5px;
+        top: initial;
+    }
+/*----------选中模块出现圆点 END----------*/
+
+.box .blue {color: #3898ec;}

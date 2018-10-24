@@ -1,0 +1,58 @@
+<div>
+    <div class="templateCondition tabbable-line" style="margin-top: 0;padding:0;">
+        <ul class="nav nav-tabs" style="border-bottom: 1px solid #ddd;">
+            <li ng-repeat="row in crumData"  ng-class="{'active': $index=={{tabIndex}}}" ng-click="clickTab(row.broadcastName)">
+            <a href="javascript:void (0);" data-toggle="tab" data-target="#tab{{$index}}" aria-expanded="false" > {{row.title}} </a>
+            </li>
+        </ul>
+        <button class="add_class_btn btn blue" style="bottom: -50px;z-index: 9990;" ng-if=" viewsType == 'material'" ng-click="createMaterial()">新增分类</button>
+    </div>
+    <div class="templateListContent tab-content">
+        <div  ng-repeat="row in crumData" class="tab-pane" ng-class="{'active': $index=={{tabIndex}}}" id="tab{{$index}}"  ng-include="row.url"></div>
+    </div>
+
+  <div class="popBox" style="display: none;">
+    <div style="width: 100%;height:100%;min-height: 200px;">
+      <div class="pop_top_tit clearfix">
+        <span>添加分类</span>
+        <i class="pull-right">×</i>
+      </div>
+      <div class="txt_content clearfix">
+        <table class="create_txt">
+          <!--<tr>-->
+            <!--<td style="text-align: right;">类型：</td>-->
+            <!--<td>-->
+              <!--<select ng-model="createObj.terminalType">-->
+                <!--<option value="2">移动端</option>-->
+                <!--<option value="1">PC端</option>-->
+              <!--</select>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <tr>
+            <td style="text-align: right;">分类名称：</td>
+            <td>
+              <input placeholder="名称不超过五个字" maxlength="5" ng-model="createObj.materialName"/>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">是否开启：</td>
+            <td>
+              <label for="isTrue" style="margin-right: 50px;">
+                <input type="radio" name="open" id="isTrue" value="0" ng-model="createObj.materialState"/>
+                是</label>
+              <label for="isFalse">
+                <input type="radio" name="open" id="isFalse" value="1" ng-model="createObj.materialState"/>
+                否</label>
+            </td>
+          </tr>
+        </table>
+        <div class="btn_box">
+          <button class="check_true check_btn" ng-click="sureCreate()">添加</button>
+          <button class="check_false check_btn check_btn1">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

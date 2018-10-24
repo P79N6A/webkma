@@ -1,0 +1,126 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>商家管理
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div>
+                    <div class="col-md-12 col-clear-padding">
+                        <div class="col-md-5 col-clear-padding">
+                            <button class="addBtn" style="width:160px;" ng-click="action('addBesiness')">新增商家账户</button>
+                        </div>
+                        <div class="col-md-5 input-group pull-right">
+                            <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;"
+                                    ng-click="action('search')">搜索
+                            </button>
+                            <input type="text" id="typeahead_example_1" name="typeahead_example_1" class="form-control pull-right"
+                                   placeholder="请输入账号、公司名" ng-model="opt.businesskeyword" style="width: 300px;"/>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover tab-pane">
+                        <thead class="flip-content">
+                        <tr>
+                            <th width="15%"> 帐号</th>
+                            <th width="20%"> 公司名称</th>
+                            <th width="10%"> 创建时间</th>
+                            <th width="5%"> 商家认证</th>
+                            <th width="5%"> 商家状态</th>
+                            <th width="50%"> 操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in pageControl.data">
+                            <td> <p style="width:300px;word-break:break-all;">{{row.businessPhone}}</p> </td>
+                            <td> <p style="width:130px;word-break:break-all;">{{row.businessName}}</p> </td>
+                            <td> {{row.createtime}}</td>
+                            <td> <slide-btn slide-type="certification" my-default="row" active-text="认证" inactive-text="待审" prop-key="certification" slide-map="certificationOpt"></slide-btn> </td>
+                            <td> <slide-btn slide-type="setStatus" my-default="row" slide-map="stateOpt"></slide-btn> </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('viewActivities',row)">查看营销活动</button>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('serSms',row)">查看短信</button>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('smsSign',row)">编辑短信签名</button>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('modifyUserPhone',row)">修改账号</button>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('queryDetail',row)">详情</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="pageControl.data.length == 0">
+                            <td colspan="6" class="text-center"> 暂无数据 </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" ng-if="pagination.totalCount>0" style="padding-right:16px;">
+                        <ui-pagination
+                            my-where = "BusinessListCtrlflip"
+                            pagesize="{{pagination.pageSize}}"
+                            pageindex = "{{pagination.pageIndex}}"
+                            totalcount = "{{pagination.totalCount}}"
+                            textalign = "text-right"
+                            ></ui-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="checkBox" style="display: none;">
+    <div style="width: 100%;height:100%;min-height: 200px;">
+        <div class="pop_top_tit clearfix">
+            <span>{{prompt.title}}</span>
+        </div>
+        <div class="txt_content clearfix">
+            <div class="case-wrap" ng-show="prompt.tpl == 'editsign'">
+                <div class="case-box">
+                    <p style="height:60px;">您正在为账号 <span style="color:red;">{{prompt.user.userPhone}}</span> 设置短信签名，请确保该短信签名已审核通过，否则将不会生效。相关字段请登录Send cloud查看。</p>
+                    <p>
+                        <label>*登录账号: </label>
+                        <input type="text" ng-model="prompt.sign.name"/>
+                    </p>
+                    <p>
+                        <label>*登录密码: </label>
+                        <input ng-model="prompt.sign.password" type="password"/>
+                    </p>
+                    <p>
+                        <label>*SMS-USER: </label>
+                        <input ng-model="prompt.sign.apiSmsUser" type="text"/>
+                    </p>
+                    <p>
+                        <label>*SMS-KEY: </label>
+                        <input ng-model="prompt.sign.apiSmsKey" type="text"/>
+                    </p>
+                    <p>
+                        <label>*短信签名: </label>
+                        <input ng-model="prompt.sign.signs" type="text"/>
+                    </p>
+                </div>
+                <div class="btn_box">
+                    <button class="check_return check_btn" ng-click="done()">取消</button>
+                    <button class="check_true check_btn check_btn1" ng-click="checkClick('editsign')">确定</button>
+                </div>
+            </div>
+            <div class="case-wrap" ng-show="prompt.tpl == 'modifyUserPhone'">
+                <div class="case-box">
+                    <p>
+                        <label><span style="font-weight:bold;">账号:</span></label>
+                        <input type="text" ng-model="prompt.user.businessPhone" maxlength="11"/>
+                        <span style="color: #3e93e6;cursor: pointer;margin-left: 20px;" ng-click="action('restPwd')">密码重置</span>
+                    </p>
+                    <p ng-if="!!prompt.newPwd"> 
+                        <label><span>新密码:</span></label>
+                        {{prompt.newPwd}}
+                    </p>
+                </div>
+                <div class="btn_box">
+                    <button class="check_return check_btn" ng-click="done()">取消</button>
+                    <button class="check_true check_btn check_btn1" ng-click="checkClick('modifyUserPhone')">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

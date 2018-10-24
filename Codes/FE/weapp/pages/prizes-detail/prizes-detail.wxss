@@ -1,0 +1,10 @@
+page{
+  background:#fff;
+}
+.page{
+  padding:20rpx 50rpx;
+  margin-top:18rpx;
+}
+.page .weui-flex{
+margin-bottom:10rpx;
+}

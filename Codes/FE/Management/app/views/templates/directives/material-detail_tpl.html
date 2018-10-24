@@ -1,0 +1,45 @@
+<div ng-show="type == 'detail'" style="margin-top: 10px;">
+  <div style="padding-left:20px;">
+    <span style="line-height: 30px;">{{materialObj.material_name}}&nbsp;&nbsp;&nbsp;分类素材详情</span>
+    <div class="clearfix">
+      <div class="pull-left" style="position: relative;">
+        <form enctype="multipart/form-data">
+          <input type="file" name="img" multiple="multiple" accept="image/png,image/jpeg,image/gif" class="input-upload detailUpImg"/>
+          <input style="width: 73px;" type="button" class="btn orange_bg btn-upload" value="上传" ng-click="uploadImg($event)"/>
+        </form>
+      </div>
+      <div class="schedule_box pull-left" ng-show="uploadtype">
+        <span class="schedule"></span>
+        {{schedule_btxt}}
+      </div>
+      <button class="pull-right" style="margin-right: 10px;" ng-click="backingOut()">返回分类</button>
+      <button class="pull-right" style="margin-right: 20px;" ng-click="manamgeImg()">{{romoveTit}}</button>
+      <button class="pull-right" style="margin-right: 20px;" ng-show="isEdit" ng-click="removeImgList()">确定删除</button>
+    </div>
+  </div>
+
+  <div class="material_detail_box">
+    <ul class="material_detail_ul">
+      <li class="material_detail_li" ng-repeat="row in imgList" ng-click="chooseImg(row)" ng-class="{'on':row.isActive,'edit':isEdit}">
+        <i class="icon-selected" ng-show="isEdit"></i>
+        <p>
+          <img src="{{row.imgPath}}"/>
+        </p>
+        <!--<span>avatar2.jpg</span>-->
+      </li>
+    </ul>
+    <div class="row">
+      <div class="col-md-6 text-right pull-right">
+        <uib-pagination class="pagination pull-right grey-gallery"
+                        boundary-links="true"
+                        max-size="5"
+                        boundary-link-numbers="true"
+                        total-items="paginationDetail.totalCount"
+                        items-per-page="paginationDetail.pageSize"
+                        ng-model="paginationDetail.pageIndex"
+                        ng-change="flipPageDetail()">
+        </uib-pagination>
+      </div>
+    </div>
+  </div>
+</div>

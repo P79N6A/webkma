@@ -1,0 +1,155 @@
+﻿<div>
+<!--<div ng-controller="MaterialLibraryCtrl">-->
+    <div>
+        <div class="col-md-12 templateSearch" style="padding: 15px;">
+            <form action="#" class="form-horizontal" role="form">
+              <div style="float: left;line-height: 35px;">时序</div>
+                <div class="col-md-1">
+                    <select class="bs-select form-control" ng-model="searchOptions.order" ng-change="materialSearch();">
+                        <option value="desc">最近</option>
+                        <option value="asc">最早</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group input-large date-picker input-daterange" data-date="10/11/2012"
+                         data-date-format="mm/dd/yyyy">
+                        <input type="text" class="form-control" readonly="readonly" placeholder="请选择开始日期"
+                               uib-datepicker-popup
+                               ng-model="searchOptions.startTime.value"
+                               is-open="searchOptions.startTime.opened"
+                               datepicker-options="searchOptions.startTime.options"
+                               show-button-bar="false"
+                               ng-click="searchOptions.startTime.opened = true"
+                               ng-change="searchOptions.endTime.options = { minDate: searchOptions.startTime.value }" />
+                        <span class="input-group-addon"> 到 </span>
+                        <input type="text" class="form-control" readonly="readonly" name="to" placeholder="请选择结束日期"
+                               uib-datepicker-popup
+                               ng-model="searchOptions.endTime.value"
+                               is-open="searchOptions.endTime.opened"
+                               datepicker-options="searchOptions.endTime.options"
+                               show-button-bar="false"
+                               ng-click="searchOptions.endTime.opened = true"
+                               ng-change="searchOptions.startTime.options = { maxDate: searchOptions.endTime.value }" />
+                    </div>
+                </div>
+                <div class="col-md-4 input-group pull-right">
+                    <input type="text" id="typeahead_example_1" name="typeahead_example_1" class="form-control" placeholder="请输入素材编号" style="width: 250px;" ng-model="searchOptions.keys" />
+                    <button type="button" class="btn btn-primary grey-gallery" style="margin-left:5px;"
+                            ng-click="materialSearch()">
+                        搜索
+                    </button>
+                  <button type="button" class="btn btn-primary grey-gallery"
+                          ng-show="searchForm"
+                          style="margin-left:5px;background: #999;"
+                          ng-click="materialClearSearch()">
+                    清空
+                  </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 templateSearch" style="padding: 15px;">
+            <div class="col-md-10">
+                <button type="button" class="btn btn-primary green" style="margin-left:5px;" ng-click="action('batchRemove')">批量删除</button>
+                <button type="button" class="btn btn-primary green" ng-click="action('addTag')" style="margin-left:5px;">添加标签</button>
+            </div>
+            <div class="col-md-2 pull-right">
+                <button type="button" class="btn btn-primary green" style="margin-left:5px;" ng-click="svg_show()">添加素材</button>
+            </div>
+        </div>
+        <table class="table materialTable table-bordered table-striped table-hover tab-pane">
+            <thead class="flip-content">
+                <tr>
+                    <th width="120px">
+                        <i class="icon" ng-class="{'active':pageControl.checkAll}" ng-click="action('checkAll')" ng-if="pageControl.data.length > 0"></i>全选
+                    </th>
+                    <th width="200">素材编号</th>
+                    <th width="120"> 缩略图</th>
+                    <!--<th width="120px" ng-hide="terminalTypeSearch == true"> 终端</th>-->
+                    <th width="430" ng-hide="terminalTypeSearch == true"> 标签</th>
+                    <th width="100"> 素材格式</th>
+                    <th width="200"> 添加日期</th>
+                    <!-- <th width="120px"> 关键词</th> -->
+                    <!-- <th width="120px"> 状态</th> -->
+                    <th width="80"> 备注</th>
+                    <th width="250"> 操作</th>
+                </tr>
+            </thead>
+            <tbody class="terminalDataList">
+                <tr ng-repeat="row in pageControl.data">
+                    <td>
+                        <i class="icon" ng-class="{'active':row.active}" ng-click="action('checkSingle',row)"></i>
+                    </td>
+                    <td> {{row.materialId}}</td>
+                    <td>
+                        <img style="width: 30px;height: 30px;cursor: pointer;"
+                             ng-src="{{row.materialStatus != 0?((!!row.prepareThumbnail?row.prepareThumbnail+'@w_100,h_100':row.prepareThumbnail) || (!!row.thumbnail?row.thumbnail:row.thumbnail)) :(!!row.thumbnail?row.thumbnail:row.thumbnail)}}" alt=""
+                             img-preview-dire="{{row.materialStatus != 0?(row.prepareThumbnail || row.thumbnail) :row.thumbnail}}" />
+                    </td>
+                    <!--<td ng-hide="terminalTypeSearch == true">{{row.terminalTypeName}}</td>-->
+                    <td> <span class="singleTag" ng-repeat="tag in row.tags">{{tag}}</span></td>
+                    <td> {{row.materialTypeName}}</td>
+                    <td> {{row.createtime.split(' ')[0]}}</td>
+                    <td><i class="materialBeiZhu" ng-class="{'of':row.remark != ''}" title="{{row.remark}}" ng-click="action('remark',row)"></i></td>
+                    <td>
+                        <div style="width:200px;">
+                          <button class="btn btn-sm btn-primary green pull-left"  ng-click="action('editTag',row)" style="margin-right:10px;">编辑标签</button>
+                           <button class="btn btn-sm btn-primary green"  ng-click="action('replace',row)" ng-show="row.materialType == 2">替换</button>
+                          <button class="btn btn-sm btn-primary green" ng-click="action('removeSingle',row)">删除</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="pageControl.data.length == 0">
+                  <td colspan="8" style="text-align:center;">暂无数据</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row" ng-if="pagination.totalCount>0" style="padding-right:16px;">
+            <ui-pagination
+                my-where = "MaterialShapflip"
+                pagesize="{{pagination.pageSize}}"
+                pageindex = "{{pagination.pageIndex}}"
+                totalcount = "{{pagination.totalCount}}"
+                textalign = "text-right"
+                ></ui-pagination>
+        </div>
+    </div>
+</div>
+<div class="checkBox" style="display: none;">
+    <div style="width: 100%;height:100%;min-height: 200px;">
+        <div class="pop_top_tit clearfix">
+            <span>{{pageControl.promptTitle}}</span>
+            <i class="pull-right" ng-if="pageControl.operatingType == 'remove'" ng-click="done()">×</i>
+        </div>
+        <div class="txt_content clearfix">
+            <div class="tag-wrap" ng-show="pageControl.operatingType == 'addTag' || pageControl.operatingType == 'editTag'">
+                <div class="tag-box">
+                    <span class="singleTag" ng-if="pageControl.operatingType == 'addTag'" ng-class="{'active':item.active}" ng-repeat="item in pageControl.tags" ng-click="action('checkTag',item)">{{item.tagName}}</span>
+                    <span class="singleTag" ng-if="pageControl.operatingType == 'editTag'" ng-class="{'active':item.active}" ng-repeat="item in pageControl.editTag" ng-click="action('checkTag',item)">{{item.tagName}}</span>
+                </div>
+                <div class="btn_box">
+                    <button class="check_return check_btn" ng-click="done()">取消</button>
+                    <button class="check_true check_btn check_btn1" ng-click="checkClick('editTag')">确定</button>
+                </div>
+            </div>
+            <div class="refuse-box" ng-show="pageControl.operatingType == 'batchRemove' || pageControl.operatingType == 'removeSingle'">
+                <span class="fz-16">{{pageControl.removeTipText}}?</span>
+                <div class="btn_box">
+                    <button class="check_return check_btn" ng-click="done()">取消</button>
+                    <button class="check_true check_btn check_btn1" ng-click="checkClick('remove')">确定</button>
+                </div>
+            </div>
+
+            <div class="refuse-box" ng-show="pageControl.operatingType == 'remark'">
+                <textarea class="dis_reason ng-pristine ng-untouched ng-valid ng-empty"
+                            ng-model="pageControl.remark"
+                            placeholder="请输入备注信息"></textarea>
+                <div class="btn_box">
+                  <button class="check_return check_btn" ng-click="done()">取消</button>
+                  <button class="check_true check_btn check_btn1" ng-click="checkClick('remark')">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<material-add-dire></material-add-dire>
+

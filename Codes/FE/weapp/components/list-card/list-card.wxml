@@ -1,0 +1,24 @@
+
+<view class='list-card'>
+  <view class="item-card" 
+  wx:if="{{listData.length > 0}}" 
+  wx:for="{{listData}}" wx:for-item="item" wx:key="{{item.id}}"
+    data-item-id="{{item.id}}" 
+    catchtap='onTapHandler'
+  >
+      <view class='card-body'>
+        <view class='tips' wx:if="{{showJoinCount}}">参与数：{{item.totalJoin}}</view>
+        <image class='img' mode="aspectFill" src='{{item.cover}}'></image>
+        <view class='finished' wx:if="{{!!item.finished}}">
+        </view>
+      </view>
+      <view class='card-desc'>
+        <view class='card-title'>{{item.name || item.sourceName}}</view>
+        <view class='card-help'><text wx:if="{{showPublishTime}}">发布时间：{{item.publishDate}}</text> </view>
+      </view>
+  </view>
+  <view  class="no-content" wx:if="{{listData.length <= 0}}">
+    暂无数据
+  </view>
+</view>
+

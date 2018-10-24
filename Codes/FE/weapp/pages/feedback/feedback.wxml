@@ -1,0 +1,22 @@
+
+<view class='pg-body'>
+<view class="weui-cell__bd">
+  <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell">
+        <view class="weui-cell__bd">
+            <textarea class="weui-textarea txt-area" placeholder="输入您想要对小宝说的话......" 
+            maxlength="200"
+            bindinput='inputHandler'
+            bindconfirm='confirmHandler'  ></textarea>
+            <view class="weui-textarea-counter">{{counter||0}}/200</view>
+        </view>
+    </view>
+    </view>
+            
+  </view>
+  <!-- <view class='error-msg' wx:if="{{!!errorMsg}}">{{errorMsg}}</view> -->
+  <view class='weui-btn-area'>
+    <button class='weui-btn' type='primary' catchtap='confirmHandler' disabled='{{!feedback}}'>确认提交</button>
+  </view>
+</view>
+

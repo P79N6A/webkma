@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>反馈列表
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll" style="height:auto;overflow:hidden;">
+                <div class="col-md-12 col-clear-padding" style="margin-bottom:20px;">
+                    <div class="col-md-5 col-clear-padding input-group pull-right">
+                            <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;" ng-click="search()">搜索
+                            </button>
+                            <input type="text" id="typeahead_example_1" name="typeahead_example_1" class="form-control pull-right ng-pristine ng-untouched ng-valid ng-empty" placeholder="请输入反馈内容、用户、手机等关键信息" ng-model="key_word" style="width: 300px;" aria-invalid="false">
+                    </div>
+                </div>
+                <table class="table table-bordered table-striped table-hover tab-pane">
+                    <thead class="flip-content">
+                    <tr>
+                        <th style="width:40%;">
+                            反馈内容
+                        </th>
+                        <th class="text-center"> 反馈用户 </th>
+                        <th class="text-center"> 绑定手机 </th>
+                        <th class="text-center"> 反馈时间 </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in data">
+                        <td style="width:40%; word-break: break-all; word-wrap:break-word; ">
+                            <!-- <span style="color:#0066ff;cursor:pointer;" ng-click="queryContent(row)">查看内容</span> -->
+                            {{row.fb_content}}
+                        </td>
+                        <td> {{row.fb_user_name}} </td>
+                        <td> {{row.fb_user_concat}} </td>
+                        <td>
+                            {{row.fb_create_time_fmt}}
+                        </td>
+                    </tr>
+                    <tr ng-if="data.length<=0">
+                        <td colspan="5" class="text-center">
+                            暂无数据
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div ng-if="pagination.totalCount>0">
+                    <ui-pagination
+                    my-where = "Feedbackflip"
+                    pagesize="{{pagination.pageSize}}"
+                    pageindex = "{{pagination.pageIndex}}"
+                    totalcount = "{{pagination.totalCount}}"
+                    textalign = "text-right"
+                    ></ui-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="checkBox" style="display: none;width:760px;">
+    <div style="width: 100%;height:100%;min-height: 200px;">
+        <div class="pop_top_tit clearfix text-center" style="padding-left:0">
+            <span>反馈内容</span>
+        </div>
+        <div class="txt_content clearfix">
+            <div style="width:758px !important;">
+                <div id="feedback-box" class="feedback-box">
+                </div>
+                <div class="btn_box">
+                    <button class="check_return check_btn" style="margin:0" ng-click="done()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

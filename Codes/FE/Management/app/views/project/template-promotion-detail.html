@@ -1,0 +1,77 @@
+<div class="row template-style">
+    <div class="panel-box">
+        <h5>推广目标</h5>
+        <div class="content">
+            <div>推广名称：{{detail.createTime+'-'+detail.targetName+'-'+detail.advertName+'-'+detail.buyWayName+'广告'}}</div>
+            <div>当前状态：{{detail.state==2?'审核通过':(detail.state==1?'审核失败':'审核中')}}</div>
+            <div>推广目标：{{detail.targetName}}</div>
+            <div>广告位置：{{detail.advertName}}</div>
+            <div>购买类型：{{detail.buyWayName}}</div>
+        </div>
+    </div>
+    <div class="panel-box">
+        <h5>用户人群</h5>
+        <div class="content">
+            <div>投放时间：{{detail.timeOnline+'至'+detail.timeOffline+' '+'每天'+detail.timeDayBegin+'-'+detail.timeDayEnd}}</div>
+            <div>每日预算：{{detail.budget}}</div>
+            <div>出价：{{detail.bidPrice}}</div>
+            <div>地域：{{detail.cityNames}}</div>
+            <div>年龄：{{detail.ageBegin+'-'+detail.ageEnd}}岁</div>
+            <div>性别：{{detail.sex==0?'全部':(detail.sex==1?'男':'女')}}</div>
+            <div>兴趣：{{detail.interestNames}}</div>
+        </div>
+    </div>
+    <div class="panel-box">
+        <h5>创意类型</h5>
+        <div class="content">
+            <div>外层素材跳转：原生推广页-{{detail.activity.name}}</div>
+            <div>外层样式：{{detail.styleName}}</div>
+            <div>文字链类型：了解更多</div>
+            <div>文字链跳转：与外层素材跳转一致的原生推广页</div>
+            <div><span>分享缩略图：</span><img class="thumbnailImg" ng-src="{{detail.shareImage}}" img-preview-dire="{{detail.shareImage}}" >
+            </div>
+            <div>分享标题：{{detail.shareTitle}}</div>
+            <div>分享描述：{{detail.shareDesc}}</div>
+        </div>
+
+    </div>
+    <div class="panel-box">
+        <h5>其他信息</h5>
+        <div class="content">
+            <div>所属商家：{{detail.business.businessName}}</div>
+            <div ng-if="!!detail.public">所属公众号：{{detail.public}}</div>
+            <div><span>推广活动封面缩略图：</span><img  class="thumbnailImg" ng-src="{{detail.activity.cover}}" img-preview-dire="{{detail.activity.cover}}">
+            </div>
+            <div>推广活动名称：{{detail.activity.name}}</div>
+            <div>活动链接：{{detail.activity.url}}</div>
+            <div ng-if="detail.state==1">审核失败原因：{{detail.reason}}</div>
+        </div>
+    </div>
+    <div class="panel-box text-center">
+        <button class="btn  btn-primary green" ng-if="detail.state==0" ng-click="action('success')">通过</button>
+        <button class="btn btn-primary green" ng-if="detail.state==0" ng-click="action('fail')">驳回</button>
+        <button class="btn btn-primary green" ng-click="action('back')">返回</button>
+    </div>
+    <div class="checkBox handout" style="display:none">
+        <div>
+            <div class="pop_top_tit clearfix">
+                <span>确认计划审核{{model.status==1?'成功':'失败'}}</span>
+            </div>
+            <div class="txt_content clearfix">
+                <div class="case-wrap">
+                    <div calss="case-box">
+                        <div ng-if="model.status==1" class="form-group col-md-offset-2 col-md-8 {{model.err!=''?'has-error':''}}">
+                            <input type="text" placeholder="请输入审核失败原因" ng-model="model.reason" class="form-control">
+                            <div class="error">{{model.err}}</div>
+                        </div>
+                        <div class="text-center" ng-if="model.status==2">确定推广计划审核成功？</div>
+                        <div class="btn_box col-md-12">
+                            <button class="check_return check_btn" ng-click="done()">取消</button>
+                            <button class="check_true check_btn check_btn1" ng-click="action('model')">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+/* pages/activity-detail/activity-detail.wxss */
+
+.tips{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  height: 100vh;
+  box-sizing: border-box;
+  padding-top: 300rpx;
+}
+.msg{
+  margin-top: 20rpx;
+}

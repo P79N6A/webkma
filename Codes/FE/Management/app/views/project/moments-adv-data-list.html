@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>推广数据报告
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div>
+                    <div class="col-md-12 col-clear-padding">
+                        <div class="col-md-5 col-clear-padding">
+                            <button class="addBtn" style="width:160px;" ng-click="editData('add')">添加数据报告</button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover tab-pane">
+                        <thead class="flip-content">
+                        <tr>
+                            <th width="10%"> 数据报告名称</th>
+                            <th> 数据统计时间</th>
+                            <th width="10%"> 所属推广计划</th>
+                            <th width="5%"> 点击次数</th>
+                            <th width="5%"> 曝光次数</th>
+                            <th width="5%"> 点击率</th>
+                            <th width="5%"> 转化指标</th>
+                            <th width="5%"> 转化成本</th>
+                            <th width="15%"> 操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in data">
+                            <td> <p style="width:200px;word-break:break-all;">{{row.name}}</p> </td>
+                            <td>{{row.startTime}} --- {{row.endTime}}</td>
+                            <td>{{promotionPlanName}} </td>
+                            <td>{{row.clickCount}} </td>
+                            <td>{{row.exposureCount}} </td>
+                            <td>{{row.clickRate}}</p> </td>
+                            <td>{{row.conversionIndex}} </td>
+                            <td>{{row.conversionCost}} </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary green" ng-click="editData('edit',row)">编辑</button>
+                                <button class="btn btn-sm btn-primary green" ng-click="editData('query',row)">详情</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="data.length == 0">
+                            <td colspan="9" class="text-center"> 暂无数据 </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" ng-if="pagination.totalCount>0" style="padding-right:16px;">
+                        <ui-pagination
+                            my-where = "momentsAdvDataListCtrlflip"
+                            pagesize="{{pagination.pageSize}}"
+                            pageindex = "{{pagination.pageIndex}}"
+                            totalcount = "{{pagination.totalCount}}"
+                            textalign = "text-right"
+                            ></ui-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

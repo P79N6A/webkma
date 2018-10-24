@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>素材标签
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div>
+                    <div class="col-md-12" style="padding: 15px;">
+                        <form class="form-inline" role="form">
+                            <div class="form-group search-bar js-btn-sort">
+                                <button type="button" class="btn btn-primary blue" style="margin-left:5px;" ng-click="btnSort()" ng-disabled="!sortEnable">
+                                    排序
+                                </button>
+                            </div>
+                            <div class="form-group search-bar js-btn-submit" style="display:none;">
+                                <button type="button" class="btn btn-primary blue" style="margin-left:5px;" ng-click="btnSubmit()">
+                                    完成
+                                </button>
+                            </div>
+                            <div class="form-group search-bar js-btn-cancel" style="display:none;">
+                                <button type="button" class="btn btn-primary blue" style="margin-left:5px;" ng-click="btnCancel()">
+                                    取消
+                                </button>
+                            </div>
+                            <div class="form-group search-bar">
+                                <input type="text" class="form-control" style="width:300px;" placeholder="请输入新的标签名称"
+                                       ng-model="addTag.name" maxlength="5">
+                                <button type="button" class="btn btn-primary blue" style="margin-left:5px;" ng-click="btnAdd()">添加</button>
+                            </div>
+                            <div class="form-group search-bar pull-right">
+                                <label>关键字：</label>
+                                <input type="text" class="form-control" style="width:300px;" placeholder="标签名称"
+                                       ng-model="searchTag.search">
+                                <button type="button" class="btn btn-primary grey-gallery" style="margin-left:5px;"
+                                        ng-click="btnSearchName()">
+                                    搜索
+                                </button>
+                            </div>
+                            <div class="form-group search-bar pull-right">
+                                <label></label>
+                                <select class="form-control" ng-model="searchTag.sequence" ng-change="btnSearchOrderby()">
+                                    <option value="">默认排序</option>
+                                    <option value="desc">引用数降序</option>
+                                    <option value="asc">引用数升序</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="sortable">
+                        <div class="col-xs-3" ng-repeat="tag in data" id="{{tag.id}}">
+                            <div class="js-sort-css">
+                                <div class="mt-element-ribbon bg-grey-cararra" style="margin:8px;">
+                                    <div class="ribbon ribbon-shadow ribbon-color-success  text-center" style="width:120px;">
+                                        {{tag.name}}
+                                    </div>
+                                    <p class="ribbon-content" style="margin-top:10px;">
+                                        <span>已引用：{{tag.useTotal}}</span>
+                                        <span class="pull-right js-btn-action">
+                                            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" style="margin-left:8px;"
+                                               title="删除" ng-click="btnDelete(tag)">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

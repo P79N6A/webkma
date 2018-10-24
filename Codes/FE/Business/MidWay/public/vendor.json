@@ -1,0 +1,10 @@
+﻿{
+  "baseUrl": "/public/",
+  "dependencies": {
+    "jquery": [
+      
+    ],
+    "custom": [
+    ]
+  }
+}

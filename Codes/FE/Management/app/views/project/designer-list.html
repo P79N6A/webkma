@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>设计师管理
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div>
+                    <div class="col-md-12 col-clear-padding">
+                        <div class="col-md-5 col-clear-padding">
+                            <button class="addBtn" style="width:160px;" ng-click="action('addDesigner')">新增设计师</button>
+                        </div>
+                        <div class="col-md-5 input-group pull-right">
+                            <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;"
+                                    ng-click="action('search')">搜索
+                            </button>
+                            <input type="text" id="typeahead_example_1" name="typeahead_example_1" class="form-control pull-right"
+                                   placeholder="请输入账号、设计师姓名" ng-model="opt.businesskeyword" style="width: 300px;"/>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover tab-pane">
+                        <thead class="flip-content">
+                        <tr>
+                            <th width="15%"> 设计师帐号</th>
+                            <th width="20%"> 设计师名称</th>
+                            <th width="10%"> 创建时间</th>
+                            <th width="10%"> 设计师状态</th>
+                            <th width="40%"> 操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in pageControl.data">
+                            <td> <p style="width:300px;word-break:break-all;">{{row.businessPhone}}</p> </td>
+                            <td> <p style="width:130px;word-break:break-all;">{{row.businessName}}</p> </td>
+                            <td> {{row.createtime}}</td>
+                            <td> <slide-btn slide-type="setStatus" my-default="row" slide-map="stateOpt"></slide-btn> </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('serPopularize',row)">查看活动稿件</button>
+                                <button class="btn btn-sm btn-primary green" ng-click="action('queryDetail',row)">编辑</button>
+                                <button class="btn btn-sm btn-primary red-mint" ng-click="action('delete',row)">删除</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="pageControl.data.length == 0">
+                            <td colspan="6" class="text-center"> 暂无数据 </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" ng-if="pagination.totalCount>0" style="padding-right:16px;">
+                        <ui-pagination
+                            my-where = "DesignerListCtrlflip"
+                            pagesize="{{pagination.pageSize}}"
+                            pageindex = "{{pagination.pageIndex}}"
+                            totalcount = "{{pagination.totalCount}}"
+                            textalign = "text-right"
+                            ></ui-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

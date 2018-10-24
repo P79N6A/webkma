@@ -1,0 +1,532 @@
+<script id="activity-readme" type="text/template">
+    <style>
+        .layui-m-layer0 .layer-activity-readme {
+            position: relative;
+            width: 8.4rem;
+            height: auto;
+            max-width: 10rem;
+            color: #fff;
+            padding-bottom: 0.88rem;
+        }
+        /* 重置layercont默认的padding */
+        .layer-activity-readme .layui-m-layercont {
+            padding: 0;
+        }
+        /* 内容区容器 */
+        .layer-activity-readme .readme-cont{
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 8.4rem;
+            max-width: 10rem;
+            height: auto;
+            max-height: 50vh;
+            padding: 0.44rem 0;
+            background: url('/public/images/h5/1px-y-repaet.png') repeat-y 100% 100%;
+            background-image: linear-gradient(to top, #064c66, rgba(255,255,255,0)), url('/public/images/h5/1px-y-repaet.png');
+            background-size: 100% 100%, 100%;
+            background-repeat: no-repeat, repeat-y;
+            background-position: 0 0,0 0;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        
+        /* 分块介绍的title */
+        .layer-activity-readme .readme-tag {
+            width: 2.44rem;
+            height: 0.654rem;
+            margin-bottom: 0.34rem;
+        }
+
+        /* 分块介绍的title-bg */
+        .readme-tag.tag-bg {
+            background-image: url('/public/images/h5/activity-tag.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        /* 内容区行级容器 */
+        .layer-activity-readme .cont-row {
+            padding: 0 0.72rem 0.4rem;
+        }
+        /* 弹层footer部分 */
+        .layer-activity-readme .layer-footer {
+            width: 100%;
+            height: 0.88rem;
+            line-height: 0.88rem;
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            background-image: linear-gradient(to top, rgba(255,255,255,0), #064c66), url('/public/images/h5/activity-footer-bg.png');
+            background-size: 100% 100%, 100% 100%;
+            background-repeat: no-repeat, no-repeat;
+            background-position: 0 0,0 0;
+            border-radius: 0 0 0.1562rem 0.1562rem;
+            color: #7399ac;
+        }
+        /* 关闭按钮 */
+        .layer-activity-readme .close-btn {
+            position: absolute;
+            width: 1.094rem;
+            height: 1.72rem;
+            display: block;
+            left: 50%;
+            bottom: -1.72rem;
+            margin-left: -0.546rem;
+            background-image: url('/public/images/h5/close-btn.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+    </style>
+    <div class="readme-cont scroll-box">
+        <div style="height: auto;">
+            <p class="readme-tag tag-bg medium-font ">活动奖品</p> 
+            <div class="cont-row">
+                ${myPrize}
+            </div>
+            <p class="readme-tag tag-bg medium-font">活动时间</p>
+            <div class="cont-row">
+                ${activityTime}
+            </div>
+            <p class="readme-tag tag-bg medium-font">主办单位</p>
+            <div class="cont-row">
+                <p class="text-left medium-font">万商云集科技股份有限公司</p>
+            </div>
+            ${rule}
+            
+        </div>
+    </div>
+    <div class="layer-footer">
+        <span class="small-font">技术由推小宝提供 , 活动细则咨询商家</span>
+    </div>
+    <span id="close-btn" class="close-btn"></span>
+</script>
+<script id="qrcode" type="text/template">
+    <style>
+         /* 关注二维码弹层 */
+        .layui-m-layer0 .layer-qrcode {
+            width: 7.97rem; 
+            height: 11.3rem; 
+            padding: 0.625rem;
+            box-sizing: border-box;
+            background-image: url('/public/images/h5/activity-qrcode-bg.png'); 
+            background-size: 100% 100%; 
+            background-color: transparent; 
+        }
+        .layer-qrcode .layui-m-layercont {
+            padding: 0;
+        }
+    </style>
+    <!-- qrcode -->
+    <div id="tpl_qrcode_body">
+        <div class="qrcode-cont" style="width: 6.72rem; height: 6.72rem; padding: 0.39rem; box-sizing: border-box; background-color: #f1f1f1;">
+            <img style="width:100%; height: 100%;" src="${qrcode}">
+        </div>
+        <p style="margin-top: 0.44rem;color: #7c8089;">长按识别图中二维码</p>
+        <p style="text-align: center;">
+            <img src="/public/images/h5/activity-qrcode-fingerprint.png" style="width: 1.78rem; height: 1.71rem; margin-top: 0.47rem;">
+        </p>
+    </div>
+</script>
+<script id="winning-form" type="text/template">
+    <style>
+            /* 中奖表单弹层 */
+            .layui-m-layer0 .layer-winning {
+            width: 9.21rem; 
+            height: 13.28rem; 
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .tpl-winning-form {
+            position: relative;
+            width: 8.75rem;
+            height: 11.53rem;
+            margin: 0 auto;
+            background-image: url(/public/images/h5/winning-bg.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .winning-btn {
+            width: 3.22rem;
+            height: 1rem;
+            line-height: 1rem;
+            background-image: url(/public/images/h5/winning-btn.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            border: none;
+            outline: none;
+            background-color: transparent;    
+            color: #fff;        
+        }
+        .prize-name {
+            position: absolute;
+            width: 7.09rem;
+            height: 0.68rem;
+            line-height: 0.68rem;
+            top: 5.64rem;
+            left: 0.94rem;
+            color: #fe4429;
+        }
+        .form-content {
+            position: absolute;
+            width: 6.84rem;
+            height: 3.8rem;
+            top: 7rem;
+            left: 1.08rem;
+            overflow-y: auto;
+            padding: 0.62rem 0;
+            box-sizing: border-box;
+        }
+        .form-content p {
+            height: 1.17rem;
+            padding: 0;
+        }
+        .form-content label {
+            width: 1.95rem;
+            text-align: right;
+            margin-right: 10px;
+            color: #fe4429;
+            float: left;
+        }
+        .form-content input {
+            width: 4rem;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #fe4429;
+            background-color: transparent;
+            float: left;
+        }
+        .form-content p .errorText {
+            position: relative;
+            left: -1.7rem;
+            top: -0.2rem;
+        }
+    </style>
+    <div class="tpl-winning-form">
+        <div class="prize-name medium-font">
+            ${prize}
+        </div>
+        <div class="form-content scroll-box">
+            ${formContent}
+        </div>
+    </div>
+    <div class="winning-btn-wrap" style="margin-top:0.65rem;">
+        <button id="goBack" class="winning-btn medium-font" style="margin-right: 0.5rem;">返回首页</button>
+        <button id="submit" class="winning-btn medium-font">提交信息</button>
+    </div>
+</script>
+<script id="winning-info" type="text/template">
+    <style>
+        /* 中奖信息弹层 */
+        .layui-m-layer0 .layer-winning {
+            width: 9.21rem; 
+            height: 13.28rem; 
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .tpl-winning-form {
+            position: relative;
+            width: 8.75rem;
+            height: 11.53rem;
+            margin: 0 auto;
+            background-image: url(/public/images/h5/winning-bg.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .winning-btn {
+            width: 3.22rem;
+            height: 1rem;
+            line-height: 1rem;
+            background-image: url(/public/images/h5/winning-btn.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            border: none;
+            outline: none;
+            background-color: transparent;    
+            color: #fff;        
+        }
+        .prize-name {
+            position: absolute;
+            width: 7.09rem;
+            height: 0.68rem;
+            line-height: 0.68rem;
+            top: 5.64rem;
+            left: 0.94rem;
+            color: #fe4429;
+        }
+        .form-content {
+            position: absolute;
+            width: 6.84rem;
+            height: 3.8rem;
+            top: 7rem;
+            left: 1.08rem;
+            overflow-y: auto;
+            padding: 0.62rem 0;
+            box-sizing: border-box;
+        }
+        .form-content p {
+            height: auto;
+            overflow: hidden;
+            padding: 0;
+            margin-bottom: 0.2rem;
+        }
+        .form-content label {
+            width: 1.95rem;
+            text-align: right;
+            margin-right: 10px;
+            color: #fe4429;
+            float: left;
+        }
+        .form-content span {
+            display: inline-block;
+            width: 4.4rem;
+            line-height: 0.68rem;
+            float: left;
+            color: #fe4429;
+            text-align: left;
+        }
+    </style>
+    <div class="tpl-winning-form">
+        <div class="prize-name medium-font">
+            ${prize}
+        </div>
+        <div class="form-content scroll-box">
+            ${formContent}
+        </div>
+    </div>
+    ${focus}
+</script>
+<script id="not-winning" type="text/template">
+    <style>
+        /* 未中奖信息弹层 */
+        .layui-m-layer0 .layer-winning {
+            width: 9.21rem; 
+            height: 13.28rem; 
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .tpl-winning-form {
+            position: relative;
+            width: 8.26rem;
+            height: 8.33rem;
+            margin-left: 0.7rem;
+            background-image: url(/public/images/h5/not-winning-bg.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .winning-btn {
+            width: 3.22rem;
+            height: 1rem;
+            line-height: 1rem;
+            background-image: url(/public/images/h5/winning-btn.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            border: none;
+            outline: none;
+            background-color: transparent;    
+            color: #fff;        
+        }
+        .form-content {
+            position: absolute;
+            width: 100%;
+            top: 7rem;
+            color: #fff;
+            text-align: center;
+        }
+        
+    </style>
+    <div class="tpl-winning-form">
+        <div class="form-content big-font">
+            你和一个亿就差再来一次！
+        </div>
+    </div>
+    <div class="winning-btn-wrap" style="margin-top:0.65rem;">
+        ${focus}
+    </div>
+</script>
+<script id="no-winning-info" type="text/template">
+    <style>
+        /* 未中奖信息弹层 */
+        .layui-m-layer0 .layer-winning {
+            width: 10rem; 
+            height: 13.28rem; 
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .tpl-winning-form {
+            position: relative;
+            width: 10rem;
+            height: 13.32rem;
+            background-image: url(/public/images/h5/no-winning-info.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .winning-btn {
+            width: 3.22rem;
+            height: 1rem;
+            line-height: 1rem;
+            background-image: url(/public/images/h5/winning-btn.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            border: none;
+            outline: none;
+            background-color: transparent;    
+            color: #fff;        
+        }
+        .form-content {
+            position: absolute;
+            width: 100%;
+            top: 7rem;
+            color: #fff;
+            text-align: center;
+            z-index: 2;
+        }
+        
+    </style>
+    <div class="tpl-winning-form">
+        <img style="position:absolute;width: 3.4rem;height: 3.4rem;z-index:-1;border-radius:50%;top: 3rem;left: 3.46rem;" src="${face}" />
+        <div class="form-content">
+        </div>
+    </div>
+    <div class="winning-btn-wrap">
+        ${focus}
+    </div>
+</script>
+<script id="feature-layer" type="text/template">
+    <style>
+        .feature-item img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <div class="feature-item readme-btn" data-action="readme">
+        <img src="/public/images/h5/readme-btn.png"/>
+    </div>
+    <div class="feature-item my-prize" data-action="myPrize">
+        <img src="/public/images/h5/my-prize-btn.png"/>
+    </div>
+</script>
+<script id="challenge-suc" type="text/template">
+    <style>
+        .layer-draw{
+            background: none;
+            box-shadow: none;
+        }
+            .layer-draw .layui-m-layercont{
+                padding:0;
+            }
+        .challenge-suc-bg{
+            position: relative;
+            width: 8.8rem;
+            height: 12.65rem;
+            background-image: url(/public/images/h5/challenge-success.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            margin: 0 auto;
+        }
+        .challenge-suc-bg p{
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        } 
+        .challenge-suc-bg button{
+            position: absolute;
+            background:none;
+            outline: none;
+            border: none;
+            text-align: center;
+        }
+        .challenge-suc-bg button.btn{
+            width:1.28rem;
+            height:1.28rem;
+            top: 10.4rem;
+        }
+        .challenge-suc-bg button.big-font{
+            width:3.46rem;
+            height:1.2rem;
+            line-height:1.2rem;
+            left:2.65rem;
+            top:10.45rem;
+            color:#fff;
+        }
+        .challenge-suc-bg button.big-font.disabeld{
+            background-color: #ccc;
+            border-radius: 1rem;
+        }
+    </style>
+    <div class="challenge-suc-bg">
+        <p class="medium-font" style="color:#fff;top:5.26rem;">您的成绩为</p>
+        <p style="top:6.24rem;font-size:1rem;color:#fef5bc;">${score}</p>
+        <p class="small-font" style="top:7.22rem;color:#0ca3b0;">最好成绩击败全国${bitNum}%的玩家</p>
+        <p class="medium-font" style="top:8.2rem;color:#fff;">最佳成绩为: ${bestScores}</p>
+        <p class="medium-font" style="top:8.7rem;color:#fff;">最佳排名为: ${bestRank}</p>
+        ${leftNum}
+        <button id="rank" class="btn" style="left:0.88rem;"></button>
+        ${bigBtn}
+        <button id="restart" class="btn" style="left:6.64rem;"></button>
+        <p class="small-font" style="top:11.7rem;color:#7399ac;">技术由推小宝提供,活动细则详询商家</p>
+    </div>
+</script>
+<script id="challenge-fail" type="text/template">
+    <style>
+        .layer-draw{
+            background: none;
+            box-shadow: none;
+        }
+            .layer-draw .layui-m-layercont{
+                padding:0;
+            }
+        .challenge-suc-bg{
+            position: relative;
+            width: 8.8rem;
+            height: 10.933rem;
+            background-image: url(/public/images/h5/challenge-fail.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            margin: 0 auto;
+        }
+        .challenge-suc-bg p{
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        } 
+        .challenge-suc-bg button{
+            position: absolute;
+            background:none;
+            outline: none;
+            border: none;
+            text-align: center;
+        }
+        .challenge-suc-bg button.btn{
+            width:1.28rem;
+            height:1.28rem;
+            top: 8.46rem;
+        }
+    </style>
+    <div class="challenge-suc-bg">
+        <p class="medium-font" style="color:#fff;top:3.9rem;">您的成绩为</p>
+        <p style="top:4.9rem;font-size:1rem;color:#fef5bc;">${score}</p>
+        <p class="small-font" style="top:5.88rem;color:#0ca3b0;">成绩必须达到${needScore}才能抽奖</p>
+        <p class="medium-font" style="top:6.8rem;color:#fff;">最佳成绩为: ${bestScores}</p>
+        <p class="medium-font" style="top:7.4rem;color:#fff;">最佳排名为: ${bestRank}</p>
+        <button id="rank" class="btn" style="left:0.88rem;"></button>
+        <button id="restart" class="big-font" style="width:3.46rem;height:1.2rem;line-height:1.2rem;left:2.65rem;top:8.48rem;color:#fff;">再玩一次</button>
+        <button id="goBack" class="btn" style="left:6.64rem;"></button>
+        <p class="small-font" style="top:10rem;color:#7399ac;">技术由推小宝提供,活动细则详询商家</p>
+    </div>
+</script>

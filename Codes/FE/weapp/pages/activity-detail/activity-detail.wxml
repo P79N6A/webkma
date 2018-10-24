@@ -1,0 +1,6 @@
+
+<web-view wx:if="{{!!active}}" src="{{businessUrl}}#wechat_redirect" bindmessage="onMessageHandler" ></web-view>
+<view class='tips' wx:else>
+    <icon type='{{iconType}}' size='100'></icon>
+    <view class='font-tips msg'>{{message}}</view>
+</view>

@@ -1,0 +1,20 @@
+{
+  "name": "kpaas",
+  "description": "A Vue.js project",
+  "main": "",
+  "authors": [
+    "Dyllon Liu"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "node-uuid": "^3.0.0"
+  }
+}

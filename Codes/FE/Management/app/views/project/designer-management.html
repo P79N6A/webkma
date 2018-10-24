@@ -1,0 +1,104 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>设计师管理
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll" style="overflow:hidden;">
+                <!-- 注册设计师 -->
+                <div class="add-business-block" ng-if="pageControl.data.businessType == '2'">
+                    <div class="business-block-title">
+                        <i class="icon-settings font-dark"></i>{{pageControl.edit == 'false' ? '注册新账号' : '编辑'}}</div>
+                    <div class="business-block-body">
+                        <div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">设计师姓名</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" placeholder="请输入设计师姓名" ng-model="pageControl.data.businessName">
+                                    <span class="help-inline"> 请输入设计师姓名</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">账号</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control input-inline input-large" maxlength="11" placeholder="用于登录的手机号" ng-model="pageControl.data.businessPhone">
+                                    <span class="help-inline"> 请输入手机号 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">密码</label>
+                                <div class="col-md-9">
+                                    <input type="password" class="form-control input-inline input-large" placeholder="6位以上数字字母组合" ng-model="pageControl.data.voucher">
+                                    <span class="help-inline"> 6位以上数字字母符号组合 </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">确认密码</label>
+                                <div class="col-md-9">
+                                    <input type="password" class="form-control input-inline input-large" placeholder="6位以上数字字母组合" ng-model="pageControl.revoucher">
+                                    <span class="help-inline"> 6位以上数字字母符号组合 </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 编辑 -->
+                <div class="add-business-block" ng-if="pageControl.edit == 'true' && pageControl.data.businessType == '1'">
+                    <div class="business-block-title">
+                        <i class="icon-settings font-dark"></i>商家信息</div>
+                    <div class="business-block-body" style="padding-bottom: 0;">
+                        <div>
+                            <div class="col-md-12 form-group helper-middile">
+                                <label class="col-md-3 control-label text-right">公司Logo：</label>
+                                <div class="col-md-6 no-padding bus-img-panel">
+                                    <img-upload-dire multiple="false" model="pageControl.data.businessLogo" image-type="jpg,jpeg,gif,png" file-size="3M">
+                                    </img-upload-dire>
+                                    <img class="bus-logo" ng-src="{{pageControl.data.businessLogo}}" />
+                                    <div class="tips"> 重新上传 </div>
+                                </div>
+                                <div class="col-md-6 helper-middile">
+                                    <span class="help-inline"> 上传图片必须为jpg、jpeg、gif、png格式文件且文件大小不超过3M</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group helper-middile">
+                                <label class="col-md-3 control-label text-right">公司封面：</label>
+                                <div class="col-md-6  no-padding bus-img-panel bus-img-cover">
+                                    <img-upload-dire multiple="false" model="pageControl.data.businessCover" image-type="jpg,jpeg,gif,png" file-size="5M">
+                                    </img-upload-dire>
+                                    <img class="bus-logo" ng-src="{{pageControl.data.businessCover}}" />
+                                    <div class="tips"> 重新上传 </div>
+                                </div>
+                                <div class="col-md-6 helper-middile ">
+                                    <span class="help-inline"> 上传图片必须为jpg、jpeg、gif、png格式文件且文件大小不超过5M,建议图片尺寸比例4:3</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group ">
+                                <label class="col-md-3 control-label text-right">账号:</label> <span class="form-control-static"> {{pageControl.data.businessPhone}} </span></div>
+                            <div class="col-md-12 form-group ">
+                                <label class="col-md-3 control-label text-right">商家名称:</label> <span class="form-control-static">{{pageControl.data.businessName}} </span></div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-3 control-label text-right">账号状态:</label> 
+                                <span class="form-control-static">{{pageControl.data.state == '0'? '正常':'禁用'}}</span>   </div>
+                            <div class="col-md-12 form-group ">
+                                <label class="col-md-3 control-label text-right">发布推广数:</label>
+                                <div class=" form-control-static">{{pageControl.data.extensionCount}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="save_btn" ng-click="addBusiness()">{{pageControl.edit == 'true'? '确定修改':'确认创建'}}</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

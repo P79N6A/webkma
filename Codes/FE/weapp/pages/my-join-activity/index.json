@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "我参加的活动",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-list-card": "/components/list-card/list-card"
+  }
+}

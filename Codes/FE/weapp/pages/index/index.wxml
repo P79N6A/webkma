@@ -1,0 +1,35 @@
+<view class="page">
+  <view class='page__hd'>
+    <view class='page__title'>
+    </view>
+  </view>
+  <view class='page__bd page__bd_spacing' hidden='{{!authSettingUserInfo}}'>
+    <view class="weui-flex">
+      <view class="weui-flex__item" style='text-align:center; padding-top:30vh;'>
+        <image class="weui-article__img" src="/images/loading-300.gif" mode="aspectFit" style="height: 200rpx; width:200rpx" />
+      </view>
+    </view>
+  </view>
+  <view class='page__bd page__bd_spacing' hidden='{{authSettingUserInfo}}'>
+    <view class="weui-article">
+      <view style='padding:40rpx'></view>
+      <view class="weui-article__section">
+        <view style='text-align:center;'>
+          <image class="weui-article__img" src="/images/logo-reverse.png" mode="aspectFit" style="height: 200rpx; width:200rpx" />
+        </view>
+        <!-- <view style='text-align:center; margin-top:30rpx;'> 推小宝</view> -->
+        <view style='border-top:1px solid #A0A0A0; margin-top:60rpx;'>
+          <view class='button-sp-area'>
+            <view>
+              <view class='font-bd' style='margin-top:40rpx;'>登录后该应用将获得以下权限</view>
+              <view class='font-tips' style='margin-top:20rpx;'>● 获得你的公开信息（昵称、头像等）</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="button-sp-area">
+      <button class="weui-btn btn-green" type="primary" open-type='getUserInfo' bindgetuserinfo="btnLogin">确认登录</button>
+    </view>
+  </view>
+</view>

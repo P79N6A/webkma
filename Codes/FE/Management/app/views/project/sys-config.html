@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>小程序设置
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div class="payment-fig-boxAll" ng-controller="SysConfigCtrl">
+                    <div class="col-md-12">
+                     <table class="payment-fig_box">
+                        <tr ng-repeat="item in data">
+                          <td>
+                            <label class="text">{{item.sys_key}}: </label>
+                            <label>
+                              <input type="text" ng-model="item.sys_value" ng-value="item.sys_value">
+                            </label>
+                          </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="text"></label>
+                                <button class="btn green" ng-click="saveSetting()">完成</button>
+                            </td>
+                        </tr>
+                      </table>
+                  </div>                  
+            </div>
+        </div>
+    </div>
+</div>

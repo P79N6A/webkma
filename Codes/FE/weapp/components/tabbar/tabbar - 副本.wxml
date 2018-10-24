@@ -1,0 +1,19 @@
+<!--components/tabbar.wxml-->
+
+<view class="tabbar-placeholder"> 
+  <view class="tabbar" >
+    <view class="tabbar-item item-home {{currentPage==='home'?'active':''}}"  catchtap="onSwitchTab" data-page="/pages/home/home">
+      <image class='tabbar-icon' src='{{iconHome}}' ></image>
+      <view> 活动广场</view>
+    </view>
+    <view class="tabbar-item item-marketing {{currentPage==='marketing'?'active':''}}"  catchtap="onSwitchTab" data-page="/pages/marketing/marketing" wx:if="{{!!userBindInfo&&userBindInfo.state==0}}"> 
+    <image class='tabbar-icon' src='{{iconMarketing}}'></image>
+    <view>推广中心</view>
+    </view>
+    <view class="tabbar-item item-my {{currentPage==='my'?'active':''}}"  catchtap="onSwitchTab" data-page="/pages/my/index">
+     <image class='tabbar-icon' src='{{iconMy}}'></image>
+      <view>个人中心</view> 
+    </view>
+  </view>
+</view>
+

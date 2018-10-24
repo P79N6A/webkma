@@ -1,0 +1,12 @@
+
+.txt-area{
+  height: 560rpx;
+}
+.error-msg{
+  color: #f58410;
+  padding: 10rpx;
+}
+
+.weui-btn-area{
+  margin-top: 120rpx;
+}

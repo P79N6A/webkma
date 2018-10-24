@@ -1,0 +1,170 @@
+<script id="gameRankings" type="text/template">
+    <style>
+        .layer-gameRankings{
+         background:none;
+    }
+    .layer-gameRankings .layui-m-layercont{
+        padding: 0;
+    }
+    .layer-gameRankings .rankTop{
+       background: url('/public/images/game-ranks/top-bg.png') no-repeat bottom left;
+       background-size:100% auto;
+       height:2.7rem;
+       position: relative;
+    }
+    .layer-gameRankings .rankTop>h1{
+        width: 100%;
+        position: absolute;
+        top:-1.1rem;
+        left: -.3rem;
+    }
+    .layer-gameRankings .rankTop>h1>img{
+        width: 100%;
+    }
+     .layer-gameRankings .rankTop .myselfInfo{
+         width: 100%;
+         height: 100%;
+         text-align: left;
+         padding:.65rem 1rem;
+         box-sizing: border-box;
+         color:#066461;
+         line-height: 1.4rem;
+         font-size: .49rem;
+    }
+    .layer-gameRankings .rankTop .myselfFace{
+        float: left;
+        background: url(/public/images/game-ranks/headportraitBg1.png) no-repeat center;
+        background-size:cover;
+        width:1.4rem ;
+        height:1.4rem ;
+        margin-right: .5rem;
+        overflow: hidden;
+    }
+    .layer-gameRankings .rankTop .myselfFace>img{
+        display: block;
+        height: 1.2rem;
+        width: 1.2rem;
+        margin: .1rem auto;
+        border-radius: 50%;
+    }
+    .layer-gameRankings .rankList{
+        width:100%;
+        background: url('/public/images/game-ranks/bg.png') no-repeat bottom left;
+        background-size:100% auto;
+        height: 10rem;
+        margin-top:-.5rem;
+        box-sizing: border-box;
+        padding:.6rem 1rem;
+        overflow-y: hidden;
+    }
+    .layer-gameRankings .rankList table,
+    .layer-gameRankings .rankList thead,
+    .layer-gameRankings .rankList tbody,
+    .layer-gameRankings .rankList tr{
+        width: 100%;
+      }
+      .layer-gameRankings .rankList table{
+          table-layout:fixed;
+      }
+   .layer-gameRankings .rankList th, .layer-gameRankings .rankList td{
+       width: 25%;
+       text-align: center;
+   }
+    .layer-gameRankings .rankList td{ 
+        height: 1.3rem;
+        color: #fff;
+        line-height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: .35rem;
+        line-height:1.3rem;
+    }
+   .layer-gameRankings .rankList th>img{
+       display: block;
+       width: 100%;
+   }
+   .layer-gameRankings .rankList .faceImg{
+        background: url(/public/images/game-ranks/headportraitBg1.png) no-repeat center;
+        width: 1.1rem;
+        height: 1.1rem;
+        background-size: 1.1rem;
+        margin: auto;
+        overflow: hidden;
+   }
+   .layer-gameRankings .rankList .faceImg>img{
+        width: .9rem;
+        height: .9rem;
+        display: block;
+        margin: .1rem auto;
+        border-radius: 50%;
+   }
+   .layer-gameRankings .rankList .rank{
+        font-size: .5rem;
+        font-weight: bold;
+        text-shadow: 0 0 3px #eabaf8;
+   }
+   .layer-gameRankings .rankList .rank .rankImg{
+        height: 1rem;
+        display: block;
+        margin: .15rem auto;
+   }
+    .layer-gameRankings .closeBtn{
+    height: 2rem;
+    margin-top: -.3rem;
+    }
+    </style>
+    <div class="gameRankings">
+            <div class="rankTop">
+                <h1 title="游戏排行"><img src="/public/images/game-ranks/top.png" alt=""></h1>
+                <div class="myselfInfo">
+                    <div class="myselfFace"><img src="{myselfFace}" alt="" ></div>
+                    <div>当前排名：<span>{myselfRank}</span>位</div>
+                </div>
+            </div>
+            <div class="rankList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><img src="/public/images/game-ranks/rank.png" title="排名"></th>
+                            <th><img src="/public/images/game-ranks/headportrait.png" title="头像"></th>
+                            <th><img src="/public/images/game-ranks/nickname.png" title="昵称"></th>
+                            <th><img src="/public/images/game-ranks/score.png" title="成绩"></th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="scroll-box" style="height:7rem;overflow-y:auto;">
+                    <table>
+                        <tbody class="scroll-box">{rankContent}</tbody>
+                    </table>
+                </div>
+            </div>
+        <img src="/public/images/game-ranks/close.png" alt=""  class="closeBtn">
+    </div>
+</script>
+<script id="rank1" type="text/template">
+    <tr>
+        <td class="rank">
+            <img src="/public/images/game-ranks/{imgRank}.png" alt="" class="rankImg">
+        </td>
+        <td>
+            <div class="faceImg">
+                <img src="{faceImg}" alt="">
+            </div>
+        </td>
+        <td>{nickName}</td>
+        <td>{score}分</td>
+    </tr>
+</script>
+<script id="rank2" type="text/template">
+   <tr>
+        <td class="rank">{rank}</td>
+        <td>
+            <div class="faceImg">
+                <img src="{faceImg}" alt="">
+            </div>
+        </td>
+        <td>{nickName}</td>
+        <td>{score}分</td>
+    </tr>
+</script>

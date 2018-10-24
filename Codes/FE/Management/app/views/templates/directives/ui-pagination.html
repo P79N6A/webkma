@@ -1,0 +1,8 @@
+<div class="pagination" ng-class="{'text-center':textalign == 'text-center','text-right':textalign == 'text-right'}">
+	<span class="prev mr10 ml10" ng-click="action('prev')" ng-if="pageindex != '1'"><i class="triangle-left"></i></span>
+    <span class="prev disabled mr10 ml10" ng-if="pageindex == '1'"><i class="triangle-left"></i></span>
+    <span class="mr5">{{pageindex}}</span>/<span class="ml5">{{totalPage}}</span>
+    <span class="next mr10 ml10" ng-click="action('next')" ng-if="pageindex < totalPage"><i class="triangle-right"></i></span>
+    <span class="next disabled mr10 ml10" ng-if="pageindex >= totalPage"><i class="triangle-right"></i></span>
+    <input type="text" ng-model="whichPage"><span class="go" ng-click="action('gotowhich')">Go</span>
+</div>

@@ -1,0 +1,23 @@
+﻿#_panelId_ .display-table {
+    display: table;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+    #_panelId_ .display-table > div {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    #_panelId_ .display-table h5 {
+        color: #333333;
+        font-weight: bold;
+        margin-top: 0;
+    }
+
+#_panelId_.no-resources {
+    background: url(/public/images/plugin/icon-video.png) center no-repeat;
+    background-color: #000;
+    opacity: 0.3;
+}

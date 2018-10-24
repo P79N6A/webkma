@@ -1,0 +1,54 @@
+
+<view class='pg-my-main' >
+  <view class="page-header-bg">
+    <view class="page-default-bg"></view>
+    <view class='my-head-decorate'></view>
+  </view>
+  <view class='my-head'>
+    <view class='my-headimg-decorate'> 
+      <image class='my-head-img' src='{{userInfo.avatarUrl}}'></image>
+    </view>
+    <view class='page__title'> {{userInfo.nickName}} </view>
+  </view>
+  <view class='page__bd'>
+    <view class='weui-cells'>
+      <view class='weui-cell' catchtap='myJoinActivity'>
+        <view class='weui-cell_hd icon'>
+          <image class='icon' src='/images/icon-activity.png'></image> 
+        </view>
+        <view class='weui-cell_bd weui-flex__item'>我参加的活动</view>
+        <view class='weui-cell__ft weui-cell__ft_in-access' ></view> 
+      </view>
+      <view class='weui-cell' catchtap='myPrizes'>
+        <view class='weui-cell_hd icon'>
+          <image class='icon' src='/images/icon-prizes.png'></image> 
+        </view>
+        <view class='weui-cell_bd weui-flex__item'>我的活动奖品</view>
+        <view class='weui-cell__ft weui-cell__ft_in-access' ></view> 
+      </view>
+      <view class='weui-cell position-relative' catchtap='boundMobile' data-isphone='{{!!userInfo.phone}}'>
+        <view class='weui-cell_hd icon'>
+          <image class='icon' src='/images/icon-bound-phone.png'></image> 
+        </view>
+        <view class='weui-flex__item'>手机绑定 {{userInfo.phone}}</view>
+        <text class='text-helper'>{{!!userInfo.phone ?"解除绑定":"立即绑定"}} </text> 
+        <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" wx:if='{{!userInfo.phone}}' class='getPhoneNumber'>立即绑定</button> 
+      </view>
+    </view>
+    <view class='weui-panel'>
+      <view class='weui-cells'>
+        <view class='weui-cell' catchtap='feedbackHandler'>
+          <view class='weui-cell_hd icon'>
+            <image class='icon' src='/images/icon-feedback.png'></image> 
+          </view>
+          <view class='weui-flex__item'>意见反馈</view>
+          <view class='weui-cell__ft weui-cell__ft_in-access' ></view> 
+        </view>
+      </view>
+    </view>
+  </view>
+  <comp-tabbar current-page="{{currentPage}}" user-bind-info="{{userBindInfo}}"></comp-tabbar>
+  <!-- <include src="/components/tabbar/tabbar.wxml"/> -->
+</view>
+
+

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "推广中心",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-tabbar": "/components/tabbar/tabbar",
+    "comp-list-card": "/components/list-card/list-card"
+  }
+}

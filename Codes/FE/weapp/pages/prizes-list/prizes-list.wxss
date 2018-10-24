@@ -1,0 +1,46 @@
+.page{
+  padding-top:20rpx;
+}
+.prizesItem{
+  width: 100%;
+  background: #fff;
+  margin-bottom:10rpx;
+  padding:4rpx 25rpx 25rpx 25rpx;
+  box-sizing: border-box;
+
+}
+.prizesItem .listTop{
+  border-bottom:1px solid #b2b2b2;
+  padding:12rpx 10rpx;
+  margin-bottom:30rpx;
+}
+.companyLogo{
+  width:60rpx ;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background: #d3f6f4;
+  margin-right:18rpx;
+}
+.companyName{
+  font-size: 36rpx;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  width:600rpx;
+}
+.prizesInfo{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  width:600rpx;
+}
+.no-content{
+  width: 467rpx;
+  padding-top: 485rpx;
+  background: url(https://resource.ikmark.com/tuixiaobao/weapp/bg-error.png) no-repeat 0 0;
+  background-size: contain;
+  margin: 200rpx auto 0;
+  text-align: center;
+  font-size: 24rpx;
+  color: #b1bfcd;
+}

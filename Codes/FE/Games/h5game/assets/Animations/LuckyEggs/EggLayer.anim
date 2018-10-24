@@ -1,0 +1,153 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "EggLayer",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 3,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": "1",
+  "curveData": {
+    "paths": {
+      "Egg": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.3,
+                "y": 0.3
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                -155
+              ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                0,
+                30.2
+              ]
+            }
+          ],
+          "active": [
+            {
+              "frame": 0,
+              "value": true
+            },
+            {
+              "frame": 2.5,
+              "value": false
+            }
+          ]
+        }
+      },
+      "Egg/Egg": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 2,
+              "value": 0
+            },
+            {
+              "frame": 2.4,
+              "value": -19
+            }
+          ]
+        }
+      },
+      "HalfEgg": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 2.5,
+              "value": true
+            }
+          ]
+        }
+      },
+      "HalfEgg/Egg/EggHalfUp": {
+        "props": {
+          "position": [
+            {
+              "frame": 2.5,
+              "value": [
+                -2.5,
+                15
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                -17,
+                52
+              ]
+            }
+          ]
+        }
+      },
+      "HalfEgg/Egg/EggHalfDown": {
+        "props": {
+          "position": [
+            {
+              "frame": 2.5,
+              "value": [
+                0.5,
+                -74.5
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                13,
+                -107
+              ]
+            }
+          ]
+        }
+      },
+      "HalfEgg/Light": {
+        "props": {
+          "scale": [
+            {
+              "frame": 2.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.4,
+                "y": 0.4
+              }
+            },
+            {
+              "frame": 3,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

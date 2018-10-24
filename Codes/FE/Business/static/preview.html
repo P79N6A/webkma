@@ -1,0 +1,386 @@
+<style>
+    .preview-component {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, .3);
+        z-index: 19999;
+    }
+
+    .preview-component .preview_body {
+        width: 1000px;
+        border-radius: 5px !important;
+        background-color: #fff;
+        overflow: hidden;
+        margin: auto;
+        height: 703px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .preview-component .preview-viewport,
+    .preview-component .preview-content {
+        width: 520px;
+        float: left;
+        position: relative;
+    }
+
+    .preview-component .preview-content {
+        width: 480px;
+        background-color: #f7fbfc;
+        color: #b1bfcd;
+        font-size: 14px;
+        height: 100%;
+    }
+
+    .preview-component .opt-bar {
+        height: 50px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    .preview-component .opt-bar .close {
+        width: 50px;
+        height: 50px;
+        float: right;
+        display: block;
+        text-align: center;
+        position: relative;
+        padding: 15px;
+        box-sizing: border-box;
+        transition: all .5s;
+        background-position: center;
+    }
+
+    .preview-component .opt-bar .close:before,
+    .preview-component .opt-bar .close:after {
+        content: '';
+        display: inline-block;
+        height: 20px;
+        width: 1px;
+        background-color: #3c4a55;
+        transform: rotate(45deg);
+    }
+
+    .preview-component .opt-bar .close:after {
+        transform: rotate(-45deg);
+    }
+
+    .preview-component .opt-bar .close:hover {
+        background-color: #ed5564;
+    }
+
+    .preview-component .content {
+        padding: 0 60px;
+    }
+
+    .preview-component .preview-content * {
+        margin: 0;
+    }
+
+    .preview-component .content .title {
+        height: 20px;
+        font-size: 18px;
+        color: #3c4a55;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: 20px;
+    }
+
+    .preview-component .content .desc {
+        min-width: 22px;
+        line-height: 22px;
+        word-break: break-all;
+        margin-bottom: 40px;
+    }
+
+    .preview-component .qrcode-panel {
+        text-align: center;
+    }
+
+    .preview-component .content .qrcode {
+        width: 240px;
+        height: 240px;
+        margin: auto;
+        margin-bottom: 30px;
+    }
+
+    .preview-component .download-panel .label {
+        color: #63717b;
+        margin-bottom: 20px;
+        display: block;
+        text-align: left;
+    }
+
+    .preview-component .download-panel .btn {
+        border: 1px solid #f1f3fc;
+        border-radius: 2px;
+        padding: 6px 12px;
+        text-align: center;
+        color: #63717b;
+        background-color: #fff;
+        -webkit-transform: all .5s;
+        transition: all .5s;
+        cursor: pointer;
+    }
+
+    .preview-component .download-panel .btn+.btn {
+        margin-left: 10px;
+    }
+
+    .preview-component .download-panel .btn:hover {
+        background-color: #00bad0;
+        border-color: #00bad0;
+        color: #fff;
+    }
+
+    .preview-component .phone-mock {
+        width: 330px;
+        height: 643px;
+        box-sizing: border-box;
+        padding: 36px 5px 56px;
+        margin: 30px auto;
+        border-radius: 20px !important;
+        -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.24);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.24);
+    }
+
+    .preview-component .top-status-bar {
+        height: 19px;
+        background: url(/static/images/phone-top-status-bar.jpg) no-repeat 0 0;
+        background-color: #000;
+        background-size: cover;
+    }
+
+    .preview-component .phone-body {
+        height: 532px;
+        background-color: #f9f9f9;
+    }
+
+    .preview-component .h5-container {
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    .preview-component .bottom-status-bar {
+        padding: 22px 0;
+    }
+
+    .preview-component .bottom-status-bar:before {
+        content: '';
+        display: block;
+        height: 12px;
+        width: 80px;
+        background-color: #e9e9e9;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
+
+    .preview-component .feature-bar {
+        height: 185px;
+        width: 60px;
+        position: absolute;
+        top: 50%;
+        right: 34px;
+        transform: translate3d(0, -50%, 0);
+    }
+
+    .preview-component .feature-bar .item {
+        background-color: rgba(0, 0, 0, .3);
+        height: 60px;
+        margin-bottom: 2px;
+        color: #fff;
+        line-height: 60px;
+        box-sizing: border-box;
+        text-align: center;
+        width: 100%;
+        border: none;
+    }
+
+    .preview-component .feature-bar .item:nth-child(2n+1) {
+        cursor: pointer;
+    }
+
+    .preview-component .feature-bar .item:disabled {
+        cursor: not-allowed;
+    }
+
+    .preview-component button:focus {
+        outline: none;
+    }
+
+    .preview-component .feature-bar .up:before,
+    .preview-component .feature-bar .down:before {
+        content: '';
+        border-bottom: 10px solid rgba(0, 0, 0, 0.5);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        display: inline-block;
+    }
+
+    .preview-component .feature-bar .down:before {
+        border-top: 10px solid rgba(0, 0, 0, 0.5);
+        border-bottom: none;
+    }
+
+    .preview-component .feature-bar .up:disabled:before,
+    .preview-component .feature-bar .down:disabled:before {
+        border-color: #fff;
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
+
+    .preview-component .feature-bar .down {
+        margin-bottom: 0;
+    }
+</style>
+<script type="text/template" id="tpl-preview-component">
+<div class="preview-component">
+    <div class="preview_body">
+        <div class="preview-viewport">
+            <div class="phone-mock">
+                <div class="top-status-bar"></div>
+                <div class="phone-body">
+                    <iframe id="h5-container" src="about:blank" class="h5-container"></iframe>
+                </div>
+                <div class="bottom-status-bar"></div>
+            </div>
+            <div class="feature-bar">
+                <button class="item up" title="上一页" data-page='prev' disabled="disabled"></button>
+                <div id="preview-pagination" class="item">1/1</div>
+                <button class="item down" title="下一页" data-page='next' disabled="disabled"></button>
+            </div>
+        </div>
+        <div class="preview-content">
+            <div class="opt-bar">
+                <a href="javascript:void(0);" class="close"></a>
+            </div>
+            <div class="content">
+                <h1 class="title"> 未命名 </h1>
+                <p class="desc" data-description="true">我是稿件的描述信息</p>
+                <div class="qrcode-panel">
+                    <div class="qrcode">
+                        <img data-qrcode="true" 
+                        src="http://bos-kcmsdesign.iwanqi.cn/00000000-0000-0000-0000-000000000000/KMA/0d1c714a-8cfb-4784-8e8b-4bf672deed1c.jpg"
+                            style="width:100%;" />
+                    </div>
+                    <div class="desc">使用微信扫描上方的小程序码或二维码预览该活动</div>
+                </div>
+                <div class="download-panel">
+                    <div class="label"> 下载二维码</div>
+                    <div> <button data-qrsize='256' class="btn">小（256px）</button><button data-qrsize='512'class="btn">中（512px）</button><button data-qrsize='1024' class="btn">大（1024px）</button></div>
+                    <iframe id="iframe-download" src="about:blank" style="display: none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+<!-- 开发测试调试用 -->
+<!-- <script src="../MidWay/public/bower_components/zepto/zepto.min.js"></script> -->
+<script src="/bower_components/qrcodejs/qrcode.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var state = {
+            pagination: {
+                total: 1,
+                pageIndex: 1
+            },
+            detailUrl: 'manuscript/detail?id=',
+        }
+        window.addEventListener("message", function receiveMessage(evt) {
+            console.log(evt);
+            var data = evt.data || {};
+            if (data.type === 'pagination') {
+                var total = state.pagination.total = data.total;
+                var pageIndex = state.pagination.pageIndex = data.pageIndex + 1;
+                if (total === 1) {
+                    $('.preview-component .feature-bar button.item').prop('disabled', true)
+                } else {
+                    $('.preview-component .feature-bar button.item').prop('disabled', false);
+                    if (pageIndex === 1) {
+                        $('.preview-component .feature-bar button.up').prop('disabled', true);
+                    }
+                    if (pageIndex === data.total) {
+                        $('.preview-component .feature-bar button.down').prop('disabled', true);
+                    }
+                }
+                $('.preview-component #preview-pagination').html(pageIndex + '/' + data.total);
+            }
+        }, false);
+
+        window.openPreviewWindow = function openPreviewWindow(host, previewUrl, id) {
+            $('.preview-component').remove();
+            state.host = /\/$/i.test(host) ? host : host + '/';
+            state.id = id;
+            var url = host + state.detailUrl + id;
+            $.ajax({
+                url: url,
+                method: 'get',
+                dataType: 'json',
+                success: function (data, status, xhr) {
+                    var tpl = $('#tpl-preview-component').html();
+                    var $tpl = $(tpl);
+                    data = data.data;
+                    previewUrl = /^(http|https):/i.test(previewUrl) ? previewUrl : ('http://' + previewUrl);
+                    $tpl.find('#h5-container').attr('src', previewUrl);
+                    $tpl.find('.preview-content .title').html(data.name || '未命名稿件');
+                    $tpl.find('.preview-content [data-description="true"]').html(data.description || '');
+                    if (data.type === 3) {
+                        $tpl.find('.preview-content img[data-qrcode="true"]').attr('src', data.codeUrl).show();
+                    } else {
+                        $tpl.find('.preview-content img[data-qrcode="true"]').hide();
+                        new QRCode($tpl.find('.preview-content .qrcode')[0], {
+                            text: previewUrl,
+                            width: 240,
+                            height: 240,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        $tpl.find('.download-panel').hide();
+                    }
+                    $tpl.appendTo('body');
+                    initEvent();
+                },
+                error: function (err, xhr) {
+                    console.log(err);
+                }
+            });
+
+        }
+
+        function initEvent() {
+            var $panel = $('.preview-component');
+            $panel.find('.feature-bar').on('click.pagination', 'button.item', function (evt) {
+                var $el = $(this),
+                    page = $el.data('page'),
+                    total = state.pagination.total,
+                    pageIndex = state.pagination.pageIndex;
+                if (page === 'prev') {
+                    pageIndex = pageIndex - 1
+                } else if (page === 'next') {
+                    pageIndex = pageIndex + 1
+                }
+                var docWindow = document.getElementById('h5-container').contentWindow;
+                if (!!docWindow) {
+                    docWindow.postMessage({ type: 'flip', pageIndex: pageIndex }, '*');
+                }
+            });
+            $panel.find('.close').on('click', function () {
+                $panel.remove();
+            });
+            $panel.find('.download-panel button').on('click', function () {
+                var size = $(this).data('qrsize');
+                $panel.find('#iframe-download').attr('src', state.host + 'manuscript/wxqrcode/download?id=' + state.id + '&width=' + size);
+            })
+        }
+    })
+</script>

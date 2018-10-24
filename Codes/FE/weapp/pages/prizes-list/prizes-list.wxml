@@ -1,0 +1,23 @@
+<view class="page">
+  <view wx:if="{{prizeList.length >0}}" class="prizesItem" wx:for="{{prizeList}}" bindtap='prizesDetail' data-relationid="{{item.relationId}}" data-controlid="{{item.controlId}}"  >
+     <view class="weui-flex listTop">
+        <image class="companyLogo" src="{{item.businessLogo}}"></image>
+        <text class="companyName">{{item.businessName}}</text>
+     </view>
+     <view class="weui-flex justify-content-between ">
+      <view>
+        <view class="prizesInfo">活动名称：{{item.name}}</view>
+        <view class="prizesInfo">活动奖品：{{item.prizeName}}</view>
+        <view class="prizesInfo">中奖时间：{{item.createtime}}</view>
+      </view>
+      <view class='weui-cell__ft weui-cell__ft_in-access' ></view>  
+     </view>
+  </view>
+  <view  class="no-content" wx:if="{{prizeList.length<=0}}">
+      暂无数据
+  </view>
+  <view class='weui-loadmore'>
+        <text class="weui-loading"  wx:if="{{loadingOpj.loadingText=='加载中...'}}"></text>
+        <text class="weui-loadmore__tips">{{loadingOpj.loadingText}}</text>
+  </view>
+</view>

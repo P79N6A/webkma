@@ -1,0 +1,23 @@
+<view class="page ">
+  <view class="weui-flex">
+    <view>活动名称：</view>
+    <view>{{detail.name}}</view>
+  </view>
+  <view class="weui-flex">
+    <view>活动奖品：</view>
+    <view>{{detail.prizeName}}</view>
+  </view>
+  <view class="weui-flex">
+    <view>中奖时间：</view>
+    <view>{{detail.createtime}}</view>
+  </view>
+  <view class="weui-flex">活动预留信息：</view>
+  <view class="weui-flex" wx:for="{{detail.contents}}">
+    <view>{{item.name}}：</view>
+    <view>{{item.content}}</view>
+  </view>
+  <view class="weui-flex">
+    <view>主办单位：</view>
+    <view>{{detail.businessName}}</view>
+  </view>
+</view>

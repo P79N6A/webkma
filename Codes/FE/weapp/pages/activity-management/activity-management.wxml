@@ -1,0 +1,49 @@
+<view class='pg-activity-management'>
+  <view>
+    <view class="pg-fixed flex weui-flex">
+      <view class="top-icon">
+      <text class="iconfont icon-release"></text>
+      <button open-type="share" class="shareBtn"></button>
+      </view>
+      <view class="top-icon" catchtap='previewActivity' ><text class="iconfont icon-preview"></text></view>
+    </view>
+    <image class="activeImge" src='{{activityInfo.cover}}' mode='aspectFill'></image>
+    <view class="pg-activity-first weui-article">
+      <view class="page-h2 activityTitle">{{activityInfo.name}}</view>
+      <view class="font-bd weui-media-box__desc">{{activityInfo.description!=''?activityInfo.description:'这不仅是一个简单的营销活动，用笔记用脑想，最重要得是要走心。还有我是占位符不是简介。'}}</view>
+      <view class="font-tips createTime"><text class="iconfont icon-shijian"></text> {{activityInfo.createTime}}</view>
+      <view class="weui-flex justify-content-between pg-spreadDetail font-bd"> 
+        <view class="weui-flex__item ">
+          <view >推广分享数</view>
+          <view class="spreadNum">{{spreadCount.scan_share}}</view>
+          <view >分享总数 {{allCount.scan_share}}</view>
+        </view>
+        <view class="weui-flex__item">
+          <view>推广访客数</view>
+          <view class="spreadNum">{{spreadCount.scan_visitor}}</view>
+          <view>访客总数 {{allCount.scan_visitor}}</view>
+        </view>
+        <view class="weui-flex__item">
+          <view>推广访问数</view>
+          <view class="spreadNum">{{spreadCount.scan_access}}</view>
+          <view>访问总数 {{allCount.scan_access}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="pg-tab">
+      <view class="weui-tab">
+        <view class="weui-navbar">
+          <view class="weui-navbar__item page-h3 {{spreadType=='scan_share'?'active':''}}" bindtap='clickTab' data-spreadtype='scan_share'>分享趋势</view>
+          <view class="weui-navbar__item page-h3 {{spreadType=='scan_visitor'?'active':''}}" bindtap='clickTab' data-spreadtype='scan_visitor'>访客趋势</view>
+          <view class="weui-navbar__item page-h3 {{spreadType=='scan_access'?'active':''}}" bindtap='clickTab' data-spreadtype='scan_access'>访问趋势</view>
+          <view class="weui-navbar__slider" style="width:{{sliderWidth}}px;left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+        </view>
+        <view class="scan weui-tab__panel">
+          <view class="container">
+            <ec-canvas id="canvas_share" canvas-id="canvas_share" ec="{{canvas_share}}"></ec-canvas>
+          </view>
+      </view>
+      </view>
+    </view>
+  </view>
+</view>

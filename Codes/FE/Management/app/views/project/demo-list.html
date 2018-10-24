@@ -1,0 +1,109 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box grey-gallery">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>Demo
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div class="col-md-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group search-bar">
+                            <label>模板类型：</label>
+                            <select class="form-control" ng-model="searchBar.type">
+                                <option value="pc">PC端</option>
+                                <option value="mobile">移动端</option>
+                            </select>
+                        </div>
+                        <div class="form-group search-bar">
+                            <label>开始时间：</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="width:110px;"
+                                       uib-datepicker-popup
+                                       ng-model="searchBar.startDate.value"
+                                       is-open="searchBar.startDate.opened"
+                                       datepicker-options="searchBar.startDate.options"
+                                       show-button-bar="false"
+                                       ng-click="searchBar.startDate.opened = true"
+                                       ng-change="searchBar.endDate.options = { minDate: searchBar.startDate.value }" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="searchBar.startDate.opened = true"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group search-bar">
+                            <label>结束时间：</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="width:110px;"
+                                       uib-datepicker-popup
+                                       ng-model="searchBar.endDate.value"
+                                       is-open="searchBar.endDate.opened"
+                                       datepicker-options="searchBar.endDate.options"
+                                       show-button-bar="false"
+                                       ng-click="searchBar.endDate.opened = true"
+                                       ng-change="searchBar.startDate.options = { maxDate: searchBar.endDate.value }" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="searchBar.endDate.opened = true"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group search-bar">
+                            <label>关键字：</label>
+                            <input type="text" class="form-control" style="width:300px;" placeholder="作品名称" ng-model="searchBar.keywords">
+                            <button type="button" class="btn btn-primary grey-gallery" style="margin-left:5px;" ng-click="btnSearch()">搜索</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="flip-content">
+                        <tr>
+                            <th width="20%"> Code </th>
+                            <th> Company </th>
+                            <th class="numeric"> Price </th>
+                            <th class="numeric"> Change </th>
+                            <th class="numeric"> Open </th>
+                            <th class="numeric"> High </th>
+                            <th class="numeric"> Low </th>
+                            <th class="numeric"> Volume </th>
+                            <th> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in data">
+                            <td> {{row.code}} </td>
+                            <td> {{row.company}} </td>
+                            <td class="numeric"> {{row.price}} </td>
+                            <td class="numeric"> {{row.change}} </td>
+                            <td class="numeric"> {{row.open}} </td>
+                            <td class="numeric"> {{row.high}} </td>
+                            <td class="numeric"> {{row.low}} </td>
+                            <td class="numeric"> {{row.volume}} </td>
+                            <td> <button class="btn btn-sm btn-primary red-mint">删除</button> </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-6 text-right pull-right">
+                        <uib-pagination class="pagination pull-right grey-gallery"
+                                        boundary-links="true"
+                                        max-size="5"
+                                        total-items="pagination.totalCount"
+                                        items-per-page="pagination.pageSize"
+                                        ng-model="pagination.pageIndex"
+                                        ng-change="getData()">
+                        </uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

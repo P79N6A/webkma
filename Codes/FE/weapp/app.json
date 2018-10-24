@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/index",
+    "pages/home/home",
+    "pages/my-setup-phone/my-setup-phone",
+    "pages/feedback/feedback",
+    "pages/marketing/marketing",
+    "pages/activity-management/activity-management",
+    "pages/my-join-activity/index",
+    "pages/activity-detail/activity-detail",
+    "pages/prizes-list/prizes-list",
+    "pages/prizes-detail/prizes-detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#09a0a2",
+    "navigationBarTitleText": "推小宝",
+    "navigationBarTextStyle": "#ffffff"
+  }
+}

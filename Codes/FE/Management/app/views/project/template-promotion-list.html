@@ -1,0 +1,86 @@
+<div class="template-style">
+    <div>
+        <div class="templateCondition tabbable-line">
+            <ul class="nav nav-tabs">
+                <li ng-repeat="item in statusList" ng-class="{'active':'{{promotionStatus}}'=='{{item.status}}'}" ng-click="tabClick(item)">
+                    <a href="javascript:void (0);" data-toggle="tab" aria-expanded="false" data-target="#tab{{$index}}">
+                        {{item.value}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="portlet-body flip-scroll">
+        <div>
+            <div class="col-md-12 col-clear-padding temp-search">
+                <div class="col-md-5 input-group pull-right">
+                    <button type="button" class="btn btn-primary grey-gallery pull-right" style="margin-left:5px;" ng-click="action('search')">搜索
+                    </button>
+                    <input type="text" class="form-control pull-right" placeholder="请输入推广名称进行搜索" style="width: 300px;" ng-model='keywords'/>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover tab-pane">
+                <thead class="flip-content">
+                    <tr>
+                        <th width="10%">推广计划</th>
+                        <th width="10%">缩略图</th>
+                        <th width="10%">使用模板</th>
+                        <th width="15%">广告时间</th>
+                        <th width="10%">所属商家</th>
+                        <th width="10%">所属公众号</th>
+                        <th width="10%">审核状态</th>
+                        <th width="15%">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in promotionList" ng-if="promotionList.length>0">
+                        <td>{{item.activityName}}</td>
+                        <td>
+                            <img  class="thumbnailImg" ng-src="{{item.cover}}"  img-preview-dire="{{item.cover}}">
+                        </td>
+                        <td>{{item.templateName==null?'自定义':item.templateName}}</td>
+                        <td>{{item.timeOnline+'至'+item.timeOffline}}</td>
+                        <td>{{item.businessName}}</td>
+                        <td>{{item.publicName}}</td>
+                        <td>{{!!item.state?(item.state==1?'审核失败':(item.state==2?'审核通过':'已结束')):'审核中'}}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary green" ng-if="item.state==0" ng-click="action('success',item.mainId)">通过</button>
+                            <button class="btn btn-sm btn-primary green" ng-if="item.state==0" ng-click="action('fail',item.mainId)">驳回</button>
+                            <span class="fn-color-blue" ng-if="item.state==2||item.state==3" ng-click="jumpToPromotionData(item)">推广数据</span>
+                            <span class="fn-color-blue" ng-click="action('detail',item.mainId)">详情</span>
+                        </td>
+                    </tr>
+                    <tr ng-if='promotionList.length==0'>
+                        <td colspan="8" class="text-center"> 暂无数据 </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" ng-if="pagination.totalCount>0" style="padding-right:16px;">
+                <ui-pagination my-where="TemplatePromotionListCtrlflip" pagesize="{{pagination.pageSize}}" pageindex="{{pagination.pageIndex}}" totalcount="{{pagination.totalCount}}"
+                    textalign="text-right"></ui-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="checkBox handout" style="display:none">
+        <div>
+            <div class="pop_top_tit clearfix">
+                <span>确认计划审核{{model.status==2?'成功':'失败'}}</span>
+            </div>
+            <div class="txt_content clearfix">
+                <div class="case-wrap">
+                    <div calss="case-box">
+                        <div ng-if="model.status==1" class="form-group col-md-offset-2 col-md-8 {{model.err!=''?'has-error':''}}">
+                            <input type="text" placeholder="请输入审核失败原因" ng-model="model.reason" class="form-control">
+                            <div class="error">{{model.err}}</div>
+                        </div>
+                        <div class="text-center" ng-if="model.status==2">确定推广计划审核成功？</div>
+                        <div class="btn_box col-md-12">
+                            <button class="check_return check_btn" ng-click="done()">取消</button>
+                            <button class="check_true check_btn check_btn1" ng-click="action('model')">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

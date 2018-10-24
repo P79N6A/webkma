@@ -1,0 +1,79 @@
+/* components/tabbar.wxss */
+.tabbar-placeholder,
+.tabbar{
+  height: 110rpx;
+  width: 100vw;
+  box-sizing: border-box;
+}
+.tabbar-placeholder{
+  padding-top: 110rpx;
+}
+.tabbar{
+  position: fixed;
+  top: 100vh;
+  left:0;
+  right: 0;
+  bottom: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  font-size: 24rpx;
+  background: #fff;
+  z-index: 10;
+  /* transition: transform 0.6s; */
+}
+.tabbar-item{
+  text-align: center;
+  background:no-repeat center 10rpx;
+  background-size:45rpx 45rpx;
+  padding-top:65rpx;
+  position: relative;
+  /* padding-top: 10rpx; */
+
+  flex: 1 1 auto;
+}
+.tabbar-item .dot{
+  height:40rpx;
+  width: 40rpx;
+  line-height: 40rpx;
+  position: absolute;
+  text-align: center;
+  top:0rpx;
+  left:50%;
+  margin-left:8rpx;
+  background: #f00;
+  color:#fff;
+  border-radius: 50%;
+
+}
+.tabbar-item.active{
+  color: #24d0c6;
+}
+.tabbar-icon{
+  width: 45rpx;
+  height: 45rpx;
+  margin-bottom: -8rpx;
+}
+.item-home{
+  background-image: url(https://resource.ikmark.com/tuixiaobao/weapp/hone.png)
+}
+.item-home.active{
+  background-image: url(https://resource.ikmark.com/tuixiaobao/weapp/hone-active.png)
+}
+.item-my{
+  background-image: url(https://resource.ikmark.com/tuixiaobao/weapp/my.png)
+}
+.item-my.active{
+  background-image: url(https://resource.ikmark.com/tuixiaobao/weapp/my-active.png)
+}
+.item-marketing{
+  background-image: url(https://resource.ikmark.com/tuixiaobao/weapp/marketing.png)
+}
+.item-marketing.active{
+  background-image: url(https://resource.ikmark.com/tuixiaobao/weapp/marketing-active.png)
+}
+.show-tabbar{
+  transform: translate3d(0,-100%,0);
+  -webkit-transform: translate3d(0,-100%,0); 
+}

@@ -1,0 +1,41 @@
+﻿<div class="login" ng-controller="LoginSeoCtrl">
+    <!-- BEGIN LOGO -->
+    <div class="logo">
+            <img src="/images/logo_blue.png" alt="" />
+    </div>
+    <!-- END LOGO -->
+    <!-- BEGIN LOGIN -->
+    <div class="content">
+        <!-- BEGIN LOGIN FORM -->
+        <form class="login-form">
+            <h3 class="form-title">登录SEO账号</h3>
+            <!--<div class="alert alert-danger display-hide">-->
+                <!--<button class="close" data-close="alert"></button>-->
+                <!--<span> 输入用户名和密码 </span>-->
+            <!--</div>-->
+            <div class="form-group">
+                <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                <label class="control-label visible-ie8 visible-ie9">用户名</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username" ng-model="data.username" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">密  码</label>
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="密  码" name="password" ng-model="data.loginPwd" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn green pull-right"> 登录 </button>
+            </div>
+        </form>
+        <!-- END LOGIN FORM -->
+    </div>
+    <!-- END LOGIN -->
+    <!-- BEGIN COPYRIGHT -->
+    <div class="copyright"> 版权所有 &copy;2018 万商云集（成都）科技股份有限公司 </div>
+    <!-- END COPYRIGHT -->
+</div>

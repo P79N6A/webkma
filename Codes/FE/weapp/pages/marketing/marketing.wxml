@@ -1,0 +1,66 @@
+<!--pages/marketing/marketing.wxml-->
+<view >
+  <view class='mk-main'>
+    <view class='mk-cover'>
+      <image class='img' mode="aspectFill" src="{{overview.businessCover}}" binderror="coverError"></image>
+    </view>
+    <view class='mk-overview'>
+      <view class='weui-flex justify-content-between align-center mk-info'>
+        <text class='page-h2'>{{overview.name}}</text>
+        <view class="weui-flex align-center"><text class='font-bd'>{{overview.businessName}}</text><image wx:if='{{overview.certification==1}}' src='/images/authentication.png' class="authentication"></image></view>  
+      </view>
+      <view class='weui-flex justify-center mk-statistical font-tips'>
+        <view class='weui-flex__item item'>
+          <view>推广分享数</view>
+          <view class='item-count'>{{overview.totalShare}}</view>
+          <view wx:if="{{overview.rankShare>0}}">
+            <text>排名</text>
+            <text class="rankNum {{overview.trendShare>0?'bg-red':(overview.trendShare<0?'bg-blue':'')}}" >No.{{overview.rankShare}}</text>
+            <image class="rankingTrend" src='/images/up.png' wx:if='{{overview.trendShare>0}}'></image>
+            <image class="rankingTrend" src='/images/down.png' wx:if='{{overview.trendShare<0}}'></image>
+          </view>
+        </view>
+        <view class='weui-flex__item item'>
+          <view>推广访客数</view>
+          <view class='item-count'>{{overview.totalVisitor}}</view>
+          <view wx:if="{{overview.rankVisitor>0}}">
+            <text>排名</text>
+            <text class="rankNum">No.{{overview.rankVisitor}}</text>
+            <image class="rankingTrend" src='/images/up.png' wx:if='{{overview.trendAccess>0}}'></image>
+            <image class="rankingTrend" src='/images/down.png' wx:if='{{overview.trendAccess<0}}'></image>
+          </view>
+        </view>
+        <view class='weui-flex__item item'>
+          <view>推广访问数</view>
+          <view class='item-count'>{{overview.totalAccess}}</view>
+          <view wx:if="{{overview.rankAccess>0}}">
+            <text>排名</text>
+            <text class="rankNum" >No.{{overview.rankAccess}}</text>
+            <image class="rankingTrend" src='/images/up.png' wx:if='{{overview.trendVisitor>0}}'></image>
+            <image class="rankingTrend" src='/images/down.png' wx:if='{{overview.trendVisitor<0}}'></image>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='mk-body'>
+      <view class='page-h2 mk-title'>
+        我的推广任务
+      </view>
+      <view wx:if="{{taskList.length>0}}">
+        <comp-list-card list-data="{{taskList}}" 
+        show-publish-time="{{true}}"
+        show-join-count="{{true}}"
+        bind:tapEvent="onTapEvent" 
+        ></comp-list-card>
+        <view class='weui-loadmore'>
+          <text class="weui-loading"  wx:if="{{loadingOpj.loadingText=='加载中...'}}"></text>
+          <text class="weui-loadmore__tips">{{loadingOpj.loadingText}}</text>
+      </view>
+      </view>
+      <view  class='noDataList' wx:else>暂无推广任务</view>
+    </view>
+  </view>
+  <comp-tabbar current-page="marketing" user-bind-info="{{userBindInfo}}"></comp-tabbar>
+</view>
+
+

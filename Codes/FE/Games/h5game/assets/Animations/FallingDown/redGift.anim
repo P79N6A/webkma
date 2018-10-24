@@ -1,0 +1,29 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "redGift",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2,
+  "sample": 30,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "props": {
+      "y": [
+        {
+          "frame": 0,
+          "value": -84
+        },
+        {
+          "frame": 1,
+          "value": -91
+        },
+        {
+          "frame": 2,
+          "value": -84
+        }
+      ]
+    }
+  },
+  "events": []
+}
