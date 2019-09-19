@@ -1,0 +1,34 @@
+<!--pages/marketing-report.wxml-->
+<view class="container">
+  <view class="headers">
+    <text catchtap="downloadImg" class="iconfont icon-xiazai"></text>
+    <view class="top_title">
+      <view class="title_cont">
+        <view class="circular"></view>
+        <view class="line"></view>
+        <view class="mind">BOSS报表</view>
+        <view class="line"></view>
+        <view class="circular"></view>
+      </view>
+      <view>数据更新截至{{"昨天"}}{{"24:00"}}更新</view>
+    </view>
+    <view class="top_total_value">
+      <view class="top_total_count">
+        <view wx:for="{{totalList}}" style="width: {{item.length}}" class="total_item">
+          <view class="total_label">
+            {{item.label}}
+          </view>
+          <view class="total_value">
+            {{item.value}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="content">
+    <view class="content_title">
+      <view class="side-line"></view>
+      <view class="title_label">任务报告</view>
+    </view>
+  </view>
+</view>

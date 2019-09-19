@@ -1,0 +1,44 @@
+.call_box{
+    width: 100%;
+    height: 100%;
+}
+.one{
+    border-radius: 0.3125rem;
+}
+.two{
+    border-radius: 1rem;
+}
+.three{
+    width: 2.1875rem;
+    height: 2.1875rem;
+}
+.type_three{
+    font-size: 2.1875rem!important;
+    position: relative;
+    top: -27px;
+    /* color: #cfdbe7; */
+}
+.call_box a{
+    /* display: inline-block; */
+    width: 100%;
+    height: 100%;
+    font-size: 0.75rem;
+    /* line-height: 1.8rem; */
+    text-align: center;
+    text-decoration: none;
+    /* position: relative; */
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    overflow: hidden;
+}
+.call_box a span{
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+.call_box a span .icon-dianhua{
+    font-size: 0.9375rem;
+    position: relative;
+    top: 0.09375rem;
+    margin-right: 0.15625rem;
+}

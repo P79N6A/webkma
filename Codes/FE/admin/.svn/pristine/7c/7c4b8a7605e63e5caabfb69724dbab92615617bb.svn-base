@@ -1,0 +1,21 @@
+<template>
+  <div class="material-label-box">
+    列表
+  </div>
+</template>
+
+<script>
+import navigator from "components/navigator";
+export default {
+  components: { navigator},
+  name: "material-list",
+  data() {
+    return {
+
+    };
+  },
+};
+</script>
+<style scoped>
+  
+</style>

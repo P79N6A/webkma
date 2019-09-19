@@ -1,0 +1,42 @@
+<view class="container">
+  <view class='search-wrap'>
+    <view class='text pull-left'>
+      <image class='icon' src="/images/icon-search.png"></image>
+      <input placeholder="搜索名称" value="{{name}}" adjust-position="false" bindinput="bindKeyInput" placeholder-style="color:#999;" bindconfirm="getList"/>
+      <image class='icon' src="/images/icon-remove.png" bindtap='clearSearch' wx:if="{{!!name}}"></image>
+    </view>
+    <text class='pull-left cancel-text' bindtap='cancelSearch'>取消</text>
+  </view>
+  <view class='log-list' wx:if="{{tpl == 'log'}}">
+    <view class='title'>历史搜索</view>
+    <view class='log-item' wx:for="{{logList}}" wx:key="{{index}}">
+      <text bindtap='search' data-item="{{item}}">{{item}}</text>
+      <image src='/images/icon-remove.png' bindtap='removeLog' data-index="{{index}}"></image>
+    </view>
+    <view class='empty-btn' bindtap='emptyLog' wx:if="{{logList.length>0}}">清空历史搜索</view>
+  </view>
+  <view class='card-list' wx:else>
+    <view class='item' wx:for="{{cardList}}" wx:key="id" bindtap='toCardDetail' data-id="{{item.id}}" >
+      <view class='info'>
+        <view class='pic'>
+          <image class='face' src="{{item.face || '/images/icon-default-photo.png'}}"></image>
+        </view>
+        <view class='text'>
+          <view class='name'>{{item.name}}</view>
+          <view>{{item.job||"暂无职位信息"}}</view>
+          <view class='eslip' style='width: 400rpx;'>{{item.company||"暂无公司信息"}}</view>
+          <view>
+            <image class='phone' src='/images/icon-phone.png'></image>{{item.phone||""}}
+          </view>
+        </view>
+      </view>
+      <image class='agree-icon' src='/images/mark-agree.png' wx:if="{{item.status == 0}}"></image>
+      <image class='agree-icon' src='/images/mark-refuse.png' wx:if="{{item.status == 3}}"></image>
+    </view>
+    <view style='text-align:center;' wx:if="{{cardList.length == 0}}">
+      <image class='empty-img' src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/icon-empty.png"></image>
+      <view style='color:#999;font-size:24rpx;'>你什么也没搜到</view>
+    </view>
+    <i-load-more hidden="{{pagination.pageIndex <= 1}}" tip="{{listStatus.loadingText}}" loading="{{listStatus.isLoading}}" />
+  </view>
+</view>

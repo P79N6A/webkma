@@ -1,0 +1,331 @@
+// pages/customer-edit-info/customer-edit-info.js
+let
+  app = getApp(),
+  activityService = require('../../services/activity-service.js'),
+  util = require("../../utils/util.js");
+import WxValidate from '../../utils/wx-validate.js'
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    id: '', //员工客户主键id
+    cid: '', //客户userId
+    sid: '', //所属人员userId
+    form: {
+      userName: '', //姓名
+      company: '', //企业名称
+      job: '', //职位
+      phoneNumber: '' //手机号
+    },
+    birthday: '', //生日
+    customItem: '全部',
+    region: [], //地区 
+    wxName: '', //微信昵称
+    source: '', //来源
+    address: '', //地址
+    sexList: ['男', '女'], //性别选项
+    sex: '无',
+    sexIndex: null, //性别切换索引
+
+    levelList: ['普通客户', '一般客户', '重要客户'], //级别选项
+    level: '普通客户',
+    levelIndex: 0, //级别切换索引
+
+    stateList: ['微信潜客', '初步沟通', '见面拜访', '确定意向', '正式报价', '签约成功'], //状态选项
+    state: '微信潜客',
+    stateIndex: 0, //状态切换索引
+
+    btnState: false, //按钮状态
+    mine: null, //是否是团队
+    bid: null, //企业id
+    timeDate: ''
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.setData({
+      id: options.id,
+      // cid: options.cid,
+      // sid: options.sid,
+      // state: options.state,
+      // mine: options.mine,
+      // bid: options.bid
+    })
+    this.getCustomerInfo(); //客户详情
+    this.initValidate(); //表单验证规则
+    this.getNowFormatDate()
+  },
+  getNowFormatDate:function () {
+    var date = new Date();
+    var seperator1 = "-";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    this.setData({
+      timeDate: year + seperator1 + month + seperator1 + strDate
+    })
+  },
+  // 获取客户详情
+  getCustomerInfo: function () {
+    var self = this;
+    activityService.getCustomerInfo({
+      id: self.data.id,
+    }, (err, res) => {
+      if (res.status == 0) {
+        var strbir = res.data.birthday;
+        if (strbir!==null && strbir!==""){
+          var strbirText = strbir.trim().split(" ");
+        }
+        var redizhi = [];
+        var dizhi = redizhi.push(res.data.province, res.data.city, res.data.region);
+        console.log("地址", redizhi)
+        self.setData({
+          form: {
+            userName: res.data.name,
+            company: res.data.company,
+            job: res.data.job,
+            phoneNumber: res.data.phone == null ? '' : res.data.phone,
+          },
+          source: res.data.from_name,
+          address: res.data.area == null ? '' : res.data.area,
+          birthday: strbir !== null ? strbirText[0] : null,
+          region: redizhi,
+          wxName: res.data.nickname,
+          sexIndex: res.data.sex - 1,
+          levelIndex: res.data.level - 1,
+          stateIndex: res.data.status - 1
+        })
+        console.log("联动", self.data.region, "c长度", self.data.region.length)
+      } else {
+        wx.showToast({
+          title: "获取客户详情失败",
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    })
+  },
+
+  //性别设置
+  showSex: function (e) {
+    let self = this;
+    wx.showActionSheet({
+      itemList: self.data.sexList,
+      success(res) {
+        self.setData({
+          sexIndex: res.tapIndex
+        })
+        if (res.tapIndex === 0) {
+          self.setData({
+            sex: self.data.sexList[0]
+          })
+        } else {
+          self.setData({
+            sex: self.data.sexList[1]
+          })
+        }
+      }
+    })
+  },
+
+  //日期选择器
+  bindDateChange: function (e) {
+    this.setData({
+      birthday: e.detail.value
+    })
+  },
+
+  //地区选择器
+  bindRegionChange: function (e) {
+    this.setData({
+      region: e.detail.value
+    })
+    console.log("地区",this.data.region)
+  },
+
+  //客户级别设置
+  showIevel: function (e) {
+    let self = this;
+    wx.showActionSheet({
+      itemList: self.data.levelList,
+      success(res) {
+        self.setData({
+          levelIndex: res.tapIndex
+        })
+        if (res.tapIndex === 0) {
+          self.setData({
+            level: self.data.levelList[0]
+          })
+        } else if (res.tapIndex === 1) {
+          self.setData({
+            level: self.data.levelList[1]
+          })
+        }else{
+          self.setData({
+            level: self.data.levelList[2]
+          })
+        }
+      }
+    })
+  },
+
+  //状态设置
+  showState: function (e) {
+    let self = this;
+    wx.showActionSheet({
+      itemList: self.data.stateList,
+      success(res) {
+        self.setData({
+          stateIndex: res.tapIndex
+        })
+        if (res.tapIndex === 0) {
+          self.setData({
+            state: self.data.stateList[0]
+          })
+        } else if (res.tapIndex === 1) {
+          self.setData({
+            state: self.data.stateList[1]
+          })
+        } else if(res.tapIndex === 2) {
+          self.setData({
+            state: self.data.stateList[2]
+          })
+        } else if (res.tapIndex === 3) {
+          self.setData({
+            state: self.data.stateList[3]
+          })
+        } else if (res.tapIndex === 4) {
+          self.setData({
+            state: self.data.stateList[4]
+          })
+        } else if (res.tapIndex === 5) {
+          self.setData({
+            state: self.data.stateList[5]
+          })
+        }
+      }
+    })
+  },
+
+  // 报错信息
+  showModal(error) {
+    wx.showToast({
+      title: error.msg,
+      icon: 'none',
+    })
+  },
+
+  // 初始化表单校验
+  initValidate() {
+    // 验证规则
+    const rules = {
+      userName: {
+        required: true,
+        text: true,
+        maxlength: 10
+      },
+      company: {
+        required: true
+      },
+      job: {
+        required: true,
+        maxlength: 10
+      },
+      phoneNumber: {
+        required: true,
+        tel: true
+      }
+    }
+    // 提示信息
+    const messages = {
+      userName: {
+        required: '请填写姓名',
+        text: '姓名请输入中，英文字符',
+        maxlength: '客户姓名最多可输入10个字符'
+      },
+      company: {
+        required: '请填写公司'
+      },
+      job: {
+        required: '请填写职位',
+        maxlength: '职位最多可输入10个字符'
+      },
+      phoneNumber: {
+        required: '请填写手机号',
+        tel: '请填写正确的手机号'
+      }
+    }
+    this.WxValidate = new WxValidate(rules, messages)
+  },
+
+  // 表单提交
+  formSubmit: function (e) {
+    var self = this;
+    let params = e.detail.value;
+    if (!this.data.btnState) {
+      this.setData({
+        btnState: true
+      })
+      return
+    }
+    // 校验表单
+    if (!this.WxValidate.checkForm(params)) {
+      const error = this.WxValidate.errorList[0]
+      this.showModal(error)
+      return false
+    } else {
+      activityService.editCustomerInfo({
+        id: self.data.id,
+        name: params.userName,
+        sex: self.data.sexIndex + 1,
+        company: params.company,
+        job: params.job,
+        birthday: self.data.birthday,
+        level: self.data.levelIndex + 1,
+        phone: params.phoneNumber,
+        status: self.data.stateIndex + 1,
+        area: params.address,
+        province: self.data.region[0],
+        city: self.data.region[1],
+        region: self.data.region[2]
+      }, (err, res) => {
+        if (res.status == 0) {
+          wx.showToast({
+            title: '保存成功',
+          })
+          var pages = getCurrentPages();
+          console.log("个人信息查询数据", pages)
+          var prePage = pages[pages.length - 1];
+          prePage.onShow();
+          setTimeout(function () {
+            wx.navigateBack({ delta: 1 });
+          }, 500);
+        } else {
+          wx.showToast({
+            title: "保存信息失败",
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      })
+    }
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    // this.getCustomerInfo();
+  }
+})

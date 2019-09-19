@@ -1,0 +1,36 @@
+<view class='tips'>
+  <view bindtap='loadPage'>
+    <image mode="aspectFit" src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/cover-share.png'></image>
+  </view>
+  <view class='font-bd tip-bar'>分享到</view> 
+  <view wx:if="{{!!h5Info || !!articleInfo}}">
+    <view class="share-bar" wx:if="{{h5Info.goodsNumber == 0 || !!articleInfo.id}}">
+      <button class="weak-button" plain="true" hover-class="none" bindtap="btnFriends" open-type="share">
+        <image class="button-image" src='/images/icon-wechat-friends.png'></image>
+        <view class="font-bd">微信好友</view>
+      </button>
+      <button class="weak-button" plain="true" hover-class="none" bindtap="btnMoments" data-type="{{h5Info.manuscriptType==2?'3':''}}">
+        <image class="button-image" src='/images/icon-wechat-moments.png'></image>
+        <view class="font-bd">朋友圈</view> 
+      </button>
+      <button class="weak-button" wx:if="{{h5Info.manuscriptType==2}}" plain="true" hover-class="none" bindtap="btnMoments" data-type="3">
+        <image class="button-image" src='/images/icon-wechat-download.png'></image>
+        <view class="font-bd">保存至手机</view> 
+      </button>
+      <button class="weak-button" plain="true" hover-class="none"  bindtap='copyLink' wx:if="{{!articleInfo.id && h5Info.manuscriptType !==2}}">
+        <image class="button-image" src='/images/icon-wechat-link.png'></image>
+        <view class="font-bd">复制链接</view>
+      </button>
+    </view>
+    <view class="share-bar" wx:else>
+      <button class="weak-button" plain="true" hover-class="none" bindtap="btnMoments">
+        <image class="button-image" src='/images/icon-wechat-moments.png'></image>
+        <view class="font-bd">朋友圈</view> 
+      </button>
+      <button class="weak-button" plain="true" hover-class="none"  bindtap='copyLink'>
+        <image class="button-image" src='/images/icon-wechat-link.png'></image>
+        <view class="font-bd">复制链接</view>
+      </button>
+    </view>
+  </view>
+</view>

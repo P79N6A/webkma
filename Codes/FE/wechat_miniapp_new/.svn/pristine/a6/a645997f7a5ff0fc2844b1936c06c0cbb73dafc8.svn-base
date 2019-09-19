@@ -1,0 +1,23 @@
+<!--pages/user-customer/user-customer.wxml-->
+<view class='container'>
+  <view>
+    <view class='title-search' style='padding: 27rpx 10rpx 28rpx 15rpx;'>
+      <view class='search-box flex justify-content-between'>
+        <view class="search-input flex">
+          <icon type="icon-search" class="icon-search tips-gary"></icon>
+          <input bindinput='getKeyword'></input>
+        </view>
+        <view class='drop-option' style='top:10rpx;right:1rpx;'>
+          <view bindtap="customerAction" style='position:relative;'>
+            <text class='font-22 tips-gary'>{{customerActionText}}</text> 
+            <text class='corner'></text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <comp-customer-info wx:if="{{customerList.length != 0}}" list="{{customerList}}" flag="{{typeFlag}}" where="customer"></comp-customer-info>
+    <view wx:if="{{customerList.length==0}}" class='color-gray font-30 place-text' style='border:none;'>- 暂无数据 -</view>
+    <i-load-more i-class="my-load-more" wx:if="{{loadingOpj.showLoadMore}}" tip="{{loadingOpj.loadingText}}" loading="{{ loadingOpj.loadingText=='玩命加载中...'?true:false }}" />
+  </view>
+  <!-- <comp-page-box-tips type="{{tipStatus}}"></comp-page-box-tips> -->
+</view>

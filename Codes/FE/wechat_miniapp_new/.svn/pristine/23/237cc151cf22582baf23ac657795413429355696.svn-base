@@ -1,0 +1,149 @@
+.font-32 {
+  font-size: 32rpx;
+}
+.font-24 {
+  font-size: 24rpx !important;
+}
+.pull-left {
+  float: left;
+}
+
+.eplipes {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+.nullData{
+  text-align: center;
+  padding: 20rpx 0 20rpx 0
+}
+.overview-container {
+  position: relative;
+}
+
+.hearder {
+  width: 100%;
+  height: 360rpx;
+  background: url('https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/top-BG.png');
+  background-size: 100%;
+  overflow: hidden;
+}
+.user-dashord {
+  width: 640rpx;
+  height: 150rpx;
+  color:#fff;
+  font-size: 20rpx;
+  margin: 62rpx auto;
+}
+.user-img {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+}
+.user-info {
+  width: 400rpx;
+  margin-top: -10rpx;
+}
+
+.overview {
+  position: absolute;
+  width: 730rpx;
+  height: 260rpx;
+  z-index: 1;
+  top: 278rpx;
+  left: 10rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+  padding: 40rpx 30rpx 0;
+  box-sizing: border-box;
+  box-shadow: 0px 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.boss-overview {
+  height: 400rpx;
+}
+
+.row_title_left {
+  display: flex;
+  align-items: center;
+}
+.row_title_left image {
+  width: 49rpx;
+  height: 49rpx;
+  margin-right: 11rpx;
+}
+.row_title_left text {
+  font-size: 30rpx;
+  color:rgba(60,74,85,1);
+}
+.row_title_right {
+  font-size: 22rpx;
+  color:rgba(177,191,205,1);
+}
+
+.my-data {
+  width: 655rpx;
+  margin: 15rpx 15rpx 0 60rpx;
+  font-size: 22rpx;
+  color:rgba(177,191,205,1);
+}
+
+.my-data .surplus {
+  font-size: 36rpx;
+  color: rgba(250,118,107,1);
+}
+
+.my-data .number {
+  font-size: 36rpx;
+  color: rgba(36,208,198,1);
+  font-weight: 400;
+}
+
+.my-data .small-number {
+  font-size: 28rpx;
+  margin-top: 6rpx;
+}
+
+.my-data .data-list {
+  display: flex;
+  width: 400rpx;
+  text-align: center;
+  margin-right: 40rpx;
+}
+
+.data-list .link_text {
+  display: inline-block;
+  width: 133rpx;
+  text-align: center;
+}
+
+.data-list .line {
+  width: 1rpx;
+  height: 78rpx;
+  border-right: 1rpx solid rgba(221,228,235,1);
+  margin-top: 20rpx;
+}
+
+.task-list {
+  width: 730rpx;
+  height: auto;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 10rpx;
+  margin: 20rpx auto;
+}
+
+.task-list .task-list-hearder {
+  padding: 40rpx 30rpx 22rpx;
+}
+
+.task-list .row_title_right {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 53rpx;
+  padding: 0 21rpx;
+  background-color: rgba(247,247,255,1);
+}
+

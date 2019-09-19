@@ -1,0 +1,25 @@
+<view wx:if="{{showSucc}}">
+  <!-- 普通预约成功 -->
+  <view class="succeed-info" wx:if='{{appointmentData.is_pay == 1}}'>
+      <view style="padding: 133rpx 0 30rpx;">
+          <image class='succeed-bg' src='../../images/appoint_bg.png'></image>
+      </view>
+      <view class='general-font' style="height:115rpx; margin-bottom:89rpx;">
+           {{appointmentData.success_conten}}
+      </view>
+      <view class="return" style="margin-bottom:36rpx;" id="copy-info">复制上述信息</view>
+  </view>
+  <!-- 付费预约成功 -->
+  <view class="succeed-info" wx:else>
+      <view style="padding: 133rpx 0 30rpx;">
+          <image class='succeed-bg' src='../../images/appoint_bg.png'></image>
+      </view>
+      <view class='general-font' style="height:115rpx; margin-bottom:89rpx;">
+          {{appointmentData.success_conten}}
+      </view>
+      <view class="general-font" style="text-align: center;margin-bottom:36rpx;">
+          <image class="qrcode-img" src="{{appointmentData.customer_service_code || '../../images/exchange-cover.png'}}"></image>
+          <view style="margin: 20rpx 0 72rpx;">您的专属客服</view>
+      </view>
+  </view>
+</view>

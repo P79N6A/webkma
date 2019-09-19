@@ -1,0 +1,368 @@
+/*
+    每个样式必须继承 #_panelId_
+*/
+
+#_panelId_ {
+
+}
+#_panelId_ .clear-padding{
+	padding: 0;
+}
+#_panelId_>div{
+	width: 100%;
+	height: 100%;
+}
+#_panelId_>div>div{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+#_panelId_>div>div{
+    opacity: 1;
+}
+/*样式1*/
+#_panelId_>div>div.r_style_1.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_1_close.png);
+}
+#_panelId_>div>div.r_style_1.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_1_open.png);
+}
+/*样式2*/
+#_panelId_>div>div.r_style_2.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_2_close.png);
+}
+#_panelId_>div>div.r_style_2.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_2_open.png);
+}
+/*样式3*/
+#_panelId_>div>div.r_style_3.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_3_close.png);
+}
+#_panelId_>div>div.r_style_3.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_3_open.png);
+}
+/*样式4*/
+#_panelId_>div>div.r_style_4.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_4_close.png);
+}
+#_panelId_>div>div.r_style_4.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_4_open.png);
+}
+/*样式5*/
+#_panelId_>div>div.r_style_5.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_5_close.png);
+}
+#_panelId_>div>div.r_style_5.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_5_open.png);
+}
+/*样式6*/
+#_panelId_>div>div.r_style_6.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_6_close.png);
+}
+#_panelId_>div>div.r_style_6.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_6_open.png);
+}
+/*样式7*/
+#_panelId_>div>div.r_style_7.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_7_close.png);
+}
+#_panelId_>div>div.r_style_7.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_7_open.png);
+}
+/*样式8*/
+#_panelId_>div>div.r_style_8.close{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_8_close.png);
+}
+#_panelId_>div>div.r_style_8.open{
+    background-image: url(/public/images/plugin/open-red-envelope/bg_8_open.png);
+}
+/*抽奖弹窗样式控制*/
+/*弹窗样式1*/
+.p_style_p_1{
+    position: fixed;
+    width: auto;
+    height:auto;
+    top: 50%;
+    left: 50%;
+    z-index: 10000;
+    background-color: #fff;
+    display: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.p_style_p_1 .prize{
+    position: relative;
+    width: 400px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 5px;
+    font-size: 20px;
+    text-align: center;
+}
+.p_style_p_1 .prize .title{
+    font-size: 36px;
+    text-align: center;
+    margin-top: 88px;
+    margin-bottom: 22px;
+}
+.p_style_p_1 .close{
+    position: absolute;
+    width: 50px;
+    height: 65px;
+    right: 20px;
+    top: 0;
+    background: url(/public/images/plugin/close_1.png) no-repeat;
+}
+.p_style_p_1 .close1{
+    background: url(/public/images/plugin/close_2.png) no-repeat;
+}
+.p_style_p_1 .close2{
+    background: url(/public/images/plugin/close_3.png) no-repeat;
+}
+.p_style_p_1 .prize button{
+    width: 120px;
+    height: 40px;
+    line-height: 38px;
+    font-size: 18px;
+    color: #ffffff;
+    border-radius: 25px;
+    margin: 25px auto 0;
+}
+.p_style_p_1 .no-prize{
+    width: 400px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.p_style_p_1 .form1{
+    width: 500px;
+    height: auto;
+    padding: 30px 30px 37px;
+}
+.p_style_p_1 .form1 .singleMsg{
+    color: #000;
+    font-weight: bold;
+}
+.p_style_p_1 .form1 p.title{
+    margin-bottom: 26px;
+}
+.p_style_p_1 .form1 p.title1{
+    margin-bottom: 26px;
+}
+.p_style_p_1 .form1 p.p-input{
+    position: relative;
+    height: 40px;
+    margin-bottom: 25px;
+    margin-top: 0px;
+}
+.p_style_p_1 .input{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #dddddd;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.p_style_p_1 .err-text{
+    position: absolute;
+    font-size: 16px;
+    top: 40px;
+    left: 12px;
+}
+.p_style_p_1 button{
+    width: 100%;
+    height: 45px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 5px;
+    border: none;
+    color: #fff;
+}
+.p_style_p_1 button.disabled{
+    background-color: #aaa;
+    cursor: default;
+}
+.p_style_p_1 .form2 table{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #dddddd;
+    border-bottom: none;
+}
+.p_style_p_1 .form2 table tr{
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #dddddd;
+}
+.p_style_p_1 .form2 table tr td.name{
+    width: 100px;
+    text-align: right;
+    color: #999999;
+}
+.p_style_p_1 .form2 table tr td.val{
+    padding-left: 12px;
+    color: #ec7a7c;
+}
+.p_style_p_1 .form2 table tr td.balck{
+    color: #595959;
+}
+.p_mask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}
+/*手机版弹窗样式*/
+.m_style_p_1{
+    position: fixed;
+    width: auto;
+    height:auto;
+    z-index: 10000;
+    background-color: #fff;
+    display: none;
+    border-radius: 5px;
+    font-size: 0.8333rem;
+}
+.m_style_p_1 .prize{
+    position: relative;
+    width: 20.8333rem;
+    height: 20.8333rem;
+    overflow: hidden;
+    border-radius: 5px;
+    font-size: 0.8333rem;
+    text-align: center;
+}
+.m_style_p_1 .prize .title{
+    font-size: 2.08333rem;
+    text-align: center;
+    margin-top: 3.95833rem;
+    margin-bottom: 2.08333rem;
+}
+.m_style_p_1 .close{
+    position: absolute;
+    width: 2.08333rem;
+    height: 2.70833rem;
+    right: 0.8333rem;
+    top: 0;
+    background-image: url(/public/images/plugin/close_1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.m_style_p_1 .close1{
+    background: url(/public/images/plugin/close_2.png) no-repeat;
+}
+.m_style_p_1 .close2{
+    background: url(/public/images/plugin/close_3.png) no-repeat;
+}
+.m_style_p_1 .prize button{
+    color: #ffffff;
+    width: 9.375rem;
+    height: 3.125rem;
+    line-height: 3.125rem;
+    font-size: 1.25rem;
+    border-radius: 1.5625rem;
+    margin: 1.6666rem auto 0;
+}
+.m_style_p_1 .no-prize{
+    text-align: center;
+    width: 20.8333rem;
+    height: 5.58333rem;
+    line-height: 5.58333rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.66666rem;
+}
+.m_style_p_1 .form1{
+    width:  20.8333rem;
+    height: auto;
+    padding: 1.25rem 1.25rem 1.5416rem;
+}
+.m_style_p_1 .form1 .singleMsg{
+    color: #000;
+    font-weight: bold;
+}
+.m_style_p_1 .form1 p.title{
+    margin-bottom: 2.1666rem;
+}
+.m_style_p_1 .form1 p.title1{
+    margin-bottom: 1.08333rem;
+}
+.m_style_p_1 .form1 p.p-input{
+    position: relative;
+    margin-top: 0px;
+    height: 1.66666rem;
+    margin-bottom: 1.04166rem;
+}
+.m_style_p_1 .input{
+    width: 100%;
+    border: 1px solid #dddddd;
+    height: 1.66666rem;
+    line-height: 1.66666rem;
+    padding-left: 10px;
+  -moz-box-padding-top: 0;
+  -moz-box-padding-bottom: 0;
+}
+.m_style_p_1 .err-text{
+    position: absolute;
+    font-size: 0.66666rem;
+    top: 1.66666rem;
+    left: 0.5rem;
+}
+.m_style_p_1 button{
+    width: 100%;
+    border: none;
+    color: #fff;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    border-radius: 0.83333rem;
+    margin-top: 0.20833rem;
+}
+.m_style_p_1 button.disabled{
+    background-color: #aaa;
+    cursor: default;
+}
+.m_style_p_1 .form2 table{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #dddddd;
+    border-bottom: none;
+}
+.m_style_p_1 .form2 table tr{
+    height: 2.041666rem;
+    line-height: 2.041666rem;
+    border-bottom: 1px solid #dddddd;
+}
+.m_style_p_1 .form2 table tr td.name{
+    width: 5.08333rem;
+    text-align: right;
+    color: #999999;
+}
+.m_style_p_1 .form2 table tr td.val{
+    padding-left: 0.25rem;
+    color: #ec7a7c;
+}
+.m_style_p_1 .form2 table tr td.balck{
+    color: #595959;
+}
+.m_mask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}

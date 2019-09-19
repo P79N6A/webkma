@@ -1,0 +1,225 @@
+<view>
+  <view class="page">
+    <view class="page__bd">
+      <comp-page-box-tips type="{{pageStatus}}"></comp-page-box-tips>
+      <block wx:if="{{!pageStatus}}">
+        <view class="bd__navbar">
+          <comp-navbar wx:if="{{tabNav.length>0}}" bind:tabchange="navbarTabChange" tabs="{{[{key:'baseData',title:'任务数据'},{key:'plugData',title:'插件数据'}]}}" activeTab="{{activeNavTab}}"></comp-navbar> 
+        </view>
+        <block wx:if="{{activeNavTab == 'baseData'}}">
+          <view class="bd__section {{formList.length==0?'head__row':''}}">
+            <view class="head__title">
+              <image style="width: 28rpx; height: 28rpx; vertical-align:middle; margin-right:10rpx;" src="/images/icon-chart-line.png"></image>
+              <text class="font-bd" style="vertical-align:middle;">我的推广数据</text>
+            </view>
+            <comp-activity-charts-overview tid="{{id}}" article-sign="{{articleid}}"></comp-activity-charts-overview>
+          </view>
+          <view class="bd__section">
+            <comp-activity-charts-line tid="{{id}}"></comp-activity-charts-line>
+          </view>
+          <view class="bd__section">
+            <view class="head__title">
+              <image style="width: 28rpx; height: 28rpx; vertical-align:middle; margin-right:10rpx;" src="/images/icon-chart-all.png"></image>
+              <text class="font-bd" style="vertical-align:middle;">活动总数据</text>
+            </view>
+            <view class="section_row">
+              <view class="rank-box">
+                <block wx:key="item.key" wx:for="{{dataList}}" wx:key="{{index}}">
+                  <view class="weui-flex wrap" style="flex-direction: column;-webkit-flex-direction: column;">
+                    <view>
+                      <text>总{{item.title}}</text>
+                    </view>
+                    <view>
+                      <text class="item-count">{{item.total || 0}}</text>
+                    </view>
+                  </view>
+                </block>
+              </view>
+            </view>
+            <view class="section_row">
+              <view class="weui-flex" style="justify-content: space-between; align-items:baseline; -webkit-justify-content: space-between; -webkit-align-items:baseline;">
+                <view class="font-bd">平均停留时长</view>
+                <view class="font-bd" wx:if="{{avgLifeTime}}">{{avgLifeTime}}</view>
+                <view class="font-bd text-empty-color" wx:else>暂无</view>
+              </view>
+            </view>
+            <view class="section_row">
+              <view class="weui-flex" style="justify-content: space-between; align-items:baseline; -webkit-justify-content: space-between; -webkit-align-items:baseline;">
+                <view class="font-bd">访问地区TOP5</view>
+                <view class="font-bd" wx:if="{{areaTopList}}">{{areaTopList}}</view>
+                <view class="font-bd text-empty-color" wx:else>暂无</view>
+              </view>
+            </view>
+          </view>
+        </block>
+        <block>
+          <view wx:if="{{activeNavTab == 'plugData'}}" class="plug-list">
+            <view class='plug-tab flex'>
+              <view wx:for="{{tabNav}}" wx:key="item.key" class="{{item.key==activePlugTab?'active':''}}" bindtap="navPlurTabChange" data-key="{{item.key}}">{{item.name}}</view>
+            </view>
+            <view class='vote-record' wx:if="{{showTitle}}">
+              <view class='font-22 title_top'>
+                <view>{{titleCont.title}} <text class='num-color'>{{titleCont.titleNun}}</text></view>
+                <view  wx:if="{{activePlugTab=='redEnvelopes'}}">{{titleCont.redEnvelopes}} <text class='price'>￥{{titleCont.redPrice}}</text></view>
+              </view>
+              <view class='font-18 phcolor'>{{titleCont.content}}</view>
+            </view>
+            <view>
+              <!-- 报名 -->
+              <view wx:if="{{activePlugTab == 'formData'}}">
+                <view class='signup_chart'>
+                  <view class='signup_left'>
+                    <view  class='signup_title'>报名人数 <text class='orange_font'>{{statistical.total}}</text></view>
+                    <view class='tipcont'>
+                      <view>活动吸引力不高？</view>
+                      <view>优化文案 增加趣味度</view>
+                      <view>增加转发和曝光率</view>
+                    </view>
+                  </view>
+                  <view class='signup_right'>
+                    <charts-activity-plugin-form-pie  id="pluginFormPie"  dataSource="{{statistical}}">
+                    </charts-activity-plugin-form-pie>
+                  </view> 
+                </view>
+                <view class='cont_info'>
+                  <view class='condition' catchtap='openConditionlist'>
+                    <text>{{conditionTxt}}</text>
+                    <text class="iconfont icon-zhankai1"></text>
+                  </view>
+                  <view class='cont_info_lsit'>
+                    <comp-plug-in-unit wx:for="{{formDataListData}}" bind:pulgEvent="pulgFromEvent" pulgFromEvent item="{{item}}" wx:key="{{index}}"></comp-plug-in-unit>
+                  </view>
+                </view>
+              </view>
+              <!-- 商品 -->
+              <view wx:if="{{activePlugTab == 'goods'}}">
+                <view class='signup_chart'>
+                  <view class='signup_left'>
+                    <!-- <view  class='signup_title'>订单总数 <text class='orange_font'>168</text></view> -->
+                    <view  class='signup_title'>成交总额 <text class='price'>￥{{orderDataSource.totalVolume?formDataSource.totalVolume:0}}</text></view>
+                    <view class='tipcont'>
+                      <view>下单率不高？</view>
+                      <view>打折！包邮！还送小礼！</view>
+                      <view>买家一切借口不在话下</view>
+                    </view>
+                  </view>
+                  <view class='signup_right'>
+                    <charts-activity-plugin-order-pie   id="pluginOrderPie" dataSource="{{orderDataSource}}">
+                    </charts-activity-plugin-order-pie>
+                  </view>     
+                </view>
+                <view class='cont_list'>
+                  <view class='list_item' wx:for="{{goodsListData}}" wx:key="{{index}}">
+                    <image src='{{item.image}}'></image>
+                    <view class='item_info'>
+                      <view class='item_title'>{{item.name}}</view>
+                      <view class='item_price'>
+                        <text>总成交</text>
+                        <text>￥{{item.volume}}</text>
+                      </view>
+                    </view>
+                    <view class='item_right'>
+                      <view class='item_browse'>
+                        <text>浏览</text>
+                        <text class='orange_font'>{{item.browseCount}}</text>
+                      </view>
+                      <view class='item_order'>
+                        <text>下单</text>
+                        <text class='orange_font'>{{item.orderCount}}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <!-- 红包 -->
+              <view wx:if="{{activePlugTab=='redEnvelopes'}}">
+                <view class='cont_info'>
+                  <view class="search_input">
+                    <text class="iconfont icon-search"></text>
+                    <input placeholder='搜索' bindinput='getKeyword' bindconfirm='getInfoCont' confirm-type='search'></input>
+                  </view>
+                  <view class='cont_info_lsit'>
+                    <comp-plug-in-unit wx:for="{{redpacketListdata}}" item="{{item}}" wx:key="{{index}}" isPrice="{{true}}" isShowInfo="hide"></comp-plug-in-unit>
+                  </view>
+                </view>
+              </view>
+              <!-- 投票 -->
+              <view wx:if="{{activePlugTab=='vote'}}">
+                <view class='voteTable'>
+                  <view class="tr bg-title" style='background-color:#FDF6EC;'>
+                    <view class="th title-color">投票</view>
+                  </view>
+                  <block wx:for="{{listData}}" wx:key="{{code}}">
+                    <view class="tr bg-cont title-color">
+                      <view class="td border-right" style='background-color:#FDF6EC;'>{{index+1}}</view>
+                      <view class="td border-right">{{item.title}}</view>
+                      <view class="td">{{item.voteNum}}</view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <!-- 中奖 -->
+              <view class='reward_content' wx:if="{{activePlugTab=='reward'}}">
+                <view class='reward_title'>
+                  <view>奖品</view>
+                  <view>中奖人</view>
+                  <view>兑奖状态</view>
+                </view>
+                <view class='item_list' wx:for="{{rewardDataList}}" wx:key="{{index}}">
+                  <view class='td-1'>
+                  {{item.optionName}}  {{item.prizeName}}
+                  </view>
+                  <view class='td-2' bindtap='pulgFromEvent' data-maskitem='{{item}}'>
+                    <image src='{{item.face}}'></image>
+                    <view>{{item.nickname}}</view>
+                  </view>
+                  <view class='td-3'>{{item.exchangeState==1?'已兑奖':'未兑奖'}} </view>
+                </view>
+              </view>
+              <i-load-more wx:if="{{showLoadMore}}" tip="{{textinfo}}" loading="{{ textinfo=='玩命加载中...'?true:false }}" />
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+  </view>
+</view>
+<view class='mask' wx:if="{{isShowInfo}}">
+  <view class='mask_cont'>
+    <view class='mask_title'>
+      <image src='{{maskInfoData.face}}'></image>
+      <view class='mask_name'>{{maskInfoData.nickname}}</view>
+    </view>
+    <view class='mask_info_top' wx:if="{{activePlugTab=='reward'}}">
+      <view class="maskInfoTop_itme">
+        <text>活动名称：</text>
+        <text class='mask_info_top_right'>{{maskInfoData.prizeName}}</text>
+      </view>
+      <view  class="maskInfoTop_itme">
+        <text>奖项奖品：</text>
+        <text class='mask_info_top_right'>{{maskInfoData.prizeName}}</text>
+      </view>
+      <view  class="maskInfoTop_itme">
+        <text>兑奖情况：</text>
+        <text class='mask_info_top_right'>{{maskInfoData.userCashType==1?'线上兑奖':'线下兑奖'}} {{maskInfoData.exchangeState==1?'奖品已寄出':'未兑奖'}} {{maskInfoData.exchangetime}}</text>
+      </view>
+    </view>
+    <view class='mask_info_bottom' wx:if="{{activePlugTab=='reward' && maskInfoData.exchangeState==1}}">
+      <view wx:for="{{maskInfoData.content}}" wx:key="{{index}}" class='mask_info_item'>
+        <text>{{item.name}}：</text>
+        <text>{{item.content}}</text>
+      </view>
+    </view>
+    <view class='mask_info_bottom' wx:if="{{activePlugTab=='formData'}}">
+      <view wx:for="{{formDataTitle}}" wx:key="{{index}}" class='mask_info_item'>
+        <text wx:if="{{index>0}}">{{item}}：</text>
+        <text wx:if="{{index>0}}">{{maskInfoData.detail.content[index-1].text}}</text>
+      </view>
+    </view>
+    <view class='mask_info_btns'>
+      <view class='mask_btn_left' bindtap='copyMaskInfo'>复制信息</view>
+      <view  bindtap='closeMask' class='mask_btn_right'>朕知道了</view>
+    </view>
+  </view>
+  <view bindtap='closeMask' class="iconfont icon-guanbi"></view>
+</view>

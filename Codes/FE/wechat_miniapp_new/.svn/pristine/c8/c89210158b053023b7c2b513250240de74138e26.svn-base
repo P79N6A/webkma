@@ -1,0 +1,40 @@
+<view class='custom-block'>
+  <!-- 用于营销日报处 -->
+  <block wx:if="{{where == 'home' || where == 'task' }}">
+    <view class='block' style='width: 730rpx;max-height: 223rpx;border-radius: 10rpx;margin-left: auto;margin-right: auto;'>
+      <view class='row-title home-title' style='border: none;' wx:if="{{where !='task'}}">
+        <image class='icon-custom' src="/images/icon-custom.png"></image>
+        <text class='title' style='margin-right: 10rpx;'>{{title}}</text>
+        <text class='total'>{{count}}</text>
+      </view> 
+      <view class='headimg-list flex'>
+        <view class='headimg-wrap'>
+          <image src='{{item.face}}' style='left:{{index * 48}}rpx;z-index:{{10 - index}};' wx:for="{{listData}}" wx:key="index" wx:if="{{index < 10}}"></image> 
+        </view>
+        <view wx:if="{{count > 10}}">
+          <text>...</text>
+          <view class='overview-btn' catchtap='jumpCustomList'>+{{listData.length - 10}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <!-- 用于其他页面 -->
+  <block wx:else>
+    <view class='block' style='width: 100%;height: 200rpx;'>
+      <view class='row-title'>
+        <text class='title' style='margin-right: 10rpx;'>{{title}}</text>
+        <text class='count'>{{count}}</text>
+        <text class='total' wx:if="{{!!total}}">/{{total}}</text>
+      </view>
+      <view class='headimg-list flex'>
+        <view class='headimg-wrap'>
+          <image src='{{item.face}}' style='left:{{index * 48}}rpx;z-index:{{10 - index}};' wx:for="{{listData}}" wx:key="index" wx:if="{{index < 10}}"></image>
+        </view>
+        <view wx:if="{{count > 10}}">
+          <text>...</text>
+          <view class='overview-btn' catchtap='jumpCustomList'>+{{listData.length - 10}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

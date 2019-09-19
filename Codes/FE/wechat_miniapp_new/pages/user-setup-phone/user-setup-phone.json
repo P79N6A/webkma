@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "解绑手机",
+  "backgroundTextStyle": "dark",
+  "usingComponents":{
+    "comp-slider-validation": "/components/slider-validation/slider-validation"
+  }
+}

@@ -1,0 +1,51 @@
+<!--pages/customer/customer.wxml-->
+<block wx:if="{{!!employeeId || employeeId!==''}}">
+  <view class='container'>
+    <view class='customer-head'>
+      <view class='overview'>
+        <text class='font-22 font-white'>客户总数</text>
+        <view class='flex justify-content-between'>
+          <text class='font-56'>{{customerStatistics.customer_total || '0'}}</text>
+          <text class='font-22 font-white' style='line-height:73rpx;'>人脉层级 {{customerStatistics.connections_level || '0'}}</text>
+        </view>
+      </view>
+      <view class='info-option flex'>
+        <view class='flex flex-column font-22 tips-gary' bindtap='todayNew'>
+          <text>今日新增</text>
+          <text class='font-36 info-color line-70'>{{customerStatistics.today_add || '0'}}</text>
+        </view>
+        <view class='flex flex-column font-22 tips-gary' bindtap='yesterdayNew'>
+          <text>昨日新增</text>
+          <text class='font-36 info-color line-70'>{{customerStatistics.yesterday_add || '0'}}</text>
+        </view>
+        <view class='flex flex-column font-22 tips-gary' bindtap='makeCustomer'>
+          <text>成交客户</text>
+          <text class='font-36 info-color line-70'>{{customerStatistics.transaction_customer || '0'}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='customer-list'>
+      <view class='title'>
+        <view class='side-line'></view>
+        <text class='font-26 title-color'>最新客户</text>
+        <view class='drop-option'>
+          <view bindtap="customerAction" style='position:relative;'>
+            <text class='font-22 tips-gary'>{{customerActionText}}</text>
+            <text class='corner'></text>
+            <!-- <icon type='icon-zhankai1'></icon> -->
+          </view>
+        </view>
+      </view>
+      <comp-customer-info wx:if="{{customerList.length != 0}}" list="{{customerList}}" where="customer"></comp-customer-info>
+      <view wx:else class='color-gray font-30 place-text font-22'>- 暂无数据 -</view>
+      <!-- <i-load-more wx:if="{{showLoadMore}}" tip="{{textinfo}}" loading="{{ textinfo=='玩命加载中...'?true:false }}" /> -->
+      <i-load-more wx:if="{{customerList.length != 0 && pageIndex > 1}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='玩命加载中'}}" />
+    </view>
+  </view>
+</block>
+<block wx:else>
+  <view style='text-align:center;margin-top:200rpx;'>
+    <image src='../../images/cover-data-error.png'></image>
+  </view>
+  <view style='text-align:center;'>游客</view>
+</block>

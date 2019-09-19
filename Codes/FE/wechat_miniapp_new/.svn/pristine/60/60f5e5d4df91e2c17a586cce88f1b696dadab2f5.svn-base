@@ -1,0 +1,29 @@
+<view class='list-card'>
+  <block wx:if="{{isLoading && listData.length == 0}}">
+    <image class='img' mode="widthFix" style='width: 100%; height:100vh;' src='/images/bg-list-placeholder.jpg'></image>
+  </block>
+  <block wx:else>
+    <view class="item-card" wx:if="{{listData.length > 0}}" wx:for="{{listData}}" wx:for-item="item" wx:key="{{item.id}}">
+      <view class='card-body' data-item-id="{{item.id}}" data-type='{{item.scanType}}' catchtap='onTapHandler' data-event-type="tapEvent">
+        <view class='tips' wx:if="{{showJoinCount}}">参与数：{{item.totalJoin}}</view>
+        <view class='tips' wx:if="{{showIsShare&&item.shared==0}}">未分享</view>
+        <image class='img' mode="aspectFill" src='{{item.cover}}'></image>
+        <view class='finished' wx:if="{{!!item.finished}}">
+        </view>
+      </view>
+      <view class='card-desc'>
+        <view class='card-title'>{{item.name || item.sourceName}}</view>
+        <view class='card-help' wx:if="{{!isTask}}">
+          <text wx:if="{{showPublishTime}}" style="font-size:20rpx">发布时间：{{item.createTime}}</text> </view>
+        <view class='desc-help'  wx:if="{{!!isTask}}">
+          <image class='pull-left' wx:if="{{!!isPoster}}" src="/images/icon-scan.png"></image><text class='pull-left'>{{item.view}}</text> 
+          <image class='pull-left' wx:if="{{!!isPoster}}" src="/images/icon-transfer.png" style='margin-left: 20rpx;'></image><text class='pull-left'>{{item.forwarding}}</text> 
+        </view>
+        <view class='btn' data-item-id="{{item.id}}" catchtap='onTapHandler' data-event-type="shareEvent" wx:if="{{!!isTask}}">分享推广</view>
+      </view>
+    </view>
+    <view style="width:100%;">
+      <comp-page-box-tips type="{{listData.length == 0?'empty':''}}"></comp-page-box-tips>
+    </view>
+  </block>
+</view>

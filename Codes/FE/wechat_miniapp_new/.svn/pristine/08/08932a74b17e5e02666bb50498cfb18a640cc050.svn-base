@@ -1,0 +1,5 @@
+<form bindsubmit="getFormId" report-submit='true'>
+  <button formType="submit" class="form_empty_button {{textAlignClassName}} {{menuFlag=='menu'?'border-bottom':''}}">
+    <slot></slot>
+  </button>
+</form>

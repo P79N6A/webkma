@@ -1,0 +1,11 @@
+﻿
+#_panelId_  {
+
+}
+	#_panelId_>div,#_panelId_>div>form{
+		width: 100%;
+		height: 100%;
+	}
+    #_panelId_ .btn-submit {
+        width: 100%;
+    }

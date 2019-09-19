@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "comp-page-box-tips": "/components/page-box-tips/page-box-tips"
+  }
+}

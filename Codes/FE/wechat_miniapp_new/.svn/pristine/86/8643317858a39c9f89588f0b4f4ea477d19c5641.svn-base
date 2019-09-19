@@ -1,0 +1,298 @@
+const
+  activityService = require('../../services/activity-service.js'),
+  config = require('../../config.js'),
+  utils = require('../../utils/util.js'),
+  cardsService = require('../../services/cards.js');
+
+let self;
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    shareCoverImg: "", //分享给微信好友的封面图片
+    exchangeCoverImg: "" , //交换名片的封面图片
+    coverSaveStatus: 0
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    self = this;
+    self.userInfo = getApp().globalData.userInfo;
+    self.setData({
+      userInfo: self.userInfo
+    })
+    wx.showLoading({
+      title: '数据加载中'
+    });
+    new Promise((resolve, reject) => {
+      let option = {
+        relationId: self.userInfo.businessId,
+        rootUserId: self.userInfo.userId,
+        forwardKey: '',
+        sourceType: 1,
+        clientType: 'weapp'
+      };
+      activityService.getforwardKey(option, (err, res) => {//获取转发者forwardkey
+        if (!!res && res.status == 0) {
+          self.data.forwardkey = res.data;
+          self.data.timeStamp = new Date().getTime();
+        }
+        resolve(null);
+      });
+    }).then((result) => {
+      self.buildImg();
+      utils.createShareCover('canvas_cover_1', self.userInfo, self);
+    })
+  },
+  // 生成名片图片
+  buildImg: function (download) {
+    let canvasContainer = {//canvas容器的rpx尺寸
+      width: 720,
+      height: 900
+    };
+    wx.createSelectorQuery().select('.cover_box').fields({
+      size: true,
+    }, (box) => {
+      let
+        qrcodeInfo = {//小程序码
+          source: null,
+          size: {
+            rateW: 300 / canvasContainer.width,  
+            rateH: 300 / canvasContainer.height
+          }
+        };
+      new Promise((resolve, reject) => {
+        if (!!wx.getStorageSync('cardQrcodeImg')){
+          resolve();
+        } else {
+          let option = {
+            data: {
+              "from_user": self.userInfo.userId,
+              "from_company": self.userInfo.businessId || '',
+              "forwardKey": self.data.forwardKey,
+              "rootUserId": self.userInfo.userId,
+              "timeStamp": self.data.timeStamp
+            },
+            type: 'conf_card'
+          };
+          if (!download) {
+            wx.showLoading({
+              title: '小程序码生成中'
+            });
+          }
+          cardsService.saveCustomConfig(option, function (err, res) {
+            if (res.status == 0) {
+              resolve(res.data);
+            } else {
+              reject();
+            }
+          })
+        }
+        
+      }).then((id) => {
+        return new Promise((resolve, reject) => {
+          function next(file){
+            if (!self.data.qrcodeImg) {
+              self.setData({
+                qrcodeImg: file
+              })
+              wx.hideLoading();
+            }
+            wx.getImageInfo({
+              src: file,
+              success: resolve,
+              fail: reject
+            })
+          }
+          if (!!wx.getStorageSync('cardQrcodeImg')){
+            next(wx.getStorageSync('cardQrcodeImg'));
+          } else {
+            activityService.creatQrcode(JSON.stringify({
+              "width": 300,
+              "page": "pages/index/index",
+              "isHyaline": true,
+              "scene": `act=card&id=${id}`
+            }), function (err, res) {
+              if (res.status == 0) {
+                wx.setStorageSync('cardQrcodeImg', res.data.file);
+                next(res.data.file);
+              } else {
+                reject();
+              }
+            })
+          }
+        })
+      }).then((result) => {
+        qrcodeInfo.source = result.path;
+        const ctx = wx.createCanvasContext('canvas_cover');
+        // 设置底色
+        ctx.setFillStyle('white');
+        ctx.fillRect(0, 0, box.width, box.height);
+        
+        // 绘制背景
+        ctx.drawImage('../../images/offlinecashprize-bg.png',
+          0, 0, box.width, box.height * 0.31
+        );
+        ctx.arc(box.width / 2, 230 / canvasContainer.height * box.height, qrcodeInfo.size.rateW * box.width / 2, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // 绘制小程序码
+        ctx.drawImage(qrcodeInfo.source,
+          211 / canvasContainer.width * box.width ,
+          83 / canvasContainer.height * box.height,
+          qrcodeInfo.size.rateW * box.width,
+          qrcodeInfo.size.rateH * box.height
+        );
+        
+        function fillTextFn(str, fontSize, fontColor, startX, startY){
+            let maxWidth = box.width - startX,
+            maxLength = Math.floor(maxWidth / fontSize);
+          ctx.setTextBaseline('top');
+          ctx.setFontSize(fontSize);
+          ctx.setTextAlign('left');
+          ctx.setFillStyle(fontColor);
+          if (str.length <= maxLength) {
+            ctx.fillText(str, startX, startY, maxWidth);
+          } else {
+            ctx.fillText(str.substring(0, maxLength - 3) + '...', startX, startY, maxWidth);
+          }
+        }
+        // 绘制名片文字内容
+        fillTextFn(self.userInfo.name, (36 / canvasContainer.width * box.width), '#000000', (50 / canvasContainer.width * box.width), (440 / canvasContainer.height * box.height));
+        fillTextFn(self.userInfo.job || '暂无职位', (24 / canvasContainer.width * box.width), '#999999', (50 / canvasContainer.width * box.width), (495 / canvasContainer.height * box.height));
+
+        function drawIconFn(path, startyPoint) { //小图标绘制
+          ctx.drawImage(path,
+            (50 / canvasContainer.width * box.width),
+            (startyPoint / canvasContainer.height * box.height),
+            (35 / canvasContainer.width * box.width),
+            (35 / canvasContainer.height * box.height)
+          );
+        }
+        drawIconFn('../../images/card-company.png', 570);
+        drawIconFn('../../images/card-phone.png', 626);
+        drawIconFn('../../images/card-email.png', 683);
+
+        fillTextFn(self.userInfo.company || '暂无公司', (28 / canvasContainer.width * box.width), '#555555', (95 / canvasContainer.width * box.width), (572 / canvasContainer.height * box.height));
+        fillTextFn(self.userInfo.phone || '暂无电话', (28 / canvasContainer.width * box.width), '#555555', (95 / canvasContainer.width * box.width), (628 / canvasContainer.height * box.height));
+        fillTextFn(self.userInfo.email || '暂无邮箱', (28 / canvasContainer.width * box.width), '#555555', (95 / canvasContainer.width * box.width), (683 / canvasContainer.height * box.height));
+        fillTextFn('扫一扫小程序码，面对面递名片', (24 / canvasContainer.width * box.width), '#999999', (194 / canvasContainer.width * box.width), (829 / canvasContainer.height * box.height));
+
+        ctx.setLineDash([(5 / canvasContainer.width * box.width), (5 / canvasContainer.width * box.width)]); 
+        ctx.lineWidth = (4 / canvasContainer.width * box.width); 
+        ctx.strokeStyle = '#999999'; 
+        ctx.beginPath(); 
+        ctx.moveTo((20 / canvasContainer.width * box.width), (776 / canvasContainer.height * box.height)); 
+        ctx.lineTo((704 / canvasContainer.width * box.width), (776 / canvasContainer.height * box.height)); 
+        ctx.stroke();
+
+        ctx.draw(true, () => {
+          if (download)
+          self.saveImage();
+        });
+      }).catch(self.errMessage);
+    }).exec();
+  },
+  // 保存到相册
+  saveImage: function () {
+    wx.createSelectorQuery().select('.cover_box').fields({
+      size: true,
+    }, (box) => {
+      wx.canvasToTempFilePath({
+        fileType: "png",
+        width: box.width, //导出图片的宽
+        height: box.height, //导出图片的高
+        destWidth: box.width * 750 / wx.getSystemInfoSync().windowWight,
+        destHeight: box.height * 750 / wx.getSystemInfoSync().windowWight,
+        canvasId: 'canvas_cover',
+        success: (res) => {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: (res) => {
+              self.setData({
+                coverSaveStatus: 1
+              });
+              wx.hideLoading();
+              utils.toast.success({
+                title: "图片下载成功"
+              });
+            },
+            fail: (err) => {
+              wx.hideLoading();
+              utils.toast.fail({
+                title: "图片下载失败"
+              });
+              console.error("图片下载失败", err);
+              self.setData({
+                coverSaveStatus: 2
+              });
+            }
+          })
+        },
+        fail: self.errMessage
+      })
+    }).exec();
+  },
+  // 下载图片
+  downloadCard: function(){
+    wx.showLoading({
+      title: '名片图片下载中'
+    });
+    self.buildImg(true);
+  },
+  // 授权使用保存到相册功能回调
+  saveImg: function(){
+    self.setData({
+      coverSaveStatus: 1
+    });
+    this.downloadCard();
+  },
+  errMessage: function (err) {
+    wx.hideLoading();
+    utils.toast.fail({
+      title: "图片生成失败"
+    });
+    console.error(err);
+  },
+  // 跳转到名片图片页面
+  toShareCardPage: function(){
+    wx.navigateTo({
+      url: '/pages/bussiness-card-img/card-img'
+    })
+  },
+  // 分享
+  onShareAppMessage: function (e) {
+    let self = this
+    , shareType = e.from != 'button' ? '' : (e.target.dataset.type || '')
+    , shareObj = {}
+    , _param = '?from_user=' + self.userInfo.userId + (!!self.userInfo.businessId ? '&from_company=' + self.userInfo.businessId : '');
+    
+    shareObj = {
+      title: `你好，这是我的名片，请惠存`,
+      path: `/pages/index/index?target=` + encodeURIComponent(`/pages/bussiness-card-detail/bussiness-card-detail${_param}&origin=share&forwardKey=${self.data.forwardkey}&rootUserId=${self.userInfo.userId}&timeStamp=${self.data.timeStamp}`),
+      imageUrl: self.shareCoverImg
+    }
+    // 分享名片
+    activityService.behaviorRecord({
+      "forwardKey": self.data.forwardkey,
+      "relationId": self.userInfo.businessId,
+      "rootUserId": self.userInfo.userId,
+      "clientType": "weapp",
+      "indexType": "bussiness_card",
+      "timeStamp": self.data.timeStamp,
+      "extType": "share"
+    });
+    return shareObj;
+  },
+  // 跳转到红包名片
+  toRedEnvelopesPage: function () {
+    let _param = '?from_user=' + this.userInfo.userId + (!!this.userInfo.businessId ? '&from_company=' + this.userInfo.businessId : '');
+    wx.navigateTo({
+      url: '/pages/red-envelopes-card/red-envelopes-card' + _param
+    })
+  }
+})

@@ -1,0 +1,27 @@
+<i-row i-class="cell">
+  <i-col span="8" i-class="cell">
+    <slot></slot>
+  </i-col>
+  <i-col span="10" i-class="cell">
+    <ec-canvas id="chart_{{uid}}" canvas-id="chart_{{uid}}" ec="{{ec}}" wx:if="{{!isDisposed}}"></ec-canvas>
+  </i-col>
+  <i-col span="6" i-class="stat-cell">
+    <view style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+      <view class="row-text">
+        <text class="row-icon-total">●</text>
+        <text>浏览</text>
+        <text class="row-value">{{dataSource.total}}</text>
+      </view>
+      <view class="row-text">
+        <text class="row-icon-value">●</text>
+        <text>订单</text>
+        <text class="row-value">{{dataSource.value}}</text>
+      </view>
+      <view class="row-text">
+        <text class="row-icon-value">●</text>
+        <text>订单率</text>
+        <text class="row-value">{{(dataSource.value/dataSource.total)*100}}%</text>
+      </view>
+    </view>
+  </i-col>
+</i-row>

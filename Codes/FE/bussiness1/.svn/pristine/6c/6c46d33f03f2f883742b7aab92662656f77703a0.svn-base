@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "simkai";
+  src: url("simkai.woff2") format("woff2"),
+       url("simkai.woff") format("woff"),
+       url("simkai.ttf") format("truetype"),
+       url("simkai.eot") format("embedded-opentype"),
+       url("simkai.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}

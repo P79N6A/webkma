@@ -1,0 +1,112 @@
+<!--pages/staff-info/staff-info.wxml-->
+<view class='container'> 
+  <form bindsubmit="formSubmit" report-submit='true'>
+    <view class='staff-box'> 
+      <!-- 员工头像 -->
+      <view class='staff-photo' style='border-top: none;'> 
+        <text class='margin-left'>员工头像</text>
+        <!-- <view>头像</view> -->
+        <view bindtap='switchPhoto' >
+          <image class='staff-Img' src="{{imgSrc==null?'/images/icon-default-photo.png':imgSrc}}"></image>
+        </view>
+      </view>
+       <!-- 手机绑定 -->
+      <view class='staff-phone'>
+        <view>
+          <text>手机绑定</text>
+          <text class='phone'>{{dataList.phone==null?'':dataList.phone}}</text>
+        </view>
+        <view class='untying'>
+          <button wx:if="{{(dataList.phone!=='') && (dataList.phone!==null)?false:true}}" plain='true'  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class='getPhoneNumber'>立即绑定</button> 
+          <text wx:else class='bindcolor' bindtap='relieveBinding' data-phone='{{dataList.phone}}'>解除绑定</text>
+        </view>
+      </view>
+      <!-- 员工信息 -->
+      <view class='staff-info'>
+        <text class="icon-dott">*</text>
+        <text>姓名</text>
+        <!-- <view>{{dataList[current].name == null ? '--' : dataList[current].name}}</view> -->
+        <input name="userName" placeholder-class='text-color' disabled="{{emplId!==''?true:false}}" value="{{form.userName}}" placeholder="请输入" />
+      </view>
+      <view class='staff-info'>
+        <text class="icon-dott">*</text>
+        <text>性别</text>
+        <!-- <view>{{dataList[current].sex == 1 ? "男" : "女"}}</view> -->
+        <view bindtap="{{emplId!==''?'':'showSex'}}">
+          <text>{{sexIndex == 0 ? '男' : (sexIndex == 1 ? '女' : '请选择' )}}</text>
+          <image wx:if="{{emplId!==''?false:true}}" class='switch-arrows' src='/images/icon-arrows.png'></image>
+        </view>
+      </view>
+      <!-- 切换企业 -->
+      <view class='staff-corp' wx:if="{{emplId!==''?true:false}}">
+        <view>
+          <text class="icon-dott" style='margin-right:6rpx;'>*</text>
+          <text style='color:#000000;'>切换企业</text>
+        </view>
+        <view class='corp-text flex justify-content-between' bindtap='onTapSwitchCorp'>
+          <!-- <text>{{form.corpName}}</text> -->
+          <input name="corpName" value="{{form.corpName}}" disabled='true'/>
+          <image class='switch-arrows margin-top' src='/images/icon-arrows.png'></image>
+        </view>
+      </view>
+      <view class='staff-info' wx:else>
+        <text class="icon-dott">*</text>
+        <text>企业名称</text>
+        <input name="corpName" placeholder-class='text-color' value="{{form.corpName}}" placeholder="请输入" />
+      </view>
+       <view class='staff-info'>
+        <text class='margin-left'>所属部门</text>
+        <!-- <view>{{dataList[current].departmentName == null ? '--' : dataList[current].departmentName}}</view> -->
+        <input name="department" placeholder-class='text-color' disabled="{{emplId!==''?true:false}}" value="{{form.department}}" placeholder="请输入" />
+      </view>
+      <view class='staff-info'>
+        <text class='margin-left'>职位</text>
+        <!-- <view>{{dataList[current].job == null ? '--' : dataList[current].job}}</view> -->
+        <input name="job" placeholder-class='text-color' disabled="{{emplId!==''?true:false}}" value="{{form.job}}" placeholder="请输入" />
+      </view>
+      <view class='staff-info'>
+        <text class='margin-left'>微信号</text>
+        <!-- <view>小小鸟</view> -->
+        <input name="weChatNumber" placeholder-class='text-color' bindinput='saveData' value="{{form.weChatNumber}}" placeholder="请输入" />
+      </view>
+      <view class='staff-info'>
+        <text class='margin-left'>邮箱</text>
+        <!-- <view>953727948@email.com</view> -->
+        <input name="emailNumber" placeholder-class='text-color' bindinput='saveEmail' value="{{form.emailNumber}}" placeholder="请输入" />
+      </view>
+      <!-- <view class='staff-info' wx:else>
+        <text>手机号码</text>
+        <input name="phoneNumber" value="{{form.phoneNumber}}" placeholder="请输入" />
+      </view> -->
+    </view>
+    <view class='privacy-set'>
+      <view class='title'>
+        <text>隐私设置</text>
+      </view>
+      <view  class='phone'>
+        <text>手机号码</text>
+        <view bindtap='showPhone'>
+          <text>{{phoneIndex == 0 ? '可见' : (phoneIndex == 1 ? '仅交换名片可见' : '不可见' )}}</text>
+          <image class='switch-arrows' src='/images/icon-arrows.png'></image>
+        </view>
+      </view>
+      <view class='wechat'>
+        <text>微信号</text>
+        <view bindtap='shoWechat'>
+          <text>{{wxIndex == 0 ? '可见' : (wxIndex == 1 ? '仅交换名片可见' : '不可见' )}}</text>
+          <image class='switch-arrows' src='/images/icon-arrows.png'></image>
+        </view>
+      </view>
+      <view class='email'>
+        <text>邮箱</text>
+        <view bindtap='showEmail'>
+          <text>{{emailIndex == 0 ? '可见' : (emailIndex == 1 ? '仅交换名片可见' : '不可见' )}}</text>
+          <image class='switch-arrows' src='/images/icon-arrows.png'></image>
+        </view>
+      </view>
+    </view>
+    <view class='conserve-btn'>
+      <button formType="submit">保存</button>
+    </view>
+  </form>
+</view>

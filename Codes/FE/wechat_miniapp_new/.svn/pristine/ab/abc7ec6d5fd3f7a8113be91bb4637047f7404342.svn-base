@@ -1,0 +1,19 @@
+<view class='share-menu'>
+  <view class='share-mask' catchtap='shareBtn'></view>
+  <view class='menu-bar'>
+    <view>
+      <button class="weak-button menu-item" plain="true" hover-class="none" open-type="share" catchtap='shareBtn' data-type='friends' >
+        <view><image src='/images/icon-wechat-friends.png'></image></view>
+        <view>发送朋友</view>
+      </button>
+    </view>
+    <view class="menu-item"  catchtap='shareBtn' data-type='Moments'>
+      <view><image src='/images/icon-wechat-moments.png'></image></view>
+      <view>朋友圈</view> 
+    </view>
+    <view class='menu-item' catchtap='shareBtn' data-type='Link'>
+      <view><image src='/images/icon-wechat-link.png'></image></view>
+      <view>复制链接</view>
+    </view>
+  </view>
+</view>

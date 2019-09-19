@@ -1,0 +1,32 @@
+/* 快速导航 */
+.nav-spread{
+  position: fixed;
+  bottom: 140rpx;
+  right: 30rpx;
+  z-index: 9999;
+  width: 100rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 50rpx;
+  background-color: rgba(0,0,0,.7);
+  box-sizing: border-box;
+  box-shadow: 0rpx 5rpx 10rpx rgba(0,0,0,.2);
+}
+.nav-spread > view{
+  width: 100%;
+  font-size: 22rpx;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 34rpx;
+}
+.nav-spread > view:last-child{
+  margin-bottom: 0;
+}
+.nav-spread > view image{
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  margin: 0 auto 9rpx;
+}

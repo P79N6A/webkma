@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "BOSS报表",
+  "usingComponents": {
+    "custom-overview": "/components/custom-overview/custom-overview",
+    "task-list-item": "/components/tasks-item/tasks-item",
+    "base-line": "/components/base-line/base-line",
+    "boss-report": "/components/boss-report/boss-report"
+  }
+}

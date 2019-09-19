@@ -1,0 +1,108 @@
+/* pages/red-envelopes-detail/red-envelopes-detail.wxss */
+page{
+  background-color: #f1f3fc;
+}
+.info-photo{
+  width: 60rpx;
+  height: 60rpx;
+  vertical-align:-17rpx;
+  margin-right: 20rpx;
+  border-radius:60rpx;
+  text-align: center
+}
+.list-photo{
+  width: 100rpx;
+  height: 100rpx;
+  vertical-align: middle;
+  border-radius:60rpx;
+}
+.flex-column{
+  flex-direction: column;
+}
+.flex-row{
+  flex-direction: row;
+}
+.fs70{
+  font-size: 70rpx;
+}
+.fs36{
+  font-size: 36rpx;
+}
+.fs30{
+  font-size: 30rpx;
+}
+.fs28{
+  font-size: 28rpx;
+}
+.fs26{
+  font-size: 26rpx;
+}
+.fs24{
+  font-size: 24rpx;
+}
+.color-yellow{
+  color: #fbd392;
+}
+.color-gray{
+  color: #999999;
+}
+.color-block{
+  color: #000000;
+}
+.bgred{
+  background-color:#f35543;
+}
+.mb45{
+  /* margin-bottom: 25rpx; */
+}
+.mb40{
+  margin-bottom: 40rpx;
+}
+.text-center{
+  text-align: center;
+}
+.ellipsis{
+  display: inline-block;
+  max-width: 268rpx;
+  margin:0 auto;
+  padding-top:8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+}
+.red-main{
+  position: relative;
+}
+.red-bg{
+  width: 750rpx;
+   height:558rpx;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+
+}
+
+.red-info{
+  height: 546rpx;
+  position: relative;
+  z-index: 9;
+}
+.red-info view:nth-of-type(1){
+  padding: 20rpx 0;
+}
+.red-list{
+  min-height: 636rpx;
+  background-color: #FFFFFF;
+  padding-left: 30rpx;
+  margin-top: 25rpx;
+}
+.red-title{
+  height: 80rpx;
+  line-height: 80rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+.red-item{
+  height: 101rpx;
+  border-bottom: 1rpx solid #eeeeee;
+  padding: 22rpx 30rpx 22rpx 0;
+}

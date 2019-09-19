@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "活动中心",
+  "usingComponents": {
+    "comp-page-box-tips": "/components/page-box-tips/page-box-tips"
+  }
+}

@@ -1,0 +1,388 @@
+<template>
+  <div class="activity-list-box">
+    <fold title="海报模板管理">
+      <div class="fr operation" style="width:100%; height:60px; position: relative;z-index:999;">
+        <search :placeholder="searchOpt.placeholder"
+                @searchHandler="searchHander"
+                :style="{ width: '240px'}"
+                ></search>
+      </div>
+      <!-- 模板分类 -->
+      <category @trigger-event="categoryRefresh" />
+       <div class="table-data">
+        <el-table
+          ref="multipleSelection"
+          :data="tempList"
+          tooltip-effect="dark"
+          row-key="id"
+          class="table"
+          style="width: 100%"
+          header-row-class-name="table-header"
+          header-cell-class-name="table-header"
+        >
+          <el-table-column
+            show-overflow-tooltip
+            prop="name"
+            label="模板名称"
+            align="center"
+            class-name="number_color"
+          ></el-table-column>
+          <el-table-column
+            show-overflow-tooltip
+            prop="_category"
+            label="模板分类"
+            align="center"
+            class-name="number_color"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="tagName"
+            label="模板状态"
+            align="center"
+            class-name="number_color"
+          >
+            <template slot-scope="scope">
+              {{scope.row.lineState == 1 ? '已上架' : '已下架'}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="operator"
+            label="制作设计师"
+            align="center"
+            class-name="number_color"
+            width="200"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="operatorDate"
+            label="发布时间"
+            align="center"
+            width="200"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              {{formateDate(scope.row.operatorDate)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="businessTotal"
+            label="使用商家数"
+            align="center"
+            class-name="number_color"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="useTotal"
+            label="活动采用数"
+            align="center"
+            class-name="number_color"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              {{scope.row.useTotal==null?'-':scope.row.useTotal}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop=""
+            label="操作"
+            align="center"
+            width="440"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <div class="flex" style="padding-left:128px;">
+                <span class="keywords btn-plain" @click="action('preview',scope.row)">预览</span>
+                <span class="keywords btn-plain" @click="action('handout',scope.row)">查看详情</span>
+                <span class="mrl10 keywords btn-plain" @click="action('del',scope.row)">删除</span>
+                <span class="mrl10 keywords btn-plain" @click="action('shelves',scope.row)">{{scope.row.lineState == 1 ? '下架' : '上架'}}</span>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="margin:10px 10px 0 0;">
+          <pagination
+            v-if="paginationOpt.pageCount > 1"
+            class="pull-right"
+            :paginationOpt="paginationOpt"
+            @switchPage="pagesFn"
+          />
+        </div>
+      </div>
+      <comDialog title="模板使用情况" size="830px" :modal-show.sync="modalVisible">
+        <div class="navigator">
+          <navigator :tabs="navigatorOpts.tabs" @navigator-event="transferTab"></navigator>
+        </div>
+        <div class="tabBox" id="case_wrap">
+          <el-table
+            :data="businessList"
+            style="width: 100%">
+            <el-table-column
+              label="账号"
+              prop="businessPhone">
+            </el-table-column>
+            <el-table-column
+              label="公司名称"
+              prop="businessName">
+            </el-table-column>
+            <el-table-column
+              align="right">
+              <template slot="header">
+                <search :placeholder="searchOptBusiness.placeholder"
+                class="operation"
+                @searchHandler="searchBussiness"
+                :style="{ width: '230px'}"
+                ></search>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="margin:10px 10px 0 0;">
+            <pagination
+              v-if="businessOpt.pageCount > 1"
+              class="pull-right"
+              :paginationOpt="businessOpt"
+              @switchPage="pagesFnBus"
+            />
+          </div>
+        </div>
+      </comDialog>
+    </fold>
+  </div>
+</template>
+
+<script>
+import api from "../../axios/api-service";
+import fold from "../../components/com-fold";
+import search from "../../components/com-search";
+import category from "../../components/com-category";
+import comDialog from "../../components/com-dialog";
+import navigator from "../../components/navigator";
+import pagination from "../../components/ui-pagination";
+import { createPreviewWindow } from "../../utils";
+
+export default {
+  name: "activity-template",
+  components: { fold, pagination, search, category, comDialog, navigator },
+  data() {
+    return {
+      searchOpt: { //搜索
+        placeholder: '请输入模板名称，设计师'
+      },
+      searchKeyword: "", 
+      caregoryFilter: null,
+      tempList: [], //活动列表
+      businessList: [], //商家列表数据
+      paginationOpt: { //模板分页
+        pageIndex: 1,
+        pageCount: '',
+        pageSize: 11
+      },
+      businessOpt: { //模板分页
+        pageIndex: 1,
+        pageCount: '',
+        pageSize: 8
+      },
+      businesskeyword: '', //关键词
+      searchOptBusiness: {
+        placeholder: '请输入账号或公司名'
+      },
+      downLoadUrl: '',
+      manuscriptId: "", //稿件或活动Id
+      designerId: "", //选中的商家id
+      distribution: "", //未使用或使用商家状态
+      modalVisible: false, //弹出框状态
+      navigatorOpts: { //tab切换
+        tabs: [
+          { key: "hasUsed", title: "已使用商家", selected: true},
+          { key: "unUsed", title: "未使用商家" }
+        ],
+        selectedKey: "hasUsed"
+      },
+    };
+  },
+  mounted() {
+    this.getTempList();
+  },
+  methods: {
+    //模板分类
+    categoryRefresh(data) {
+      this.caregoryFilter = data || null;
+      this.paginationOpt.pageIndex = 1;
+      this.getTempList();
+    },
+    //搜索模板
+    searchHander(data) {
+      this.searchKeyword = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getTempList();
+    },
+    //搜索商家
+    searchBussiness(data){
+      this.businesskeyword = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getBusinessList();
+    },
+    //获取模板列表
+    getTempList(cb) {
+      var self = this;
+      var obj = {
+          pageIndex: self.paginationOpt.pageIndex,
+          pageSize: self.paginationOpt.pageSize,
+          search: self.searchKeyword,
+          designerId: self.designerId,
+          manuscriptType: 2
+      }
+      if (self.caregoryFilter) {
+          obj.catIds = self.caregoryFilter;
+          obj.catRelation = 1;
+      }
+      api.request("getTempList",obj,result => {
+        if (result.status == 0) {
+          self.tempList = result.data.list.map(function (_item) {
+              _item._category = JSON.parse(_item.cats || "[]").map(function (cat) { return cat.name }).join(", ") || "无";
+              return _item;
+          });
+          self.paginationOpt.totalCount = result.data.total;
+          self.paginationOpt.pageCount = Math.ceil(
+            self.paginationOpt.totalCount / self.paginationOpt.pageSize
+          );
+        } else {
+          self.messenger.error(result.message);
+        }
+        !!cb && cb();
+      })
+    },
+    //模板分页
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getTempList(cb);
+    },
+    //获取商家列表
+    getBusinessList(cb){
+      let _this = this;
+      let _option = {
+        businessType: 1,//商家/设计师 类型 1商家 2设计师 空 全部
+        businesskeyword: this.businesskeyword,//商家/设计师查询关键词
+        manuscriptId: this.manuscriptId,//稿件/模板id 选填
+        distribution: this.distribution,//过滤分配情况 1 只显示已分配的， 0 只显示未分配的，不传显示所有
+        pageIndex: this.businessOpt.pageIndex,//页码
+        pageSize: this.businessOpt.pageSize,//页面大小
+      }
+      api.request("getBussinessList", _option, result => {
+        if (result.status == 0) {
+          _this.businessList = result.data.data;
+          _this.businessOpt.totalCount = result.data.total;
+          _this.businessOpt.pageCount = Math.ceil(
+            _this.businessOpt.totalCount / _this.businessOpt.pageSize
+          );
+        } else {
+          _this.messenger.error(result.message);
+        }
+        !!cb && cb();
+      });
+    },
+    //商家分页
+    pagesFnBus(pageIndex, cb){
+      this.businessOpt.pageIndex = pageIndex;
+      this.getBusinessList(cb);
+    },
+    //事件集合
+    action(type, data){
+      var self = this;
+      switch (type) {
+        case "preview"://点击预览
+          var url = data.url;
+          createPreviewWindow(data.url, data.id);
+          break;
+        case "handout"://查看详情
+          this.modalVisible = true;
+          this.businessList = [];
+          this.businessOpt.pageIndex = 1
+          this.manuscriptId = data.id;
+          this.businesskeyword = '';
+          if(this.navigatorOpts.selectedKey == 'hasUsed'){
+            this.distribution = 1;
+          }else if(this.navigatorOpts.selectedKey == 'unUsed'){
+            this.distribution = 0;
+          }
+          this.getBusinessList();
+          break;
+        case "del"://删除
+          let _this = this;
+          console.log("data",data)
+          this.messenger.confirm('删除后该模板数据将不可恢复,是否确认删除?(请注意模板素材以及分发信息的备份)',function(tag){
+              if(tag){
+                api.request("delTemplate",{ "id": data.id },result => {
+                  if (result.status == 0) {
+                        _this.messenger.success('已删除成功！');
+                        _this.paginationOpt.pageIndex = 1;
+                        _this.getTempList();
+                    }
+                })
+              }
+          })
+          break;
+        case "shelves"://模板上下架
+          var opt = {
+              id: data.id,
+              state: data.lineState == 1 ? 0 : 1
+          }
+          api.request("shelvesTemplate",opt,result => {
+            if (result.status == 0) {
+              self.messenger.success((opt.state == 0 ? '下架' : '上架') + '成功!');
+              self.getTempList();
+            } else {
+              self.messenger.error((opt.state == 0 ? '下架' : '上架') + '失败!<br>' + result.message);
+            }
+          })
+          break;
+      }
+    },
+    //tab菜单切换
+    transferTab(tab){ 
+      var self = this;
+      self.navigatorOpts.selectedKey = tab.split(".")[0];
+      switch (tab.split(".")[0]) {
+        case "hasUsed":
+          self.distribution = 1;
+          self.businessList = [];
+          self.businessOpt.pageIndex = 1
+          self.businesskeyword = '';
+          self.getBusinessList();
+          break;
+        case "unUsed":
+          self.distribution = 0;
+          self.businessOpt.pageIndex = 1
+          self.businesskeyword = '';
+          self.businessList = [];
+          self.getBusinessList();
+          break;
+      }
+    },
+    //时间格式转换
+    formateDate(datetime) {
+        function addDateZero(num) {
+            return (num < 10 ? "0" + num : num);
+        }
+        var d = new Date(datetime);
+        var formatdatetime = d.getFullYear() + '-' + addDateZero(d.getMonth() + 1) + '-' + addDateZero(d.getDate()) + ' ' + addDateZero(d.getHours()) + ':' + addDateZero(d.getMinutes()) + ':' + addDateZero(d.getSeconds());
+        return formatdatetime;
+    }
+  }
+};
+</script>
+<style scoped>
+  .activity-list-box >>> .material-label-box .el-collapse-item__content{
+    padding-top:0!important;
+  }
+  .activity-list-box >>> .comp-navigator{
+    margin: 0;
+    overflow-y: hidden;
+  }
+  .activity-list-box >>> .el-input__inner{
+    margin: 16px 0 0 10px;
+  }
+  .tabBox{
+    max-height: 500px;
+    /* overflow-y: scroll; */
+  }
+</style>

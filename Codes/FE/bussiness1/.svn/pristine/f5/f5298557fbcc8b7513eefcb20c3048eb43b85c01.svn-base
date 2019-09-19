@@ -1,0 +1,266 @@
+<!doctype html>
+<html style="overflow:hidden;">
+<head>
+    <meta charset="utf-8 ">
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no" />
+    <!--uc-->
+    <meta name="layoutmode" content="standard" />
+    <title>这是一个活动标题的预约页</title>
+    <link rel="styleSheet" href="/public/dist/vendor.css" />
+    <link rel="styleSheet" href="/public/dist/h5-framework.css" />
+    <style>
+        .eplipes {
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+        .general-font{
+            font-size:0.346rem;
+            color: #B1BFCD; 
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        input::-webkit-input-placeholder { /* WebKit browsers 适配谷歌 */
+            color: #B1BFCD;;
+        }
+        input:-moz-placeholder { /* Mozilla Firefox 4 to 18 适配火狐 */
+            color: #B1BFCD;;
+        }
+        input::-moz-placeholder { /* Mozilla Firefox 19+ 适配火狐 */
+            color: #B1BFCD;;
+        }
+        input:-ms-input-placeholder { /* Internet Explorer 10+  适配ie*/
+            color: #B1BFCD;;
+        }
+        .tips{
+            text-overflow: -o-ellipsis-lastline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        /* 设置预约 */
+        .page-body .set-make{
+            width: 10rem;
+            height: 15.85rem;
+            padding-top: 0.35rem;
+            background-color: #F7F7FF;
+        }
+        .page-body .set-make .make-info{
+            width: 9.3rem;
+            height: 11.2rem;
+            background-color: #fff;
+            margin: 0 auto;
+            position: relative;
+        }
+        .page-body .set-make .make-info .goods{
+            height: 3.63rem;
+            border-bottom: 0.013rem dashed #DDE4EB;
+            padding: 0.57rem 0 0.57rem 0.3rem;
+            margin: 0 0.2rem;
+        }
+        .page-body .set-make .make-info .goods > img{
+            width: 2.67rem;
+            height: 2.67rem;
+            vertical-align: -0.2rem;
+            margin-right: 0.24rem;
+        }
+        .page-body .set-make .make-info .goods > div{
+            display: inline-block;
+            width: 5.2rem;
+            height: 2.67rem;
+            font-size: 0.426rem;
+        }
+        .page-body .set-make .make-info .goods > div p:nth-of-type(1){
+            font-size: 0.426rem;
+            padding-bottom:0.4rem;
+        }
+        .page-body .set-make .make-info .goods > div p:nth-of-type(2){
+            font-size: 0.346rem;
+            line-height: 0.5rem;
+            color: #B1BFCD;
+        }
+        .page-body .set-make .make-info .make-title{
+            font-size: 0.426rem;
+            text-align: center;
+            padding: 0.72rem 1.7rem;
+        }
+        .page-body .set-make .make-info input{
+            width: 7.82rem;
+            height: 1.31rem;
+            font-size: 0.37rem;
+            color: #B1BFCD;
+            border: none;
+            outline: none;
+            border-bottom: 0.013rem solid #DDE4EB;
+        }
+
+        .page-body .set-make .make-info .verification .verify-btn{
+            font-size: 0.37rem;
+            color: #B1BFCD;
+            position: absolute;
+            right: 0;
+            top: 0.4rem;
+            cursor: pointer;
+        }
+
+        .page-body .set-make .make-info .line span{
+            display: inline-block;
+            position: absolute;
+        }
+        .page-body .set-make .make-info .line span:nth-of-type(1){
+            border: 0.2rem solid #F7F7FF;
+            border-bottom-color: transparent;  
+            border-top-color: transparent;
+            border-right-color: transparent;
+        }
+        .page-body .set-make .make-info .line span:nth-of-type(2){
+            width: 9.2rem;
+            border: 0.013rem dashed #F7F7FF;
+            left: 0;
+            top: 0.2rem;
+        }
+        .page-body .set-make .make-info .line span:nth-of-type(3){
+            border: 0.2rem solid #F7F7FF;
+            border-bottom-color: transparent;  
+            border-top-color: transparent;
+            border-left-color: transparent;
+            right: 0;
+        }
+        .page-body .set-make .make-info .make-btn{
+            border: none;
+            outline: none;
+            width: 8rem;
+            height: 1.06rem;
+            line-height: 1.06rem;
+            font-size: 0.37rem;
+            color: #fff;
+            border-radius: 0.13rem;
+            background-color: #24D0C6;
+            position: absolute;
+            bottom: 0.58rem;
+            left: 0.7rem;
+            cursor: pointer;
+        }
+        .page-body .return{
+            font-size: 0.32rem;
+            color: #3898EC;
+            text-align: center;
+            margin-top: 0.52rem;
+            cursor: pointer;
+        }
+        /* 预约成功 */
+        .page-body .succeed-info{
+            width: 10rem;
+            height: 15.85rem;
+            background-color: #FFFFFF;
+        }
+        .page-body .succeed-info p{
+            text-align: center;
+            margin: 0 auto;
+        }
+        .page-body .succeed-info .qrcode-img{
+            width: 2.67rem;
+            height: 2.67rem;
+        }
+        .page-body .succeed-info .web-link{
+            display: inline-block;
+            max-width: 2rem;
+            position: relative;
+            top: 0.1rem;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+</head>
+
+<body class="page-body">
+    <div id="page-panel" data-container="true" class="page-panel swiper-container">
+        <!-- 设置vip预约页 -->
+        <div class="set-make">
+            <div class="make-info">
+                <div style="height: 8.7rem;">
+                    <div class="goods">
+                        <img src="../../../../static/images/succeed-bg.png">
+                        <div>
+                            <p class="eplipes">设计师端设置的商品标题</p>
+                            <p class="tips">这是设计师端设置的预约备注说明信息这是设计师端设置的预约备注说明信息</p>
+                        </div>
+                    </div>
+                    <p class="make-title eplipes">这是设计师端设置的预约标题2</p>
+                    <div class="scroll-box" style="height: 3.1rem;padding: 0 0.71rem 0.3rem;overflow-x: hidden;overflow-y: auto;">
+                        <input id="name" name="name" type="text" placeholder="姓名">
+                        <input id="phone" name="phone" type="text" maxlength="11" placeholder="手机">
+                        <div class="verification" style="position: relative;">
+                            <input id="verify" name="verify" type="text" maxlength="11" placeholder="验证码">
+                            <div class="verify-btn" id="send-verify">发送验证码</div>
+                            <div class="verify-btn" id="reset-verify" style="display: none;"><span>56s</span>重新发送</div>
+                        </div>
+                        <input id="company" name="company" type="text" placeholder="公司">
+                        <input id="job" name="job" type="text" placeholder="职位">
+                    </div>
+                </div>
+                <div class="line" style="position: relative;height:0.2rem;">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <button id="makeBtn" class="make-btn">免费获取</button>
+            </div>
+            <p class="return" id="return-btn">&lt;返回原文</p>
+        </div>
+        <!-- vip预约成功 -->
+        <div class="succeed-info" style="display: none;">
+            <p style="padding: 1.77rem 0 0.4rem;">
+                <img src="../../../../static/images/succeed-bg.png" style="width: 4.346rem;height: 3.44rem;">
+            </p>
+            <div class="general-font" style="height:1.53rem; margin-bottom:0.8rem;">
+                <p style="margin-bottom: 0.1rem;">感谢您报名参加私域获客课程</p>
+                <p>请凭借预约成功截图或短信</p>
+                <p>联系我们的专属微信客服: <span class="eplipes web-link" title="占位符">tuixiaobao</span></p>
+            </div>
+            <div class="general-font" style="text-align: center;margin-bottom:0.48rem;">
+                <img class="qrcode-img" src="../../../../static/images/icon-qrcode.png">
+                <p style="margin: 0.27rem 0 0.96rem;">您的专属客服</p>
+            </div>
+            <p class="return" id="return-btn">&lt;返回原文</p>
+        </div>
+    </div>
+    <!-- msg模板  -->
+    <div id="msg-model">
+        <div class="msg-content">
+            <span class="small-font"></span>
+        </div>
+    </div>
+    <!-- 快速导航 -->
+    <div id="fastNav">
+
+    </div>
+    <!-- 内联 flexible -->
+    <script type="text/javascript">
+        !function () { var a = "@charset \"utf-8\";html{color:#000;background:#fff;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}html *{outline:0;-webkit-text-size-adjust:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}html,body{font-family:sans-serif}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{margin:0;padding:0}input,select,textarea{font-size:100%}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}abbr,acronym{border:0;font-variant:normal}del{text-decoration:line-through}address,caption,cite,code,dfn,em,th,var{font-style:normal;font-weight:500}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:500}q:before,q:after{content:''}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}a:hover{text-decoration:underline}ins,a{text-decoration:none}", b = document.createElement("style"); if (document.getElementsByTagName("head")[0].appendChild(b), b.styleSheet) b.styleSheet.disabled || (b.styleSheet.cssText = a); else try { b.innerHTML = a } catch (c) { b.innerText = a } }(); !function (a, b) { function c() { var b = f.getBoundingClientRect().width; b / i > 540 && (b = 540 * i); var c = b / 10; f.style.fontSize = c + "px", k.rem = a.rem = c } var d, e = a.document, f = e.documentElement, g = e.querySelector('meta[name="viewport"]'), h = e.querySelector('meta[name="flexible"]'), i = 0, j = 0, k = b.flexible || (b.flexible = {}); if (g) { console.warn("将根据已有的meta标签来设置缩放比例"); var l = g.getAttribute("content").match(/initial\-scale=([\d\.]+)/); l && (j = parseFloat(l[1]), i = parseInt(1 / j)) } else if (h) { var m = h.getAttribute("content"); if (m) { var n = m.match(/initial\-dpr=([\d\.]+)/), o = m.match(/maximum\-dpr=([\d\.]+)/); n && (i = parseFloat(n[1]), j = parseFloat((1 / i).toFixed(2))), o && (i = parseFloat(o[1]), j = parseFloat((1 / i).toFixed(2))) } } if (!i && !j) { var p = (a.navigator.appVersion.match(/android/gi), a.navigator.appVersion.match(/iphone/gi)), q = a.devicePixelRatio; i = p ? q >= 3 && (!i || i >= 3) ? 3 : q >= 2 && (!i || i >= 2) ? 2 : 1 : 1, j = 1 / i } if (f.setAttribute("data-dpr", i), !g) if (g = e.createElement("meta"), g.setAttribute("name", "viewport"), g.setAttribute("content", "initial-scale=" + j + ", maximum-scale=" + j + ", minimum-scale=" + j + ", user-scalable=no"), f.firstElementChild) f.firstElementChild.appendChild(g); else { var r = e.createElement("div"); r.appendChild(g), e.write(r.innerHTML) } a.addEventListener("resize", function () { clearTimeout(d), d = setTimeout(c, 300) }, !1), a.addEventListener("pageshow", function (a) { a.persisted && (clearTimeout(d), d = setTimeout(c, 300)) }, !1), "complete" === e.readyState ? e.body.style.fontSize = 12 * i + "px" : e.addEventListener("DOMContentLoaded", function () { e.body.style.fontSize = 12 * i + "px" }, !1), c(), k.dpr = a.dpr = i, k.refreshRem = c, k.rem2px = function (a) { var b = parseFloat(a) * this.rem; return "string" == typeof a && a.match(/rem$/) && (b += "px"), b }, k.px2rem = function (a) { var b = parseFloat(a) / this.rem; return "string" == typeof a && a.match(/px$/) && (b += "rem"), b } }(window, window.lib || (window.lib = {}));
+        var _href = window.location.href.match(/id=([0-9]+)/);
+        var _kid = _href[1];
+        lanh.kid = _kid;
+    </script>
+    <script type="text/javascript" src="/public/dist/vendor.js" merge="true"></script>
+    <script type="text/javascript" src="/public/dist/h5-framework.js"></script>
+    <script>
+        $(function(){
+            $('#article-iframe').attr('src', window.location.origin + '/_' + lanh.kid);
+        })
+    </script>
+</body>
+
+</html>

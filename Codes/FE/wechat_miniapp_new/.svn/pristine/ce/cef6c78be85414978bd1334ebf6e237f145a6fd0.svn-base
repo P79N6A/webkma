@@ -1,0 +1,227 @@
+/* pages/card-list/card-list.wxss */ 
+.card-list{min-height: 100vh; background-color: #f1f3fc;}
+.text-center{
+  text-align: center;
+}
+.search-wrap{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 750rpx;
+  height: 90rpx;
+  padding: 0 30rpx;
+  background-color: #fff;
+  z-index: 2;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #bdbdbd;
+}
+.search-wrap .text {
+  width: 625rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  margin-top: 20rpx;
+  border-right: 1rpx solid #bdbdbd;
+  color: #555;
+  font-size: 26rpx;
+}
+.search-wrap  .icon {
+  margin-right:20rpx;
+  position: absolute;
+  width:30rpx;
+  height:30rpx;
+  right:15rpx;
+  top:32.5rpx;
+}
+.card-list .list{
+  width: 100%;
+}
+.card-list .list .item{
+  margin:25rpx auto 0;
+  width: 690rpx;
+  margin-bottom: 25rpx;
+  position: relative;
+  border-radius:20rpx;
+  background-color:#fff;
+  box-shadow:0px 2rpx 10rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.card-list .list .new-style{
+  background-color: #fff;
+  padding-left: 28rpx;
+}
+.card-list .list .new-style .item{
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+}
+.card-list .list .new-style .item .info-desc{
+  width: 600rpx;
+  border-bottom:1rpx solid #bdbdbd;
+  float: left;
+  padding: 28rpx 0 28rpx 26rpx;
+  box-sizing: border-box;
+}
+.info{
+  overflow:hidden;
+  padding: 35rpx 50rpx;
+}
+.card-list .list .new-style .item .info{
+  padding: 0;
+}
+.card-list .list .item .pic{
+  width: 78rpx;
+  height: 78rpx;
+  float: left;
+  margin-right: 20rpx;
+  border: 6rpx #fff solid;
+  border-radius:50%;
+  box-shadow:0px 2rpx 10rpx rgba(0,0,0,0.1);
+}
+.card-list .list .new-style .item .pic{
+  margin-right: 0;
+  margin-top: 38rpx;
+}
+.card-list .list .new-style .item .info-desc .text{
+  width: 370rpx;
+  float: left;
+}
+.card-list .list .item .pic .face{
+  width: 78rpx;
+  height: 78rpx;
+  border-radius:50%;
+}
+.card-list .list .item .text{
+  font-size: 24rpx;
+  float: left;
+}
+
+.card-list .list .item .text view{
+  margin-bottom: 10rpx;
+}
+.card-list .list .item .text view:last-child{
+  margin-bottom: 0;
+}
+.card-list .list .item .text .name{
+  color: #000;
+  font-size: 30rpx;
+  margin-bottom: 15rpx;
+}
+
+.card-list .list .item .text .phone{
+  float: left;
+  width: 24rpx;
+  height: 24rpx;
+  margin: 8rpx 10rpx 0 0;
+}
+.card-list .list .item .agree-icon{
+  width: 54rpx;
+  height: 54rpx;
+}
+.card-list .list .exchange{
+  width: 690rpx;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 20rpx;
+  box-shadow:0px 2rpx 10rpx rgba(0,0,0,0.1);
+}
+.card-list .list .exchange .item{
+  margin-bottom: 0;
+  border-radius: 20rpx 20rpx 0 0;
+  box-shadow: none;
+}
+
+.btn-group{
+  display: flex;
+  float: right;
+  width: 204rpx;
+  height: 196rpx;
+  padding-right: 10rpx;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+}
+.tag{
+  position: absolute;
+  top: 30rpx;
+  right: 0;
+  width: 106rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  color: #fff;
+  font-size: 26rpx;
+  text-align: center;
+  border-radius: 4rpx;
+}
+.tag_agree{
+  background-color: #24cfc6;
+}
+.tag_refuse{
+  background-color: #bdbdbd;
+}
+.tip{
+  color: #999;
+  text-align: center;
+  font-size: 26rpx;
+}
+.open-btn{
+  width: 340rpx;
+  height: 80rpx;
+  line-height: 76rpx !important;
+  text-align: center;
+  background-color: #24d0c6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 32rpx;
+}
+.open-btn::after{
+  border: none;
+}
+.empty-img{
+  width: 275rpx;
+  height: 302rpx;
+  margin: 250rpx auto 50rpx;
+}
+
+.card-list .list .exchange-section{
+  height: 700rpx;
+  position: relative;
+}
+.card-list .list .exchange-section .item{
+  position: absolute;
+  width: 550rpx;
+  height: 350rpx;
+  padding-top: 70rpx;
+  padding-bottom: 70rpx;
+  box-sizing: border-box;
+  box-shadow:0px 2rpx 20rpx rgba(0,0,0,0.1);
+}
+.card-list .list .exchange-section .icon{
+  position: absolute;
+  width: 56rpx;
+  height: 46rpx;
+}
+.card-list .list .exchange-section .item .info{
+  padding: 0 50rpx;
+}
+.card-list .list .exchange-section .item .text{
+  width: 275rpx;
+}
+.card-list .list .exchange-section .item .text > view{
+  width: 275rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.eslip{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+button[type=primary]{
+  width: 340rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 150rpx;
+}

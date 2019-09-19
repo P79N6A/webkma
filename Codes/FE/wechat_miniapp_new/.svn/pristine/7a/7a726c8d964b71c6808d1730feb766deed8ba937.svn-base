@@ -1,0 +1,55 @@
+<view class="page" wx:if="{{!loading}}">
+  <view style='padding: 20rpx 0;background-color: #f1f3fc;'>
+    <view class="article__section" style='margin-bottom: 0;'>
+      <view class="flex">
+        <view class="flex__item font-28" style='text-align:right;color:#3c4a55;'>活动名称：</view>
+        <view class="flex__item font-28" style='flex-grow:3;color:#999;'>{{detail.name}}</view>
+      </view>
+      <view class="flex">
+        <view class="flex__item font-28" style='text-align:right;color:#3c4a55;'>奖项名称：</view>
+        <view class="flex__item font-28" style='flex-grow:3;color:#999;'>{{detail.optionName}}</view>
+      </view>
+      <view class="flex">
+        <view class="flex__item font-28" style='text-align:right;color:#3c4a55;'>活动奖品：</view>
+        <view class="flex__item font-28" style='flex-grow:3;color:#999;'>{{detail.prizeName}}</view>
+      </view>
+      <view class="flex">
+        <view class="flex__item font-28" style='text-align:right;color:#3c4a55;'>中奖时间：</view>
+        <view class="flex__item font-28" style='flex-grow:3;color:#999;'>{{detail.createtime}}</view>
+      </view>
+      <view class="flex">
+        <view class="flex__item font-28" style='text-align:right;color:#3c4a55;'>兑奖状态：</view>
+        <view class="flex__item font-28" style='flex-grow:3;color:#999;'>{{detail.isProvideText}}</view>
+      </view>
+      <view class="flex" wx:if="{{!!detail.userCashType}}" style='margin-bottom: 0'>
+        <view class="flex__item font-28" style='text-align:right;color:#3c4a55;'>兑奖方式：</view>
+        <view class="flex__item font-28" style='flex-grow:3;'>
+          <text style="display:inline-block;width:148rpx;height:42rpx;line-height:42rpx;text-align:center;border:1rpx solid #09a0a2;border-radius:20rpx;font-size:26rpx;color:rgb(9,160,162);">{{detail.userCashType == 1 ? '线上兑奖':'线下兑奖'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="article__section" wx:if="{{detail.exchangeState == 1 && detail.userCashType == 1}}">
+    <view class="flex">
+      <view class="flex__item" style='text-align:left;font-weight: bold;padding-left:20rpx; font-size:28rpx;'>活动预留信息</view>
+    </view>
+    <view class="flex" wx:for="{{detail.contents}}" wx:key="{{item.sort}}">
+      <view class="flex__item" style='text-align:right;color:#3c4a55; font-size:28rpx;'>{{item.name}}：</view>
+      <view class="flex__item" style='flex-grow:3;color:#b1bfcd; font-size:28rpx;'>{{item.content}}</view>
+    </view>
+  </view>
+  <view class="article__section scroll-box" wx:elif="{{ detail.cashType != 1 && !!detail.userCashType && detail.userCashType != 1}}">
+    <view style='height:268rpx; margin-bottom:20rpx; text-align:center;'>
+      <image src="{{qrcodeImg}}" style='width:268rpx;height:268rpx;'></image>
+      <!-- <text bindtap='jumpOffline' data-id="{{detail.id}}" >模拟员工扫码进入线下兑奖页面</text> -->
+    </view>
+    <view style='text-align:center;margin-bottom:20rpx;'>
+      <view>{{detail.exchangeState == 1 ? '奖品已兑换' : '出示二维码兑奖'}}</view>
+      <view style='font-size:26rpx; color:#b0b0b0;' wx:if="{{!!detail.exchangetime}}">兑奖时间：{{detail.exchangetime}}</view>
+    </view>
+    <view style='width:510rpx;verflow:hidden; margin:0 auto;' wx:for="{{detail.businessContact}}" wx:key="{{item.title}}">
+      <view class="contact_item_label" style='text-align:center;font-weight:bold;'>{{item.title}}</view>
+      <view class="contact_item_content" style='text-align:center;'>{{item.value}}</view>
+    </view>
+  </view>
+</view>

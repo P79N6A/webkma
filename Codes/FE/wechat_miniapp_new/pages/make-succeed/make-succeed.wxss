@@ -1,0 +1,59 @@
+/* pages/make-succeed/make-succeed.wxss */
+
+/* 预约成功1 */
+.eplipes {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.general-font{
+  font-size:26rpx;
+  color: #B1BFCD; 
+}
+
+.return{
+  font-size: 24rpx;
+  color: #3898EC;
+  text-align: center;
+  margin-top: 39rpx;
+  cursor: pointer;
+}
+
+.succeed-info {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.succeed-info .succeed-bg{
+  width: 326rpx;
+  height: 258rpx;
+}
+
+.succeed-info view {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.succeed-info .web-link {
+  display: inline-block;
+  max-width: 375rpx;
+  position: relative;
+  top: 8rpx;
+  cursor: pointer;
+}
+/* 预约成功2 */
+.qrcode-img{
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.web-name{
+  display: inline-block;
+  max-width: 150rpx;
+  position: relative;
+  top: 8rpx;
+  cursor: pointer;
+}
+

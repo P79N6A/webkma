@@ -1,0 +1,61 @@
+/* pages/customer/customer.wxss */
+.font-56{
+  font-size: 56rpx;
+  color: #FFFF00;
+}
+
+.line-70{
+  line-height: 70rpx;
+}
+
+.info-color{
+  color: #24D0C6;
+}
+
+.font-white{
+  color: #fff;
+}
+
+.customer-head{
+  height: 360rpx;
+  background-image: url('https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/top-BG.png');
+  background-size: cover;
+  padding:57rpx 83rpx 0 70rpx;
+  margin-bottom:47rpx;
+  position: relative;
+}
+
+.info-option{
+  width: 96%;
+  height: 96rpx;
+  background-color: #fff;
+  position: absolute;
+  left: 16rpx;
+  bottom: -13rpx;
+  border-radius: 15rpx;
+  padding:45rpx 0 33rpx 0;
+}
+
+.info-option > view{
+  width: 34%;
+  text-align: center;
+}
+
+.title{
+  height: 35rpx;
+  line-height: 34rpx;
+  padding: 27rpx 20rpx 28rpx 25rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #DDE4EB;
+  position: relative;
+}
+
+.side-line{
+  width: 5rpx;
+  height: 40rpx;
+  background-color: #24D0C6;
+  position: absolute;
+  left: 0;
+  top: 24rpx;
+}
+

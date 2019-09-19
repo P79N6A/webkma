@@ -1,0 +1,116 @@
+/* pages/red-envelopes-record/red-envelopes-record.wxss */
+
+.photo {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 100rpx;
+}
+
+.icon-photo {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+}
+
+.typeview {
+  width: 300rpx;
+  display: inline-block;
+  overflow: hidden; /*超出部分隐藏*/
+  white-space: nowrap; /*不换行*/
+  text-overflow: ellipsis; /*超出部分文字以...显示*/
+}
+
+.totalTetx {
+  color: #fa766b !important;
+}
+
+.fs70 {
+  font-size: 70rpx;
+}
+
+.fs30 {
+  font-size: 30rpx;
+}
+
+.fs28 {
+  font-size: 28rpx;
+}
+
+.fs26 {
+  font-size: 26rpx;
+}
+
+.fs24 {
+  font-size: 24rpx;
+}
+.fs22 {
+  font-size: 22rpx;
+}
+
+.color-black {
+  color: #000;
+}
+
+.color-Style {
+  color: #3c4a55;
+}
+
+.color-gray {
+  margin-top: 6rpx;
+  color: #b1bfcd;
+}
+
+.marb14 {
+  /* margin-bottom: 14rpx; */
+}
+
+.ellipsis {
+  display: inline-block;
+  max-width: 528rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.re-navbar {
+  height: 560rpx;
+  background-color: #fff;
+}
+
+.nav-menu {
+  height: 104rpx;
+  border-bottom: 1rpx solid #eee;
+  margin: 0 24rpx;
+}
+
+.received, .issue {
+  height: 396rpx;
+  margin-bottom: 25rpx;
+}
+
+.received view, .issue view {
+  text-align: center;
+}
+
+.receivedList {
+  min-height: 620rpx;
+  background-color: #fff;
+  padding-left: 30rpx;
+}
+
+.received-item {
+  height: 97rpx;
+  padding: 24rpx 30rpx 24rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+
+.empty-data {
+  margin: 0;
+  text-align: center;
+}
+
+.empty-data image {
+  width: 255rpx;
+  height: 275rpx;
+  margin: 95rpx 0 60rpx 0;
+}

@@ -1,0 +1,58 @@
+//超过4位数字转为1w，并保留两位小数
+var convertJoinCount = function (num) {
+  num = Number(num);
+  if (isNaN(num)) {
+    return 0;
+  }
+  var w = num / 10000;
+  w = w.toFixed(2);
+  if (w > 99) {
+    w = 99;
+  }
+  if (w >= 1) {
+    return w + 'w';
+  }
+  return num;
+}
+
+//超过4位数字转为1w，并保留1位小数
+var keepOneCount = function (num) {
+  num = Number(num);
+  if (isNaN(num)) {
+    return 0;
+  }
+  var w = num / 10000;
+  w = w.toFixed(1);
+  if (w > 99) {
+    w = 99;
+  }
+  if (w >= 1) {
+    return w + 'w';
+  }
+  return num;
+}
+
+//保留2位小数，如：2，会在2后面补上00.即2.00 
+var fixed = function toDecimal2(x) {
+  var f = parseFloat(x);
+  if (isNaN(f)) {
+    return '0.00' ;
+  }
+  var f = Math.round(x * 100) / 100;
+  var s = f.toString();
+  var rs = s.indexOf('.');
+  if (rs < 0) {
+    rs = s.length;
+    s += '.';
+  }
+  while (s.length <= rs + 2) {
+    s += '0';
+  }
+  return s;
+}  
+
+module.exports = {
+  convertJoinCount: convertJoinCount,
+  keepOneCount: keepOneCount,
+  fixed: fixed
+};

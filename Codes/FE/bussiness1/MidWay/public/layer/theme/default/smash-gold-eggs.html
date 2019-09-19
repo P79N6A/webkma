@@ -1,0 +1,137 @@
+<script id="smashGoldEgg" type="text/template">
+    <style>
+    .layer-smashGoldEggs{
+            background: none;
+        }
+        .layer-smashGoldEggs .layui-m-layercont{
+            padding:0;
+        }
+        .smashGoldEgg{
+            height:100%;
+            width:100%;
+            text-align: center;
+        }
+        .smashGoldEgg-bg{
+        position: relative;
+        width:100%;
+        height:8rem;
+        margin:auto;
+    }
+    .smashGoldEgg-bg .colouredRibbon{
+        position: absolute;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+        background:no-repeat top center;
+        background-size: 80% auto;
+    }
+    
+    .smashGoldEgg-bg .egg{
+        position: absolute;
+        width: 8rem;
+        height: 8rem;
+        bottom:0;
+        left:50%;
+        margin-left:-4rem;
+        animation: shakeEgg 1.5s ease-in-out;
+        background: url("/public/images/smash-gold-eggs/egg1.png") no-repeat bottom center;
+        background-size: 100% auto;  
+        transition:background-image;
+        transition-delay:.4s;
+    }
+    .smashGoldEgg-bg .hammer{
+        position: absolute;
+        width: 8rem;
+        height: 8rem;
+        bottom:0;
+        left:50%;
+        margin-left:-4rem;
+        transition:display;
+        transition-delay:1.2s;
+        
+    }
+    .smashGoldEgg-bg .hammer>img{
+        display: block;
+        position: absolute;
+        top:0rem;
+        right:2rem;
+        height:2rem;
+        animation: movehammer 1.5s ease-in-out;
+    }
+    .smashGoldEgg-bg.smashing .egg{
+        background-image: url(/public/images/smash-gold-eggs/egg2.png);
+    }
+    .smashGoldEgg-bg.smashing .hammer>img{
+        transform-origin: 100% 100%;
+        transform:rotate(-30deg) ;
+        animation: hammerSmash .4s ease-in-out;
+    }
+    .smashGoldEgg-bg.smashed .egg{
+        background-image: url(/public/images/smash-gold-eggs/egg3.png);
+    }
+    .smashGoldEgg-bg.smashed .colouredRibbon{
+         background-image: url(/public/images/smash-gold-eggs/colouredRibbon2.png);
+         animation: showColouredRibbon .6s ease-in;
+    }
+    .smashGoldEgg-bg.smashed .hammer{
+        display: none;
+    }
+    .smashGoldEgg-bg.finished .egg{
+        background-image: url(/public/images/smash-gold-eggs/egg4.png);
+    }
+    .smashGoldEgg-bg.finished .colouredRibbon{
+         background-image: url(/public/images/smash-gold-eggs/colouredRibbon1.png);
+         background-size:100% auto; 
+    }
+    .smashGoldEgg .closeBtn{
+        margin-top:2.5rem;
+        height:1.1rem;
+    }
+    @keyframes shakeEgg{
+        0%{
+           transform: scale(.5);
+        }
+       100%{
+           transform: scale(1);
+        }
+    }
+    @keyframes movehammer{
+        0%{
+           right:-2rem;
+        }
+       100%{
+          right:2rem;
+        }
+    }
+   @keyframes hammerSmash{
+       0%{
+            transform:rotate(0deg) ;    
+       }
+       50%{
+            transform:rotate(30deg) ;
+       }
+       100%{
+            transform:rotate(-30deg) ;
+       }
+    }
+    @keyframes showColouredRibbon{
+        0%{
+            transform: scale(0);
+        }
+        100%{
+            transform: scale(1);
+        }
+    }
+    </style>
+    <div class="smashGoldEgg">
+            <div class="smashGoldEgg-bg" >
+                <div class="colouredRibbon"></div>
+                <div class="egg"></div>
+                <div class="hammer">
+                    <img src="/public/images/smash-gold-eggs/hammer.png">
+                </div>
+            </div>
+            <img src="/public/images/smash-gold-eggs/close.png" alt="" class="closeBtn">
+        </div>
+</script>

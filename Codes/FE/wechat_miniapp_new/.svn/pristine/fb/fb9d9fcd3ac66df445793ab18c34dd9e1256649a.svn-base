@@ -1,0 +1,56 @@
+<!--components/tasks-list/tasks-list.wxml-->
+<view class='content'>
+  <view class='list_item'>
+    <view class='left_cont' catchtap='itemDetali'>
+      <image class='item_img' mode='aspectFit' src='{{itemData.cover}}'></image>
+      <view class='left_child'  wx:if="{{pageType<1}}">
+        <view class='left_info'>
+          <text>排名</text>
+          <text class='orange_font'>{{itemData.ranking?itemData.ranking:'-'}}</text>
+        </view>
+        <view  class='left_info'>
+          <text>{{itemData.rise<0?"下降":"上升"}}</text>
+          <text class='orange_font'>{{itemData.rise?itemData.rise:'-'}}</text>
+        </view>
+      </view>
+      <view class='left_child'  wx:if="{{pageType>0&&itemData.employeeNumber>0}}">
+        <view class='left_info'>
+          <text class='orange_font'>{{itemData.finishEmployeeNumber?itemData.finishEmployeeNumber:'0'}}/{{itemData.employeeNumber?itemData.employeeNumber:'0'}} </text>
+        </view>
+        <view  class='left_info'>
+          <text>完成员工数</text>
+        </view>
+      </view>
+    </view>
+    <view>
+      <view  class='{{ showQueryInfo || showShare ? "item_info" : "item_info item_info_no_btn"}}'>
+        <view class='name'>
+          <image wx:if="{{itemData.isRed>0}}" class='repack' src='../../images/icon-wechat-redpack.png'></image>
+          {{itemData.name}} 
+        </view>
+        <view class='timer cont_bottom'>
+          <text  class='cont_title'>剩余</text>
+          <text class='timer_num' wx:if="{{itemData.timer=='已过期'}}">{{itemData.timer}}</text>
+          <text class='timer_num' wx:if="{{itemData.timer != '已过期'}}">{{itemData.timer.day}}天{{itemData.timer.hour}}小时{{itemData.timer.minute}}分</text>
+        </view>
+        <view class='cont_bottom planned_speed' hidden="{{itemData.completionRate==-100}}">
+          <view class='cont_title'>目标完成率</view>
+          <view class='mind'>
+            <i-progress status="wrong" stroke-width='4' i-class="progress" percent="{{itemData.completionRate}}"></i-progress>
+          </view>
+        </view>
+        <view class='cont_bottom cont_title'>
+          <text class='cont_title'>曝光  {{itemData.exposure}}</text>
+          <text class='cont_title'>客户 {{itemData.userNumber}}</text> 
+        </view>
+      </view>
+      <view class='cont_lable'>
+        <view wx:for="{{itemData.label}}" wx:key='index'>{{item.labelName}}</view>
+      </view>
+    </view>
+    <view class='operationBtn' wx:if="{{showQueryInfo || showShare}}">
+      <text class="iconfont icon-marketing-xtension" catchtap='shareBtn'  wx:if="{{showShare && pageType<1&&itemData.timer !='已过期'}}"></text>
+      <text class="iconfont icon-company-information" catchtap='dataInfoData' wx:if="{{showQueryInfo}}"></text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,148 @@
+/* components/customer-info/customer-info.wxss */
+/* 公用样式 */
+.flex {
+  display: flex;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
+.flex-row{
+  flex-direction: row;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around{
+  justify-content: space-around;
+}
+
+.eplipes {
+  display: inline-block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.font-26{
+  font-size: 26rpx;
+}
+.font-24{
+  font-size: 24rpx;
+}
+
+.font-22{
+  font-size: 22rpx;
+}
+
+.font-20{
+  font-size: 20rpx;
+}
+
+.font-18{
+  font-size: 18rpx;
+}
+
+.font-16{
+  font-size: 16rpx;
+}
+
+.title-color {
+  color: #3c4a55;
+}
+
+.color-white{
+  color: #fff;
+}
+
+.color-gray{
+  color: #B1BFCD;
+}
+
+.color-blue{
+  color: #3898EC;
+}
+
+.tips-bg{
+  background-color: #24D0C6;
+}
+
+.ml-16{
+  margin-left: 16rpx;
+}
+
+/* 页面样式 */
+
+.photo{
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50rpx;
+}
+
+.info-box{
+  width: 100%;
+  height: 90rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #DDE4EB;
+  padding: 30rpx 39rpx 30rpx 30rpx;
+}
+
+.info-box .photo-box{
+  width: 90rpx;
+  height: 90rpx;
+  position: relative;
+}
+
+.info-box .photo-box .score{
+  display: inline-block;
+  width: 68rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+  border-radius: 30rpx;
+  background-color: #F68411;
+  position: absolute;
+  bottom: -6rpx;
+  left: 11rpx;
+}
+
+.info-box .mark{
+  width:40rpx;
+  height:40rpx;
+  line-height:40rpx;
+  text-align:center;
+  background-color:#24D0C6;
+  border-radius:50rpx;
+  margin-top: 18rpx;
+  position: absolute;
+  z-index: 9;
+}
+
+.line,
+.line-son{
+  display: inline-block;
+  width: 2rpx;
+  border-left: 4rpx dotted #24D0C6;
+  position: absolute;
+  left:19rpx;
+}
+
+.line{
+  height: 17rpx;
+  bottom:14rpx;
+}
+
+.line-son{
+  height: 67rpx;
+  bottom: 22rpx;
+}
+
+.serial-num{
+  width:40rpx; 
+  text-align:center;
+  line-height:90rpx;
+  position:relative;
+}

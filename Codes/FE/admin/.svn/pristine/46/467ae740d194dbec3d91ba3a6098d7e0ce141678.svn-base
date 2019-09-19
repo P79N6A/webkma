@@ -1,0 +1,476 @@
+<style>
+    .preview1-component {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, .7);
+        z-index: 19999;
+    }
+
+    .preview1-component .preview_body {
+        width: 385px;
+        /* border-radius: 5px !important; */
+        /* background-color: #f7fbfc; */
+        overflow: hidden;
+        margin: auto;
+        height: 592px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+    }
+    .preview1-component .preview_body-with-pagenination {
+        width: 326px;
+    }
+	.preview1-component .preview-viewport{
+        width: 100%;
+        float: left;
+        position: relative;
+    }
+    
+	.preview1-component .phone-mock {
+		width: 274px;
+		height: 592px;
+		background-image: url('/IphoneX.png');
+		background-position: 0 0;
+		background-repeat: no-repeat;
+		background-size: 100%;
+		padding-top: 34px;
+	}
+
+    .preview1-component .phone-body {
+		width: 250px;
+        height: 520px;
+		margin: 0 auto ;
+		background-color: rgba(241,243,252,1);
+    }
+
+    .preview1-component .h5-container {
+        border: none;
+        width: 250px;
+        height: 480px;
+        
+    }
+
+    .preview1-component .h5-title {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        background-color: #3C4A55;
+        text-align: center;
+        font-size: 12px;
+        color: #fff;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+
+    .preview1-component .feature-bar,
+    .preview1-component .option-bar {
+        height: 153px;
+        width: 110px;
+        position: absolute;
+        top: 50%;
+        left: 275px;
+        margin-top: -76.5px;
+    }
+    .preview1-component .option-bar {
+        height: 560px;
+        top: 44px;
+        margin-top: 0;
+    }
+    .preview1-component .preview_body-with-pagenination .feature-bar {
+        width: 50px;
+    }
+    .preview1-component .feature-bar .item,
+    .preview1-component .option-bar .item {
+        position: relative;
+        background-color: rgba(0, 0, 0, 1);
+        height: 50px;
+        margin-bottom: 1px;
+        color: #fff;
+        line-height: 50px;
+        box-sizing: border-box;
+        text-align: center;
+        width: 100%;
+        border: none;
+    }
+
+    .preview1-component .feature-bar .item:nth-child(2n+1),
+    .preview1-component .option-bar .item {
+        cursor: pointer;
+    }
+
+    .preview1-component .feature-bar .item:disabled {
+        cursor: not-allowed;
+    }
+
+    .preview1-component button:focus {
+        outline: none;
+    }
+
+    .preview1-component .feature-bar .up:before,
+    .preview1-component .feature-bar .down:before {
+        content: '';
+        border-bottom: 10px solid rgba(255, 255, 255, 0.5);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        display: inline-block;
+        top: 19px;
+        left: 17px;
+    }
+
+    .preview1-component .feature-bar .down:before {
+        border-top: 10px solid rgba(255, 255, 255, 0.5);
+        border-bottom: none;
+        top: 20px;
+        left: 17px;
+    }
+
+    .preview1-component .feature-bar .up:disabled:before,
+    .preview1-component .feature-bar .down:disabled:before {
+        border-color: #fff;
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
+
+    .preview1-component .feature-bar .down {
+        margin-bottom: 0;
+    }
+
+    .preview1-component .close_preview {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background-color: #FA766B;
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .option-bar .poster-item {
+        display: none;
+    }
+    .option-bar .qrcode-section {
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 1);
+    }
+    .option-bar .qrcode-section .tip{
+        height: 37px;
+        line-height: 37px;
+        text-align: center;
+        color: #fff;
+    }
+    .option-bar .qrcode-section .qrcode-wrap {
+        width:100px;
+        height:100px;
+        padding:2px;
+        background-color: #fff;
+        box-sizing:border-box;
+        margin: 0 auto;
+    }
+    .option-bar .qrcode-section .qrcode {
+        width: 94px;
+        height: 94px;
+        margin: 0px auto;
+    }
+    .option-bar .qrcode-section .dowmload-btn {
+        width: 100px;
+        height: 30px;
+        line-height: 29px;
+        text-align: center;
+        background-color: #fff;
+        border:1px solid rgba(227, 227, 227, 1);
+        border-radius:2px;
+        margin: 6px auto;
+        cursor: pointer;
+    }
+    
+    .option-bar .qrcode-section .dowmload-btn.active,
+    .preview1-component .option-bar .item.active {
+        background:rgba(36,208,198,1);
+        border-color: rgba(36,208,198,1);
+        color: #fff;
+    }
+    .preview1-component .sanjiao{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width:0;
+        height:0;
+        overflow:hidden;
+        font-size: 0;
+        line-height: 0;
+        border-width:6px;
+        border-style:solid dashed dashed dashed;
+        border-color:transparent #f30 transparent transparent;
+    }
+</style>
+<script type="text/template" id="tpl-preview-component">
+<div class="preview1-component">
+    <div class="preview_body preview_body-with-pagenination">
+        <div class="preview-viewport">
+            <div class="phone-mock">
+                <div class="phone-body">
+                    <div class="h5-title">这是一个标题</div>
+                </div>
+            </div>
+            <div class="feature-bar">
+                <button class="item up" title="上一页" data-page='prev' disabled="disabled"></button>
+                <div id="preview-pagination" class="item">1/1</div>
+                <button class="item down" title="下一页" data-page='next' disabled="disabled"></button>
+            </div>
+            <div id="close_preview" class="close_preview">X</div>
+        </div>    
+    </div>
+    <div class="preview_body">
+        <div class="preview-viewport">
+            <div class="phone-mock">
+                <div class="phone-body">
+                    <div class="h5-title">这是一个标题</div>
+                </div>
+            </div>
+            <div class="option-bar">
+                <div class="item active" data-type="showActivityInfo">图文详情</div>
+                <div class="item poster-item" data-type="poster">生成海报</div>
+                <div class="item" data-type="shareFriendsCircle">分享到朋友圈</div>
+                <div class="item" data-type="shareFriend">发送给朋友</div>
+                <div id="copy-text" class="item" data-type="copyLink">复制链接</div>
+                <div class="qrcode-section">
+                    <div class="tip">下载二维码</div>
+                    <div class="qrcode-wrap"><div class="qrcode"></div></div>
+                    <div class="dowmload-btn" data-type="downQrcode" data-size="256">小（256px）</div>
+                    <div class="dowmload-btn" data-type="downQrcode" data-size="512">中（512px）</div>
+                    <div class="dowmload-btn" data-type="downQrcode" data-size="1024">大（1024px）</div>
+                    <iframe id="iframe-download" src="about:blank" style="display: none;"></iframe>
+                </div>
+                <input id="copyInput" style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;" />
+            </div>
+            <div id="close_preview" class="close_preview">X</div>
+        </div>
+            
+    </div>
+    
+</div>
+</script>
+<!-- 开发测试调试用 -->
+<script type="text/javascript">
+    $(function () {
+        var state = {
+            pagination: {
+                total: 1,
+                pageIndex: 1
+            },
+            detailUrl: 'manuscript/detail?id=',
+            previewUrl: '',
+            data: '' //活动详情数据块
+        }
+        var tpl = $('#tpl-preview-component').html();
+        var $tpl = $(tpl);
+        var $phoneBody = $tpl.find('.phone-body');
+
+        window.addEventListener("message", function receiveMessage(evt) {
+            console.log(evt);
+            var data = evt.data || {};
+            if (data.type === 'pagination') {
+                var total = state.pagination.total = data.total;
+                var pageIndex = state.pagination.pageIndex = data.pageIndex + 1;
+                if (total === 1) {
+                    $('.preview1-component .feature-bar button.item').prop('disabled', true)
+                } else {
+                    $('.preview1-component .feature-bar button.item').prop('disabled', false);
+                    if (pageIndex === 1) {
+                        $('.preview1-component .feature-bar button.up').prop('disabled', true);
+                    }
+                    if (pageIndex === data.total) {
+                        $('.preview1-component .feature-bar button.down').prop('disabled', true);
+                    }
+                }
+                $('.preview1-component #preview-pagination').html(pageIndex + '/' + data.total);
+            }
+        }, false);
+        
+        var previewObj = {
+            createH5Container: function(type){
+                var h5Container = $('<div class="h5-container"></div>');
+                if(type == 'info') h5Container = $('<iframe id="h5-container"  src="about:blank" class="h5-container"></iframe>');
+                return h5Container;
+            },
+            showActivityInfo: function(){
+                $phoneBody.find('.h5-container').remove();
+                var $h5Container = this.createH5Container('info');
+                $h5Container.attr('src', state.previewUrl  + '&preview=true');
+                $phoneBody.append($h5Container);
+            },
+            poster: function(){
+                $phoneBody.find('.h5-container').remove();
+                var $h5Container = this.createH5Container();
+                var _posterImg = state.data.manuscriptType == 1 ? state.data.posterQrImage : JSON.parse(state.data.posterImage).png;
+                var tpl = '<image style="width: 250px;height:480px;" src="'+_posterImg+'"/>';
+                $h5Container.html(tpl);
+                $phoneBody.append($h5Container);
+            },
+            shareFriendsCircle: function(){
+                $phoneBody.find('.h5-container').remove();
+                var $h5Container = this.createH5Container();
+                var tpl = '<div style="height:67px;width:229px;margin:21px auto;">\
+                            <image style="width: 45px;height:45px;float:left;margin-right:12px;" src="./logo-white.png"/>\
+                            <div style="width:160px;float:left;">\
+                                <p style="color:#3C4A55;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px;">'+ (state.data.name || '未命名稿件') + '</p>\
+                                <div style="width:170px;height:48px;background:#E5E5E5;padding:6px;box-sizing:border-box;">\
+                                    <image style="width:36px;height:36px;margin-right:9px;float:left;" src="'+state.data.cover+'"/>\
+                                    <div style="width:108px;overflow: hidden;text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">\
+                                            '+ state.data.description + '\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>';
+                $h5Container.html(tpl);
+                $phoneBody.append($h5Container);
+            },
+            shareFriend: function(){
+                $phoneBody.find('.h5-container').remove();
+                var $h5Container = this.createH5Container();
+                var tpl = '<div style="height:67px;width:229px;margin:21px auto;">\
+                            <image style="width: 45px;height:45px;float:left;margin-right:6px;" src="./logo-white.png"/>\
+                            <div style="width: 178px;height: auto;float:left;border-radius:4px;position:relative;background-color:#fff;padding:11px;box-sizing:border-box;border:border:1px solid rgba(227, 230, 235, 1);">\
+                                <p style="width: 165px;color:#3C4A55;font-size:11px;overflow: hidden;text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom:6px;">\
+                                        '+ (state.data.name || '未命名稿件') + '\
+                                </p>\
+                                <div style="width:157px;height:auto;">\
+                                    <div style="width:114px;overflow: hidden;text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;float:left;">'+ state.data.description + '</div>\
+                                    <image style="width:36px;height:36px;float:right;" src="'+state.data.cover+'"/>\
+                                </div>\
+                                <div style="position:absolute;left:-10px;top:8px;">\
+                                    <div class="sanjiao" style="border-color:transparent #fff transparent transparent;"></div>\
+                                </div>\
+                            </div>\
+                        </div>';
+                $h5Container.html(tpl);
+                $phoneBody.append($h5Container);
+            },
+            copyLink: function(){
+                this.showActivityInfo('info');
+                var $copyBtn = $("#copy-text")
+                    , $copyText = '【' + state.data.name + '】' + state.data.url + (state.data.goodsNumber > 0 ? '悄悄告诉你，这些商品正在搞活动~' : '这里有一个好活动分享给你，请查收哦~')
+                    , $input = $('#copyInput');
+
+                $('body').append($input);
+                $input.val($copyText);
+                $input.select();
+                document.execCommand("copy");
+                setTimeout(function(){
+                    window.messager.success('复制成功！');
+                },100)
+            },
+            createQrcode: function(){
+                $tpl.find('.qrcode').html('');
+                new QRCode($tpl.find('.qrcode')[0], {
+                    text: state.data.type !== 3 ? state.previewUrl + '&preview=true' : (state.data.manuscriptType == 1 && !!state.data.posterQrImage ? state.data.posterQrImage : state.data.url),
+                    width: 94,
+                    height: 94,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            },
+            downQrcode: function(type, size){
+                $tpl.find('#iframe-download').attr('src', state.host + 'manuscript/wxqrcode/download?id=' + state.id + '&width=' + size + '&type=' + type);
+            }
+            
+        }
+
+        function initEvent() {
+            var $panel = $('.preview1-component');
+            $panel.find('.feature-bar').on('click.pagination', 'button.item', function (evt) {
+                var $el = $(this),
+                    page = $el.data('page'),
+                    total = state.pagination.total,
+                    pageIndex = state.pagination.pageIndex;
+                if (page === 'prev') {
+                    pageIndex = pageIndex - 1
+                } else if (page === 'next') {
+                    pageIndex = pageIndex + 1
+                }
+                var docWindow = document.getElementById('h5-container').contentWindow;
+                if (!!docWindow) {
+                    docWindow.postMessage({ type: 'flip', pageIndex: pageIndex }, '*');
+                }
+            });
+
+            $panel.find('.option-bar').on('click.option', 'div.item', function (evt) {
+                $panel.find('.option-bar .item').removeClass('active');
+                var $el = $(this),
+                    type = $el.data('type');
+                
+                $el.addClass('active');
+                previewObj[type]();
+            });
+           
+            $panel.find('.qrcode-section').on('click.qrcode', 'div.dowmload-btn', function (evt) {
+                $panel.find('.qrcode-section .dowmload-btn').removeClass('active');
+                var $el = $(this),
+                    type = $el.data('type'),
+                    size= $el.data('size');
+                
+                $el.addClass('active');
+                previewObj.downQrcode(type, size);
+            });
+
+            $panel.find('.close_preview').on('click', function(){
+                $panel.remove();
+                $panel.find('.option-bar .item').removeClass('active');
+                $panel.find('.option-bar .item').eq(0).addClass('active');
+                $panel.find('.qrcode-section .dowmload-btn').removeClass('active');
+                $tpl.find('#iframe-download').attr('src','');
+            })
+        }
+
+        window.openPreviewWindow = function openPreviewWindow(host, previewUrl, id) {
+            $('.preview1-component').remove();
+            state.host = /\/$/i.test(host) ? host : host + '/';
+            state.id = id;
+            var url = host + state.detailUrl + id;
+            $.ajax({
+                url: url,
+                method: 'get',
+                dataType: 'json',
+                success: function (result, status, xhr) {
+                    state.previewUrl = /^(http|https):/i.test(previewUrl) ? previewUrl : ('http://' + previewUrl);
+                    state.data = result.data;
+                    $tpl.appendTo('body');
+                    $tpl.find('.h5-title').text(state.data.name);
+                    $tpl.find('.preview_body').hide();
+                    
+                    if(result.data.type === 3){//已发布活动
+                        if(result.data.manuscriptType != 3){
+                            $tpl.find('.poster-item').show();
+                        }
+                        $tpl.find('.preview_body').eq(1).show();
+                        previewObj.createQrcode();
+                    } else {
+                        $tpl.find('.preview_body').eq(0).show();
+                    }
+                    previewObj.showActivityInfo();
+                    
+                    initEvent();
+                },
+                error: function (err, xhr) {
+                    console.log(err);
+                }
+            });
+
+        }
+
+        // window.openPreviewWindow('http://api.kma.dev.cn/','http://11001190719000000012.wap.pro.kma.dev.cn?session_id=591bf5f2-9590-4a7d-bb69-86627e9d3eb7&id=11001190719000000012&preview=true','51001181022000000040');
+
+    })
+</script> 

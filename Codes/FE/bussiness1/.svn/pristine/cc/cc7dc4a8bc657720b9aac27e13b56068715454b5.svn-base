@@ -1,0 +1,41 @@
+﻿<div style="width:100%; height:100%;overflow:hidden;">
+    <div class="js-data-value" data-id="{{{data.goodsInfo.id}}}" data-kid="{{{data.goodsInfo.kid}}}" data-btnText="{{{data.btnConfig.btnText}}}"
+        data-btnColor="{{{data.btnConfig.btnColor}}}" data-titleColor="{{{data.titleColor}}}"
+        data-priceColor="{{{data.priceColor}}}" data-btnBColor="{{{data.btnConfig.btnBColor}}}"
+        data-style="{{{data.style}}}" style="display:none;"></div>
+    <div class="goodsAppBox clearfix" style="background-color:{{{data.backgroundColor}}};">
+        <div class="js-goods-div goods_list">
+            
+            <ul>
+                <li class="{{{if data.style==1}}}horizontal{{{else if data.style!=1}}}vertical{{{/if}}}">
+                    <div class="goods-img">
+                        <image class="goods_img" src="{{{data.goodsInfo.image}}}"></image>
+                    </div>
+                    <div class="goods-des">
+                        <div style="height:1.2rem;">
+                            {{{if !data.goodsInfo.id}}}
+                                <div class="goods-name" style="color:{{{data.titleColor}}};">{{{data.goodsInfo.title}}}
+                                </div>
+                            {{{else if !!data.goodsInfo.id}}}
+                                <div class="goods-name" style="color:{{{data.titleColor}}};">
+                                </div>
+                            {{{/if}}}
+                        </div>
+                        <div class="desc-bottom"> 
+                            {{{if !data.goodsInfo.id}}}
+                                <div class="goods-price" style="color:{{{data.priceColor}}};">{{{if !data.goodsInfo.id}}}￥{{{data.goodsInfo.price}}}{{{/if}}}
+                                </div>
+                            {{{else if !!data.goodsInfo.id}}}
+                                <div class="goods-price" style="color:{{{data.priceColor}}};">
+                                </div>
+                            {{{/if}}}
+                            
+                            <button type="button" class="btn btn-submit"
+                             style="background-color:{{{data.btnConfig.btnBColor}}};color:{{{data.btnConfig.btnColor}}};">{{{data.btnConfig.btnText}}}</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

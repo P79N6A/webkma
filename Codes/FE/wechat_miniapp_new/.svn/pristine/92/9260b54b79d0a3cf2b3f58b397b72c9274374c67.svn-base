@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "浏览记录",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-list-card": "/components/list-card/list-card"
+  }
+}

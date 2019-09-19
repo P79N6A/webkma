@@ -1,0 +1,66 @@
+<view class="section_row" wx:if="{{articleSign=='undefined'?true:false}}">
+  <view class="pie-box">
+    <block wx:for="{{dataList}}" wx:key="item.key">
+      <view class="flex_box flex__column">
+        <view class="font-tip">目标{{item.title}}</view>
+        <view class="wrap">
+          <view class="pie-chart">
+            <ec-canvas class="pie-{{item.key}}" canvas-id="pie-{{item.key}}" ec="{{canvas_share}}"></ec-canvas>
+          </view>
+        </view>
+        <view class="content-box">
+          <view class="row-text">
+            <view>
+              <view class="icon {{item.bgColorCss}}"></view>
+            </view>
+            <view>
+              <text class="text">完成数 {{item._spread || 0}}</text>
+            </view>
+          </view>
+          <view class="row-text">
+            <view>
+              <view class="icon bg-normal"></view>
+            </view>
+            <view>
+              <text class="text">目标数 {{item._target == undefined ? '--' : item._target}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<view class="section_row">
+  <view class="rank-box">
+    <block wx:key="item.key" wx:for="{{dataList}}">
+      <view class="flex_box flex__column wrap">
+        <view>
+          <text>推广{{item.title}}</text>
+        </view>
+        <view>
+          <text class="item-count">{{item._spread || 0}}</text>
+        </view>
+        <view class="rank-row" wx:if="{{item.rank>0 || articleSign=='undefined'}}" >
+          <view class="font-tip">排名</view>
+          <view class="rank-num {{item.trend>0?'bg-red':(item.trend<0?'bg-green':'')}}">No.{{item.rank}}</view>
+          <image class="rank-trend" src='/images/up.png' wx:if='{{item.trend>0}}'></image>
+          <image class="rank-trend" src='/images/down.png' wx:if='{{item.trend<0}}'></image>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<view class="section_row" wx:if="{{articleSign=='undefined'?true:false}}">
+  <view class="flex_box" style="justify-content: space-between; align-items:baseline;-webkit-justify-content: space-between; -webkit-align-items:baseline;">
+    <view class="font-bd">平均停留时长</view>
+    <view class="font-bd" wx:if="{{avgLifeTime}}">{{avgLifeTime}}</view>
+    <view class="font-bd text-empty-color" wx:else>暂无</view>
+  </view>
+</view>
+<view class="section_row" wx:if="{{articleSign=='undefined'?true:false}}">
+  <view class="flex_box" style="justify-content: space-between; align-items:baseline;-webkit-justify-content: space-between; -webkit-align-items:baseline;">
+    <view class="font-bd">访问地区TOP5</view>
+    <view class="font-bd" wx:if="{{areaTopList}}">{{areaTopList}}</view>
+    <view class="font-bd text-empty-color" wx:else>暂无</view>
+  </view>
+</view>

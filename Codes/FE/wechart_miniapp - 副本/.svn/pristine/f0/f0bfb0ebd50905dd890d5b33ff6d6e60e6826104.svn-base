@@ -1,0 +1,5 @@
+<view class="feedback-panel">
+  <textarea class="txt-area" placeholder="终于等到你，告诉宝宝你最欣赏我哪一点？不说不乖~" maxlength="200" bindinput='inputHandler' bindconfirm='confirmHandler' placeholder-style='color:#B2B2B2;'></textarea>
+  <view class="textarea-counter">{{counter||0}}/200</view>
+</view>
+<i-button type="success" bind:click="confirmHandler" disabled='{{!feedback}}'>确认提交</i-button>

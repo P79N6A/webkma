@@ -1,0 +1,112 @@
+.pg-my-main {
+  min-height: 100vh;
+  background-image: none;
+  background-color: #f1f3fc;
+}
+
+.head-part {
+  height: 420rpx;
+}
+
+.my-head {
+  height: 320rpx;
+  background-color: #24d0c6;
+  padding: 40rpx 60rpx 0 50rpx;
+}
+
+.info-img {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  margin-right: 20rpx;
+}
+
+.info-text {
+  flex-direction: column;
+}
+
+.info-text text {
+  display: inline-block;
+  width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.info-text text:nth-of-type(1) {
+  font-size: 32rpx;
+  color: #fff;
+}
+
+.info-text text:nth-of-type(2) {
+  font-size: 20rpx;
+  color: #fff;
+  margin-top: 15rpx;
+}
+
+.panel_section {
+  margin-top: 25rpx;
+}
+
+.money {
+  width: 590rpx;
+  height: 160rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  position: absolute;
+  top: 180rpx;
+  left: 15rpx;
+  padding: 40rpx 65rpx;
+  font-size: 20rpx;
+  color: #acacac;
+  box-shadow: 0px 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.money .surplus {
+  font-size: 64rpx;
+  color: #fa766b;
+}
+
+.money .total {
+  margin-left: 10rpx;
+  color: #fa766b;
+}
+
+.money .cash-btn {
+  margin-top: 52rpx;
+  margin-bottom: 19rpx;
+}
+
+.form_empty_button {
+  background-color: transparent;
+  padding: 0rpx;
+  text-align: left;
+  color: inherit;
+  font-size: inherit;
+  line-height: inhert;
+}
+
+button::after {
+  border: none;
+}
+
+.link_btn_red {
+  position: relative;
+  display: block;
+  width: 140rpx;
+  height: 60rpx;
+  /* margin-left: auto;
+  margin-right: auto; *//* padding: 8px 24px; */
+  box-sizing: border-box;
+  /* font-weight: 700; */
+  font-size: 24rpx;
+  text-align: center;
+  text-decoration: none;
+  color: #ff5858;
+  line-height: 60rpx;
+  border-radius: 30px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  overflow: hidden;
+  border: 1px solid #ff5858;
+  margin-left: 155rpx;
+}

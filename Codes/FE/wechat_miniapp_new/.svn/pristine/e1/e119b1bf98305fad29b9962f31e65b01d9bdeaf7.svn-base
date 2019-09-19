@@ -1,0 +1,41 @@
+<!--pages/customer/customer.wxml-->
+<view class='container'>
+  <view class='customer-head'>
+    <view class='overview'>
+      <text class='font-22 font-white'>客户总数</text>
+      <view class='flex justify-content-between'>
+        <text class='font-56'>{{customerStatistics.customer_total}}</text>
+        <text class='font-22 font-white' style='line-height:73rpx;'>人脉层级 {{customerStatistics.connections_level}}</text>
+      </view>
+    </view>
+    <view class='info-option flex'>
+      <view class='flex flex-column font-22 tips-gary' bindtap='userCustomer'>
+        <text>今日新增</text>
+        <text class='font-36 info-color line-70'>{{customerStatistics.today_add}}</text>
+      </view>
+      <view class='flex flex-column font-22 tips-gary'>
+        <text>昨日新增</text>
+        <text class='font-36 info-color line-70'>{{customerStatistics.yesterday_add}}</text>
+      </view>
+      <view class='flex flex-column font-22 tips-gary'>
+        <text>成交客户</text>
+        <text class='font-36 info-color line-70'>{{customerStatistics.transaction_customer}}</text>
+      </view>
+    </view>
+  </view>
+  <view class='customer-list'>
+    <view class='title'>
+      <view class='side-line'></view>
+      <text class='font-26 title-color'>最新客户</text>
+      <view class='drop-option'>
+        <view bindtap="customerAction" style='position:relative;'>
+          <text class='font-22 tips-gary'>{{customerActionText}}</text> 
+          <text class='corner'></text>
+          <!-- <icon type='icon-zhankai1'></icon> -->
+        </view>
+      </view>
+    </view>
+    <comp-customer-info list="{{customerList}}" where="customer"></comp-customer-info>
+    <i-load-more wx:if="{{customerList.length != 0}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='玩命加载中'}}" />
+  </view>
+</view>

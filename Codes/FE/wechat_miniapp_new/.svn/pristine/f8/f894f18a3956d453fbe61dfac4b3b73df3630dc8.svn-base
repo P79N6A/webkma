@@ -1,0 +1,288 @@
+// pages/overview/overview.js
+const activityService = require('../../services/activity-service.js');
+const utils = require('../../utils/util.js');
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: null, //个人信息
+    customer: {
+      list: [],
+      count: ""
+    },
+    dashbord: {}, //营销面板数据
+    task: { //任务列表相关数据
+      list: [],
+      params: {
+        id: '',
+        isManager: 0,
+        taskStatus: '2',
+        searchType: 1,
+        pageIndex: 1,
+        pageSize: 10
+      },
+      total: 0,
+      conditionTxt: '剩余时间',
+      conditionlist: ['剩余时间', '完成率'],
+      urls: {
+        detailUrl: '/pages/extension-task-detail/extension-task-detail',
+        analysisUrl: '/pages/extension-task-charts/extension-task-charts'
+      },
+      isShare: false,
+      currActivity: {} //当前选中的要分享的活动
+    },
+    userType: '',
+    showModal: false
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function(options) {
+    this.init();
+    wx.$on('_refleshOverviewData', () => {
+      this.init();
+    })
+  },
+  onShow: function() {
+    setTimeout(() => {
+      // this.setData({
+      //   userData: {
+      //     rank: '2600',
+      //     taskNum: '20',
+      //     headImg: '',
+      //     reward: '20022',
+      //     shareNum: '202',
+      //     getTargetNum: '18',
+      //     despose: '80',
+      //     rankrate: 60 //排名百分比
+      //   }
+      // })
+
+      // this.setData({
+      //   userData: {
+      //     income: '9999', //总收益
+      //     getTargetNum: '200', //总获客
+      //     plunge: '9999', //总投入
+      //     despose: '300', //总曝光
+      //     time: '200', //时长
+      //     taskNum: '300', //总任务
+      //     complete: '100', //总完成
+      //     employee: [
+      //       {name: '张三', score: '999'},
+      //       { name: '李四', score: '999' },
+      //       { name: '刘德华', score: '999' }
+      //     ]
+      //   }
+      // })
+    }, 2000);
+  },
+  init: function() {
+    let self = this;
+    this.getPersonalInfo(() => {
+      if (!self.data.userInfo.emplId) return false;
+      self.getTaskList();
+      self.getCustomerList();
+      if (this.data.userType == 'boss') {
+        this.getBossDashboard();
+      } else {
+        this.getEmployeeDashboard();
+      }
+    });
+    wx.showLoading({});
+  },
+  // 获取个人信息
+  getPersonalInfo: function(callback) {
+    var self = this;
+    activityService.personalInfoQuery({}, (err, res) => {
+      if (res.status == 0) {
+        self.setData({
+          userInfo: res.data,
+          userType: !!res.data.isManager ? 'boss' : 'employee',
+          "task.params.id": res.data.emplId
+        });
+        !!callback && callback();
+      } else {
+        utils.toast.fail({
+          title: "获取个人信息失败"
+        });
+      }
+    })
+  },
+  //获取员工营销面板数据
+  getEmployeeDashboard: function() {
+    let self = this;
+    activityService.employeeDashboard({
+      "businessId": self.data.userInfo.businessId,
+      "empId": self.data.userInfo.emplId,
+    }, (err, res) => {
+      if (res.status == 0) {
+        self.setData({
+          "dashbord": res.data,
+          userData: {
+            rank: res.data.empMarketPower,
+            taskNum: res.data.completeTaskCount,
+            headImg: self.data.userInfo.face,
+            reward: res.data.totalAward.toString(),
+            shareNum: res.data.forwardCount.toString(),
+            getTargetNum: res.data.customerCount.toString(),
+            despose: res.data.browseCount.toString(),
+            rankrate: (res.data.empMarketRank/res.data.merchantEmpCount)*100 
+          }
+        })
+      } else {
+        utils.toast.fail({
+          title: "获取营销面板数据失败"
+        });
+      }
+    });
+  },
+  //获取boss营销面板数据
+  getBossDashboard: function() {
+    let self = this;
+    activityService.bossDashboard({
+      "businessId": self.data.userInfo.businessId,
+      "empId": self.data.userInfo.emplId,
+    }, (err, res) => {
+      if (res.status == 0) {
+        self.setData({
+          "dashbord": res.data
+        })
+        console.log("boss", res.data)
+      } else {
+        utils.toast.fail({
+          title: "获取营销面板数据失败"
+        });
+      }
+    });
+  },
+  // 获取客户列表
+  getCustomerList: function() {
+    let self = this,
+      session_id = getApp().globalData.userInfo.session_id;
+
+    activityService.getCustomerList({
+      "session_id": session_id,
+      "pageIndex": 1,
+      "pageSize": 10000,
+      "keyword": '',
+      "sort": 'latesTime',
+      "isManager": 0
+    }, (err, res) => {
+      if (res.status == 0) {
+        self.setData({
+          "customer.list": res.data.list,
+          "customer.count": res.data.total
+        })
+      } else {
+        utils.toast.fail({
+          title: "获取客户数据失败"
+        });
+      }
+    });
+  },
+  // 获取任务列表
+  getTaskList: function(e) {
+    let self = this
+    activityService.rankingList(this.data.task.params, (err, res) => {
+      if (res.status == 0) {
+        let datainfo = res.data.length > 2 ? res.data.list.slice(0, 2) : res.data.list
+        console.log(datainfo)
+        datainfo.map((item, index) => {
+          item.newTimeArr = utils.format(item.newTime)
+        })
+
+        self.setData({
+          "task.list": res.data.list,
+          "task.total": res.data.total
+        });
+        wx.stopPullDownRefresh();
+      }
+      wx.hideLoading();
+    });
+  },
+  // 选择筛选条件
+  openConditionlist: function(e) {
+    let self = this
+    wx.showActionSheet({
+      itemList: self.data.task.conditionlist,
+      success(res) {
+        console.log(res)
+        self.setData({
+          "task.conditionTxt": res.tapIndex == 0 ? '剩余时间' : '完成率',
+          "task.params.pageIndex": 1,
+          "task.params.searchType": res.tapIndex + 1,
+        })
+        // 排序TODO
+        self.getTaskList()
+      }
+    })
+  },
+  // 查看更多待办事项
+  queryAllTask: function() {
+    wx.switchTab({
+      url: `/pages/tasks/tasks`
+    });
+  },
+  // 获取任务列表当前点击项数据并跳转至分享页面
+  itemDataEvent(e) {
+    wx.navigateTo({
+      url: `/pages/extension-task-share/extension-task-share?id=${e.detail.itemData.id}`,
+    });
+  },
+  // 跳转企业员工
+  jumpEmployeeList() {
+    wx.navigateTo({
+      url: "/pages/employees-list/employees-list",
+    });
+  },
+  // 跳转企业客户
+  jumpCustomerList() {
+    wx.navigateTo({
+      url: "/pages/user-customer/user-customer?type=2",
+    });
+  },
+  // 监听用户下拉动作
+  onPullDownRefresh: function(e) {
+    wx.stopPullDownRefresh()
+    this.onLoad();
+  },
+  //跳转到名片详情
+  toCardDeatil: function() {
+    wx.navigateTo({
+      url: `/pages/bussiness-card-detail/bussiness-card-detail`
+    });
+  },
+  // 跳转到boss营销报表
+  toBossReport() {
+    wx.navigateTo({
+      url: `/pages/marketing-report/marketing-report`
+    });
+  },
+  //跳转到企业任务页
+  toBossTaskPage(e) {
+    let param = !!e.currentTarget.dataset.type ? '?isManager=1' : '';
+    wx.navigateTo({
+      url: '/pages/tasks-company/tasks-company' + param
+    })
+  },
+  createReport() {
+    wx.showLoading({
+      title: '报表生成中',
+    })
+    this.setData({
+      showModal: true
+    });
+    setTimeout(() => {
+      wx.$emit('drawReport');
+    });
+  },
+  parentEvent(data) {
+    this.setData({
+      showModal: false
+    });
+  }
+
+})

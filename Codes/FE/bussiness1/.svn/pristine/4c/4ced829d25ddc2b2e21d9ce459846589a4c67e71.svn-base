@@ -1,0 +1,333 @@
+<template>
+  <div style="heigth:auto">
+    <div class="header-statistics">
+      <div class="left-text">
+        <div>
+          <p>{{redpacketInfo.red_packet_num}}</p>
+          <p>红包总数</p>
+        </div>
+        <div>
+          <p>{{redpacketInfo.receive_num}}</p>
+          <p>已发红包</p>
+        </div>
+        <div>
+          <p style="color:#FA766B">
+            <span
+              style="font-size:12px">￥</span>{{redpacketInfo.receive_money>10000?(((redpacketInfo.receive_money-redpacketInfo.receive_money%1000)/10000+'w')):(redpacketInfo.receive_money)}}
+          </p>
+          <p>已发金额</p>
+        </div>
+        <div>
+          <p style="color:#FA766B"><span
+              style="font-size:12px">￥</span>{{redpacketInfo.alreadyMoney>10000?(((redpacketInfo.alreadyMoney-redpacketInfo.alreadyMoney%1000)/10000+'w')):(redpacketInfo.alreadyMoney)}}
+          </p>
+          <p>活动余额</p>
+        </div>
+        <div>
+          <p style="color:#FA766B">
+            <span
+              style="font-size:12px">￥</span>{{redpacketInfo.original_money>10000?(((redpacketInfo.original_money-redpacketInfo.original_money%1000)/10000+'w')):(redpacketInfo.original_money)}}
+          </p>
+          <p>活动总额</p>
+        </div>
+      </div>
+    </div>
+    <div class="header-seach">
+      <p>
+        共{{tableTotal}}条，检索结果
+        <span>{{tableData.length}}</span>
+      </p>
+      <div class="search-wrap">
+        <el-select v-model="data_.state" placeholder="活动类型" size="mini" style="border-radius:none;margin-right:10px"
+          @change="optionSelect()">
+          <el-option label="全部" value></el-option>
+          <el-option label="不符合条件" value="1"></el-option>
+          <el-option label="符合条件未发放" value="2"></el-option>
+          <el-option label="已发放" value="3"></el-option>
+          <el-option label="已补发" value="4"></el-option>
+        </el-select>
+        <el-input placeholder="请输入微信昵称" style="width: 240px;" v-model="data_.keyWords"></el-input>
+        <span class="search-btn" @click="select()">查询</span>
+        <el-button class="exportBtn" size="mini" @click="downExcel">
+          <i  class="iconfont icon-excel-out"></i>导出
+        </el-button>
+      </div>
+    </div>
+    <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}"
+      :header-cell-style="{background:'#F7FBFC'}"
+         @sort-change="sortChangeHandler"
+      >
+      <el-table-column label="昵称/身份"  min-width="120">
+        <template slot-scope="scope">
+          <div style="display: flex; margin:10px 0;">
+            <div>
+              <img style="width:40px;height:40px;margin-right:12px;border-radius:40px;"
+                :src="scope.row.w_face ||scope.row.u_face " />
+            </div>
+            <div class="font-12">
+             <p class="black-deep" >{{scope.row.w_name?scope.row.w_name:scope.row.u_name}}</p>
+              <p class="tipText-color" v-if="scope.row.e_empl_name">{{scope.row.role}}:{{scope.row.e_empl_name}}</p>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="地区" align="center">
+        <template slot-scope="scope">
+          <p class="textStyle">{{ scope.row.w_province }}{{scope.row.w_city }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="hierarchy" label="人脉层级" align="center" sortable></el-table-column>
+      <el-table-column label="浏览次数/时长" align="center" sortable  prop="browse_time_Length">
+        <template slot-scope="scope">{{scope.row.browse_number|| 1}}/{{scope.row.browse_time_Length}}</template>
+      </el-table-column>
+      <el-table-column prop="visitor_number" label="带来浏览人数" align="center" sortable></el-table-column>
+      <el-table-column prop="exposure_number" label="带来浏览次数" align="center" sortable></el-table-column>
+      <el-table-column prop="send_time" label="发放记录" align="center" sortable></el-table-column>
+      <el-table-column prop="receive_time" label="领取次数" align="center" sortable></el-table-column>
+      <el-table-column prop="money" label="红包总额" align="center" sortable>
+        <template slot-scope="scope">
+          <span style="color:#FA766B">￥{{scope.row.money}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="发放状态" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.state==1">不符合条件</span>
+          <span v-if="scope.row.state==2">符合条件未发放</span>
+          <span v-if="scope.row.state==3">已发放</span>
+          <span v-if="scope.row.state==4">已补发</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="最近浏览时间" align="center" prop="latest_browse" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span>{{ scope.row.latest_browse.split(' ')[0] }}</span>
+          <br />
+          <span style="color: #B1BFCD">{{ scope.row.latest_browse.split(' ')[1] }}</span>
+        </template>
+      </el-table-column> -->
+    </el-table>
+    <pagination v-if="tableData.length>0" class="pull-right" :paginationOpt="employeePagination"
+      @switchPage="employeePagesFn" />
+  </div>
+</template>
+
+<script>
+import httpConfig from "config/http";
+import api from "api";
+import pagination from "../../components/ui-pagination";
+export default {
+  components: {
+    pagination
+  },
+  data() {
+    return {
+      employeePagination: {
+        pageIndex: 1,
+        pageSize: 8,
+        totalCount: 1,
+        pageCount: 0
+      },
+      tableTotal: 0,
+      tableData: [],
+      data_: {
+        main_id: this.$route.query.main_id,
+        pageIndex: 1,
+        pageSize: 8,
+        keyWords: "",
+        state: "",
+        orderBy:"",
+        orderType:"",// 排序方式  true 升序  false 降序  不传则为默认升序
+      },
+      redpacketInfo: {},
+      downUrl:
+        httpConfig.apiHost +
+        "award/redpacket/downloadRedpackstatistics?session_id=" +
+        localStorage.getItem("sessionId") + "&main_id=" + this.$route.query.main_id,
+    };
+  },
+  mounted() {
+    var self = this;
+    self.tableList();
+  },
+  methods: {
+    //导出
+    downExcel() {
+      window.open(this.downUrl);
+    },
+    //红包统计列表
+    tableList(cb) {
+      var self = this;
+      api.request("redpackstatistics", Object.assign(self.data_), result => {
+        if (result.status == 0) {
+          result.data.redpacketInfo.alreadyMoney = (result.data.redpacketInfo.original_money - result.data.redpacketInfo.receive_money).toFixed(2);
+          result.data.redpacketInfo.receive_money = result.data.redpacketInfo.receive_money.toFixed(2);
+          result.data.redpacketInfo.original_money = result.data.redpacketInfo.original_money.toFixed(2);
+          self.redpacketInfo = result.data.redpacketInfo;
+          for (var i = 0; i < result.data.userList.list.length; i++) {
+            if (result.data.userList.list[i].browse_time_Length < 5) {
+              result.data.userList.list[i].browse_time_Length = "<5秒";
+            } else {
+              result.data.userList.list[i].browse_time_Length = window.times(
+                result.data.userList.list[i].browse_time_Length
+              );
+            }
+          }
+          self.tableData = result.data.userList.list;
+          self.employeePagination.totalCount = result.data.userList.total;
+          self.employeePagination.pageCount = Math.ceil(
+            result.data.userList.total / self.employeePagination.pageSize
+          );
+          if (self.data_.keyWords == "" && self.data_.state == "") {
+            self.tableTotal = result.data.userList.total;
+          }
+        } else {
+          self.$message.error(result.message);
+        }
+      });
+      !!cb && cb();
+    },
+    //下拉框搜索
+    optionSelect() {
+      var self = this;
+      self.data_.keyWord = "";
+      self.employeePagination.pageIndex = 1;
+      self.tableList();
+    },
+    //搜索
+    select() {
+      var self = this;
+      self.employeePagination.pageIndex = 1;
+      self.tableList();
+    },
+     //排序
+    sortChangeHandler(orderBy) {
+      let { order, prop } = orderBy;
+      if (!!prop) {
+        this.data_.orderBy=[prop][0];
+        this.data_.orderType= order === "descending" ? true : false;
+        this.tableList();
+      }
+    },
+    //分页
+    employeePagesFn(pageIndex, cb) {
+      let self = this;
+      self.employeePagination.pageIndex = pageIndex;
+      self.data_.pageIndex = pageIndex;
+      self.tableList(cb);
+    }
+  }
+};
+</script>
+
+<style scoped>
+.black-deep {
+  width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.header-seach .exportBtn img {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  /* margin-right: 5px; */
+}
+.header-seach .exportBtn {
+  background: #00bad0;
+  color: #ffffff;
+  height: 30px;
+  /* line-height: 30px; */
+  border-radius: 0;
+}
+
+/* 搜索框样式 begin*/
+.search-wrap {
+  position: relative;
+  float: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.search-total {
+  font-size: 12px;
+  color: #b1bfcd;
+  margin-right: 18px;
+}
+.search-btn {
+  display: inline-block;
+  width: 64px;
+  height: 30px;
+  line-height: 30px;
+  background: #01bacf;
+  border-radius: 0 4px 4px 0;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.search-wrap >>> .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+  border-radius: 0;
+  /* width: 132px; */
+}
+.header-seach {
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 0 15px 0;
+}
+.header-seach .reissueBtn {
+  background: #fa766b;
+  color: #ffffff;
+  border: none;
+}
+
+.header-seach p {
+  color: #b1bfcd;
+}
+.header-seach p span {
+  color: #f68411;
+}
+.header-statistics {
+  width: 100%;
+  height: 70px;
+  background: #f7fbfc;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.header-statistics > .left-text > div {
+  width: 100px;
+  text-align: center;
+  margin-left: 27px;
+}
+.header-statistics > .left-text > div > p:nth-of-type(1) {
+  margin-top: 15px;
+  color: #f68411;
+  font-size: 16px;
+}
+.header-statistics > .left-text > div > p {
+  text-align: center;
+  width: 70px;
+}
+.header-statistics > .left-text > div > p:nth-of-type(2) {
+  margin-right: 12px;
+  color: #b1bfcd;
+  font-size: 12px;
+}
+.header-statistics > .left-text {
+  width: 60%;
+  display: flex;
+}
+.header-statistics > div:nth-of-type(2) {
+  width: 40%;
+  text-align: right;
+  line-height: 70px;
+  color: #b1bfcd;
+}
+.header-statistics > div:nth-of-type(2) span {
+  color: #3898ec;
+  margin-right: 19px;
+  padding-left: 10px;
+}
+</style>

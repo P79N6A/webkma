@@ -1,0 +1,16 @@
+﻿<div style="width:100%;height:100%;">
+    <form style="width:100%;height:100%;">
+        <div class="form-row">
+            <input class="form-control form-input" type="text" placeholder="姓名" name="name" style="border:1px {{{data.borderColor}}} solid;">
+        </div>
+        <div class="form-row">
+            <input class="form-control form-input" type="text" placeholder="手机" name="phone" style="border:1px {{{data.borderColor}}} solid;">
+        </div>
+        <div class="form-row">
+            <input class="form-control form-input" type="text" placeholder="邮箱" name="email" style="border:1px {{{data.borderColor}}} solid;">
+        </div>
+        <input type="button" class="btn btn-submit form-input" value="提交" style="background-color:{{{data.buttonColor}}};color:{{{data.color}}};" />
+    </form>
+</div>
+
+   

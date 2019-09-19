@@ -1,0 +1,49 @@
+<!--components/customer-info/customer-info.wxml-->
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<!-- 客户相关使用 -->
+<block wx:if="{{where == 'customer'}}">
+  <view class='info-box flex justify-content-between' wx:for="{{list}}" wx:key="item">
+    <view class='flex' style='width:60%;' bindtap="{{item.flag=='2'?'detailsInfo':'staffInfo'}}" data-id="{{item.id}}" data-user="{{item.user_id}}" data-item='{{item}}'>
+      <view style='width:40rpx; position:relative;'>  
+        <view class='mark font-16 color-white'>{{item.connections_level || '1'}}度</view>
+        <text class="line" wx:if="{{item.connections_level==1 || item.connections_level=='' }}"></text>
+        <text class="line-son" wx:else></text>
+      </view> 
+      <view class='photo-box ml-16'>
+        <image class='photo' src="{{item.face || '../../images/icon-default-photo.png'}}"></image>
+        <text class='score color-white font-18'>{{cont.keepOneCount(item.marketing_power)}}分</text>
+      </view>
+      <view class='flex flex-column ml-16'>
+        <text class='font-22 title-color'>{{(item.name==null||item.name=="")?item.nickname:item.name}}</text>
+        <text class='font-20 color-gray'>{{item.phone || '暂无手机号'}}</text>
+        <text class='font-20 color-gray eplipes' style='width:285rpx;line-height:24rpx;'>来自 <text class='font-20 color-blue'>{{item.from_name}}</text> </text>
+      </view>
+        <!-- <view style="font-size:12px;folat:right" bindtap="geturl" data-user="{{item.user_id}}" data-id="{{item.id}}" >编辑</view> -->
+    </view>
+    <view style='width:20%;' bindtap="{{item.flag=='2'?'detailsInfo':'telCall'}}" data-call='{{item.phone}}' data-id='{{item.id}}' data-user="{{item.user_id}}" data-item='{{item}}'>
+      <image class='photo' src="{{item.flag=='2'?'../../images/icon-card.png':(item.phone==null||item.phone==''?'':'../../images/icon-call.png')}}"></image>    
+    </view>
+  </view>
+</block>
+<!-- 其他页面使用 -->
+<block wx:else>
+  <view class='info-box flex justify-content-between' wx:for="{{list}}" wx:for-index="index" wx:key="item">
+    <view class='flex' style='width:60%;' bindtap="employeesInfo" data-empId='{{item.id}}' data-item='{{item}}' data-userId='{{item.userId}}' data-name='{{item.name}}'>
+      <!-- <view class='serial-num font-22 color-gray'>  
+        <text>{{index + 1}}</text>
+      </view>  -->
+      <view class='photo-box'>
+        <image class='photo' src="{{(item.face==null?item.wx_face:item.face) || '../../images/icon-default-photo.png'}}"></image>
+        <text class='score color-white font-18'>{{cont.keepOneCount(item.marketing_power)}}分</text>
+      </view>
+      <view class='flex flex-column ml-16'>
+        <text class='font-22 title-color'>{{(item.name==null||item.name=="")?item.nickname:item.name}}</text>
+        <text class='font-20 color-gray'>{{item.phone || '暂无手机号'}}</text>
+        <text class='font-20 color-gray'>{{item.job || '暂无'}}</text>
+      </view>
+    </view>
+    <view style='width:20%;' bindtap="employeesInfo" data-empId='{{item.id}}' data-item='{{item}}' data-userId='{{item.userId}}' data-name='{{item.name}}'>
+      <image class='photo' src="../../images/icon-info.png"></image>    
+    </view>
+  </view>
+</block>

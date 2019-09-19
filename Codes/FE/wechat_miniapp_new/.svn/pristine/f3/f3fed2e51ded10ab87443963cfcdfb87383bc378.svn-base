@@ -1,0 +1,37 @@
+<view>
+  <view class="header-box">
+    <view class="header-content">
+      <view class="img-box">
+        <image src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2758807304,2560528048&fm=26&gp=0.jpg" alt="" />
+        <view class="name-box">
+          <view class="name">想个名字想破头</view>
+          <view class="number">1027****74</view>
+        </view>
+      </view>
+      <view class="price-box">
+        <view class="price-text">成交金额</view>
+        <view class="price">
+          <text>￥</text> 555
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="conten-box">
+    <view style="display: flex">
+      <view class="add-btn">+</view>
+      <view class="addRemarks">添加备注</view>
+    </view>
+    <view class="list-box">
+      <view class="list" wx:for="{{array}}">
+        <view class="after-box"></view>
+        <view class="after-left"></view>
+        <view class="time">
+          <view>两天前</view>
+        </view>
+        <view class="des">
+          <view>这个有两个小孩，对母婴用品偏爱，这个有两个小孩，对母婴用品偏爱，喜欢有折扣的抢购活动喜欢有折扣的抢购活动</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

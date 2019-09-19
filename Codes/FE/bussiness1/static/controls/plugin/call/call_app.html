@@ -1,0 +1,13 @@
+<div style="width:100%;height:100%;">
+  <div class="call_box" data-phone="{{{data.callNum}}}">
+    {{{if data.style!==3}}}
+      <a class="telJump {{{if data.style==1}}}one{{{else if data.style==2}}}two{{{/if}}}" style="text-decoration:none; background-color: {{{data.backgroundColor}}};color: {{{data.color}}};" href="tel:{{{data.callNum}}}">
+        <span><i class="iconfont icon-dianhua"></i>{{{data.callText}}}</span>
+      </a>
+    {{{else if data.style==3}}}
+      <a id="telJump_a" class="telJump three" style="text-decoration:none;" >
+        <i class="iconfont icon-dianhua" style="color: {{{data.iconColor}}};font-size: 2.15625rem;position: relative;top: 0.05rem;"></i>
+      </a>
+    {{{/if}}}
+  </div>
+</div>

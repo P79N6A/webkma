@@ -1,0 +1,119 @@
+/* Helvetica */
+@font-face {
+    font-family: "helvetica";
+    src: url("./helvetica/helvetica.woff2") format("woff2"),
+        url("./helvetica/helvetica.woff") format("woff"),
+        url("./helvetica/helvetica.ttf") format("truetype"),
+        url("./helvetica/helvetica.eot") format("embedded-opentype");
+        /* url("./helvetica/helvetica.svg") format("svg"); */
+}
+/* 微软雅黑 */
+@font-face {
+    font-family: "msyh";
+    src: url("./msyh/msyh.woff2") format("woff2"),
+        url("./msyh/msyh.woff") format("woff"),
+        url("./msyh/msyh.ttf") format("truetype"),
+        url("./msyh/msyh.eot") format("embedded-opentype");
+        /* url("./msyh/msyh.svg") format("svg"); */
+}
+/* 黑体 */
+@font-face {
+    font-family: "simhei";
+    src: url("./simhei/simhei.woff2") format("woff2"),
+        url("./simhei/simhei.woff") format("woff"),
+        url("./simhei/simhei.ttf") format("truetype"),
+        url("./simhei/simhei.eot") format("embedded-opentype");
+        /* url("./simhei/simhei.svg") format("svg"); */
+}
+/* 楷体 */
+@font-face {
+    font-family: "simkai";
+    src: url("./simkai/simkai.woff2") format("woff2"),
+        url("./simkai/simkai.woff") format("woff"),
+        url("./simkai/simkai.ttf") format("truetype"),
+        url("./simkai/simkai.eot") format("embedded-opentype");
+        /* url("./simkai/simkai.svg") format("svg"); */
+}
+/* 宋体 */
+@font-face {
+    font-family: "simsun";
+    src: url("./simsun/simsun.woff2") format("woff2"),
+        url("./simsun/simsun.woff") format("woff"),
+        url("./simsun/simsun.ttf") format("truetype"),
+        url("./simsun/simsun.eot") format("embedded-opentype");
+        /* url("./simsun/simsun.svg") format("svg"); */
+}
+/* 幼圆 */
+@font-face {
+    font-family: "simyou";
+    src: url("./simyou/simyou.woff2") format("woff2"),
+        url("./simyou/simyou.woff") format("woff"),
+        url("./simyou/simyou.ttf") format("truetype"),
+        url("./simyou/simyou.eot") format("embedded-opentype");
+        /* url("./simyou/simyou.svg") format("svg"); */
+}
+/* 沐瑶软笔手写 */
+@font-face {
+  font-family: "muyao-softbrush";
+  src: url("./muyao-softbrush/muyao-softbrush.woff2") format("woff2"),
+       url("./muyao-softbrush/muyao-softbrush.woff") format("woff"),
+       url("./muyao-softbrush/muyao-softbrush.ttf") format("truetype"),
+       url("./muyao-softbrush/muyao-softbrush.eot") format("embedded-opentype"),
+       url("./muyao-softbrush/muyao-softbrush.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* 庞门正道 */
+@font-face {
+  font-family: "pmzd";
+  src: url("./pmzd/pmzd.woff2") format("woff2"),
+       url("./pmzd/pmzd.woff") format("woff"),
+       url("./pmzd/pmzd.ttf") format("truetype"),
+       url("./pmzd/pmzd.eot") format("embedded-opentype"),
+       url("./pmzd/pmzd.svg") format("svg");
+}
+/* 锐字真言 */
+/* @font-face {
+  font-family: "rzzyt";
+  src: url("./rzzyt/rzzyt.woff2") format("woff2"),
+       url("./rzzyt/rzzyt.woff") format("woff"),
+       url("./rzzyt/rzzyt.ttf") format("truetype"),
+       url("./rzzyt/rzzyt.eot") format("embedded-opentype"),
+       url("./rzzyt/rzzyt.svg") format("svg");
+} */
+/* 手书 */
+@font-face {
+  font-family: "shoushu";
+  src: url("./shoushu/shoushu.woff2") format("woff2"),
+       url("./shoushu/shoushu.woff") format("woff"),
+       url("./shoushu/shoushu.ttf") format("truetype"),
+       url("./shoushu/shoushu.eot") format("embedded-opentype"),
+       url("./shoushu/shoushu.svg") format("svg");
+}
+/* 颜体 */
+@font-face {
+  font-family: "i-ngaan";
+  src: url("./i-ngaan/i-ngaan.woff2") format("woff2"),
+       url("./i-ngaan/i-ngaan.woff") format("woff"),
+       url("./i-ngaan/i-ngaan.ttf") format("truetype"),
+       url("./i-ngaan/i-ngaan.eot") format("embedded-opentype"),
+       url("./i-ngaan/i-ngaan.svg") format("svg");
+}
+/* 站酷意大利英文 */
+@font-face {
+  font-family: "zcool-addict-italic";
+  src: url("./zcool-addict-italic/zcool-addict-italic.woff2") format("woff2"),
+       url("./zcool-addict-italic/zcool-addict-italic.woff") format("woff"),
+       url("./zcool-addict-italic/zcool-addict-italic.ttf") format("truetype"),
+       url("./zcool-addict-italic/zcool-addict-italic.eot") format("embedded-opentype"),
+       url("./zcool-addict-italic/zcool-addict-italic.svg") format("svg");
+}
+/* 智勇手书英文 */
+@font-face {
+  font-family: "zhiyong";
+  src: url("./zhiyong/zhiyong.woff2") format("woff2"),
+       url("./zhiyong/zhiyong.woff") format("woff"),
+       url("./zhiyong/zhiyong.ttf") format("truetype"),
+       url("./zhiyong/zhiyong.eot") format("embedded-opentype"),
+       url("./zhiyong/zhiyong.svg") format("svg");
+}

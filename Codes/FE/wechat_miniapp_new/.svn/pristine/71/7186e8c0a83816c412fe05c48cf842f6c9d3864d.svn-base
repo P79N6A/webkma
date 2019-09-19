@@ -1,0 +1,239 @@
+<view>
+  <view class="page">
+    <view class="page__bd">
+      <comp-page-box-tips type="{{pageStatus}}"></comp-page-box-tips>
+      <block wx:if="{{!pageStatus}}">
+        <view class="bd__navbar">
+          <comp-navbar bind:tabchange="navbarTabChange" tabs="{{[{key:'baseData',title:'任务数据'},{key:'plugData',title:'插件数据'}]}}" activeTab="{{activeNavTab}}"></comp-navbar> 
+        </view>
+        <block wx:if="{{activeNavTab == 'baseData'}}">
+          <view class="bd__section {{formList.length==0?'head__row':''}}">
+            <view class="head__title">
+              <image style="width: 28rpx; height: 28rpx; vertical-align:middle; margin-right:10rpx;" src="/images/icon-chart-line.png"></image>
+              <text class="font-bd" style="vertical-align:middle;">我的推广数据</text>
+            </view>
+            <comp-activity-charts-overview tid="{{id}}" article-sign="{{articleid}}"></comp-activity-charts-overview>
+          </view>
+          <view class="bd__section">
+            <comp-activity-charts-line tid="{{id}}"></comp-activity-charts-line>
+          </view>
+          <view class="bd__section">
+            <view class="head__title">
+              <image style="width: 28rpx; height: 28rpx; vertical-align:middle; margin-right:10rpx;" src="/images/icon-chart-all.png"></image>
+              <text class="font-bd" style="vertical-align:middle;">活动总数据</text>
+            </view>
+            <view class="section_row">
+              <view class="rank-box">
+                <block wx:key="item.key" wx:for="{{dataList}}" wx:key="{{index}}">
+                  <view class="weui-flex wrap" style="flex-direction: column;-webkit-flex-direction: column;">
+                    <view>
+                      <text>总{{item.title}}</text>
+                    </view>
+                    <view>
+                      <text class="item-count">{{item.total || 0}}</text>
+                    </view>
+                  </view>
+                </block>
+              </view>
+            </view>
+            <view class="section_row">
+              <view class="weui-flex" style="justify-content: space-between; align-items:baseline; -webkit-justify-content: space-between; -webkit-align-items:baseline;">
+                <view class="font-bd">平均停留时长</view>
+                <view class="font-bd" wx:if="{{avgLifeTime}}">{{avgLifeTime}}</view>
+                <view class="font-bd text-empty-color" wx:else>暂无</view>
+              </view>
+            </view>
+            <view class="section_row">
+              <view class="weui-flex" style="justify-content: space-between; align-items:baseline; -webkit-justify-content: space-between; -webkit-align-items:baseline;">
+                <view class="font-bd">访问地区TOP5</view>
+                <view class="font-bd" wx:if="{{areaTopList}}">{{areaTopList}}</view>
+                <view class="font-bd text-empty-color" wx:else>暂无</view>
+              </view>
+            </view>
+          </view>
+        </block>
+        <block>
+          <view wx:if="{{activeNavTab == 'plugData'}}" class="plug-list">
+            <view class='plug-tab flex'>
+              <view wx:for="{{tabNav}}" wx:key="item.key" class="{{item.key==activePlugTab?'active':''}}" bindtap="navPlurTabChange" data-key="{{item.key}}">{{item.title}}</view>
+            </view>
+            <view class='vote-record' wx:if="{{showTitle}}">
+              <view class='font-22 title_top'>
+                <view>{{titleCont.title}} <text class='num-color'>{{titleCont.titleNun}}</text></view>
+                <view  wx:if="{{activePlugTab=='redEnvelopes'}}">{{titleCont.redEnvelopes}} <text class='price'>￥{{titleCont.redPrice}}</text></view>
+              </view>
+              <view class='font-18 phcolor'>{{titleCont.content}}</view>
+            </view>
+            <view>
+              <!-- 报名 -->
+              <view wx:if="{{activePlugTab == 'formData'}}">
+                <view class='signup_chart'>
+                  <view class='signup_left'>
+                    <view  class='signup_title'>报名人数 <text class='orange_font'>168</text></view>
+                    <view class='tipcont'>
+                      <view>活动吸引力不高？</view>
+                      <view>优化文案 增加趣味度</view>
+                      <view>增加转发和曝光率</view>
+                    </view>
+                  </view>
+                  <view class='signup_right'>
+                    <charts-activity-plugin-form-pie  id="pluginFormPie"  dataSource="{{formDataSource}}">
+                    </charts-activity-plugin-form-pie>
+                  </view> 
+                </view>
+                <view class='cont_info'>
+                  <view class="search_input">
+                    <text class="iconfont icon-search"></text>
+                    <input placeholder='搜索' bindinput='getKeyword' confirm-type='search'></input>
+                  </view>
+                  <view class='cont_info_lsit'>
+                    <comp-plug-in-unit wx:for="{{formDataListData}}" item="{{item}}" wx:key="{{index}}"></comp-plug-in-unit>
+                  </view>
+                </view>
+              </view>
+              <!-- 商品 -->
+              <view wx:if="{{activePlugTab == 'goods'}}">
+                <view class='signup_chart'>
+                  <view class='signup_left'>
+                    <view  class='signup_title'>订单总数 <text class='orange_font'>168</text></view>
+                    <view  class='signup_title'>成交总额 <text class='price'>￥168</text></view>
+                    <view class='tipcont'>
+                      <view>下单率不高？</view>
+                      <view>打折！包邮！还送小礼！</view>
+                      <view>买家一切借口不在话下</view>
+                    </view>
+                  </view>
+                  <view class='signup_right'>
+                    <charts-activity-plugin-order-pie   id="pluginOrderPie" dataSource="{{orderDataSource}}">
+                    </charts-activity-plugin-order-pie>
+                  </view>     
+                </view>
+                <view class='cont_list'>
+                  <view class='list_item' wx:for="{{10}}" wx:key="{{index}}">
+                    <image src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/reward_bg.png'></image>
+                    <view class='item_info'>
+                      <view class='item_title'>一段商品的标题一段商品的标题读取商城宝贝标题28个字贝标题28个字</view>
+                      <view class='item_price'>
+                        <text>总成交</text>
+                        <text>￥135</text>
+                      </view>
+                    </view>
+                    <view class='item_right'>
+                      <view class='item_browse'>
+                        <text>浏览</text>
+                        <text class='orange_font'>112</text>
+                      </view>
+                      <view class='item_order'>
+                        <text>下单</text>
+                        <text class='orange_font'>12</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <!-- 红包 -->
+              <view wx:if="{{activePlugTab=='redEnvelopes'}}">
+                <view class='cont_info'>
+                  <view class="search_input">
+                    <text class="iconfont icon-search"></text>
+                    <input placeholder='搜索' bindinput='getKeyword' bindconfirm='getInfoCont' confirm-type='search'></input>
+                  </view>
+                  <view class='cont_info_lsit'>
+                    <comp-plug-in-unit wx:for="{{10}}" wx:key="{{index}}" isPrice="{{true}}" isShowInfo="hide"></comp-plug-in-unit>
+                  </view>
+                </view>
+              </view>
+              <!-- 中奖 -->
+              <view wx:if="{{activePlugTab=='vote'}}">
+                <view class='voteTable'>
+                  <view class="tr bg-title" style='background-color:#FDF6EC;'>
+                    <view class="th title-color">head1</view>
+                  </view>
+                  <block wx:for="{{listData}}" wx:key="{{code}}">
+                    <view class="tr bg-cont title-color">
+                      <view class="td border-right" style='background-color:#FDF6EC;'>{{item.code}}</view>
+                      <view class="td border-right">{{item.text}}</view>
+                      <view class="td">{{item.type}}</view>
+                    </view>
+                  </block>
+                </view>
+                <view class='voteTable'>
+                  <view class="tr bg-title" style='background-color:#E5FDFF;'>
+                    <view class="th title-color">head1</view>
+                  </view>
+                  <block wx:for="{{listData}}" wx:key="{{code}}">
+                    <view class="tr bg-cont title-color">
+                      <view class="td border-right" style='background-color:#E5FDFF;'>{{item.code}}</view>
+                      <view class="td border-right">{{item.text}}</view>
+                      <view class="td">{{item.type}}</view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <!-- 拨号 -->
+              <view class='reward_content' wx:if="{{activePlugTab=='reward'}}">
+                <view class='reward_title'>
+                  <view>奖品</view>
+                  <view>中奖人</view>
+                  <view>兑奖状态</view>
+                </view>
+                <view class='item_list' wx:for="{{10}}" wx:key="{{index}}">
+                  <view class='td-1'>
+                  一等奖  奖品名称6个字搜索
+                  </view>
+                  <view class='td-2'>
+                    <image src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/reward_bg.png'></image>
+                    <view>昵称四个搜索字</view>
+                  </view>
+                  <view class='td-3'>已兑奖</view>
+                </view>
+              </view>
+              <i-load-more wx:if="{{loadMore}}" tip="{{textinfo}}" loading="{{ textinfo=='玩命加载中...'?true:false }}" />
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+  </view>
+</view>
+<view class='mask' wx:if="{{isShowInfo}}">
+  <view class='mask_cont'>
+    <view class='mask_title'>
+      <image src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/reward_bg.png'></image>
+      <view class='mask_name'>微信读取的昵称</view>
+    </view>
+    <view class='mask_info_top'>
+      <view class="maskInfoTop_itme">
+        <text>活动名称：</text>
+        <text class='mask_info_top_right'>618促销活动</text>
+      </view>
+      <view  class="maskInfoTop_itme">
+        <text>奖项奖品：</text>
+        <text class='mask_info_top_right'>绯蓝系列美妆化妆刷一套（6件套）</text>
+      </view>
+      <view  class="maskInfoTop_itme">
+        <text>兑奖情况：</text>
+        <text class='mask_info_top_right'>线上兑奖 奖品已寄出 线上兑奖 奖品已寄出 线上兑奖 奖品已寄出  2019/8/24</text>
+      </view>
+    </view>
+    <view class='mask_info_bottom'>
+      <view class='mask_info_item'>
+        <text>姓名：</text>
+        <text>刘德华</text>
+      </view>
+      <view  class='mask_info_item'>
+        <text>手机：</text>
+        <text>18782931567</text>
+      </view>
+      <view  class='mask_info_item'>
+        <text>地址：</text>
+        <text>这块兑奖状态与【我】-【活动奖励】-【 奖详情】一致</text>
+      </view>
+    </view>
+    <view class='mask_info_btns'>
+      <view class='mask_btn_left'>复制信息</view>
+      <view  bindtap='closeMask' class='mask_btn_right'>朕知道了</view>
+    </view>
+  </view>
+  <view bindtap='closeMask' class="iconfont icon-guanbi"></view>
+</view>

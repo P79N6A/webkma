@@ -1,0 +1,12 @@
+{
+  "name": "kdesign",
+  "dependencies": {
+    "jquery": "~1.x",
+    "bootstrap": "~3.3.6",
+    "jQuery-ajaxTransport-XDomainRequest": "~1.0.4",
+    "jquery.cookie": "~1.4.1",
+    "hammerjs": "~2.0.8",
+    "jquery-hammerjs": "~2.0.0",
+    "jquery-qrcode": "*"
+  }
+}

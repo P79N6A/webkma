@@ -1,0 +1,50 @@
+/* pages/cash-withdrawal/cash-withdrawal.wxss */
+
+.cash-withdrawal {
+}
+
+.cash-withdrawal .box {
+  width: 600rpx;
+  height: 520rpx;
+  margin: 20rpx 0 0 25rpx;
+  padding: 40rpx 50rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+}
+
+.cash-withdrawal .title {
+  font-size: 28rpx;
+  color: rgb(51, 51, 51);
+}
+
+.cash-withdrawal .sub-title {
+  margin-top: 40rpx;
+  font-size: 24rpx;
+  color: #b1bfcd;
+}
+
+.cash-withdrawal  .money-input {
+  height: 100rpx;
+  font-size: 64rpx;
+  margin: 50rpx 0 20rpx 0;
+  border-bottom: 1rpx solid #f7f7ff;
+}
+
+.cash-withdrawal .cash-btn {
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 60rpx;
+}
+
+.cash-withdrawal .des {
+  font-size: 24rpx;
+}
+
+.cash-withdrawal .des .des-money {
+  color: rgb(178, 178, 178);
+}
+
+.cash-withdrawal .des .des-link {
+  margin-left: 20rpx;
+  color: rgb(36, 210, 198);
+}

@@ -1,0 +1,8 @@
+<div class="game-containner" data-theme-path="{{{(data&&data.theme&&data.theme.themePath) ||'about:blank'}}}">
+    <div class="cover" style="background-image:url({{{(data&&data.theme&&data.theme.themeCover)||'about:blank'}}});"></div>
+    <div id="feature-layer" class="feature-layer">
+    </div>
+    <script type="javascript/html">
+        <iframe class="frame-container" src="about:blank"></iframe>
+    </script>
+</div>

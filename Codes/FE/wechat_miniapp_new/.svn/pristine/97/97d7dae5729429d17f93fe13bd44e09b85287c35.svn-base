@@ -1,0 +1,101 @@
+/* pages/customer-details/customer-details.wxss */
+
+.tips{
+  width: 500rpx;
+  max-height: 64rpx;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  position: relative;
+}
+
+.remark-edit{
+  position: absolute;
+  top: 106rpx;
+  left: 0rpx;
+}
+
+.icon-jump{
+  width: 185rpx;
+  height: 80rpx;
+  position: absolute;
+  right: 0rpx;
+  top: -4rpx;
+}
+
+.icon-jump image{
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.icon-jump image:nth-of-type(1){
+  margin-right: 22rpx;
+}
+
+.detail-box{
+  overflow-x:hidden;
+  /* position:relative; */
+}
+
+.detail-box .info-card .label{
+  height:71rpx;
+  text-align:center;
+  margin-top:15rpx;
+  padding:0 53rpx;
+
+}
+
+.detail-box .info-card .label text{
+  display: inline-block;
+  height: 36rpx;
+  font-size: 20rpx;
+  color: #B1BFCD;
+  border-radius: 20rpx;
+  border: 1rpx solid #B1BFCD;
+  padding:0 12rpx;
+  margin-right: 25rpx;
+}
+
+.detail-box .source-info{
+  display: inline-block;
+  width: 200rpx;
+  height: 120rpx;
+  padding-top: 20rpx;
+  position: relative;
+}
+
+.detail-box .source-info:last-child .connection-line,
+.detail-box .source-info:last-child .arrow{
+  display: none;
+}
+
+.detail-box .source-photo{
+  width: 90rpx;
+  height: 90rpx;
+  border: 100rpx;
+}
+
+.detail-box .connection-line{
+  width:100rpx;
+  height:2rpx;
+  background-color:#24D0C6;
+  position:absolute;
+  top:68rpx;
+  right:11rpx;
+}
+
+.detail-box .arrow{
+  width: 0rpx;      
+  height: 0rpx;
+  border: 10rpx solid #24D0C6;
+  border-bottom-color: transparent;  
+  border-top-color: transparent;
+  border-right-color: transparent;
+  position: absolute;
+  top: 60rpx;
+  right: -10rpx;
+}

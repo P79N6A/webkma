@@ -1,0 +1,10 @@
+﻿#_panelId_ {
+}
+
+    #_panelId_ a {
+        color: #000;
+    }
+
+        #_panelId_ a:hover {
+            text-decoration: none;
+        }

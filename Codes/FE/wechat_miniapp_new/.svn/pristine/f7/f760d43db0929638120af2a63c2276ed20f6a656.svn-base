@@ -1,0 +1,13 @@
+.empty-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding-top: 40rpx;
+}
+
+.tip-message {
+  font-size: 24rpx;
+  color: #b1bfcd;
+  padding: 20rpx;
+}

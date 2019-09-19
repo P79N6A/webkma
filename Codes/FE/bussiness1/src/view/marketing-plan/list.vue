@@ -1,0 +1,256 @@
+<template>
+  <div class="scroll-box">
+    <!-- <pageTitle :pageTitle="pageTitleOpt" @search-event="search" /> -->
+    <el-row class="navigator">
+      <navigator :tabs="navigatorOpts.tabs" @navigator-event="transferTab"></navigator>
+      <div v-if="navigatorOpts.selectedKey ==1 || navigatorOpts.selectedKey ==2 ">
+        <span class="search-tip tipText-color" v-if="keyWords">共{{manuscriptTotal}}条，检索结果<span
+            class="yellow-light">{{searchTotal}}</span></span>
+        <el-row class="search-wrap">
+          <search  :placeholder="'请输入关键词搜索'" @searchHandler="searchHander" :style="{ width: '220px'}">
+          </search>
+        </el-row>
+      </div>
+      <div v-if="navigatorOpts.selectedKey ==3 && articleItem!=''">
+        <span class="search-tip tipText-color" v-if="manuscriptTotal">检索结果<span
+            class="yellow-light">{{manuscriptTotal}}</span></span>
+        <el-row class="search-wrap">
+          <search ref="searchRef" :placeholder="'请输入关键词搜索'" @searchHandler="searchHander" :style="{ width: '220px'}">
+          </search>
+        </el-row>
+      </div>
+    </el-row>
+    <el-row v-if="navigatorOpts.selectedKey != 3">
+      <!-- 模板分类 -->
+      <category @trigger-event="categoryRefresh" />
+      <!-- 列表 -->
+      <div class="container-fluid" style="padding-left: 0;padding-right: 0;" :style="{'width': listWideth}">
+        <div class="tpl-table">
+          <!-- Create -->
+          <manuscriptItem :options="{category:'create',manuscriptType:navigatorOpts.selectedKey}"
+            @manuscript-item-event="manuscriptCallback" />
+          <!-- List -->
+          <manuscriptItem :options="manuscriptItemOpts" :data="item" @manuscript-item-event="manuscriptCallback"
+            v-for="item in list" :key="item.id" />
+          <div class="clearfix"></div>
+        </div>
+        <div style="padding-right: 25px;">
+          <pagination v-if="paginationOpt.pageCount > 1" class="pull-right" style="margin-bottom:100px;"
+            :paginationOpt="paginationOpt" @switchPage="pagesFn" />
+        </div>
+      </div>
+    </el-row>
+    <el-row v-else>
+      <articleItem ref="articleList" @dataClick="listData" />
+    </el-row>
+  </div>
+</template>
+
+<script>
+import pageTitle from "components/page-title";
+import pagination from "components/ui-pagination";
+import category from "components/com-category";
+import manuscriptItem from "components/manuscript-item";
+import articleItem from "components/article-item";
+import api from "api";
+import eventBus from "../../utils/eventBus";
+import navigator from "components/navigator";
+import search from "components/com-search";
+export default {
+  components: {
+    search,
+    pagination,
+    category,
+    manuscriptItem,
+    articleItem,
+    navigator
+  },
+  name: "marketing-plan",
+  data: function () {
+    return {
+      pageTitleOpt: {
+        text: "选择模板",
+        search: {
+          value: "",
+          placeholder: "请输入关键词搜索"
+        },
+        showSearch: true,
+      },
+      articleItem: [],
+      paginationOpt: {
+        pageIndex: 1,
+        pageSize: 9,
+        totalCount: 1,
+        pageCount: 0
+      },
+      caregoryFilter: null,
+      keyWords: "",
+      list: [],
+      listWideth: '100%',
+      tplUsed: 0,
+      manuscriptItemOpts: {
+        category: "detail",
+        actions: ["preview", "use"],
+        canUnlock: false
+      },
+      navigatorOpts: {
+        tabs: [
+          { key: "1", title: "H5活动", selected: true },
+          { key: "2", title: "海报" },
+          { key: "3", title: "文章" }
+        ],
+        selectedKey: "1"
+      },
+      manuscriptTotal: '', //模板总数
+      searchTotal: '' //送搜总条数
+    };
+  },
+  watch: {
+    "navigatorOpts.selectedKey"(isReal) {
+      this.articleItem = [];
+      this.manuscriptTotal='';
+     },
+
+  },
+  created() {
+  },
+  mounted() {
+    this.getPageSize();
+    eventBus.$on("manuscript.list.addTplUse", () => {
+      this.tplUsed++;
+      this.refreshTplUsedCount();
+    });
+    eventBus.$on('getPageSize', () => {
+      this.getPageSize();
+    })
+  },
+  methods: {
+    listData(data) {
+      this.articleItem = data.data.list;
+        this.manuscriptTotal = data.data.total;
+    },
+    //根据页面宽度计算出最合适的pagesize
+    getPageSize() {
+      let w = $('#app').width(), item_w = 194;
+      this.paginationOpt.pageSize = Math.floor(w / item_w) * 2 - 1;
+      // 动态给list设置宽度
+      this.listWideth = Math.floor(w / item_w) * 194 + 'px';
+      this.getList();
+    },
+    transferTab(tab) {
+      var self = this;
+      self.paginationOpt.pageIndex = 1;
+      self.navigatorOpts.selectedKey = tab;
+      self.list = [];
+      self.keyWords = "";
+      !!self.$refs.searchRef && $(self.$refs.searchRef.$el).find('input').val('');
+      if (this.listWideth = self.navigatorOpts.selectedKey == '3') {
+        this.listWideth = '100%';
+      } else {
+        self.getPageSize();
+      }
+    },
+    refreshTplUsedCount() {
+      let self = this;
+      self.manuscriptItemOpts.canUnlock =
+        self.tplUsed <
+        (!!self.$store.getters.getUserInfo.version ? self.$store.getters.getUserInfo.version.manuscriptQuantity : 0);
+
+      self.pageTitleOpt.text = `选择模板 <span style="color: #00BAD0;">${
+        self.tplUsed
+        }</span>/${!!self.$store.getters.getUserInfo.version ? self.$store.getters.getUserInfo.version.manuscriptQuantity : 0}`;
+    },
+    getList(cb) {
+      //获取模板列表
+      let self = this;
+      let _option = {
+        pageIndex: self.paginationOpt.pageIndex,
+        pageSize: self.paginationOpt.pageSize,
+        search: self.keyWords,
+        range: 1,
+        manuscriptType: this.navigatorOpts.selectedKey
+      };
+      if (self.caregoryFilter) {
+        _option.catIds = self.caregoryFilter;
+        _option.catRelation = 1;
+      }
+      api.request("getManuscriptListOfBusinessTemplate", _option, result => {
+        if (result.status == 0) {
+          // TODO：改为管道方式呈现，用moment写filters
+          // $.each(result.data.list, (index, item) => {
+          //   item.operatorDate = window.timeFormdate(item.operatorDate);
+          // });
+          self.list = result.data.list;
+          self.paginationOpt.totalCount = result.data.total;
+          self.paginationOpt.pageCount = Math.ceil(
+            self.paginationOpt.totalCount / self.paginationOpt.pageSize
+          );
+          self.tplUsed = result.data.info.used;
+          self.manuscriptTotal = result.data.count;
+          if (self.keyWords) {
+            self.searchTotal = result.data.total;
+          }
+          self.refreshTplUsedCount();
+        } else {
+          self.$message.error(result.message);
+        }
+        !!cb && cb();
+      });
+    },
+    search(data) {
+      this.keyWords = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    },
+    searchHander(data) {
+      if (this.navigatorOpts.selectedKey == 3) {
+        this.$refs.articleList.toStep2(data,"seach")
+      } else {
+        this.keyWords = data;
+        this.paginationOpt.pageIndex = 1;
+        this.getList();
+      }
+    },
+    categoryRefresh(data) {
+      this.caregoryFilter = data || null;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    },
+    pagesFn(pageIndex, cb) {
+      //分页调用方法
+      let self = this;
+      self.pagination = pageIndex;
+      self.getList(cb);
+    },
+    manuscriptCallback(data) {
+      this.getList();
+    }
+  }
+};
+</script>
+<style scoped>
+.navigator >>> .el-tabs__item.is-active {
+  color: #00bad0;
+}
+.navigator >>> .el-tabs__item {
+  font-weight: Bold;
+  font-size: 14px;
+}
+.navigator >>> .el-tabs__active-bar {
+  height: 2px;
+}
+.navigator {
+  position: relative;
+}
+.search-wrap {
+  width: 220px;
+  position: absolute;
+  top: 9px;
+  right: 30px;
+}
+.search-tip {
+  position: absolute;
+  top: 17px;
+  right: 250px;
+}
+</style>

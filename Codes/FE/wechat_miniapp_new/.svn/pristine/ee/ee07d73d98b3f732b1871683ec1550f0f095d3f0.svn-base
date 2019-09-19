@@ -1,0 +1,49 @@
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.cell {
+  height: 100%;
+  background-color: #fff;
+}
+
+.stat-cell {
+  height: 100%;
+  background-color: #fff;
+  font-size: 24rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.row-text {
+  text-align: left;
+}
+
+.row-icon-male {
+  padding-right: 6rpx;
+  color: #69e4dd;
+}
+
+.row-icon-female {
+  padding-right: 6rpx;
+  color: #ffcf7c;
+}
+
+.row-icon-unknown {
+  padding-right: 6rpx;
+  color: #e3e3e3;
+}
+
+.row-value {
+  padding-left: 6rpx;
+  color: #fa766b;
+  font-weight: 500;
+}
+.font-gray{
+  color: #b1bfcd !important;
+  font-size:22rpx; 
+}

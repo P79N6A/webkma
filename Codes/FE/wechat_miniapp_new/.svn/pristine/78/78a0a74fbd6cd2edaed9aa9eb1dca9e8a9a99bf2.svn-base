@@ -1,0 +1,50 @@
+<view class='msg-send'>
+  <view class='msg-list'>
+    <view class='' wx:for="{{msgList}}" wx:key="{{$index}}">
+      <view class='' wx:if="{{!item.showPromptbox}}">
+        <view style='text-align:center;' wx:if="{{!!item.msgTime}}">
+          <text class='msg-item-time'>{{item.msgTime}}</text>
+        </view>
+        <view style='text-align:center;' wx:if="{{!!item.isCustomMsgTpl}}">
+          <text class='msg-item-time'>{{item.msgContent}}</text>
+        </view>
+        <view wx:if="{{!item.isCustomMsgTpl}}">
+          <view class='msg-item {{item.isOwnMsg?"msg-own-item":"msg-other-item"}}'>
+            <image class='head-img' src="{{(item.isOwnMsg?fromAccountInfo.fromAccountFace:toAccountInfo.toAccountFace) || '/images/icon-default-photo.png'}}"></image>
+            <view class='msg-content'>{{item.msgContent}}
+              <image class='msg-arrow' src="{{item.isOwnMsg?'/images/msg-right-arrow.png':'/images/msg-left-arrow.png'}}"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='' wx:if="{{!!item.showPromptbox}}">
+        <view style='text-align:center;'>
+          <text class='msg-item-time'>{{item.msgTime}}</text>
+        </view>
+        <view>
+          <view class='msg-item msg-other-item'>
+            <image class='head-img' src="{{toAccountInfo.toAccountFace|| '/images/icon-default-photo.png'}}"></image>
+            <view class='msg-content'>
+              <view>
+                您好，请问有什么可以帮到您吗？您可以在这里和我沟通。
+                <view class='you_can'>您还可以：</view>
+                <view class='ser_list'>
+                  <view class='ser_list_item' catchtap='toCardDetail'>
+                    <image class='left-pic' src="/images/msg-pic01.png"></image>
+                    <text>进入我的名片</text>
+                    <image class='right-pic' src="/images/icon-arrows.png"></image>
+                  </view>
+                </view>
+              </view>
+              <image class='msg-arrow' src="/images/msg-left-arrow.png"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='footer'>
+  <textarea class="msg-input" show-confirm-bar='{{false}}' fixed='{{true}}' cursor-spacing='10' bindinput="bindInput" placeholder-class="phcolor" value='{{sendMessages}}' auto-height='{{true}}' />
+  <button class="send-btn" type="primary" bindtap="onSendMsg">发送</button>
+</view>

@@ -1,0 +1,11 @@
+﻿#_panelId_ {
+    font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#_panelId_ a {
+    color: inherit;
+}
+
+    #_panelId_ a:hover {
+        text-decoration: none;
+    }

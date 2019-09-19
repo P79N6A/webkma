@@ -1,0 +1,36 @@
+// components/plug-in-unit.js
+Component({
+  /**
+   * 组件的属性列表
+   */
+  properties: {
+    isShowIphon: {
+      type: Boolean,
+      value: true
+    },
+    isShowInfo: {
+      type: Boolean,
+      value: true
+    }
+  },
+  ready(){
+    this.setData({
+      isShowIphon: this.properties.isShowIphon ? this.properties.isShowIphon:true,
+      isShowInfo: this.properties.isShowInfo ? this.properties.isShowIphon: true
+    })
+  },
+  /**
+   * 组件的初始数据
+   */
+  data: {
+    isShowIphon:true,
+    isShowInfo: true
+  },
+
+  /**
+   * 组件的方法列表
+   */
+  methods: {
+
+  }
+})

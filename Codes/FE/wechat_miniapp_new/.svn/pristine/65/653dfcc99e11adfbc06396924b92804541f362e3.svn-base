@@ -1,0 +1,80 @@
+/* pages/red-envelopes-record/red-envelopes-record.wxss */ 
+.photo{
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 100rpx;
+}
+.icon-photo{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+}
+.fs70{
+  font-size: 70rpx;
+}
+.fs30{
+  font-size: 30rpx;
+}
+.fs28{
+  font-size: 28rpx;
+}
+.fs26{
+  font-size: 26rpx;
+}
+.fs24{
+  font-size: 24rpx;
+}
+.color-black{
+  color: #000000;
+}
+.color-gray{
+  color: #999999;
+}
+.marb14{
+  margin-bottom: 14rpx;
+}
+.ellipsis{
+  display: inline-block;
+  max-width: 528rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+}
+
+.re-navbar{
+  height: 560rpx;
+  background-color: #ffffff;
+}
+.nav-menu{
+  height: 104rpx;
+  border-bottom: 1rpx solid #EEEEEE;
+  margin: 0 24rpx;
+}
+.received,
+.issue{
+  height: 396rpx;
+  margin-bottom: 25rpx;
+}
+.received view,
+.issue view{
+  text-align: center;
+}
+.receivedList{
+  min-height:620rpx;
+  background-color: #FFF;
+  padding-left: 30rpx;
+}
+.received-item{
+  height: 97rpx;
+  padding:24rpx 30rpx 24rpx 0;
+  border-bottom: 1rpx solid #EEEEEE;
+}
+.empty-data{
+  margin: 0;
+  text-align: center;
+}
+.empty-data image{
+  width: 255rpx;
+  height: 275rpx;
+  margin:95rpx 0 60rpx 0;
+}

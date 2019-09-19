@@ -1,0 +1,21 @@
+<i-row i-class="cell">
+  <i-col span="4" i-class="stat-cell">
+    <view style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+      <view class="row-text">
+        <text>曝光</text>
+      </view>
+      <view class="row-text">
+        <text>访客</text>
+      </view>
+      <view class="row-text">
+        <text>咨询</text>
+      </view>
+      <view class="row-text">
+        <text>成交</text>
+      </view>
+    </view>
+  </i-col>
+  <i-col span="20" i-class="cell">
+    <ec-canvas id="chart_{{uid}}" canvas-id="chart_{{uid}}" ec="{{ec}}" wx:if="{{!isDisposed}}"></ec-canvas>
+  </i-col>
+</i-row>

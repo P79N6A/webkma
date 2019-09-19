@@ -1,0 +1,11 @@
+<view>
+<!-- {{activeIndex == index ? 'bar__item_on' : ''}} -->
+  <view class="navbar my-navbar">
+    <block wx:for="{{tabs}}" wx:key="item.key">
+      <view id="{{item.key}}" data-index="{{index}}" class="navbar__item " bindtap="tabClick">
+        <view class="navbar__title" style="width:{{itemWidth}}px;color:{{activeIndex == index ? color : ''}} ">{{item.title}}</view>
+      </view>
+    </block>
+  </view>
+  <view class="navbar__slider my-slider" style="width:{{itemWidth}}px;left: transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);background:{{lineColor}}"></view>
+</view>

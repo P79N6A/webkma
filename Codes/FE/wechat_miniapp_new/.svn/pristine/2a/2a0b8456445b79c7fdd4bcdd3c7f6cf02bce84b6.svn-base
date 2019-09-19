@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#F35543",
+  "navigationBarTitleText": "红包详情",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-fast-nav": "/components/fast-nav/fast-nav"
+  }
+}

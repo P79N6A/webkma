@@ -1,0 +1,164 @@
+/* pages/task-data.wxss */
+/* 头部标签栏 */
+.task_top {
+}
+
+.task_top_tag {
+  width: 100%;
+  height: 90rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22rpx;
+  color: #B1BFCD;
+  background: #FDF6EC;
+}
+
+.top_tag_value {
+  color: #F68411;
+}
+
+.top_tag_icon {
+  margin-left: 5rpx;
+}
+
+/* 漏斗图 */
+.task_funnel {
+  padding-bottom: 60rpx;
+}
+
+.tast-data-bg{
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.task_funnel_bg_box{
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 56rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+.funnel_bg_img{
+  position: absolute;
+  top: 0;
+  height: 0;
+  width: 311rpx;
+  height: 256rpx;
+}
+.funnel_bg{
+  height: 26rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 999;
+}
+.view1{
+  margin-bottom: 30rpx;
+}
+.view2{
+  margin-bottom: 30rpx;
+}
+.view3{
+  margin-bottom: 28rpx;
+}
+.funnel_label, .funnel_value{
+  font-size: 20rpx;
+  color: #fff;
+}
+
+/* 任务完成员工 */
+.emp_info_box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40rpx 45rpx;
+}
+.emp_info{
+  display: flex;
+  align-items: center;
+}
+.title_value{
+  float: left;
+  font-size: 24rpx;
+}
+.title_value_left{
+  color: #F68411; 
+}
+.title_value_right{
+  color: #B1BFCD;
+}
+.emp_photo_box{
+  display: flex;
+  align-items: center;
+}
+.emp_photo_list{
+  display: flex;
+  align-items: center;
+}
+.item_img{
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin-right: -12rpx;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.item_log{
+  height: 60rpx;
+}
+.emp_photo_list .item_img:last-of-type{
+  margin-right: 6rpx;
+}
+.total_num{
+  background: #F7F7FF;
+  padding: 20rpx 16rpx;
+  border-radius: 50rpx;
+  font-size: 24rpx;
+  color: #B1BFCD;
+}
+/* 男女比例 */
+.male-radio{
+  padding-bottom: 28rpx;
+}
+/* 人脉图 */
+.connection-picture{
+  padding-bottom: 20rpx;
+}
+/* 地域分布 */
+.noBp.content_title{
+  padding-bottom: 0;
+}
+/* 标题头 */
+.content_title {
+  /* height: 35rpx; */
+  line-height: 34rpx;
+  padding: 27rpx 20rpx 56rpx 25rpx;
+  background-color: #fff;
+  position: relative;
+}
+.content_title::after{
+  display: block;
+  content: '';
+  clear: both;
+}
+
+.side-line {
+  width: 5rpx;
+  height: 40rpx;
+  background-color: #24D0C6;
+  position: absolute;
+  left: 0;
+  top: 24rpx;
+}
+
+.title_label {
+  font-size: 26rpx;
+  color: #3C4A55;
+  margin-right: 6rpx;
+}

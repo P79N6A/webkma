@@ -1,0 +1,32 @@
+<!--pages/make-succeed/make-succeed.wxml-->
+<view>
+  <!-- 普通预约成功 -->
+  <view class="succeed-info" style='display:none;'>
+      <view style="padding: 133rpx 0 30rpx;">
+          <image class='succeed-bg' src='../../images/exchange-cover.png'></image>
+      </view>
+      <view class='general-font' style="height:115rpx; margin-bottom:89rpx;">
+          <view style="margin-bottom: 0.1rem;">感谢您对本次活动的关注</view>
+          <view>请在百度云盘提取相应资料</view>
+          <view> <text class="eplipes web-link" title="www.yusnpan.com">www.yusssssnpan.com</text> 提取码<text>XCDS</text> </view>
+      </view>
+      <view class="return" style="margin-bottom:36rpx;" id="copy-info">复制上述信息</view>
+      <view class="return" id="return-btn">{{'<'}}返回原文</view>
+  </view>
+  <!-- 付费预约成功 -->
+  <view class="succeed-info">
+      <view style="padding: 133rpx 0 30rpx;">
+          <image class='succeed-bg' src='../../images/exchange-cover.png'></image>
+      </view>
+      <view class='general-font' style="height:115rpx; margin-bottom:89rpx;">
+          <view style="margin-bottom: 7rpx;">感谢您报名参加私域获客课程</view>
+          <view>请凭借预约成功截图或短信</view>
+          <view>联系我们的专属微信客服: <text class="eplipes web-name" title="占位符">tuixiaobao</text></view>
+      </view>
+      <view class="general-font" style="text-align: center;margin-bottom:36rpx;">
+          <image class="qrcode-img" src="../../images/exchange-cover.png"></image>
+          <view style="margin: 20rpx 0 72rpx;">您的专属客服</view>
+      </view>
+      <view class="return" id="return-btn">{{'<'}}返回原文</view>
+  </view>
+</view>

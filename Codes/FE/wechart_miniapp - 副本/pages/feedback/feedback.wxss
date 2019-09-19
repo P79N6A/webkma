@@ -1,0 +1,26 @@
+.feedback-panel {
+  padding: 25rpx;
+  background-color: #fff;
+}
+
+.txt-area {
+  height: 560rpx;
+  width: 700rpx;
+}
+
+.textarea-counter {
+  font-size: 24rpx;
+  color: #b2b2b2;
+  text-align: right;
+}
+
+.weui-btn-area {
+  margin-top: 100rpx;
+}
+
+.weui-btn {
+  width: 620rpx;
+  padding: 0;
+  height: 80rpx;
+  font-size: 36rpx;
+}

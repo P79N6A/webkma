@@ -1,0 +1,18 @@
+<!--components/plug-in-unit.wxml-->
+<view class='plug-unit'>
+  <view class='infocont'>
+    <image class='photo' src='{{item.face}}'></image>
+    <view class='info'>
+      <view class='nick-name'>{{item.nickname?item.nickname:item.name}}</view>
+      <view wx:if="{{item.phone}}" class='phone'>{{item.phone}}</view>
+    </view>
+    <view class='price' wx:if="{{isPrice}}">
+      <view>￥{{item.money?item.money:0}}</view>
+      <view wx:if="{{item.time}}" class='price_timer'>{{item.time}}</view>
+    </view>
+  </view>
+  <view class='operationBtn'>
+    <text class="iconfont icon-tel" catchtap='callPhon' wx:if="{{isShowIphon!='hide'&&item.phone}}"></text>
+    <text class="iconfont icon-company-information" catchtap='dataInfoData'  wx:if="{{isShowInfo!='hide'}}"></text>
+  </view>
+</view>

@@ -1,0 +1,63 @@
+/* pages/tasks-customer-details/tasks-customer-details.wxss */
+.detail-head.task-head{
+  height: 304rpx;
+  margin-bottom: 20rpx;
+}
+
+.data-info.task-data-info{
+  height: 125rpx;
+  padding-top: 40rpx;
+}
+
+.data-info.task-data-info view{
+  width: 50%;
+}
+
+.data-info.task-data-info view:nth-of-type(2){
+  border-right: none;
+}
+
+.task-make{
+  height: 367rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+}
+
+.task-make .make-info{
+  width: 432rpx;
+  height: 223rpx;
+  /* border: 1px solid #ccc; */
+  margin: 0 auto;
+  position: relative;
+}
+
+.task-make .make-info view{
+  width: 284rpx;
+  height: 44rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 44rpx;
+  color: #fff;
+  margin-top: 24rpx;
+}
+
+.task-make .make-info view:nth-of-type(1){
+  background-color: #5F9DE2;
+}
+
+.task-make .make-info view:nth-of-type(2){
+  background-color: #EC7878;
+}
+
+.task-make .make-info view:nth-of-type(3){
+  background-color: #E33C64;
+}
+
+.task-make .big-text{
+  display: inline-block;
+  font-size: 60rpx;
+  color: #FF8E5F;
+  position: absolute;
+  top: 34rpx;
+  right: 9rpx;
+}

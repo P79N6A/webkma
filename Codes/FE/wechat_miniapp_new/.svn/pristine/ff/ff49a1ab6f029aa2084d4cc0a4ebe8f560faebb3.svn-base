@@ -1,0 +1,155 @@
+<!--pages/marketing-report.wxml-->
+<view class="container">
+  <view class="headers">
+    <text catchtap="downloadImg" class="iconfont icon-xiazai" size="16"></text>
+    <view class="top_title">
+      <view class="title_cont">
+        <view class="circular"></view>
+        <view class="line"></view>
+        <view class="mind">BOSS报表</view>
+        <view class="line"></view>
+        <view class="circular"></view>
+      </view>
+      <view>数据更新截至{{"昨天"}}{{"24:00"}}更新</view>
+    </view>
+    <view class="top_total_value">
+      <view class="top_total_count">
+        <view wx:for="{{totalList}}" style="width: {{item.length}}" class="total_item" wx:key="{{index}}">
+          <view class="total_label">
+            {{item.label}}
+          </view>
+          <view class="total_value">
+            {{item.value}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="content" bindtap="toEcharts">
+    <view class="task_report">
+      <view class="content_title">
+        <view class="side-line"></view>
+        <view class="title_label">任务报告</view>
+      </view>
+      <view class="task_report_content">
+        <view class="task_report_item total_item">
+          <view class="tast_report_label total_label">总投入</view>
+          <view class="tast_report_value total_value">2450.00</view>
+        </view>
+        <view class="task_report_item total_item">
+          <view class="tast_report_label total_label">总获客</view>
+          <view class="tast_report_value total_value" style="color: #24D0C6">56888</view>
+        </view>
+        <view class="task_report_item" style="border: none;">
+          <view class="tast_report_label total_label">总收益</view>
+          <view class="tast_report_value total_value">3568952</view>
+        </view>
+      </view>
+      <view class="tast_report_echarts">
+        <view class="echarts_box" style="width:100vw;height:30vh;">
+          <charts-task-pie dataSource="{{taskDataSource}}"></charts-task-pie>
+        </view>
+      </view>
+      <view class="tast_report_tag">
+        未达标任务主要集中在“促销”“618”等类别,建议加大营销管理力度。
+      </view>
+    </view>
+    <view class="order_analyzing">
+      <view class="content_title order_title">
+        <view class="side-line"></view>
+        <view class="title_label">订单分析</view>
+      </view>
+      <view class="order_analyzing_content">
+        <view class="order_item order_visit_count">
+          <view class="order_item_inside">
+            <view class="">访客人数</view>
+            <view class="inside_value_top">1777</view>
+            <!-- icon -->
+            <view class="inside_value_top">43.33%</view>
+          </view>
+          <image src='../../images/boss-report.png' class="first-img" mode="aspectFit">访客</image>
+          <image src='../../images/boss-report-arrow.png' class="arrow-img" mode="aspectFit"></image>
+          <view class="arrow_data">
+            <view class="data_label">下单转化率</view>
+            <view class="data_value">10%</view>
+          </view>
+        </view>
+        <view class="order_item order_visit_money">
+          <view class="order_item_inside">
+            <view class="">下单买家数</view>
+            <view class="inside_value_bottom">6000</view>
+            <!-- icon -->
+          </view>
+          <view class="order_item_inside">
+            <view class="">下单金额</view>
+            <view class="inside_value_bottom">8000</view>
+            <!-- icon -->
+          </view>
+          <view class="order_item_inside">
+            <view class="">客单价</view>
+            <view class="inside_value_bottom">50000</view>
+            <!-- icon -->
+          </view>
+          <image src='../../images/boss-report2.png' class="second-img" mode="aspectFit">下单</image>
+        </view>
+      </view>
+      <view class="tast_report_tag order_analyzing_tag">下单转化率超过10%，建议优化页面结构，趣味内容能增加站内转化</view>
+      <view class="split-line"></view>
+      <view class="active_info_box">
+        <view class="active_img"  style="background-image: url({{testUrl}})"></view>
+        <view class="active_info">
+          <view class="active_name active_value_box">
+            <view class="active_name_label active_margin">销售商品：</view>
+            <view class="active_name_value">芒果10斤包邮</view>
+          </view>
+          <view class="active_count active_value_box">
+            <view class="active_count_label active_margin">销量</view>
+            <view class="active_count_value" style="color: #F6922D;">1250</view>
+          </view>
+          <view class="active_money active_value_box">
+            <view class="active_count_label active_margin">成交额</view>
+            <view class="active_count_value" style="color: #FA766B">¥ 250</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="employees_record">
+     <view class="content_title order_title">
+        <view class="side-line"></view>
+        <view class="title_label">员工战绩</view>
+      </view>
+      <view class="employees_record_content" style="width:100vw;height:30vh;">
+        <charts-employee-record-bar dataSource="{{employeeRecordDataSource}}"></charts-employee-record-bar>
+      </view>
+      <view class="employees_split_line"></view>
+      <view class="content_title order_title">
+        <view class="title_label">员工战绩</view>
+      </view>
+      <view class="employees_record_list">
+        <view class="employees_record_item" wx:for="{{recordList}}" wx:key="{{index}}">
+          <view class="item_left">
+            <view class="item_num">No.{{index + 1}}</view>
+            <view class="item_img" style="background-image: url('../../images/icon-defaultPhoto.png')"></view>
+            <view class="item_name">张三李四王麻子</view>
+          </view>
+          <view class="item_right">
+            <view class="item_record">188882分</view>
+            <view class="item_count">
+              <view class="item_count_label">客户</view>
+              <view class="item_count_value">12222人</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="areal-distribution">
+      <view class="content_title">
+        <view class="side-line"></view>
+        <view class="title_label noBp">地域分布</view>
+      </view>
+      <view class="container" style="width:100vw;height: 356rpx;">
+        <charts-map dataSource="{{mapDataSource}}"></charts-map>
+      </view>
+    </view>
+  </view>
+</view>

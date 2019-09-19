@@ -1,0 +1,41 @@
+<!--pages/task-data.wxml-->
+<view class="container">
+	<view class="nav_header">
+		<comp-navbar
+		 bind:tabchange="navbarTabChange"
+		 tabs="{{[{key: 'taskData', title:'任务数据'},{key: 'pluginData', title:'插件数据'}]}}"
+		 activeTab="{{activeNavTab}}"
+		 lineColor="#24D0C6"
+		 color="#24D0C6"
+		/>
+		<block wx:if="{{activeNavTab === 'taskData'}}">
+			<view class="task_container">
+				<view class="task_top">
+					<view class="task_top_tag" bindtap="test">
+						<view class="top_tag_parm">该任务营销综合评分</view>
+						<view class="top_tag_value">174</view>
+						<view class="top_tag_parm">，任务综合指数排名</view>
+						<view class="top_tag_value">23</view>
+						<!--icon -->
+						<view class="top_tag_icon">?</view>
+					</view>
+					<view style="width: 100vw; height: 412rpx;">
+						<charts-flow-radar dataSource="{{radarDataSource}}" />
+					</view>
+				</view>
+				<view class="task_funnel">
+					<view class="content_title">
+						<view class="side-line" />
+						<view class="title_label">营销漏斗</view>
+					</view>
+				</view>
+			</view>
+		</block>
+		<block wx:if="{{activeNavTab === 'pluginData'}}">
+			<view class="plugin_container">
+				插件数据
+			</view>
+		</block>
+	</view>
+</view>
+

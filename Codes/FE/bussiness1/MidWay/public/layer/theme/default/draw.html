@@ -1,0 +1,65 @@
+<script id="draw" type="text/template">
+    <style>
+    .layer-draw{
+            background: none;
+        }
+        .layer-draw .layui-m-layercont{
+            padding:0;
+        }
+        .draw{
+            height:100%;
+            width:100%;
+            text-align: center;
+        }
+        .draw-bg{
+            position: relative;
+            width: 6.06rem;
+            height: 11.98rem;
+            margin:auto;
+            background-image: url(/public/images/draw-animation/draw.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+        .draw-bg.start{
+            animation: drawPig 1s ease-in-out infinite;
+        }
+        .draw-bg .start{
+            position: absolute;
+            width: 2.1875rem;
+            height: 2.1875rem;
+            border-radius: 50%;
+            top: 9.8rem;
+            left: 2rem;
+        }
+    .draw .closeBtn{
+        margin-top:2.5rem;
+        width: 1.1rem;
+        height:1.1rem;
+    }
+    
+    @keyframes drawPig{
+        0%{
+            transform:rotate(0deg) ;    
+        }
+        25%{
+            transform:rotate(5deg) ;
+        }
+        50%{
+            transform:rotate(0deg) ;    
+        }
+        75%{
+            transform:rotate(-5deg) ;    
+        }
+        100%{
+            transform:rotate(0deg) ;
+        }
+    }
+   
+    </style>
+    <div class="draw">
+        <div class="draw-bg" >
+            <span id="start" class="start"></span>
+        </div>
+        <img src="/public/images/smash-gold-eggs/close.png" alt="" class="closeBtn">
+    </div>
+</script>

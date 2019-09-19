@@ -1,0 +1,6 @@
+<view class="empty-box" wx:if="{{category.text}}">
+  <view>
+    <image style="width: 80vw;height:80vw" mode="aspectFit" src="{{category.img}}"></image>
+  </view>
+  <view class="tip-message">{{category.text}}</view>
+</view>

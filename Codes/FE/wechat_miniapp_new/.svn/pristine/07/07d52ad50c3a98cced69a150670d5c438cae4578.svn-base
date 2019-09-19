@@ -1,0 +1,81 @@
+<!--pages/red-envelopes-detail/red-envelopes-detail.wxml-->
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<view class='red-main'>
+  <view>
+    <view class='red-bg' style="top:{{redpackeInfo.money==0?-201:0}}rpx;" wx:if='{{redpackeInfo.type==3?true:false}}'>
+      <!-- <image src='/images/redbag.png'></image> -->
+    </view>
+    <view class='red-bg' style="top:36rpx;" wx:if='{{redpackeInfo.type!==3?true:false}}'>
+      <!-- <image src='/images/redbag.png'></image> -->
+    </view>
+    <view class='red-info' style="background:url('https://resource.tuixb.cn/dev/00000000-0000-0000-0000-000000000000/KMA/default/844d14ec-c8e6-4ca4-b2a8-12d301b7d9de.png') no-repeat;background-size: contain;background-color: #ffffff;">
+      <view class='text-center' style="padding-top:70rpx;padding-bottom:30rpx" wx:if='{{redpackeInfo.type==3?true:false}}'>
+        <image class='info-photo' src="{{!redpackeInfo.face?'/images/icon-defaultPhoto.png':redpackeInfo.face}}"></image>
+        <text class='fs36 color-yellow'>{{redpackeInfo.nickname}}</text>
+      </view>
+      <!-- <view   class='text-center fs26 color-yellow mb35' wx:if="{{(redpackeInfo.money==0 || redpackeInfo.type!==3)?false:true}}">
+        <text>{{redpackeInfo.title}}</text>
+      </view> -->
+      <view class='text-center bgred' style="padding-top:{{redpackeInfo.money==0?50:30}}rpx" wx:if='{{redpackeInfo.type==2?true:false}}'>
+        <image class='info-photo' src="/images/team-reward.png"></image>
+        <text class='fs36 color-yellow'>红包裂变奖励</text>
+      </view>
+      <view class='text-center fs26 color-yellow mb45 flex flex-column' wx:if="{{redpackeInfo.type==2?true:false}}">
+        <text>恭喜您完成目标，奉上红包，再接再历!</text>
+        <text class='ellipsis'>{{redpackeInfo.activity}}</text>
+      </view>
+      <view class='text-center fs26 color-yellow mb45 flex flex-column' wx:if="{{redpackeInfo.type==3?true:false}}">
+        <text>{{redpackeInfo.title}}</text>
+      </view>
+      <view class='text-center bgred' style="padding-top:{{redpackeInfo.money==0?50:30}}rpx" wx:if='{{redpackeInfo.type==1?true:false}}'>
+        <image class='info-photo' src="/images/personal-reward.png"></image>
+        <text class='fs36 color-yellow'>全员奖励</text>
+      </view>
+      <view class='text-center fs26 color-yellow mb45 flex flex-column' wx:if="{{redpackeInfo.type==1?true:false}}">
+        <text>恭喜您完成目标，奉上红包，再接再历!</text>
+        <text class='ellipsis'>{{redpackeInfo.activity}}</text>
+      </view>
+      <view class='text-center color-yellow' >
+        <text class='fs70' style='margin-right:15rpx; font-weight:bold;'>{{cont.fixed(redpackeInfo.money==null?0:redpackeInfo.money)}}</text>
+        <text class='fs26'>元</text>
+      </view>
+      <view class='text-center color-yellow' style='padding-bottom:40rpx;'  bindtap='cashMoney'>
+        <text class='fs26'>已存入钱包，去提现 ></text>
+        <!-- <image style='width:12rpx;height:20rpx;margin-left:6rpx;' src='/images/icon-cashArrow.png'></image> -->
+      </view>
+    </view>
+    <view class='red-list' style="min-height:{{redpackeInfo.money==0?838:(redpackeInfo.type==3?636:596)}}rpx;margin-top:{{redpackeInfo.type==3?25:60}}rpx">
+      <view class='red-title fs26 color-gray'>
+        <view wx:if="{{(redpackeInfo.state==1 || redpackeInfo.state==null)?true:false}}">
+          <text>领取</text>
+          <text>{{redpackeInfo.receive==null?0:redpackeInfo.receive}}/</text>
+          <text>{{redpackeInfo.total==null?0:redpackeInfo.total}}个</text>
+        </view>
+        <view wx:if="{{redpackeInfo.state==2?true:false}}">
+          <text>{{redpackeInfo.total}}个红包，已被抢光</text>
+        </view>
+        <view wx:if="{{redpackeInfo.state==3?true:false}}">
+          <text>红包已过期</text>
+        </view>
+      </view>
+      <view class='red-item flex flex-row justify-content-between' wx:for='{{redpackeList}}' wx:key='key'>
+        <view class='flex flex-row'>
+          <view class='list-photo' style='margin-right:25rpx;'>
+            <image class='list-photo' src="{{!item.face?'/images/icon-defaultPhoto.png':item.face}}"></image>
+          </view>
+          <view class='flex flex-column'>
+            <text class='fs28 color-block' style='margin-bottom:16rpx;'>{{item.nickname}}</text>
+            <text class='fs24 color-gray'>{{item.createTime}}</text>
+          </view>
+        </view>
+        <view style='line-height:96rpx;'>
+          <text class='fs30 color-block'>{{cont.fixed(item.money)}}元</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view wx:if='{{showFastNav}}'>
+    <comp-fast-nav>
+    </comp-fast-nav>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+/* components/base-line/base-line.wxss */
+.cont{
+  text-align: center;
+  font-size: 22rpx;
+  color: #B1BFCDFF;
+  padding: 22rpx 0rpx;
+}

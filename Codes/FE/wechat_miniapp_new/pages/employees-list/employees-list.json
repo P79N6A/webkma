@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "企业员工",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-customer-info": "/components/customer-info/customer-info"
+  }
+}

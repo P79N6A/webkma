@@ -1,0 +1,86 @@
+// pages/tasks-customer-details/tasks-customer-details.js
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    marketingData: {
+      label: [0, 0, 0, 0],
+      value: [0, 0, 0, 0]
+    },
+    dailyLineDataSource: [], //浏览习惯
+    taskSource:[
+      {
+        userImage: "http://thirdwx.qlogo.cn/mmopen/vi_32/dEEAHL2xST65h3Sz4cGDO4stMPo0K1SMFpqEchldqu6fMsiaVILLvSOtzaNJ62FAfl2vibRpK9alIIvYECgbwyCg/132",
+        userName: '王洋'
+      },
+      {
+        userImage: "http://thirdwx.qlogo.cn/mmopen/vi_32/dEEAHL2xST65h3Sz4cGDO4stMPo0K1SMFpqEchldqu6fMsiaVILLvSOtzaNJ62FAfl2vibRpK9alIIvYECgbwyCg/132",
+        userName: '王牛'
+      }
+    ]
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    this.setData({
+      marketingData: {
+        label: [0, 0, 0, 0],
+        value: [0, 0, 0, 0]
+      },
+      dailyLineDataSource: [60, 80, 100, 40, 150, 440, 620, 310, 600, 500, 800, 400, 200, 160, 78, 40, 33, 21, 12, 30, 8, 33, 16, 28]
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
+})

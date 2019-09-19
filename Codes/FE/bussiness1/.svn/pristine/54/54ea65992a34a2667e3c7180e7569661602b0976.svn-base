@@ -1,0 +1,134 @@
+﻿<div style="width:100%;height:100%;">
+    <div class="form" data-rows="{{{data.rowsStr}}}" data-controlId="{{{data.controlId}}}" >
+        {{{each data.rows as row index}}}
+        <div style="padding-bottom:0.5rem;{{{if index === 0 && !!row.title && !row.title.hide}}} margin-top:0.5rem;{{{/if}}}">
+            <div class="form-row" row-category="{{{row.category}}}" index="{{{index}}}">
+                {{{if data.newSetting && !row.title.hide}}}<div class="item-title">{{{if row.require}}} <span class="need_tag">*</span> {{{/if}}} <span class="title-text">{{{row.title.text}}}</span>{{{if row.category == "upload" && row.minNum.need}}}<span class="need_tag">*</span>{{{/if}}}<span class="err_msg"></span></div>{{{/if}}}
+
+                {{{if row.category == "name" || row.category == "phone" || row.category == "email" || row.category == "number" || row.category == "identitycard" || row.category == "single-lines"  }}}
+                <div class="input-wrap">
+                    <input class="form-control form-input" type="text" index="{{{index}}}" name="{{{row.category}}}" placeholder="{{{row.placeholder || row.name}}}" name="{{{row.placeholder || row.name}}}" style="border: 0.03125rem {{{data.backColor}}} solid;" autocomplete="off">
+                </div>
+
+                {{{else if row.category == "multiple-lines"}}}
+                <div class="input-wrap" style="height: auto;">
+                    <textarea class="form-control form-input" index="{{{index}}}" {{{if row.maxLength.need}}} maxlength="{{{row.maxLength.value}}}" {{{/if}}} placeholder="{{{row.placeholder || row.name}}}" name="{{{row.placeholder || row.name}}}" style="border: 0.03125rem {{{data.backColor}}} solid;" autocomplete="off"></textarea>
+                </div>
+
+                {{{else if row.category == "address"}}}
+                {{{if row.province.need}}}
+                <div class="input-wrap mb5">
+                    {{{if row.province.need}}}
+                    <select class="pull-left form-control province" index="{{{index}}}" style="{{{if !row.city.need && !row.district.need}}} width: 100%; {{{else if row.city.need || row.district.need}}} width: 50%; {{{/if}}}margin-right:2%;border: 0.03125rem {{{data.backColor}}} solid;">
+                        <option value="">省/自治区/直辖市</option>
+                    </select>
+                    {{{/if}}}
+                    {{{if row.city.need}}}
+                    <select class="pull-left form-control city" index="{{{index}}}" style="{{{if row.district.need}}} width: 23%;margin-right:2%; {{{else if !row.district.need}}} width: 48%; {{{/if}}}border: 0.03125rem {{{data.backColor}}} solid;">
+                        <option value="">市</option>
+                    </select>
+                    {{{/if}}}
+                    {{{if row.district.need}}}
+                    <select class="pull-left form-control district" index="{{{index}}}" style="width: 23%;border: 0.03125rem {{{data.backColor}}} solid;">
+                        <option value="">区县</option>
+                    </select>
+                    {{{/if}}}
+                </div>
+                {{{/if}}}
+                {{{if row.detailAdress.need}}}
+                <div class="input-wrap">
+                    <input class="form-control form-input" type="text" index="{{{index}}}" name="detailAdress" placeholder="详细地址" style="border: 0.03125rem {{{data.backColor}}} solid;" autocomplete="off">
+                </div>
+                {{{/if}}}
+
+                {{{else if row.category == "date"}}}
+                <div class="input-wrap">
+                    <input id="date_{{{data.controlId}}}{{{index}}}" class="form-control date" type="text" readonly="" placeholder="{{{row.placeholder}}}" index="{{{index}}}" {{{if row.startTime.need}}} starttime="{{{row.startTime.value}}}" endtime="{{{row.endTime.value}}}" {{{/if}}} placeholder="年/月/日" style="border: 0.03125rem {{{data.backColor}}} solid;">
+                </div>
+
+                {{{else if row.category == "time"}}}
+                <div class="input-wrap">
+                    <select class="pull-left form-control time_hour" index="{{{index}}}" style="width: 49%;margin-right:2%;border: 0.03125rem {{{data.backColor}}} solid;">
+                    </select>
+                    <select class="pull-left form-control time_minites" index="{{{index}}}" style="width: 49%;border: 0.03125rem {{{data.backColor}}} solid;">
+                    </select>
+                </div>
+
+                {{{else if row.category == "radio-option" || row.category == "checkbox-option"}}}
+                <div style="width: 100%;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                    {{{each row.option as option index1}}}
+                    <div class="{{{if row.category == 'radio-option'}}} radio {{{else if row.category == 'checkbox-option'}}} checkbox {{{/if}}} pull-left" style="{{{if row.arrangement.type == 'h'}}} width: 50%; {{{else if row.arrangement.type == 'v'}}} width: 100%; {{{/if}}}overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                        <label>
+                            <i class="iconfont {{{if row.category == 'radio-option'}}} icon-radio {{{else if row.category == 'checkbox-option'}}} icon-checkbox {{{/if}}}" name="{{{option.value}}}"></i>{{{option.value}}}
+                        </label>
+                    </div>
+                    {{{/each}}}
+                    <div class="clearfix"></div>
+                </div>
+
+                {{{else if row.category == "image-radio-option" || row.category == "image-checkbox-option"}}}
+                <div style="width: 100%;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                    <div class="image_group">
+                    {{{each row.option as option index1}}}
+                        <label class="image_option {{{if row.category == 'image-radio-option'}}} radio {{{else if row.category == 'image-checkbox-option'}}} checkbox {{{/if}}} pull-left" style="{{{if row.arrangement.singleNum == '1'}}}width:100%;height:10rem;{{{else if row.arrangement.singleNum == '2'}}}width:50%;height:5.1rem;{{{else if row.arrangement.singleNum == '3'}}}width:33.3%;height:3.6rem;{{{else if row.arrangement.singleNum == '4'}}}width:25%;height:3rem;{{{/if}}}">
+                            <div class="text-center"><img class="option_img" src="{{{option.src}}}" style="{{{if row.arrangement.singleNum == '1'}}}width:100%;height:9.4rem;{{{else if row.arrangement.singleNum == '2'}}}width:90%;height:4.5rem;{{{else if row.arrangement.singleNum == '3'}}}width:90%;height:3rem;{{{else if row.arrangement.singleNum == '4'}}}width:90%;height:2.25rem;{{{/if}}}"/></div>
+                            <div style="margin:0.2rem 5%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"><i class="iconfont {{{if row.category == 'image-radio-option'}}} icon-radio {{{else if row.category == 'image-checkbox-option'}}} icon-checkbox {{{/if}}}" name="{{{option.value}}}"></i>{{{option.value}}}</div>
+                        </label>
+                    {{{/each}}}
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                {{{else if row.category == "select"}}}
+                <div style="width:100%;">
+                    <select class="pull-left form-control select" style="width: 100%;border: 0.03125rem {{{data.backColor}}} solid;" index="{{{index}}}">
+                        {{{each row.option as option index1}}}
+                        <option value="{{{option.value}}}">{{{option.value}}}</option>
+                        {{{/each}}}
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+
+                {{{else if row.category == "upload"}}}
+                <div style="width:100%;overflow-x: auto;overflow-y: hidden;">
+                    <div class="imgList" imglistLength="{{{row.imgList.length}}}" {{{if row.maxNum.need }}} maxLength="{{{row.maxNum.value}}}" {{{/if}}}>
+                        {{{each row.imgList as imgblock index1}}}
+                        <div class="upload-wrap img-wrap">
+                            <form class="imgUploadForm" enctype="multipart/form-data" style="width: 100%; overflow:hidden;">
+                                <input class="imgUpload" type="file" name="fileName" index="{{{index}}}" optionIndex="{{{index1}}}"/>
+                            </form>
+                            <img src="{{{imgblock.src}}}" class="avatar">
+                            <span class="el-upload__tip text-center" index="{{{index}}}"><i class="iconfont icon-delete"></i></span>
+                        </div>
+                        {{{/each}}}
+                        {{{if row.maxNum.need }}}
+                        {{{if row.imgList.length < row.maxNum.value}}}
+                        <div class="upload-wrap plus-upload">
+                            <form class="imgUploadForm" enctype="multipart/form-data" style="width: 30px; overflow:hidden;">
+                                <input class="imgUpload" type="file" name="fileName" index="{{{index}}}"/>
+                            </form>
+                            <i class="iconfont icon-plus"></i>
+                        </div>
+                        {{{/if}}}
+                        {{{else if !row.maxNum.need}}}
+                        <div class="upload-wrap plus-upload">
+                            <form class="imgUploadForm" enctype="multipart/form-data" style="width: 30px; overflow:hidden;">
+                                <input class="imgUpload" type="file" name="fileName" index="{{{index}}}"/>
+                            </form>
+                            <i class="iconfont icon-plus"></i>
+                        </div>
+                        {{{/if}}}
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                {{{/if}}}
+            </div>
+        </div>
+        {{{/each}}}
+        <div class="form-row" style="overflow:hidden;">
+            <button type="button" class="btn btn-submit" style="background-color:{{{data.backColor}}};color:{{{data.fontColor}}};">{{{data.submit.text}}}</button>
+            <input id="hid_feedback" type="hidden" value="{{{data.submit.feedback}}}" />
+        </div>
+    </div>
+</div>

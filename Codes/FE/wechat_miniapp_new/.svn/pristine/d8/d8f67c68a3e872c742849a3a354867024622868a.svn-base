@@ -1,0 +1,96 @@
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<view class='pg-my-main'>
+  <view class='head-part'>
+    <view class='my-head flex justify-content-between'>
+      <view class='flex flex__item'>
+        <image class='info-img' src="{{userInfo.face || '/images/icon-default-photo.png'}}"></image>
+        <view class='info-text flex'>
+          <text>{{userInfo.name==null?"暂无":userInfo.name}}</text>
+          <text>{{userInfo.job==null?"暂无职位":userInfo.job }}</text>
+        </view>
+      </view>
+      <view class="flex__item">
+        <button class="replace-btn" wx:if="{{!userInfo.phone}}" plain='true' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+          <view class="btn" style="background-color:#24d0c6;color:#fff;">认证身份</view>
+        </button> 
+        <button-form-id wx:else bind:click="gotoUserInfoEdit" textAlign="right">
+          <icon type="icon-ordinaryset" size="18" color="#fff" />
+        </button-form-id>
+      </view>
+    </view>
+    <view class='money flex'>
+      <view class='flex__item'>
+        <view>余额</view>
+        <view class='surplus'>{{cont.fixed(rewardInfoList.money==null?0:rewardInfoList.money)}}</view>
+        <view>
+          <text>累计收益</text>
+          <text class='total'>8888.88</text>
+        </view>
+      </view>
+      <view class='flex__item'>
+        <view class='cash-btn'>
+          <button class="link_btn_red" wx:if="{{!userInfo.phone}}" plain='true' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style='width:158rpx;border-color: #ff5858;'>
+            <view class="btn" style="width:106rpx; color:#ff5858;">立即提现</view>
+          </button> 
+          <button-form-id wx:else bind:click="gotoFastWithdrawal">
+            <a href="javascript:;" class="link_btn_red">立即提现</a>
+          </button-form-id>
+        </view>
+        <button class='replace-btn' wx:if="{{!userInfo.phone}}" plain='true' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style='width:158rpx;top:172rpx;right:58rpx;'>
+          <view class="btn" style="color:#acacac;">提现记录></view>
+        </button> 
+        <button-form-id wx:else bind:click="gotoWithdrawalRecord">
+          <view style='margin-right:20rpx; text-align:right;'>提现记录></view>
+        </button-form-id>
+      </view>
+    </view>
+  </view>
+
+  <!-- 奖励 & 红包 -->
+  <i-panel i-class="panel_section">
+    <i-cell-group>
+      <button-form-id bind:click="gotoPrizeList" menuFlag="menu">
+        <i-cell title="活动奖品" is-link class="aaa">
+          <icon type="icon-liwu1" slot="icon" color="#FF9F58" size="18" />
+        </i-cell>
+      </button-form-id>
+      <button-form-id bind:click="gotoRedEnvelopes">
+        <i-cell title="红包奖励" is-link>
+          <icon type="icon-iconfontredpacket" slot="icon" color="#FA766B" size="18" />
+        </i-cell>
+      </button-form-id>
+    </i-cell-group>
+  </i-panel>
+
+  <!-- 社交 -->
+  <i-panel i-class="panel_section">
+    <i-cell-group>
+      <button-form-id bind:click="gotoCardList" menuFlag="menu">
+        <i-cell title="名片夹" is-link>
+          <icon type="icon-cardid" slot="icon" color="#24D0C6" size="18" />
+        </i-cell>
+      </button-form-id>
+      <button-form-id bind:click="gotoMessenger">
+        <i-cell title="私信" is-link>
+          <icon type="icon-xiaoxi" slot="icon" color="#24D0C6" size="18" />
+        </i-cell>
+      </button-form-id>
+    </i-cell-group>
+  </i-panel>
+
+  <!-- 其它 -->
+  <i-panel i-class="panel_section">
+    <i-cell-group>
+      <button-form-id bind:click="gotoActivityHistory" menuFlag="menu">
+        <i-cell title="浏览记录" is-link>
+          <icon type="icon-liulanjilu" slot="icon" color="#FF9F58" size="18" />
+        </i-cell>
+      </button-form-id>
+      <button-form-id bind:click="gotoFeedback">
+        <i-cell title="意见反馈" is-link>
+          <icon type="icon-yijianfankui1" slot="icon" color="#00BAD0" size="18" />
+        </i-cell>
+      </button-form-id>
+    </i-cell-group>
+  </i-panel>
+</view>

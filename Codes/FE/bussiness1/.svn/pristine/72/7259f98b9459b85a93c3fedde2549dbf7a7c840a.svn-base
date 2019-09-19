@@ -1,0 +1,544 @@
+<script id="redpack-open" type="text/template">
+    <style>
+        .layui-m-layer0 .layer-winning {
+            width: 8.133rem;
+            height: 14.173rem;
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .redpack-wrap{
+            position: relative;
+			width: 8.133rem;
+            height: 14.173rem;
+            margin: 0 auto;
+			color: rgba(251,211,146,1);
+			font-size: 0.32rem;
+        }
+        .redpack-bg{
+            position: relative;
+            width: 8.133rem;
+            height: 12.226rem;
+            background-image: url(/public/images/redpack/redpack_bg.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+		.redpack-bus-info{
+			width: 6.88rem;
+			height: 0.8rem;
+			line-height: 0.8rem;
+			text-align: center;
+			top: 1.467rem;
+		}
+		.redpack-bus-info .head_img{
+			display: inline-block;
+			width: 0.8rem;
+			height: 0.8rem;
+			border-radius: 50%;
+			vertical-align: middle;
+		}
+		.redpack-wrap p{
+			position: absolute;
+            width: 100%;
+            text-align: center;
+		}
+        .redpack-wrap .button{
+            position: absolute;
+			display: block;
+			width: 2.52rem;
+            height: 2.52rem;
+            top: 8.773rem;
+			left: 2.813rem;
+			background-image: url(/public/images/redpack/open.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+        }
+		.redpack-wrap .close{
+			position: absolute;
+			width: 1.067rem;
+			height: 1.067rem;
+			bottom: 0.2rem;
+			left: 3.52rem;
+			background-image: url(/public/images/dismant-red-envelopes/close.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+		}
+    </style>
+    <div class="redpack-wrap">
+		<div class="redpack-bg">
+			<p class="redpack-bus-info">
+				<img class="head_img" src="${bussinessHead}" />
+				<span>商家${bussinessName}的红包</span>
+			</p>
+			<p style="width: 90%;left: 5%;top: 3.613rem;line-height: 0.8rem;font-size: 0.453rem;">${title}</p>
+			<p style="width: 92%;left: 4%;top: 6rem;line-height: 0.6rem;">${content}</p>
+			<span id="open" class="button"></span>
+		</div>
+		<span id="close" class="close"></span>
+    </div>
+</script>
+
+<script id="redpack-almost" type="text/template">
+    <style>
+		.layui-m-layer0 .layui-m-layermain .layui-m-layersection {
+			display: block;
+		}
+        .layui-m-layer0 .layer-winning {
+            width: 10rem;
+            height: 13.68rem;
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+		.redpack-wrap {
+            position: relative;
+            width: 10rem;
+            height: 13.68rem;
+            margin: 0 auto;
+            color: rgba(251, 211, 146, 1);
+            font-size: 0.32rem;
+        }
+
+        .redpack-bg {
+            position: relative;
+            width: 8.13rem;
+            height: 11.27rem;
+            background-color: #FFFFFF;
+            margin: 2.1rem auto 0;
+			border-radius: 0.35rem;
+        }
+
+        .redpack-bg .redpack-top-bg {
+            width: 8.13rem;
+            height: 4.37rem;
+            background-image: url(/public/images/redpack/repack_bg2.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			position: relative;
+    		top: 0;
+        }
+
+        .redpack-bg .redpack-top-bg p {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
+
+        .redpack-bg .redpack-task {
+            height: 6.69rem;
+        }
+
+        .redpack-bg .redpack-task .redpack-task-item {
+            width: 7.31rem;
+            height: 1.35rem;
+            margin: 0 auto;
+            border-bottom: 0.013rem solid #DDE4EB;
+            position: relative;
+        }
+
+        .redpack-bg .redpack-task .redpack-task-item:last-child:not(:first-child) {
+            border-bottom: none;
+        }
+
+        .redpack-bg .redpack-task .redpack-task-item .photo {
+            width: 0.8rem;
+            height: 0.8rem;
+            vertical-align: -0.093rem;
+            margin-right: 0.16rem;
+        }
+
+        .redpack-bg .redpack-task-item .redpack-task-info {
+            position: absolute;
+			top: 0.3rem;
+			left: 0;
+        }
+
+        .redpack-bg .redpack-task .redpack-task-item .redpack-amount {
+            display: inline-block;
+            font-size: 0.35rem;
+            color: rgba(250, 118, 107, 1);
+            position: absolute;
+            top: 0.23rem;
+            right: 0;
+        }
+
+        .share_img {
+            position: fixed;
+            top: 0;
+            right: 1.04rem;
+            display: inline-block;
+            width: 2.173rem;
+            height: 1.5066rem;
+        }
+
+        .share_text {
+            position: fixed;
+            top: 1.3066rem;
+            right: 1.52rem;
+            color: #fff;
+            font-size: 0.372rem;
+        }
+
+		.redpack-wrap .close{
+			position: absolute;
+			width: 1.067rem;
+			height: 1.067rem;
+			top: 11.5rem;
+			left: 4.466rem;
+			background-image: url(/public/images/dismant-red-envelopes/close.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+		}
+	</style>
+	
+    <div class="redpack-wrap">
+		<img class="share_img" src="/public/images/redpack/tip.png"" />
+		<p class="share_text">点击分享</p>
+		<div class="redpack-bg">
+			<div class="redpack-top-bg">
+				<p style="top: 0.9rem;">
+					<span style="font-size: 0.48rem;">共赚</span>
+					<span style="font-size: 1.012rem;">500.6</span>
+					<span style="font-size: 0.48rem;">元</span>
+				</p>
+				<p style="width: 92%;left: 4%;top: 1.9rem;font-size: 0.32rem;">
+					9999个人替你打工，助力9999次，9999个预约
+				</p>
+				<p style="font-size: 0.32rem;top:2.54rem;">已存入钱包，去提现&gt;</p>
+				<p style="top: 3.20rem;">
+					<span style="color: rgba(255, 255, 255, 1);">剩余: </span>
+					<span id="cuntTime" style="color: rgba(255, 255, 0, 1);">1天4小时3分钟59秒</span>
+				</p>
+			</div>
+			<div class="redpack-task">
+				<div class="redpack-task-item">
+					<div class="redpack-task-info">
+						<img class="photo" src="/public/images/redpack/repack_bg2.png"">
+						<div style="display: inline-block;line-height:0.4rem;">
+							<div style="font-size: 0.32rem;color: rgba(60, 74, 85, 1);">姓名啊<span style="font-size: 0.27rem;color: rgba(177, 191, 205, 1);padding-left:0.3rem;">助力一次</span></div>
+							<div style="font-size: 0.27rem;color: rgba(177, 191, 205, 1);text-align:left;">2018/09/10 12:42</div>
+						</div>
+					</div>
+					<div class="redpack-amount">
+						<p style="font-size: 0.27rem;color: rgba(177, 191, 205, 1);">帮你赚了</p>
+                        <p><span>200</span><span>元</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span id="close" class="close"></span>
+	</div>
+</script>
+
+<script id="redpack-forward" type="text/template">
+    <style>
+		.layui-m-layer0 .layui-m-layermain .layui-m-layersection {
+			display: block;
+		}
+        .layui-m-layer0 .layer-winning {
+            width: 10rem;
+            height: 13.68rem;
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .redpack-wrap{
+            position: relative;
+			width: 10rem;
+            height: 13.68rem;
+            margin: 0 auto;
+			color: rgba(251,211,146,1);
+			font-size: 0.32rem;
+        }
+        .redpack-bg{
+            position: relative;
+            width: 8.132rem;
+            height: 9.24rem;
+            background-image: url(/public/images/redpack/repack_bg1.png);
+            background-repeat: no-repeat;
+			margin: 2.493rem auto 0;
+            background-size: 100%;
+        }
+		.share_img{
+			position: fixed;
+			top: 0;
+			right: 1.04rem;
+			display: inline-block;
+			width: 2.173rem;
+			height: 1.5066rem;
+		}
+		.share_text{
+			position: fixed;
+			top: 1.3066rem;
+			right: 1.52rem;
+			color: #fff;
+			font-size: 0.372rem;
+		}
+		.redpack-bg p{
+			position: absolute;
+            width: 100%;
+            text-align: center;
+		}
+        .redpack-bg .headimg_wrap{
+			position: relative;
+			height: auto;
+			max-width: 6.934rem;
+			margin: 0 auto;
+			top: 4.32rem;
+		}
+		.redpack-bg .headimg_wrap .headimg{
+			position: absolute;
+			width: 0.96rem;
+			height: 0.96rem;
+			border-radius: 50%;
+		}
+		.redpack-wrap .close{
+			position: absolute;
+			width: 1.067rem;
+			height: 1.067rem;
+			top: 11rem;
+			left: 4.466rem;
+			background-image: url(/public/images/dismant-red-envelopes/close.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+		}
+	</style>
+	
+    <div class="redpack-wrap">
+		<img class="share_img" src="/public/images/redpack/tip.png"/>
+		<p class="share_text">点击分享</p>
+		<div class="redpack-bg">
+			<p style="top: 1.227rem;">
+				<span style="font-size: 1.012rem;">${original_money}</span>
+				<span style="font-size: 0.48rem;">元</span>
+			</p>
+			<p style="width: 92%;left: 4%;top: 2.84rem;">转发好友搭把手，红包就到手！</p>
+			<div class="headimg_wrap" style="width: ${headImg_width}">
+				${headImgArr}
+			</div>
+			<p style="top: 5.56rem;color: #fff;">${reach_lenth}/${target_visitor}</p>
+			<p style="width: 92%;left: 4%;top: 7.906rem;font-size: 0.372rem;">
+				<span style="color: #fff;">倒计时: </span>
+				<span id="cuntTime" style="rgba(255,255,0,1);">${cuntTime}</span>
+			</p>
+		</div>
+		<span id="close" class="close"></span>
+    </div>
+</script>
+
+<script id="redpack-reach" type="text/template">
+    <style>
+        .layui-m-layer0 .layer-winning {
+            width: 8.133rem;
+            height: 14.173rem;
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .redpack-wrap{
+            position: relative;
+			width: 8.133rem;
+            height: 14.173rem;
+            margin: 0 auto;
+			color: rgba(251,211,146,1);
+			font-size: 0.32rem;
+        }
+        .redpack-bg{
+            position: relative;
+            width: 8.133rem;
+            height: 12.226rem;
+            background-image: url(/public/images/redpack/redpack_bg.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+		.redpack-bg .headimg_wrap{
+			position: relative;
+			height: auto;
+			max-width: 6.934rem;
+			margin: 0 auto;
+			top: 5.066rem;
+		}
+		.redpack-bg .headimg_wrap .headimg{
+			position: absolute;
+			width: 0.96rem;
+			height: 0.96rem;
+			border-radius: 50%;
+		}
+		.redpack-wrap p{
+			position: absolute;
+            width: 100%;
+            text-align: center;
+		}
+        .redpack-wrap .button{
+            position: absolute;
+			display: block;
+			width: 2.52rem;
+            height: 2.52rem;
+            top: 8.773rem;
+			left: 2.813rem;
+			background-image: url(/public/images/redpack/withdrawal.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+        }
+		.redpack-wrap .close{
+			position: absolute;
+			width: 1.067rem;
+			height: 1.067rem;
+			bottom: 0.2rem;
+			left: 3.52rem;
+			background-image: url(/public/images/dismant-red-envelopes/close.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+		}
+    </style>
+    <div class="redpack-wrap">
+		<div class="redpack-bg">
+			<p style="top: 1.773rem;">
+				<span style="font-size: 1.012rem;">${red_packet_premoney}</span>
+				<span style="font-size: 0.48rem;">元</span>
+			</p>
+			<p style="top: 3.386rem;font-size: 0.32rem;">已经存到您的零钱奖励，快到小宝那提现吧~</p>
+			<div class="headimg_wrap" style="width: ${headImg_width}">
+				${headImgArr}
+			</div>
+			<p style="top: 6.306rem;color: #fff;">${reach_lenth}/${target_visitor}</p>
+			${is_finish}
+			<span id="gotoMini" class="button"></span>
+		</div>
+		<span id="close" class="close"></span>
+    </div>
+</script>
+
+<script id="redpack-reach-wx" type="text/template">
+    <style>
+        .layui-m-layer0 .layer-winning {
+            width: 8.133rem;
+            height: 14.173rem;
+            padding: 0rem;
+            box-sizing: border-box;
+            background-color: transparent; 
+        }
+        .layer-winning .layui-m-layercont {
+            padding: 0;
+        }
+        .redpack-wrap{
+            position: relative;
+			width: 8.133rem;
+            height: 14.173rem;
+            margin: 0 auto;
+			color: rgba(251,211,146,1);
+			font-size: 0.32rem;
+        }
+        .redpack-bg{
+            position: relative;
+            width: 8.133rem;
+            height: 12.226rem;
+            background-image: url(/public/images/redpack/redpack_bg.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+		.redpack-bg .headimg_wrap{
+			position: relative;
+			height: auto;
+			max-width: 6.934rem;
+			margin: 0 auto;
+			top: 4.146rem;
+		}
+		.redpack-bg .headimg_wrap .headimg{
+			position: absolute;
+			width: 0.96rem;
+			height: 0.96rem;
+			border-radius: 50%;
+		}
+		.redpack-wrap p{
+			position: absolute;
+            width: 100%;
+            text-align: center;
+		}
+        .redpack-wrap .button{
+            position: absolute;
+			display: block;
+			width: 2.52rem;
+            height: 2.52rem;
+            top: 8.773rem;
+			left: 2.813rem;
+			background-image: url(/public/images/redpack/withdrawal.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+        }
+		.redpack-wrap .close{
+			position: absolute;
+			width: 1.067rem;
+			height: 1.067rem;
+			bottom: 0.2rem;
+			left: 3.52rem;
+			background-image: url(/public/images/dismant-red-envelopes/close.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+			cursor: pointer;
+		}
+    </style>
+    <div class="redpack-wrap">
+		<div class="redpack-bg">
+			<p style="top: 1.56rem;">
+				<span style="font-size: 1.012rem;">${red_packet_premoney}</span>
+				<span style="font-size: 0.48rem;">元</span>
+			</p>
+			<p style="top: 3.173rem;font-size: 0.32rem;">已经存到您的零钱奖励，快到小宝那提现吧~</p>
+			<div class="headimg_wrap" style="width: ${headImg_width}">
+				${headImgArr}
+			</div>
+			<p style="top: 5.386rem;color: #fff;">${reach_lenth}/${target_visitor}</p>
+			<p style="top: 6.786rem;">
+				<img style="width: 2.666rem;height: 2.666rem;background-color: #ffffff;border-radius: 50%;" src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/default/2b453385-6b61-4e71-bbe7-b258a479fe8e.jpg">
+			</p>
+			<p style="width: 92%;left: 4%;top: 10.05rem;color: #ffffff;">长按图片</p>
+			<p style="width: 92%;left: 4%;top: 10.5rem;color: #ffffff;">识别二维码</p>
+		</div>
+		<span id="close" class="close"></span>
+    </div>
+</script>
+<script id="share-layer" type="text/template">
+    <style>
+		.layui-m-layer0 .layui-m-layercont {
+			padding: 0;
+		}
+		.share_img{
+			position: fixed;
+			top: 0;
+			right: 1.04rem;
+			display: inline-block;
+			width: 2.173rem;
+			height: 1.5066rem;
+		}
+		.share_text{
+			position: fixed;
+			top: 1.3066rem;
+			right: 1.52rem;
+			color: #fff;
+			font-size: 0.372rem;
+		}
+	</style>
+	
+    <img class="share_img" src="/public/images/redpack/tip.png"/>
+	<p class="share_text">点击分享</p>
+</script>

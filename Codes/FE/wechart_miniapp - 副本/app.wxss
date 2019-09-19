@@ -1,0 +1,77 @@
+/* @import "iconfont.wxss"; */
+
+page {
+  min-height: 100vh;
+  background-color: #f1f3fc;
+  color: #63717b;
+  font-size: 32rpx;
+  line-height: 1.6;
+  font-family: -apple-system-font, Helvetica Neue, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* flex */
+
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex__item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* font styles */
+
+.font-bd {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.font-tips {
+  font-size: 24rpx;
+  color: #b1bfcd;
+}
+
+/* base button rewrite */
+
+button[type=primary] {
+  color: #fff;
+  background-color: #24d0c6;
+}
+
+button[disabled][type=primary] {
+  background-color: #dee4e9;
+}
+
+button[disabled] {
+  color: #b1bfcd;
+}
+
+.button-hover[type=primary] {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #24d0c6;
+}
+
+button[disabled][plain] {
+  color: rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+}

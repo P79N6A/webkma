@@ -1,0 +1,4 @@
+/* pages/business-customer-details/business-customer-details.wxss */
+.font-24{
+  font-size: 24rpx !important;
+}

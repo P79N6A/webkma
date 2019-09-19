@@ -1,0 +1,193 @@
+<template>
+	<div class="bussiness-list">
+    <el-row class="operation">
+      <el-button type="primary" @click="toManagementPage('')">新增设计师</el-button>
+      <search  :placeholder="searchOpt.placeholder"
+                  @searchHandler="searchHander"
+                  :style="{ width: (searchOpt.size || '220px')}"
+                    ></search>
+    </el-row>
+		<el-table
+              ref="bussinessTable"
+              :data="bussinessList"
+              tooltip-effect="dark"
+              row-key="id"
+              class="table"
+              header-row-class-name="table-header"
+              header-cell-class-name="table-header"
+            >
+              <el-table-column
+                show-overflow-tooltip
+                prop="businessPhone"
+                label="设计师账号"
+                align="center"
+                class-name="number_color"
+              ></el-table-column>
+              <el-table-column
+                show-overflow-tooltip
+                prop="businessName"
+                label="设计师名称"
+                align="center"
+                class-name="number_color"
+              ></el-table-column>
+              <!-- <el-table-column
+                prop="versionName"
+                label="版本名称"
+                align="center"
+                class-name="number_color"
+                width
+              ></el-table-column> -->
+              <el-table-column
+                prop="createtime"
+                label="创建时间"
+                align="center"
+                class-name="number_color"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop=""
+                label="设计师状态"
+                align="center"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <slideBtn :activeText="'正常'" :slideBtnOpt="scope.row" @slide-event="setSingleState"/>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="操作"
+                align="center"
+                width="200"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span class="btn-plain" @click="toManagementPage(scope.row)">编辑</span>
+                  <span class="btn-plain btn-delete" @click="deleteDesigner(scope.row)">删除</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="margin:20px 10px;">
+              <pagination
+                v-if="paginationOpt.pageCount > 1"
+                class="pull-right"
+                :paginationOpt="paginationOpt"
+                @switchPage="pagesFn"
+              />
+            </div>
+	</div>
+</template>
+<script scope>
+import api from "../../axios/api-service";
+import search from "../../components/com-search";
+import pagination from "../../components/ui-pagination";
+import slideBtn from "../../components/slide-btn";
+
+export default {
+  name:'designer-list',
+  components: { search, pagination, slideBtn },
+	data() {
+		return {
+      bussinessList: [], //商家列表数据
+      businesskeyword: '', //关键词
+      searchOpt: {
+        placeholder: '请输入账号、设计师姓名'
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageCount: '',
+        pageSize: 15
+      }
+		}
+  },
+  mounted(){
+    this.getList();
+  },
+  methods: {
+    getList(cb) {
+      let _this = this;
+      let _option = {
+        businessType: 2,
+        businesskeyword: this.businesskeyword,//可空，模糊查询内如可是用户名，公司名称
+        pageIndex: this.paginationOpt.pageIndex,//开始条数，不可空，正整数
+        pageSize: this.paginationOpt.pageSize//取用条数，不可空，正整数
+      }
+      api.request("getBussinessList", _option, result => {
+        if (result.status == 0) {
+          _this.bussinessList = result.data.data.map(item => {
+            item.createtime = window.timeFormdate(item.createtime);
+            item.stateText = item.state == 0 ? '正常' : '禁用';
+            return item;
+          });
+          _this.paginationOpt.totalCount = result.data.total;
+          _this.paginationOpt.pageCount = Math.ceil(
+            _this.paginationOpt.totalCount / _this.paginationOpt.pageSize
+          );
+        } else {
+          _this.messenger.error(result.message);
+        }
+        !!cb && cb();
+      });
+    },  
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getList(cb);
+    },
+    //搜索
+    searchHander(data) {
+      this.businesskeyword = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    },
+    //编辑
+    toManagementPage(item) {
+      let param = !!item ? `?businessId=${item.businessId}&edit=true` : '';
+      this.$router.push({
+        path: `/designer-management${param}`
+      });
+    },
+    //设置状态
+    setSingleState(data) {
+      let _api = data.state == '0' ? 'openbusiness' : 'disablebusiness';
+      let opt = {
+          businessId: data.businessId,
+          businessType: 1,
+          state: data.state
+      };
+      api.request(_api, opt, json => {
+        if (json.status == 0) {
+            this.getList();
+            this.messenger.success("操作成功");
+        } else {
+            this.messenger.error("操作失败:" + json.message);
+        }
+      });
+    },
+    //删除设计师
+    deleteDesigner(item) {
+      let _this = this;
+      this.messenger.confirm('你确定要删除该设计师吗？',function(tag){
+          if(tag){
+              api.request('deletebusiness', { businessId: item.businessId }, json => {
+                  if (json.status == 0) {
+                      _this.getList();
+                      _this.messenger.success("操作成功");
+                  } else {
+                      _this.messenger.error("操作失败:" + json.message);
+                  }
+              });
+          }
+      })
+    }
+  }
+}
+</script>
+<style scope>
+.operation {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+}
+</style>
+
+

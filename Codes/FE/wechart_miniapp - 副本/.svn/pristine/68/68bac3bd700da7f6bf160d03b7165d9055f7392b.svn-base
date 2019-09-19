@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的活动奖品",
+  "usingComponents": {
+    "comp-page-box-tips": "/components/page-box-tips/page-box-tips"
+  }
+}

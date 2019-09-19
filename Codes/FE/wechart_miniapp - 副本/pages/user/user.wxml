@@ -1,0 +1,87 @@
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<view class='pg-my-main'>
+  <view class='head-part'>
+    <view class='my-head flex justify-content-between'>
+      <view class='flex flex__item'>
+        <image class='info-img' src="{{userInfo.face || '/images/icon-default-photo.png'}}"></image>
+        <view class='info-text flex'>
+          <text>{{userInfo.name==null?"暂无":userInfo.name}}</text>
+          <text>{{userInfo.job==null?"暂无职位":userInfo.job }}</text>
+        </view>
+      </view>
+      <view class="flex__item">
+        <button-form-id bind:click="gotoUserInfoEdit" textAlign="right">
+          <icon type="icon-ordinaryset" size="18" color="#fff" />
+        </button-form-id>
+      </view>
+    </view>
+    <view class='money flex'>
+      <view class='flex__item'>
+        <view>余额</view>
+        <view class='surplus'>{{cont.fixed(rewardInfoList.money==null?0:rewardInfoList.money)}}</view>
+        <view>
+          <text>累计收益</text>
+          <text class='total'>8888.88</text>
+        </view>
+      </view>
+      <view class='flex__item'>
+        <view class='cash-btn'>
+          <button-form-id bind:click="gotoFastWithdrawal">
+            <a href="javascript:;" class="link_btn_red">立即提现</a>
+          </button-form-id>
+        </view>
+        <button-form-id bind:click="gotoWithdrawalRecord">
+          <view style='margin-right:20rpx; text-align:right;'>提现记录></view>
+        </button-form-id>
+      </view>
+    </view>
+  </view>
+
+  <!-- 奖励 & 红包 -->
+  <i-panel i-class="panel_section">
+    <i-cell-group>
+      <button-form-id bind:click="gotoPrizeList">
+        <i-cell title="活动奖品" is-link>
+          <icon type="icon-liwu1" slot="icon" color="#FF9F58" size="18" />
+        </i-cell>
+      </button-form-id>
+      <button-form-id bind:click="gotoRedEnvelopes">
+        <i-cell title="红包奖励" is-link>
+          <icon type="icon-iconfontredpacket" slot="icon" color="#FA766B" size="18" />
+        </i-cell>
+      </button-form-id>
+    </i-cell-group>
+  </i-panel>
+
+  <!-- 社交 -->
+  <i-panel i-class="panel_section">
+    <i-cell-group>
+      <button-form-id bind:click="gotoCardList">
+        <i-cell title="名片夹" is-link>
+          <icon type="icon-cardid" slot="icon" color="#24D0C6" size="18" />
+        </i-cell>
+      </button-form-id>
+      <button-form-id bind:click="gotoMessenger">
+        <i-cell title="私信" is-link>
+          <icon type="icon-xiaoxi" slot="icon" color="#24D0C6" size="18" />
+        </i-cell>
+      </button-form-id>
+    </i-cell-group>
+  </i-panel>
+
+  <!-- 其它 -->
+  <i-panel i-class="panel_section">
+    <i-cell-group>
+      <button-form-id bind:click="gotoActivityHistory">
+        <i-cell title="浏览记录" is-link>
+          <icon type="icon-liulanjilu" slot="icon" color="#FF9F58" size="18" />
+        </i-cell>
+      </button-form-id>
+      <button-form-id bind:click="gotoFeedback">
+        <i-cell title="意见反馈" is-link>
+          <icon type="icon-yijianfankui1" slot="icon" color="#00BAD0" size="18" />
+        </i-cell>
+      </button-form-id>
+    </i-cell-group>
+  </i-panel>
+</view>

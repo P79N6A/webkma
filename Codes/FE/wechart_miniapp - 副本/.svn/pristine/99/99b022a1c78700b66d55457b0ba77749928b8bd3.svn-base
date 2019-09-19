@@ -1,0 +1,56 @@
+page {
+  background: #fff;
+}
+
+.input_custom {
+  /* font-size: 32rpx !important; */
+  padding-left: 20rpx;
+  height: 100%;
+  line-height: 100rpx;
+}
+
+.topImage {
+  width: 142rpx;
+  height: 142rpx;
+  margin: 58rpx auto;
+}
+
+.topImage>image {
+  width: 100%;
+  height: 100%;
+}
+
+.formControl {
+  width: 630rpx;
+  margin: auto;
+}
+
+.inputControl {
+  height: 100rpx;
+  border-bottom: 1px solid #9f9f9f;
+  line-height: 100rpx;
+}
+
+.inputControl .weui-input {
+  height: 100%;
+  line-height: 100rpx;
+}
+
+.jigsawPuzzle {
+  margin: 35rpx auto;
+}
+
+.marginT66 {
+  margin-top: 66rpx;
+}
+
+.phcolor {
+  color: #ddd;
+}
+
+.formControl .vcode-btn {
+  border: none;
+  color: #b1bfcd;
+  font-size: 32rpx;
+  line-height: 100rpx;
+}

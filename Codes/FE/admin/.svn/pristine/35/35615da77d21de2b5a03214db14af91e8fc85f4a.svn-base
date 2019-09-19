@@ -1,0 +1,180 @@
+<template>
+  <div class="bussiness-list">
+    <div class="navigator">
+      <navigator :tabs="navigatorOpts.tabs" @navigator-event="transferTab"></navigator>
+    </div>
+    <el-row class="operation">
+      <search
+        :placeholder="searchOpt.placeholder"
+        @searchHandler="searchHander"
+        :style="{ width: (searchOpt.size || '300px')}"
+      ></search>
+    </el-row>
+    <el-table
+      ref="bussinessTable"
+      :data="bussinessList"
+      tooltip-effect="dark"
+      row-key="id"
+      class="table"
+      header-row-class-name="table-header"
+      header-cell-class-name="table-header"
+    >
+      <el-table-column
+        show-overflow-tooltip
+        prop="activityName"
+        label="推广计划"
+        align="center"
+        class-name="number_color"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="cover"
+        label="缩略图"
+        align="center"
+        class-name="number_color"
+        width="280"
+      ></el-table-column>
+      <el-table-column
+        prop="templateName"
+        label="使用模板"
+        align="center"
+        class-name="number_color"
+        width="280"
+      ></el-table-column>
+      <el-table-column
+        prop="timeAdv"
+        label="广告时间"
+        align="center"
+        class-name="number_color"
+        show-overflow-tooltip
+        width="280"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="businessName"
+        label="所属商家"
+        align="center"
+        class-name="number_color"
+        width="280"
+      ></el-table-column>
+      <el-table-column
+        prop="publicName"
+        label="所属公众号"
+        align="center"
+        class-name="number_color"
+        width="280"
+      ></el-table-column>
+      <el-table-column
+        prop="state"
+        label="状态"
+        align="center"
+        class-name="number_color"
+        show-overflow-tooltip
+        width="280"
+      ></el-table-column>
+      <el-table-column prop label="操作" align="center" width="200" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span class="btn-plain" @click="deleteDesigner(scope.row)">通过</span>
+          <span class="btn-plain" @click="deleteDesigner(scope.row)">驳回</span>
+          <span class="btn-plain" @click="deleteDesigner(scope.row)">详情</span>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div style="margin:20px 10px;">
+      <pagination
+        v-if="paginationOpt.pageCount > 1"
+        class="pull-right"
+        :paginationOpt="paginationOpt"
+        @switchPage="pagesFn"
+      />
+    </div>
+  </div>
+</template>
+<script scope>
+import api from "../../axios/api-service";
+import search from "../../components/com-search";
+import pagination from "../../components/ui-pagination";
+import slideBtn from "../../components/slide-btn";
+import navigator from "../../components/navigator";
+
+export default {
+  name: "designer-list",
+  components: { search, pagination, slideBtn },
+  data() {
+    return {
+      bussinessList: [], //商家列表数据
+      key_word: "", //关键词
+      searchOpt: {
+        placeholder: "请输入公众号名称/商家名称"
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageCount: "",
+        pageSize: 15
+      },
+      navigatorOpts: {
+        //tab切换
+        tabs: [
+          { key: "0", title: "待审核", selected: true },
+          { key: "2", title: "推广中" },
+          { key: "1", title: "审核失败" },
+          { key: "3", title: "已结束" },
+          { key: "4", title: "已暂停" }
+        ],
+        selectedKey: ""
+      },
+      state:"0"
+    };
+  },
+  mounted() {
+    this.getList();
+  },
+  methods: {
+    //tab菜单切换
+    transferTab(evt){ 
+      this.state= evt;
+      this.getList();
+    },
+    getList(cb) {
+      let _this = this;
+      let _option = {
+        state:this.state,
+        search: this.key_word,
+        pageIndex: this.paginationOpt.pageIndex, //开始条数，不可空，正整数
+        pageSize: this.paginationOpt.pageSize //取用条数，不可空，正整数
+      };
+      api.request("getweChatAdvList", _option, result => {
+        if (result.status == 0) {
+          _this.bussinessList = result.data.list;
+          _this.paginationOpt.totalCount = result.data.total;
+          _this.paginationOpt.pageCount = Math.ceil(
+            _this.paginationOpt.totalCount / _this.paginationOpt.pageSize
+          );
+        } else {
+          _this.messenger.error("获取朋友圈推广列表失败");
+        }
+        !!cb && cb();
+      });
+    },
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getList(cb);
+    },
+    //搜索
+    searchHander(data) {
+      this.key_word = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    }
+  }
+};
+</script>
+<style scope>
+.operation {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+}
+</style>
+
+

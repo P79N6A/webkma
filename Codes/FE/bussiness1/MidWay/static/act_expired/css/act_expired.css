@@ -1,0 +1,27 @@
+body{padding: 0;margin: 0;}
+.act_center{
+    width: 7.466rem;
+    height: 100vh;
+    margin: 0 auto;
+    padding-top: 3rem;
+    box-sizing: border-box;
+    text-align: center;
+}
+.act_center span{
+    margin: 0.773rem auto 0;
+    display: block;
+    font-weight: normal;
+    font-family: 'Microsoft Yahei';
+    font-size: 0.293rem;
+    color:rgba(177,191,205,1);
+    text-align: center;
+    overflow: hidden;
+}
+.act_center>i{
+    margin: 0 auto;
+    display: block;
+    width: 7.466rem;
+    height: 7.466rem;
+    background: url(../images/act_error_img.png) no-repeat center;
+    background-size: 100%;
+}

@@ -1,0 +1,36 @@
+<!--pages/task-list/task-list.wxml -->
+<block wx:if="{{!!employeeId && employeeId!==''}}">
+  <view bindtap='closeAll' class='contentAll'>
+    <view class='search'>
+      <view class="search_input">
+        <text class="iconfont icon-search"></text>
+        <input placeholder='搜索' bindinput='getKeyword' bindconfirm="searchFn" confirm-type='search'></input>
+      </view>
+      <view class='condition' catchtap='openConditionlist'>
+        <text>{{conditionTxt}}</text>
+        <text class="iconfont icon-zhankai1"></text>
+      </view>
+      <view class='condition_list' wx:if="{{isCondition}}">
+        <view class='list_item' data-item='{{item}}' wx:for="{{conditionlist}}" :key="{{index}}" catchtap='selectCondition'>{{item.value}} </view>
+      </view>
+    </view>
+    <view class='content'>
+      <view wx:for="{{dataLsit}}" wx:key="index">
+        <task-list-item item="{{item}}" urls="{{urls}}" bind:itemDataEvent="itemDataEvent"></task-list-item>
+      </view>
+      <i-load-more wx:if="{{showLoadMore}}" tip="{{textinfo}}" loading="{{ textinfo=='玩命加载中...'?true:false }}" />
+    </view>
+    <share-menu wx:if="{{isShare}}" bind:shareEvent='shareEvent'></share-menu>
+  </view>
+  <view class="body_box">
+    <view class="cover_box">
+      <canvas canvas-id="canvas_cover" class="canvas_cover" style="width: 750px; height: 376px;"></canvas>
+    </view>
+  </view>
+</block>
+<block wx:else>
+  <view style='text-align:center;margin-top:200rpx;'>
+    <image src='../../images/cover-data-error.png'></image>
+  </view>
+  <view style='text-align:center;'>游客</view>
+</block>

@@ -1,0 +1,211 @@
+
+/*IE10 默认却掉顶部蓝色加载条*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .pace-progress {
+    display: none !important;
+  }
+}
+
+input[type=text]::-ms-clear {
+  display: none;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, dd, dl, dt, li, ol, ul, input, button, textarea {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+input, button, select, textarea, a, img {
+  outline: none;
+  text-decoration: none;
+}
+
+/*去掉超链接或按钮点击时出现的虚线框黄色边框*/
+::-moz-focus-inner {
+  border: 0px;
+}
+
+/*解决safari浏览器下字体发虚的毛病*/
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/*火狐的私有属性去掉点击时边框*/
+body {
+  font-size: 12px;
+  width: 100%;
+  height: 100vh;
+  /*background: #f6f7fc;*/
+  background: #eff7fa;
+  font-family: "Microsoft YaHei", "Arial", "SimSun";
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+ul, ul li, ol li, li {
+  list-style: none;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+/* 按钮样式 */
+.my-btn {
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12px;
+}
+.my-btn-green {
+  background-color: #00BAD0;
+  color: #fff;
+}
+.my-btn-normal {
+  border: 1px solid #e3e3e3;
+  background-color: transparent;
+  color: #555;
+}
+.btn-plain{
+  font-size: 12px;
+  color: #2578c0;
+  text-decoration: none;
+  font-style: normal;
+  cursor: pointer;
+}
+.btn-plain + .btn-plain{
+  margin-left: 15px;
+}
+.btn-plain.btn-delete{
+  color: #dc4437;
+}
+.btn-plain.btn-disabeld{
+  color: #9eabb8;
+}
+.table{
+  border-top: 1px solid #e3e3e3;
+  font-size: 12px;
+} 
+.icon-search{
+  cursor: pointer;
+}
+.text-center{
+  text-align: center;
+}
+/* 滚动条样式 */
+.scroll-box {
+  position: relative;
+  top: 0;
+  left: 0;
+  height:300px;
+  overflow-y:auto;
+}
+
+.scroll-box::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0);
+  border-left: 1px solid rgba(0, 0, 0, 0);
+}
+
+.scroll-box::-webkit-scrollbar {
+  width: 6px;
+  height: 13px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.scroll-box::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  background-clip: padding-box;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  min-height: 28px;
+}
+
+.scroll-box::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/* 颜色 */
+/* 主色 */
+.green-deep {
+  color: #1bb8af;
+}
+.green-light {
+  color: #24d0c6;
+}
+/* 辅色 */
+.blue-deep {
+  color: #1f86df;
+}
+.blue-light {
+  color: #3898ec;
+}
+.yellow-deep{
+  color: #e96300;
+}
+.yellow-light{
+  color: #f58410;
+}
+.red-deep{
+  color: #ed5564 !important;
+}
+.red-light{
+  color: #fa766b;
+}
+.grey-deep{
+  color: #9eabb8;
+}
+.grey-light{
+  color:#c9d4df;
+}
+.black-deep{
+  color: #3c4a55;
+}
+.black-light{
+  color: #63717b;
+}
+.disable-color{
+  color: #9eabb8;
+}
+.number-color {
+  color: #63717b;
+}
+/* 字体大小样式 */
+.font-20{
+  font-size: 20px;
+}
+.font-18{
+  font-size: 18px;
+}
+.font-16{
+  font-size: 16px;
+}
+.font-14{
+  font-size: 14px;
+}
+.font-12{
+  font-size: 12px;
+}
+.font-36{
+  font-size: 36px;
+}
+.font-24{
+  font-size: 24px;
+}
+/* 清除padding */
+.clear-padding{
+  padding: 0 !important;
+}

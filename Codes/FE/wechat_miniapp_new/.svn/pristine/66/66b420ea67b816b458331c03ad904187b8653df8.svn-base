@@ -1,0 +1,525 @@
+const
+  activityService = require('../../services/activity-service.js'),
+  statisticsService = require('../../services/statistics-service.js'),
+  utils = require('../../utils/util.js')
+
+let app = getApp()
+let self;
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    showLoadMore:false,
+    textinfo: '玩命加载中...',
+    goodsListData:[],
+    statistical: {
+      total: '', //报名人数/订单总数/红包领取人数/点赞总数/投票总人数/中奖总人数/拨号插件的点击数
+      value: '', //任务浏览客户数/商品详情浏览数
+      totalVolume:'' // 成交金额/红包发放总额 
+    },
+    orderDataSource: {
+      total: '',
+      value: '',
+      totalVolume: ''
+    },
+    showTitle:false,
+    id: "",
+    articleid: "",
+    activeNavTab: "baseData",
+    pageSize: 20,
+    params:{
+      search:'',
+      pageSize:8,
+      pageIndex:1
+    },
+    titleCont:{
+      title:'领取人数',
+      titleNun: 0,
+      redEnvelopes:'发放总额',
+      redPrice: 0,
+      content:"小小红包，也是一种很好的裂变方式，帮助您带来更多的客户"
+    },
+    dataList: [{
+        key: "share",
+        title: "分享数",
+        total: 0
+      }, {
+        key: "visitor",
+        title: "访客数",
+        total: 0
+      }, {
+        key: "access",
+        title: "访问数",
+        total: 0
+      }],
+    avgLifeTime: "", // 平均访问时长
+    areaTopList: "", // 访问地区TOP排名
+    pageStatus: "loading",
+    plugPageStatus: "loading",
+    tabNav:[
+      { key: "formData", title: "报名", },
+      { key: "goods", title: "商品" },
+      { key: "redEnvelopes", title: "红包" },
+      { key: "thumbup", title: "点赞" },
+      { key: "vote", title: "投票" },
+      { key: "reward", title: "中奖" },
+      { key: "call", title: "拨号" }
+    ],
+    activePlugTab: "formData", //当前项
+    listData: [ //投票记录
+      { "code": "01", "text": "text1", "type": "type1" },
+      { "code": "02", "text": "text2", "type": "type2" },
+      { "code": "03", "text": "text3", "type": "type3" }
+    ],
+    bgcolor: "",
+    formDataListData:[],//报名数据列表
+    redpacketListdata:[],//红包列表数据
+    rewardDataList:[],//中奖列表
+    isShowInfo:false
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    self = this;
+    var bg = self.bgColor();
+    self.setData({
+      id: options.id,
+      articleid: options.articleid,
+      bgcolor: bg
+    });
+    console.log("参数", options)
+    Promise.all([
+      new Promise((resolve, reject) => {
+        // 获取表单列表
+        activityService.getFormList({
+          id: self.data.id
+        }, (err, res) => {
+          if (err) {
+            self.setData({                                                                                                              
+              formPageStatus: "error-network"
+            });
+            return reject(err);
+          }
+          if (res.status != 0) {
+            self.setData({
+              formPageStatus: "error-data"
+            });
+            return reject(res.message);
+          }
+          self.setData({
+            formPageStatus: res.data.length == 0 ? "empty" : "",
+            formList: res.data.map((item, index) => {
+              return {
+                controlId: item.controlId,
+                name: item.name,
+                total: item.total,
+                todayTotal: item.todayTotal,
+                _open: false,
+                detail: {
+                  _isLoading: false
+                }
+              }
+            })
+          });
+          resolve();
+        });
+      }),
+      new Promise((resolve, reject) => {
+        //获取获取活动 - 统计现状
+        statisticsService.aggsTypeByBelongModule({
+          as_belong_module: [self.data.id]
+        }, (err, res) => {
+          if (err) return reject(err);
+          if (res.status != 0) return reject(res.message);
+          self.data.dataList.forEach(item => {
+            item.total = res.data.group[0]["scan_" + item.key];
+          });
+          self.data.areaTopList = res.data.area_top_list.slice(0, 5).join("、");
+          self.data.avgLifeTime = ((time) => {
+            if (!time) return "";
+            if (time < 60) return `${time}秒`;
+            return `${Math.floor(time / 60)}分${Math.floor(time % 60)}秒`;
+          })(res.data.avg_life_time);
+          self.setData(self.data);
+          resolve();
+        });
+      })
+    ]).then(results => {
+      self.setData({
+        pageStatus: ""
+      });
+    }).catch(err => {
+      self.setData({
+        pageStatus: "error-data"
+      });
+      console.error(err);
+    });
+  },
+  onShow(){
+    let that = this
+    that.getIds()
+  },
+/*------------------------------ 插件数据--------------------------------------*/
+  getKeyword(e){
+    this.setData({
+      'params.search': e.detail.value
+    })
+  },
+    // 获取 controlId 
+  getIds(){
+    let self = this
+    activityService.getFormList({
+      id: self.data.id,
+      clientType: 'weapp'
+    }, (err, res) => {
+      if(res.status==0){
+        self.setData({
+          controlId: res.data.length > 0 ? res.data[0].controlId:''
+        })
+      }
+    })
+  },
+    //公共汇总数据 pluginStatistical
+    getStatisitical(type){
+      let self = this
+      let contType = 2  //1：名片(预留) 2：报名 3：商品 4：红包 5：点赞 6：投票 7：中奖 8：拨号
+      switch (type) {
+        case "formData":
+          contType=2
+          break;
+        case "goods":
+          contType = 3
+          break;
+        case "redEnvelopes":
+          contType = 4
+          break;
+        case "thumbup":
+          contType = 5
+          // 点赞
+          break;
+        case "vote":
+          contType = 6
+          // 投票
+          break;
+        case "reward":
+          contType = 7
+          // 中奖
+          break;
+        default:
+          contType = 8
+          // 拨号
+      }
+      activityService.pluginStatistical({
+        taskId: self.data.id,
+        type: contType
+      },(err,res)=>{
+        self.setData({
+          "statistical.total": res.data.dataNum ? res.data.dataNum:0,
+          "statistical.value": res.data.browseData ? res.data.browseData : 0,
+          "statistical.totalVolume": res.data.amount ? res.data.amount : 0
+        })
+      })
+    },
+    // 报名
+    //   1 getFormContent ? relationId = 11001181129000000035 & controlId=111& pageIndex=1& pageSize=20
+    // 2 getFormContentDetail? formId = 1 获取我的营销表单数据详情
+  getFormContent(){
+    let self = this 
+    new Promise((resolve,reject)=>{
+      let cont = {
+        controlId: self.data.controlId,
+        pageSize: 10,
+        pageIndex: 1,
+        id: self.data.id
+      }
+      activityService.getFormContent(cont, (err, resdata) => {
+        resolve(resdata)
+      })
+    }).then(datas=>{
+      return new Promise((resolve, reject) => {
+        if (datas.data.list){
+          activityService.getFormContentDetail({
+            id: datas.data.list[0] ? datas.data.list[0].id:''
+          }, (err, resdata) => {
+            resolve(resdata)
+          })
+        }
+      })
+    }).then(cont=>{
+      if(cont.status == 0){
+        this.setData({
+          formDataListData:cont.data
+        })
+      }
+    }).catch(err=>{
+      this.setData({
+        textinfo: "暂无数据"
+      })
+    })
+  },
+    //商品列表
+    getGoodsList(){
+      let self = this
+      let cont = {
+        "businessId": app.globalData.userInfo.businessId,
+        "taskId": self.data.id,
+        "goodsName": self.data.params.search,
+        "pageIndex": self.data.params.pageIndex,
+        "pageSize": self.data.params.pageSize
+      }
+      activityService.plugUnitGoodsList(cont, (err, res) => {
+        let arr = res.data.goods ? res.data.goods : []
+        self.setData({
+          goodsListData: self.data.params.pageIndex == 1 ? arr : self.data.listData.concat(arr)
+        })
+      })
+    },
+    //商品概况
+    getGoodsCont(){
+      let self = this
+      let cont = {
+        "businessId": app.globalData.userInfo.businessId,
+        "taskId": self.data.id
+      }
+      activityService.plugUnitGoodsSummary(cont, (err, res) => {
+        self.setData({
+          "orderDataSource.total": res.data.totalBrowseCount,
+          "orderDataSource.value": res.data.totalOrderCount, 
+          "orderDataSource.totalVolume": res.data.totalVolume
+        })
+      })
+    },
+    //红包
+  getRedPacketList() {
+    let self = this
+    let cont = {
+      taskId: self.data.id,
+      pageIndex: self.data.params.pageIndex,
+      pageSize: self.data.params.pageSize
+    }
+    activityService.redRedpacketlist(cont, (err, res) => {
+      let arr = res.data.list ? res.data.list : []
+      self.setData({
+        redpacketListdata: self.data.params.pageIndex == 1 ? arr : self.data.redpacketListdata.concat(arr)
+      })
+    })
+  },
+    // 投票
+  getVoteList() {
+    let self = this
+    let cont = {
+      taskId:self.data.id
+    }
+    activityService.voteList(cont, (err, res) => {
+      let arr = res.data.list ? res.data.list : []
+      self.setData({
+        listData: self.data.params.pageIndex == 1 ? arr : self.data.listData.concat(arr)
+      })
+    })
+  },
+    // 中奖
+  getRewardContent(){
+    let self = this
+    let cont = {
+      relationId: self.data.id,
+      controlId: self.data.controlId
+    }
+    activityService.drawprizeLog(cont,(err,res)=>{
+      let arr = res.data.list ? res.data.list:[]
+      self.setData({
+        rewardDataList: self.data.params.pageIndex == 1 ? arr : self.data.rewardDataList.concat(arr)
+      })
+    })
+  },
+    // 搜索
+
+  getInfoCont(){
+    let that = this
+    this.navPlurTabChange()
+  },
+  closeMask(){
+    this.setData({
+      isShowInfo:false
+    })
+  },
+  navbarTabChange: function (e) { //菜单tab切换
+    this.setData({
+      activeNavTab: e.detail.key
+    })
+
+    // switch (e.detail.key) {
+    //   case "formData":
+    //     self.getFormContent();
+    //     break;
+    // }
+  },
+  navPlurTabChange: function (e) { //插件tab切换
+    let that = this
+    let isKey = that.data.activePlugTab
+    if (e) {
+      isKey = e.currentTarget.dataset.key
+      if (isKey != that.data.activePlugTab ){
+        that.setData({
+          activePlugTab: isKey,
+          "params.pageIndex": 1
+        })
+      }
+    }
+    that.getStatisitical(isKey)
+    switch (that.data.activePlugTab) {
+      case "formData":
+        // 报名
+        that.setData({
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+        that.getFormContent()
+        break;
+      case "goods":
+        // 商品
+        that.setData({
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+        that.getGoodsList()
+        that.getGoodsCont()
+        break;
+      case "redEnvelopes":
+        // 红包
+        that.setData({
+          "titleCont.title": '领取人数',
+          "titleCont.titleNun": that.data.statistical.total,
+          "titleCont.redEnvelopes": '发放总额',
+          "titleCont.redPrice": that.data.statistical.totalVolume,
+          "titleCont.content": "小小红包，也是一种很好的裂变方式，帮助您带来更多的客户",
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+        that.getRedPacketList()
+        break;
+      case "thumbup":
+        that.setData({
+          "titleCont.title": '点赞人数',
+          "titleCont.titleNun": that.data.statistical.total,
+          "titleCont.content": "小小点赞是客户对您的最好褒奖",
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+        // 点赞
+        break;
+      case "vote":
+        // 投票
+        that.setData({
+          "titleCont.title": '投票人数',
+          "titleCont.titleNun": that.data.statistical.total,
+          "titleCont.content": "小小投票，是客户表达自己心意的方式，也是对您的信任",
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+        that.getVoteList()
+        break;
+      case "reward":
+        // 中奖
+        that.setData({
+          "titleCont.title": '中奖人数',
+          "titleCont.titleNun": that.data.statistical.total,
+          "titleCont.content": "抽奖活动，增加客户和你的黏性，帮助他更好的认识你",
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+        that.getRewardContent()
+        break;
+      default:
+        // 拨号
+        that.setData({
+          "titleCont.title": '拨号人数',
+          "titleCont.titleNun": that.data.statistical.total,
+          "titleCont.content": "小小拨号，证明客户是有心想要联系你，还等什么，主动出击吧！",
+          showTitle: isKey == 'formData' || isKey == 'goods' ? false : true,
+          showLoadMore: false
+        })
+    }
+    var list = this.data.tabNav;
+    // for (var i in list) {
+    //   console.log("lis",list[i].key)
+    // }
+    // switch (e.detail.key) {
+    //   case "formData":
+    //     self.getFormContent();
+    //     break;
+    // }
+  },
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    this.setData({
+      "params.pageIndex": 1
+    })
+    this.getList()
+  },
+  /**
+   * 页面监听滚动条
+   */
+  onPageScroll(e) {
+    let that = this
+    this.setData({
+      showLoadMore: that.data.activeNavTab == 'plugData'? true : false
+    })
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    let that = this
+    let pageAll = Math.ceil(that.data.total / that.data.params.pageSize)
+    that.setData({
+      "params.pageIndex": that.data.params.pageIndex+1
+    })
+    if (that.data.params.pageIndex <= pageAll) {
+      that.navPlurTabChange()
+    } else {
+      that.setData({
+        textinfo: "已经到底了"
+      })
+    }
+  },
+/*------------------------------插件数据结束--------------------------------------*/
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
+
+  previewImage: function (e) {
+    let urls = e.currentTarget.dataset.imgs.map(item => {
+      return item.img
+    });
+    wx.previewImage({
+      current: urls[e.currentTarget.id],
+      urls: urls
+    });
+  },
+  stopScroll: function (event) {
+    event && event.stopPropagation && event.stopPropagation();
+  },
+  bgColor: function(){
+    var i = 0;
+    var str = "#";
+    var random = 0;
+    var aryNum = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+
+    for (i = 0; i < 6; i++) {
+      random = parseInt(Math.random() * 16);
+
+      str += aryNum[random];
+    }
+    return str
+  } 
+})

@@ -1,0 +1,80 @@
+// components/tasks-list/tasks-list.js
+const utils = require('../../utils/util.js');
+Component({
+  /**
+   * 组件的属性列表
+   * itemData  单条数据
+   * url 跳转页面url
+   */
+  properties: {
+    item:{
+      type:Object,
+      value:''
+    },
+    urls:{
+      type: Object,
+      value:''
+    },
+    isManager:{
+      type: String,
+      value: ''
+    },
+    showShare:{
+      type: Boolean,
+      value: true
+    },
+    showQueryInfo: {
+      type: Boolean,
+      value: true
+    },
+    itemIndex:{
+      type:Number,
+      value:''
+    }
+  },
+  ready(){
+    let that = this
+    let info = that.properties.item
+    let temp = info.activeEndDate - info.newTime
+    info.timer = temp > 0 ? utils.timeCount(temp):"已过期"
+    info.userNumber = utils.convertJoinCount(info.userNumber)
+    that.setData({
+      itemData: info,
+      pageType: that.properties.isManager
+    })
+  },
+  /**
+   * 组件的初始数据
+   */
+  data: {
+    pageType:0,
+    itemData:{}
+  },
+
+  /**
+   * 组件的方法列表
+   */
+  methods: {
+    shareBtn() {
+      // 传递给父组件
+      var that = this;
+      var myEventDetail = { 
+        isShare: true, 
+        itemData: that.data.itemData 
+      } // detail对象，提供给事件监听函数
+      this.triggerEvent('itemDataEvent', myEventDetail) //myevent自定义名称事件，父组件中使用
+    },
+    itemDetali() {
+      let that = this
+      wx.navigateTo({
+        url: that.properties.urls.detailUrl + `?activityUrl=${that.data.itemData.url}&title=${that.data.itemData.sourceName}&id=${that.data.itemData.id}`,
+      })
+    },
+    dataInfoData(){
+      let that = this
+      wx.navigateTo({
+        url: that.properties.urls.analysisUrl + `?id=${that.data.itemData.id}`
+      })
+    }
+  }
+})

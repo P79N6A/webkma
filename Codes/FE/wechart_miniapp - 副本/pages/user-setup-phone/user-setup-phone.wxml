@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="topImage">
+    <image src="/images/phone.png" mode="aspectFit" />
+  </view>
+  <view class="formControl">
+    <view class="flex inputControl">
+      <view>+86</view>
+      <input class="flex__item input_custom" id="phone" bindinput="bindInput" placeholder-class="phcolor" placeholder="手机号码" value="{{phone}}" />
+    </view>
+    <view class="jigsawPuzzle">
+      <comp-slider-validation bind:compTouchend="compTouchend" id="jigsawPuzzle"></comp-slider-validation>
+    </view>
+    <view class="flex inputControl">
+      <input class="flex__item input_custom" id="vcodeSMSCode" bindinput="bindInput" placeholder-class="phcolor" placeholder="手机验证码" />
+      <button disabled="{{!!smsBtnDisabled}}" plain="true" style="background-color: transparent;" class="vcode-btn" bindtap="smsVCode">{{vcodeSMSTitle}}</button>
+    </view>
+  </view>
+  <view class="formControl marginT66">
+    <i-button type="success" disabled="{{!!submitDisabled}}" wx:if="{{action == 'bind'}}" bind:click="bindPhone">确认绑定</i-button>
+    <i-button type="success" disabled="{{!!submitDisabled}}" wx:if="{{action == 'unbind'}}" bind:click="unbindPhone">解除绑定</i-button>
+  </view>
+</view>

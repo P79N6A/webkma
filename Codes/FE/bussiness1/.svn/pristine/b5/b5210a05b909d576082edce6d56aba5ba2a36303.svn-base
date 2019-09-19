@@ -1,0 +1,1827 @@
+ <template>
+  <div class="dialog-box">
+    <el-dialog
+      :visible.sync="dialogOptions.visible"
+      width="1066px"
+      center
+      custom-class="dialog-box"
+      :close-on-click-modal="false"
+    >
+      <el-row class="release-dialog">
+        <el-col :span="8">
+          <div class="tipText-color" style="padding-left: 30px;">
+            <span>最新编辑：{{newDate}}</span>
+          </div>
+          <div class="preview" style="padding-top: 10px;">
+            <div style="display:none;">最新编辑时间：</div>
+            <div class="preview-viewport">
+              <div class="phone-body">
+                <iframe
+                  ref="release-h5-container"
+                  class="h5-container"
+                  v-if="!!previewUrl"
+                  :src="previewUrl"
+                ></iframe>
+                <iframe ref="article-h5-container" class="h5-container" v-else></iframe>
+              </div>
+              <div class="feature-bar">
+                <button
+                  ref="pageFlipUp"
+                  class="item up"
+                  title="上一页"
+                  data-page="prev"
+                  disabled="disabled"
+                ></button>
+                <div ref="pagination" class="item">1/1</div>
+                <button
+                  ref="pageFlipDown"
+                  class="item down"
+                  title="下一页"
+                  data-page="next"
+                  disabled="disabled"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="16">
+          <div class="setting_box">
+            <el-form
+              :model="manuscript"
+              :rules="manuscriptRules"
+              ref="manuscript"
+              label-width="100px"
+              class="manuscriptForm"
+            >
+              <div class="box_border" style="padding-left: 66px;">
+                <div class="basic_info clearfix">
+                  <div class="cover_box pull-left">
+                    <form
+                      enctype="multipart/form-data"
+                      id="uploadImgToServer"
+                      style="height: 100%;"
+                    >
+                      <div
+                        style="width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; "
+                        :style="{backgroundImage: manuscript.cover ? 'url(' + manuscript.cover + ')': 'url(\'/static/cover-empty.jpg\')' }"
+                      ></div>
+                      <input
+                        id="templateImgInput"
+                        type="file"
+                        name="fileName"
+                        accept="image/png, image/jpeg"
+                        class="input_upload"
+                        @change="uploadCover($event)"
+                      />
+                      <div class="replace_btn_div">
+                        <button type="button" class="replace_btn blue_black">更换封面</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="pull-right info_box">
+                    <div>
+                      <el-form-item prop="name" style="margin-bottom: 8px;">
+                        <i style="color: #ed5564;">*</i>
+                        作品名称
+                        <el-input
+                          placeholder="请输入作品名称"
+                          v-model="manuscript.name"
+                          maxlength="64"
+                          :readonly="type==2"
+                        >
+                          <i
+                            v-if="type!=2"
+                            slot="suffix"
+                            style="font-size: 12px; font-style: normal; line-height: 42px;"
+                          >{{nameLength}}/64</i>
+                        </el-input>
+                      </el-form-item>
+                    </div>
+                    <div class style="margin-bottom: 9px;">
+                      <i style="color: #fff;">*</i>
+                      作品描述
+                      <el-input
+                        maxlength="150"
+                        placeholder="请输入作品描述"
+                        class="inputBox"
+                        v-model="manuscript.description"
+                        :readonly="type==2"
+                      ></el-input>
+                      <i v-if="type!=2" class="textlength des_length">{{desLength}}/150</i>
+                    </div>
+                    <div v-if="role != '2'">
+                      <el-form-item prop style="margin-bottom: 18px;">
+                        <i style="color: #fff;">*</i>
+                        {{manuscript.manuscriptType == 2 ? '海报日期' : '活动日期'}}
+                        <el-date-picker
+                          v-model="activityData"
+                          type="datetimerange"
+                          range-separator="至"
+                          start-placeholder="开始日期"
+                          end-placeholder="结束日期"
+                          style="width: 420px;"
+                          @change="setTimeChange()"
+                        ></el-date-picker>
+                      </el-form-item>
+                    </div>
+                    <!-- 模板分类(设计师操作) -->
+                    <div v-if="role == '2'">
+                      <el-form-item prop="catIds">
+                        <i style="color: #ed5564;">*</i>
+                        模板分类
+                        <selecttree
+                          class="w-370"
+                          style="width: 328px;position: absolute;top: 0;left: 70px;"
+                          :isReadonly="true"
+                          :dataOfLevel="categoryList"
+                          :dataOfAll="categoryAllList"
+                          :cb="setCategoryCode"
+                        ></selecttree>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-form>
+            <!-- 设置标签 -->
+            <div class="tag">
+              <div class="choose_tag">
+                <div class="pull-left" style="line-height:35px;">
+                  <i class="iconfont icon-plan tipText-color font-22"></i>
+                </div>
+                <div class="tipText-color" style="display: table-cell;line-height: 25px;">
+                  <span v-for="(item,index) in tags.manuscriptLabel" :key="item.labelId">
+                    {{item.labelName}}
+                    <i class="iconfont icon-close" @click="deleteTag(index)"></i>
+                  </span>
+                  <span style="background-color:#fff;" v-if="tags.manuscriptLabel.length<3">
+                    <el-input
+                      v-if="!!isShowNewTag"
+                      style="margin-top:2px; color:#63717b;width: 102px;height: 22px;"
+                      placeholder="请输入标签"
+                      v-model="newTag"
+                      maxlength="6"
+                      @blur="addTag()"
+                    ></el-input>
+                    <span
+                      v-if="!isShowNewTag"
+                      @click="()=>{this.isShowNewTag=true;}"
+                      style="background-color: #f1f3fc;"
+                    >+</span>
+                  </span>
+                </div>
+              </div>
+              <div class="recommend tipText-color">
+                <div style="display: table-cell;width:46px;">推荐：</div>
+                <div style="display: table-cell;line-height: 25px;">
+                  <span
+                    v-for="item in tags.recommendLabel"
+                    :key="item.labelId"
+                    @click="chooseTag(item)"
+                    style="margin-right:8px;"
+                  >{{item.labelName}}</span>
+                </div>
+              </div>
+            </div>
+            <!-- 切换菜单 -->
+            <div class="library" v-if="role != '2'">
+              <div class="nav-box">
+                <div class="classify">
+                  <p
+                    v-for="(item,index) in activeText"
+                    :key="index"
+                    :class="active==index?'activeColor':''"
+                    @click="activeClick(item,index)"
+                  >{{item.name}}</p>
+                </div>
+              </div>
+
+              <!-- 员工分派(非设计师操作) -->
+              <div class="box_border clearfix" style="margin:10px;" v-if="active == 0">
+                <div class="pull-left" style="text-align: center;">
+                  <el-transfer
+                    style="text-align: left; display: inline-block; height: 240px;"
+                    v-model="employees.selectedList"
+                    :titles="['全选', '全选']"
+                    :format="{
+                                noChecked: '${total}',
+                                hasChecked: '${checked}/${total}'
+                              }"
+                    :data="employees.list"
+                  >
+                    <span slot-scope="{ option }">{{ option.label }}</span>
+                  </el-transfer>
+                </div>
+              </div>
+
+              <!-- 任务奖励（非设计师） -->
+              <div
+                class="box_border clearfix"
+                style="margin-left:0px;"
+                v-show="role != '2' && manuscript.manuscriptType != '2' && active == 1"
+              >
+                <el-row style="padding:20px 0 0 36px;">
+                  <div class="ie_left">
+                    <span style="margin-right: 8px;">设置目标</span>
+                    <slideBtn
+                      :slideBtnOpt="reward"
+                      active-text="是"
+                      inactive-text="否"
+                      :prop-value-map="{0:0,1:1}"
+                      prop-key="state"
+                      @slide-event="rewardState"
+                      v-if="!manuscript.modify || manuscript.manuscriptStatus != 2"
+                    />
+                    <slideBtn
+                      :slideBtnOpt="reward"
+                      active-text="是"
+                      inactive-text="否"
+                      :prop-value-map="{0:0,1:1}"
+                      :disable="true"
+                      prop-key="state"
+                      @slide-event="rewardState"
+                      v-else
+                    />
+                    <i
+                      class="iconfont icon-question tipText-color"
+                      v-if="active==1"
+                      :style="{'top': (manuscript.modify && manuscript.manuscriptStatus == 2 ? '1px': '2px')}"
+                      @mouseenter="reward.showRuleInstruction = true"
+                      @mouseleave="reward.showRuleInstruction = false"
+                    ></i>
+                  </div>
+                  <div
+                    style="position: absolute;bottom: 38px;left: 0px;width:500px; height:auto; z-index: 10000000;background-color: #fff;border:1px solid #ccc;"
+                    v-show="reward.showRuleInstruction"
+                  >
+                    <div
+                      style="padding-left:10px;height: 30px;line-height: 30px;"
+                      v-if="manuscript.modify && reward.state != '0'"
+                    >注：您当前暂未设置任务奖励</div>
+                    <div v-else>
+                      <el-table :data="reward.ruleInstructionsData" border style="width: 100%;">
+                        <el-table-column prop="name" label="规则项" align="center" width="80"></el-table-column>
+                        <el-table-column prop="desc" align="center" label="说明"></el-table-column>
+                      </el-table>
+                      <div
+                        style="padding-left:10px;height: 30px;line-height: 30px;"
+                      >注：员工要拿到奖励，必须完成所有的任务目标，完成部分目标奖励不发放</div>
+                    </div>
+                    <div style="position: absolute;left: 120px;bottom: 0px;">
+                      <div class="sanjiao"></div>
+                      <div class="sanjiao sanjiao1"></div>
+                    </div>
+                  </div>
+                </el-row>
+                <el-form
+                  :model="reward.param"
+                  :rules="reward.paramRules"
+                  ref="rewardparam"
+                  label-width="100px"
+                  class="manuscriptForm"
+                  v-if="reward.state == 0"
+                >
+                  <el-row class="task-reward">
+                    <div class="reward-row reward-amount">
+                      <label class="black-deep">奖励金额/人</label>
+                      <el-form-item prop="amount">
+                        <el-input
+                          placeholder="请输入数字"
+                          v-model="reward.param.amount"
+                          :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                        >
+                          <span slot="prefix" class="black-deep">￥</span>
+                        </el-input>
+                      </el-form-item>
+                      <span class="font-12 tipText-color" style="margin-left: 11px;">共计</span>
+                      <span
+                        class="font-12 red-deep"
+                        style="margin: 0 10px 0 5px;"
+                        v-if="reward.style == 'part'"
+                      >{{partRewordTotal}}</span>
+                      <span
+                        class="font-12 red-deep"
+                        style="margin: 0 10px 0 5px;"
+                        v-else
+                      >{{rewordTotal}}</span>
+                      <span class="font-12 tipText-color">商家钱包金额</span>
+                      <span class="font-12 red-deep">￥{{reward.balance}}</span>
+                    </div>
+                    <div class="reward-row" style="height: 35px;overflow: hidden;">
+                      <label class="black-deep">奖励人</label>
+                      <select
+                        class="choose-employee"
+                        v-model="reward.style"
+                        style="padding-left: 15px;"
+                        :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                      >
+                        <option label="全部员工" value="all">全部员工</option>
+                        <option label="部分员工" value="part">部分员工</option>
+                      </select>
+                      <span v-show="reward.style == 'part'">
+                        <el-form-item prop="count">
+                          <el-input
+                            ref="rewardCount"
+                            placeholder="请输入数字"
+                            v-model.number="reward.rewardEmployeeCount"
+                            :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                            @blur="verifyEmployeeCount($event)"
+                          ></el-input>
+                        </el-form-item>人
+                      </span>
+                    </div>
+                    <div class="reward-row target_form">
+                      <label class="black-deep">曝光量</label>
+                      <el-form-item prop="targetAccess">
+                        <el-input
+                          placeholder="请输入数字"
+                          v-model="reward.param.targetAccess"
+                          :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                        ></el-input>
+                      </el-form-item>
+                      <label class="label1 black-deep">咨询量</label>
+                      <el-form-item prop="targetService">
+                        <el-input
+                          placeholder="请输入数字"
+                          v-model="reward.param.targetService"
+                          :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                        ></el-input>
+                      </el-form-item>
+                    </div>
+                    <div class="reward-row target_form">
+                      <label class="black-deep">访客量</label>
+                      <el-form-item prop="targetVisitor">
+                        <el-input
+                          placeholder="请输入数字"
+                          v-model="reward.param.targetVisitor"
+                          :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                        ></el-input>
+                      </el-form-item>
+                      <label class="label1 black-deep">成交量</label>
+                      <el-form-item prop="targetDeal">
+                        <el-input
+                          placeholder="请输入数字"
+                          v-model="reward.param.targetDeal"
+                          :disabled="manuscript.modify && manuscript.manuscriptStatus == 2"
+                        ></el-input>
+                      </el-form-item>
+                    </div>
+                  </el-row>
+                </el-form>
+              </div>
+            </div>
+
+            <div slot="footer" class="dialog-footer">
+              <!-- :style="{'margin-top': role != '2' && reward.state == 0 && manuscript.manuscriptType != '2' ? '16px' : '40px'}" -->
+              <el-button type="primary" @click="releaseManuscript();" :loading="releaseStatus">发布</el-button>
+              <el-button @click="closeDialog">取消</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-dialog>
+  </div>
+</template>
+<script scoped>
+import api from "api";
+import selecttree from "components/select-tree";
+import slideBtn from "components/slide-btn";
+import httpConfig from "../config/http.js";
+import { createPreviewWindow } from "../utils";
+
+export default {
+  name: "release-setting",
+  components: { selecttree, slideBtn },
+  props: {
+    type: "", //1：h5 2：文章
+    data: {},
+    manuscript: {
+      id: "",
+      name: "",
+      description: "",
+      cover: "",
+      catIds: "",
+      htmlData: "",
+      manuscriptType: "",
+      reward: [],
+      manuscriptStatus: "",
+      appointMentControlIds: []//预约controIds
+    },
+    posterImage: { png: "", jpg: "" },
+    previewUrl: "",
+    dialogOptions: {
+      visible: false
+    }
+  },
+  data() {
+    var checkNumber = (rule, value, callback) => {
+      value = value.toString();
+      if (!value) {
+        return callback(new Error());
+      }
+      if (value == "0") return callback();
+      value = Number(value);
+      if (!Number.isInteger(value)) {
+        callback(new Error(""));
+      } else {
+        if (value < 0) {
+          callback(new Error());
+        } else {
+          callback();
+        }
+      }
+    };
+    var checkAmount = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error());
+        }
+        value = Number(value);
+        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+          Kdo.utils.messenger.error("奖励金额最多只能有2位小数！");
+          callback(new Error(''));
+        } else if(value < 0.01) {
+          Kdo.utils.messenger.error("奖励金额不能小于0.01！");
+          callback(new Error(''));
+        } else if(value > 200) {
+          Kdo.utils.messenger.error("奖励金额/每人不能大于200！");
+          callback(new Error(''));
+        }else {
+          callback();
+        }
+    };
+    return {
+      role: localStorage.role,
+      newDate: "",
+      employees: {
+        selectedList: [],
+        list: []
+      },
+      categoryList: [],
+      categoryAllList: [],
+      tags: {
+        manuscriptLabel: [],
+        recommendLabel: []
+      },
+      newTag: "",
+      isShowNewTag: false,
+      manuscriptId: "",
+      manuscriptRules: {
+        name: [{ required: true, message: "" }],
+        catIds: [{ required: true, message: "" }],
+        activityData: [{ required: true, message: "" }]
+      },
+      releaseStatus: false,
+      activityData: [],
+      activeText: [
+        //切换菜单
+        {
+          name: "选择员工",
+          lable: 1
+        },
+        {
+          name: "任务目标",
+          lable: 2
+        }
+      ],
+      active: 0,
+      pagination: {
+        //左侧活动预览翻页状态记录
+        total: 1,
+        pageIndex: 1
+      },
+      reward: {
+        //任务奖励数据块
+        state: 1, //开启、关闭状态
+        balance: "", //商家钱包余额
+        style: "all", //奖励方式  --all 全部员工   --part 部分员工
+        rewardEmployeeCount: "", //奖励方式为部分员工时，设置的奖励员工数量
+        param: {
+          // targetClick: '', //点击量
+          targetAccess: "", //曝光量
+          targetService: "", //咨询量
+          targetDeal: "", //成交量
+          targetVisitor: "", //访客数
+          amount: "", //奖励金额/每人
+          count: "" // -1 全部员工  其余 -- 部分员工数量
+        },
+        paramRules: {
+          // targetClick: [{ required: true, message: "" }, {type: 'number', message: ''}],
+          targetAccess: [
+            { required: true, message: "" },
+            { validator: checkNumber, trigger: "change" },
+            { validator: checkNumber, trigger: "blur" }
+          ],
+          targetService: [
+            { required: true, message: "" },
+            { validator: checkNumber, trigger: "change" },
+            { validator: checkNumber, trigger: "blur" }
+          ],
+          targetDeal: [
+            { required: true, message: "" },
+            { validator: checkNumber, trigger: "change" },
+            { validator: checkNumber, trigger: "blur" }
+          ],
+          targetVisitor: [
+            { required: true, message: "" },
+            { validator: checkNumber, trigger: "change" },
+            { validator: checkNumber, trigger: "blur" }
+          ],
+          amount: [
+            { required: true, message: "" },
+            { validator: checkAmount, trigger: "blur" }
+          ]
+        },
+        ruleInstructionsData: [
+          { name: "曝光量", desc: "客户查看任务时的浏览数据" },
+          { name: "访客量", desc: "独立的微信用户数量，重复进入不进行计算" },
+          { name: "咨询量", desc: "通过表单提交成功以及点击电话插件的数据" },
+          { name: "成交量", desc: "通过活动进入商品详情并且下单成功的数据" }
+        ],
+        showRuleInstruction: false
+      }
+    };
+  },
+  computed: {
+    nameLength: function() {
+      return 64 - this.manuscript.name.length;
+    },
+    desLength: function() {
+      return 150 - this.manuscript.description.length;
+    },
+    rewordTotal: function() {
+      return !this.reward.param.amount
+        ? "-"
+        : "￥" +
+            (
+              this.employees.selectedList.length *
+              parseFloat(this.reward.param.amount)
+            ).toFixed(2);
+    },
+    partRewordTotal: function() {
+      return !this.reward.rewardEmployeeCount || !this.reward.param.amount
+        ? "-"
+        : "￥" +
+            (
+              parseInt(this.reward.rewardEmployeeCount) *
+              parseFloat(this.reward.param.amount)
+            ).toFixed(2);
+    }
+  },
+  mounted() {
+    // debugger
+    //发布设置弹框
+    // this.dialogOptions.visible = true;
+    $("#templateImgInput").val("");
+    this.getCategoryList();
+    if (this.manuscript.modify) {
+      //编辑任务
+      // 获取已分派员工，及员工列表相关逻辑
+      this.getAssignedEmployeeList();
+      //获取任务奖励详情
+      if (this.manuscript.reward.length > 0) {
+        this.getRewardDetail();
+      } else {
+        this.reward.state = "1";
+      }
+      //活动时间初始化
+      this.activityData = this.manuscript.activityData;
+    } else {
+      this.getEmployeeList();
+    }
+    this.getTagRelease();
+    //商家则获取商家可用余额，用于任务奖励设置处
+    if (localStorage.role != "2") this.getBussinessBalance();
+    //调整活动分类下拉框样式
+    setTimeout(() => {
+      $(".listTree").css("top", "41px");
+    }, 500);
+
+    //初始化h5-container
+    this.$nextTick(() => {
+      if (!this.previewUrl && !!this.manuscript.htmlData) {
+        setTimeout(() => {
+          var iframe = this.$refs["article-h5-container"];
+          var iframedoc =
+            iframe.contentDocument || iframe.contentWindow.document;
+          iframedoc.childNodes[0].innerHTML = this.manuscript.htmlData;
+          this.manuscript.name = this.manuscript.name.replace(/&quot;/gi, '"');
+        }, 500);
+      }
+      if (!!this.previewUrl) {
+        this.bindflip();
+      }
+    });
+    this.newDate = this.getNowFormatDate();
+    console.log(this.manuscript);
+    
+  },
+  methods: {
+    //获取当前时间
+    getNowFormatDate() {
+      var date = new Date();
+      var seperator1 = "-";
+      var seperator2 = ":";
+      var minutes =
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      var seconds =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      var month =
+        date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1;
+      var strDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      var currentdate =
+        date.getFullYear() +
+        seperator1 +
+        month +
+        seperator1 +
+        strDate +
+        " " +
+        date.getHours() +
+        seperator2 +
+        minutes +
+        seperator2 +
+        seconds;
+      return currentdate;
+    },
+    // 获取任务奖励详情
+    getRewardDetail() {
+      let self = this;
+      api
+        .request("extensionRewardEetail", { id: self.manuscript.reward[0].id })
+        .then(function(result) {
+          if (result.status == 0) {
+            self.reward.param = Object.assign(self.reward.param, {
+              targetAccess: result.data.targetAccess, //曝光量
+              targetService: result.data.targetService, //咨询量
+              targetDeal: result.data.targetDeal, //成交量
+              targetVisitor: result.data.targetVisitor, //访客数
+              amount: result.data.money,
+              count: result.data.count
+            });
+            self.reward.rewardEmployeeCount =
+              result.data.count != -1 ? result.data.count : "";
+            self.reward.style = result.data.count != -1 ? "part" : "all";
+            if (result.data.count != -1)
+              $(self.$refs["rewardCount"].$el)
+                .find("input")
+                .removeClass("error_style")
+                .addClass("pass_style");
+            // if(self.manuscript.modify && )
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message);
+        });
+    },
+    //获取商家资金余额
+    getBussinessBalance() {
+      let self = this;
+      api
+        .request("getAccountDetail", {
+          businessId: JSON.parse(localStorage.getItem("userInfo")).businessInfo
+            .businessId
+        })
+        .then(function(result) {
+          if (result.status == 0) {
+            self.reward.balance = result.data.balance;
+          } else {
+            self.$message.error(result.message || "操作失败!");
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message);
+        });
+    },
+    //绑定翻页方法
+    bindflip() {
+      let self = this;
+      if (!self.$refs.pageFlipUp) return false;
+      function flipFn(evt, _this) {
+        var $el = _this,
+          page = $el.attr("data-page"),
+          total = self.pagination.total,
+          pageIndex = self.pagination.pageIndex;
+        if (page === "prev") {
+          pageIndex = pageIndex - 1;
+        } else if (page === "next") {
+          pageIndex = pageIndex + 1;
+        }
+        var docWindow = self.$refs["release-h5-container"].contentWindow;
+        if (!!docWindow) {
+          docWindow.postMessage({ type: "flip", pageIndex: pageIndex }, "*");
+        }
+      }
+      $(self.$refs.pageFlipUp)
+        .unbind("click")
+        .bind("click", function(evt) {
+          flipFn(evt, $(this));
+          return false;
+        });
+      $(self.$refs.pageFlipDown)
+        .unbind("click")
+        .bind("click", function(evt) {
+          flipFn(evt, $(this));
+          return false;
+        });
+      window.addEventListener(
+        "message",
+        function receiveMessage(evt) {
+          var data = evt.data || {};
+          if (data.type === "pagination") {
+            var total = (self.pagination.total = data.total);
+            var pageIndex = (self.pagination.pageIndex = data.pageIndex + 1);
+            if (total === 1) {
+              $(self.$refs.pagination).prop("disabled", true);
+            } else {
+              $(self.$refs.pageFlipUp).prop("disabled", false);
+              $(self.$refs.pageFlipDown).prop("disabled", false);
+              if (pageIndex === 1) {
+                $(self.$refs.pageFlipUp).prop("disabled", true);
+              }
+              if (pageIndex === data.total) {
+                $(self.$refs.pageFlipDown).prop("disabled", true);
+              }
+            }
+            $(self.$refs.pagination).html(pageIndex + "/" + data.total);
+          }
+        },
+        false
+      );
+    },
+    activeClick(item, index) {
+      //切换tab
+      this.active = index;
+      // if(index == 0){
+      //   this.reward.state = 1;
+      // }else{
+      //   this.reward.state = 0;
+      // }
+    },
+    //获取人员列表
+    getEmployeeList() {
+      let self = this;
+      let _option = {
+        pageIndex: 1,
+        pageSize: 3000,
+        state: 0
+      };
+      api.request("getEmployeeList", _option, result => {
+        if (result.status == 0) {
+          self.employees.list = result.data.list.map(function(item) {
+            return {
+              key: item.id,
+              label: item.name + "\t" + item.phone,
+              disabled: false
+            };
+          });
+        }
+      });
+    },
+    getAssignedEmployeeList() {
+      let self = this;
+      Promise.all([
+        new Promise((resolve, reject) => {
+          //获取已分派员工数据
+          let _option = {
+            pageIndex: 1,
+            pageSize: 3000,
+            dispatch: "already",
+            manuscriptId: self.manuscript.id
+          };
+          api.request("getEmployeeList", _option, result => {
+            if (result.status == 0) {
+              console.log("已分派员工");
+              console.log(result.data.list);
+              resolve(result.data.list);
+            } else {
+              resolve([]);
+            }
+          });
+        }),
+        new Promise((resolve, reject) => {
+          let _option = {
+            pageIndex: 1,
+            pageSize: 3000,
+            state: 0
+          };
+          api.request("getEmployeeList", _option, result => {
+            if (result.status == 0) {
+              self.employees.list = result.data.list.map(function(item) {
+                return {
+                  key: item.id,
+                  label: item.name + "\t" + item.phone,
+                  disabled: false
+                };
+              });
+              resolve(self.employees.list);
+            } else {
+              reject();
+            }
+          });
+        })
+      ])
+        .then(results => {
+          let allEmployee = results[1],
+            assignedEmployee = results[0];
+          allEmployee.forEach(item => {
+            item.disabled = self.manuscript.manuscriptStatus == 2; //进行中，不允许修改
+            assignedEmployee.forEach(item1 => {
+              if (item.key == item1.id) {
+                self.employees.selectedList.push(item1.id);
+              }
+            });
+          });
+        })
+        .catch(() => {
+          Kdo.utils.messenger.error("获取员工列表失败！");
+        });
+    },
+    //获取分类列表
+    getCategoryList() {
+      let self = this;
+      api.request(
+        "getCategoryTree",
+        {
+          type: localStorage.getItem("role") == 1 ? "activity" : "template"
+        },
+        result => {
+          if (result.status == 0) {
+            self.categoryList = result.data;
+            self.getCategoryAllList(self.categoryList);
+          }
+        }
+      );
+    },
+    getCategoryAllList(items) {
+      let self = this;
+      $.each(items, (index, item) => {
+        self.categoryAllList.push(item);
+        if (!!item.children) {
+          self.getCategoryAllList(item.children);
+        }
+      });
+    },
+    //监听时间选择
+    setTimeChange() {
+      if (
+        !!this.activityData &&
+        this.activityData[0] != "" &&
+        this.activityData[1] != ""
+      ) {
+        this.releaseStatus = false;
+      } else {
+        this.activityData = [];
+      }
+    },
+    //选择分类
+    setCategoryCode(data) {
+      this.manuscript.catIds = data.keys.join(",");
+    },
+    //获取发布设置标签
+    getTagRelease() {
+      let self = this;
+      let _option = {
+        relationId: this.$route.query.id
+      };
+      api.request("getTagRelease", _option).then(result => {
+        if (result.status == 0) {
+          self.tags.manuscriptLabel = result.data.manuscriptLabel;
+          self.tags.recommendLabel = result.data.recommendLabel;
+        }
+      });
+    },
+    //删除标签
+    deleteTag(index) {
+      this.tags.manuscriptLabel.splice(index, 1);
+    },
+    //选择标签
+    chooseTag(item) {
+      var tagsLabel = this.tags.manuscriptLabel;
+      var falg = true;
+      tagsLabel.forEach(tag => {
+        if (tag.labelName == tag.labelName && tag.labelId == item.labelId) {
+          Kdo.utils.messenger.error("标签名重复");
+          falg = false;
+          return falg;
+        }
+      });
+      if (tagsLabel.length >= 3) {
+        Kdo.utils.messenger.error("活动标签最多设置3个");
+        return;
+      }
+      if (!!falg && this.tags.manuscriptLabel.length < 3) {
+        tagsLabel.push(item);
+      } else {
+        () => {};
+      }
+    },
+    //新增标签
+    addTag() {
+      if (this.newTag.trim().length == 0) {
+        this.isShowNewTag = false;
+        return;
+      }
+      var tagsLabel = this.tags.manuscriptLabel;
+      var falg = true;
+      tagsLabel.forEach(tag => {
+        if (tag.labelName == this.newTag) {
+          falg = false;
+          return falg;
+        }
+      });
+      if (!!falg) {
+        this.tags.manuscriptLabel.push({ labelId: "", labelName: this.newTag });
+        this.newTag = "";
+      } else {
+        Kdo.utils.messenger.error("标签名重复");
+        return false;
+      }
+      // this.tags.manuscriptLabel.push({ labelId: "", labelName: this.newTag })
+      // this.newTag = ""
+    },
+    closeDialog() {
+      this.dialogOptions.visible = false;
+    },
+    //发布
+    releaseManuscript(e) {
+      var self = this,
+        apiName,
+        options = {},
+        data = {},
+        childWindow = null;
+
+      Promise.all([
+        new Promise(function(resolve, reject) {
+          self.$refs["manuscript"].validate(valid => {
+            if (valid) {
+              resolve(true);
+            }
+          });
+        }),
+        new Promise(function(resolve, reject) {
+          if (localStorage.role !== "2" && self.activityData.length == 0)
+            return reject(new Error("请选择任务时间！"));
+          if (self.type != "2") {
+            createPoster(
+              {
+                cover:
+                  self.manuscript.cover ||
+                  "https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/cover-empty.jpg",
+                id: self.manuscript.id,
+                name: self.manuscript.name
+              },
+              poster => {
+                // 通过编辑器生成数据对象和目标接口
+                self.buildTemplateData(function(result) {
+                  options = {
+                    name: self.manuscript.name,
+                    description: self.manuscript.description,
+                    cover: self.manuscript.cover,
+                    catIds: self.manuscript.catIds,
+                    content: JSON.stringify({
+                      config: result.config,
+                      data: result.data
+                    }),
+                    pages: JSON.stringify(result.pages),
+                    htmlData: result.htmlData,
+                    activityPluginControls: result.activityControls,
+                    goodsNumber: result.goodsNumber,
+                    posterImage: JSON.stringify({
+                      png: self.posterImage.png,
+                      jpg: self.posterImage.jpg
+                    }),
+                    posterQrImage: poster,
+                    label: self.tags.manuscriptLabel,
+                    activeStartDate:
+                      self.activityData.length == 0
+                        ? ""
+                        : timeFormdate(self.activityData[0]),
+                    activeEndDate:
+                      self.activityData.length == 0
+                        ? ""
+                        : timeFormdate(self.activityData[1])
+                  };
+                  if (!!self.manuscript.id) {
+                    options = Object.assign({}, options, {
+                      id: self.manuscript.id
+                    });
+                  }
+
+                  if (localStorage.role == "2") {
+                    //设计师
+                    apiName = "createTemplate"; //生成模板
+                  } else {
+                    apiName = "releaseManuscript"; //发布稿件
+                  }
+                  resolve();
+                });
+              }
+            );
+          } else {
+            options = {
+              name: self.manuscript.name,
+              description: self.manuscript.description,
+              cover: self.manuscript.cover,
+              htmlData: self.manuscript.htmlData,
+              label: self.tags.manuscriptLabel,
+              activeStartDate: timeFormdate(self.activityData[0]),
+              activeEndDate: timeFormdate(self.activityData[1])
+            };
+            apiName = "releaseWechatAticle";
+            resolve();
+          }
+        }),
+        new Promise((resolve, reject) => {
+          // 任务奖励设置校验,设计师/海报/没开启/编辑进行中的活动直接跳过
+          if (
+            localStorage.role == "2" ||
+            self.manuscript.manuscriptType == "2" ||
+            self.reward.state != "0" ||
+            (self.manuscript.modify && self.manuscript.manuscriptStatus == 2)
+          ) {
+            resolve(null);
+          } else {
+            // 校验
+            self.$refs["rewardparam"].validate(valid => {
+              if (valid) {
+                // 1.请输入整数
+                // 2.您输入的数字大于勾选的员工数
+                // 3.不支持负数
+                if (self.verifyEmployeeCount()) {
+                  if (
+                    parseFloat(self.rewordTotal.substring(1)) >
+                    parseFloat(self.reward.balance)
+                  ) {
+                    reject(new Error("钱包余额不足！"));
+                  } else {
+                    resolve(null);
+                  }
+                } else {
+                  reject(new Error("奖励人数要小于等于员工指派的人数！"));
+                }
+              } else {
+                reject(
+                  new Error("发布失败（请检查任务目标是否开启，并未设置）!")
+                );
+              }
+            });
+          }
+        })
+      ])
+        .then(function(results) {
+          self.releaseStatus = true;
+          // 执行接口业务：生成模板或发布活动
+          return new Promise((resolve, reject) => {
+            if (
+              localStorage.role != "2" &&
+              timeFormdate(self.activityData[0]) == "" &&
+              timeFormdate(self.activityData[1]) == ""
+            ) {
+              Kdo.utils.messenger.error("活动日期不能为空！");
+              return;
+            }
+            if (self.tags.manuscriptLabel.length == 0) {
+              Kdo.utils.messenger.error("活动标签不能为空！");
+              self.releaseStatus = false;
+              return;
+            }
+            api.request(apiName, options, result => {
+              if (result.status == 0) {
+                data = result.data;
+                resolve(null);
+              } else {
+                reject(new Error(result.message));
+              }
+            });
+          });
+        })
+        .then(function(cb) {
+          return new Promise((resolve, reject) => {
+            // 如果是非设计师角色，则进入员工分派流程
+            if (localStorage.role != "2") {
+              self.assignEmployee(data.id, result => {
+                result.status != 0
+                  ? reject(new Error("员工分派失败，请前往活动详情重新分派！"))
+                  : resolve(null);
+              });
+            } else {
+              resolve();
+            }
+          });
+        })
+        .then(function(err, cb) {
+          return new Promise((resolve, reject) => {
+            switch (true) {
+              case localStorage.role == "2": //设计师
+              case self.manuscript.manuscriptType == "2": //海报
+              case self.manuscript.modify &&
+                self.manuscript.manuscriptStatus == 2: //修改进行中的任务
+              case !self.manuscript.modify && self.reward.state != "0": //创建任务且关闭任务奖励
+              case self.manuscript.modify &&
+                self.manuscript.reward.length == 0 &&
+                self.reward.state != "0": //编辑 + 没有奖励 + 奖励开关关闭
+                Kdo.utils.messenger.success(
+                  apiName == "releaseWechatAticle"
+                    ? "发布文章成功！"
+                    : "发布活动成功！"
+                );
+                resolve(null);
+                break;
+              case self.manuscript.modify &&
+                self.reward.state != "0" &&
+                self.manuscript.reward.length > 0: //编辑 + 已有奖励 + 奖励开关关闭，走删除奖励流程
+                // 删除任务奖励
+                api.request(
+                  "deleteAward",
+                  { id: self.manuscript.reward[0].id },
+                  result => {
+                    if (result.status == 0) {
+                      Kdo.utils.messenger.success(
+                        apiName == "releaseWechatAticle"
+                          ? "发布文章成功！"
+                          : "发布活动成功！"
+                      );
+                      resolve(null);
+                    } else {
+                      reject(
+                        new Error(
+                          result.message ||
+                            (apiName == "releaseWechatAticle"
+                              ? "文章"
+                              : "活动" + "发布成功，但删除奖励失败！")
+                        )
+                      );
+                    }
+                  }
+                );
+                break;
+              case self.manuscript.modify &&
+                self.reward.state == "0" &&
+                self.manuscript.reward.length > 0: //编辑 + 已有奖励 + 奖励开关关闭，走修改奖励流程
+                // 参数里面增加任务奖励id
+                self.reward.param.mainId = self.manuscript.reward[0].id;
+              default:
+                // 设置任务奖励
+                let option = Object.assign(self.reward.param, {
+                  relationId: data.id,
+                  employeeCount: self.employees.selectedList.length,
+                  endTime: timeFormdate(self.activityData[1])
+                });
+                if (self.reward.style == "part") {
+                  option.count = self.reward.rewardEmployeeCount;
+                } else {
+                  option.count = -1;
+                }
+                api.request("addAwards", option, result => {
+                  if (result.status == 0) {
+                    Kdo.utils.messenger.success(
+                      apiName == "releaseWechatAticle"
+                        ? "发布文章成功！"
+                        : "发布活动成功！"
+                    );
+                    resolve(null);
+                  } else {
+                    reject(
+                      new Error(
+                        result.message ||
+                          (apiName == "releaseWechatAticle"
+                            ? "文章"
+                            : "活动" + "发布成功，但添加奖励失败！")
+                      )
+                    );
+                  }
+                });
+            }
+          });
+        })
+        .then(function(err, cb) {
+          self.$emit("refleshDetail");
+          createPreviewWindow(data.url, data.id);
+          self.dialogOptions.visible = false;
+          self.employees.selectedList = [];
+          self.releaseStatus = false;
+        })
+        .catch(err => {
+          Kdo.utils.messenger.error(err.message);
+          self.releaseStatus = false;
+        });
+    },
+    //生成稿件的数据对象
+    buildTemplateData(callback) {
+      var self = this;
+      var params = {
+        templateNumber: Kdo.data.config.site.get().templateNumber,
+        config: Kdo.data.config.site.get(),
+        data: Kdo.data.site.controls,
+        pages: Kdo.data.pages,
+        activityControls: [],
+        coverImg: "",
+        isEditor: true,
+        goodsNumber: 0
+      };
+      _.each(params.pages, function(item) {
+        if (item.number === Kdo.data.config.page.get().number) {
+          item.config = Kdo.data.config.page.get();
+          item.data = Kdo.data.page.controls;
+          Kdo.data.pages.forEach(function(page) {
+            page.data.forEach(function(controlConfig) {
+              if (controlConfig.pluginType) {
+                var item = {
+                  id: controlConfig.controlId,
+                  type: null
+                };
+                switch (controlConfig.pluginType) {
+                  case "form":
+                    item.type = 1;
+                    break;
+                  case "draw":
+                    item.type = 2;
+                    break;
+                  case "game":
+                    item.type = 3;
+                    break;
+                  case "goods":
+                    params.goodsNumber++;
+                    return true;
+                    break;
+                  case "vote":
+                    item.type = 4;
+                    break;
+                  case "call":
+                    item.type = 5;
+                    break;
+                  default:
+                    return true;
+                    break;
+                }
+                params.activityControls.push(item);
+              }
+            });
+          });
+        }
+      });
+      //添加预约的插件类型
+      _.each(self.manuscript.appointMentControlIds, (item) => {
+        params.activityControls.push({
+          id: item,
+          type: 6
+        });
+      });
+
+      Kdo.page.release
+        .page()
+        .then(function(content) {
+          params.htmlData = content;
+          callback(params);
+        })
+        .catch(function(err) {
+          self.$message.error("编译静态页面出错");
+        });
+    },
+    //分派员工
+    assignEmployee(manuscriptId, callback) {
+      var self = this;
+      api.request(
+        "assignEmployee",
+        {
+          manuscriptId: manuscriptId,
+          distribution: 1,
+          range: 1,
+          employeeId: self.employees.selectedList,
+          isTaskDispatch: 1
+        },
+        result => {
+          callback(result);
+        }
+      );
+    },
+    // 上传封面
+    uploadCover(event) {
+      var self = this,
+        target = event.currentTarget;
+      var formData = new FormData($(target).parent()[0]);
+      if (target.files[0].size > 3 * 1024 * 1024) {
+        Kdo.utils.messenger.success("图片大小不超过3M哦");
+        $(target).val("");
+        return;
+      }
+      if (target.files[0].type.indexOf("gif") != -1) {
+        Kdo.utils.messenger.success("不能上传gif图片哦");
+        $(target).val("");
+        return;
+      }
+      api.request("uploadFiles", formData, result => {
+        if (result.status == 0) {
+          self.manuscript.cover = result.data[0].file;
+        } else {
+          Kdo.utils.messenger.error("图片上传失败！");
+        }
+      });
+    },
+    rewardState(data) {
+      //任务奖励开关控制
+      this.reward.state = data.state;
+    },
+    verifyEmployeeCount($event) {
+      let self = this;
+      if (
+        self.reward.style == "part" &&
+        (!/^[1-9]\d*$/.test(self.reward.rewardEmployeeCount) ||
+          parseInt(self.reward.rewardEmployeeCount) >
+            self.employees.selectedList.length)
+      ) {
+        $(self.$refs["rewardCount"].$el)
+          .find("input")
+          .removeClass("pass_style")
+          .addClass("error_style");
+        return false;
+      } else {
+        $(self.$refs["rewardCount"].$el)
+          .find("input")
+          .removeClass("error_style")
+          .addClass("pass_style");
+        return true;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.ie_left {
+  float: left;
+}
+.ie_left:before,
+.ie_left:after {
+  content: "";
+  display: table;
+}
+.ie_left:after {
+  clear: both;
+}
+.dialog-box >>> .el-dialog {
+  border-radius: 10px !important;
+}
+.dialog-box >>> .el-dialog__headerbtn {
+  width: 40px;
+  height: 40px;
+  background-color: #fa766b;
+  top: 0px;
+  right: 0px;
+  border-top-right-radius: 10px;
+}
+.dialog-box >>> .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+}
+.manuscriptForm >>> .slide-btn {
+  text-align: center;
+  margin-left: 10px;
+}
+.manuscriptForm >>> .el-date-editor .el-range__close-icon {
+  line-height: 26px;
+}
+.manuscriptForm >>> .el-date-editor .el-range-input {
+  width: 42%;
+}
+.manuscriptForm .choose_tag >>> .el-input .el-input__inner {
+  height: 22px;
+}
+.preview {
+  width: 360px;
+  height: 605px;
+  padding: 30px;
+  /* background-color: #f7fbfc; */
+}
+.preview-viewport {
+  /* float: left; */
+  width: 250px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.preview-viewport .phone-body {
+  width: 250px;
+  height: 480px;
+  background-color: #f9f9f9;
+}
+
+.preview-viewport .h5-container {
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+.preview-viewport .feature-bar {
+  height: 152px;
+  width: 50px;
+  position: absolute;
+  top: 50%;
+  right: -50px;
+  transform: translate3d(0, -50%, 0);
+}
+
+.preview-viewport .feature-bar .item {
+  background-color: #fff;
+  height: 30px;
+  margin-bottom: 2px;
+  color: #9eabb8;
+  line-height: 30px;
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+  border: none;
+}
+
+.preview-viewport .feature-bar .item:nth-child(2n + 1) {
+  cursor: pointer;
+}
+
+.preview-viewport .feature-bar .item:disabled {
+  cursor: not-allowed;
+}
+
+.preview-viewport button:focus {
+  outline: none;
+}
+
+.preview-viewport .feature-bar .up:before,
+.preview-viewport .feature-bar .down:before {
+  content: "";
+  border-bottom: 10px solid #9eabb8;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  display: inline-block;
+}
+
+.preview-viewport .feature-bar .down:before {
+  border-top: 10px solid #9eabb8;
+  border-bottom: none;
+}
+
+.preview-viewport .feature-bar .up:disabled:before,
+.preview-viewport .feature-bar .down:disabled:before {
+  border-color: #9eabb8;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.preview-viewport .feature-bar .down {
+  margin-bottom: 0;
+}
+
+.setting_box {
+  font-size: 14px;
+}
+
+.setting_box .library {
+  height: 297px;
+  border: 1px solid #e3e6eb;
+  margin: 0 42px 0 84px;
+}
+
+.setting_box .nav-box {
+  height: 35px;
+  background-color: #f1f3fc;
+  padding-right: 10px;
+  display: flex;
+  line-height: 35px;
+  /* justify-content: space-between; */
+}
+
+.setting_box .activeColor {
+  background: rgba(255, 255, 255, 1);
+  color: #3c4a55;
+  border-top: 2px solid #00bad0;
+}
+
+.setting_box .nav-box .classify {
+  display: flex;
+  padding-left: 10px;
+}
+.setting_box .classify > p {
+  cursor: pointer;
+  width: 80px;
+  height: 35px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(60, 74, 85, 1);
+}
+
+.setting_box .tag {
+  font-size: 12px;
+  padding: 0 43px 0 85px;
+  margin-bottom: 20px;
+}
+
+/* .setting_box .tag .choose_tag {
+  margin-bottom: 8px;
+} */
+
+.setting_box .tag .choose_tag span {
+  /* background-color: #f1f3fc; */
+  border-radius: 4px;
+  /* padding: 8px 30px 8px 8px; */
+  padding: 6px 10px;
+  margin-right: 10px;
+  line-height: 37px;
+  position: relative;
+}
+.setting_box .tag .choose_tag span i {
+  font-size: 12px;
+  margin-left: 6px;
+  /* position: absolute;
+  right: 8px;
+  top: -3px; */
+}
+.setting_box .tag .choose_tag span:last-of-type {
+  width: 26px;
+  height: 26px;
+  border-radius: 0;
+}
+.setting_box .tag .choose_tag >>> .el-input__inner {
+  height: 26px;
+}
+.ie11 .setting_box .tag .choose_tag >>> .el-input__inner {
+  line-height: 26px;
+}
+.setting_box .tag .recommend span {
+  color: #b1bfcd;
+  margin-right: 16px;
+}
+.setting_box .tag .recommend span:hover {
+  cursor: pointer;
+}
+
+.setting_box .textlength {
+  position: absolute;
+  right: 20px;
+  font: normal 12px/28px "Microsoft YaHei";
+  color: #c0c4cc;
+  bottom: 27px;
+}
+
+.setting_box .sub-title {
+  font-size: 12px;
+  margin-top: 2px;
+  color: #6e6e6e;
+}
+
+.setting_box .box_border {
+  position: relative;
+  width: 630px;
+  height: auto;
+  margin-left: 20px;
+  /* margin: 0 auto; */
+  /* padding: 30px 15px; */
+}
+
+.setting_box .box_border + .box_border {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.setting_box .basic_info .cover_box {
+  width: 70px;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.setting_box .basic_info .replace_btn_div {
+  width: 70px;
+  height: 25px;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+.setting_box .basic_info .replace_btn {
+  width: 70px;
+  height: 30px;
+  background: #000;
+  border-radius: 2px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.setting_box .basic_info .input_upload {
+  width: 90px;
+  height: 30px;
+  position: absolute;
+  top: 102px;
+  left: -11px;
+  opacity: 0;
+  z-index: 1;
+}
+
+.setting_box .basic_info .info_box {
+  width: 492px;
+  /* height: 180px; */
+  position: relative;
+  text-align: left;
+}
+.setting_box .basic_info .info_box input {
+  width: 410px;
+  height: 34px;
+  border-radius: 0;
+}
+
+.setting_box .basic_info .info_box >>> .el-form-item__content {
+  margin: 0 !important;
+}
+
+.setting_box .basic_info .info_box >>> .el-input {
+  margin-top: 2px;
+  color: rgb(99, 113, 123);
+  width: 420px;
+}
+.setting_box .basic_info .info_box >>> .el-input__inner {
+  height: 34px;
+  border-radius: 0;
+}
+.ie11 .setting_box .basic_info .info_box >>> .el-input__inner {
+  line-height: 34px;
+}
+.setting_box .basic_info .info_box .inputBox >>> .el-input__inner {
+  padding-right: 50px;
+}
+
+.setting_box >>> .info_box .el-date-editor .el-range__icon,
+.setting_box >>> .info_box .el-date-editor .el-range-separator {
+  line-height: 27px;
+}
+
+.setting_box >>> .el-transfer-panel {
+  width: 248px;
+}
+
+.setting_box >>> .el-form-item__error {
+  color: #fff;
+  display: none;
+}
+
+.setting_box .basic_info .des_length {
+  /* top: 155px; */
+  bottom: 78px;
+  right: 6px;
+  background-color: #fff;
+  text-align: right;
+  height: 20px;
+}
+
+.setting_box .manuscript_list .list {
+  margin-top: 20px;
+}
+.setting_box .dialog-footer {
+  margin: 20px 0 0 108px;
+}
+.setting_box .dialog-footer button {
+  width: 100px;
+  height: 34px;
+  line-height: 10px;
+}
+.icon-select {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(../assets/images/checkbox-icon.png);
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.icon-select.active {
+  background: url(../assets/images/checkbox-icon.png) 0 16px;
+}
+
+.table-body {
+  border: 1px solid #e3e3e3;
+  height: 110px;
+  overflow-y: scroll;
+}
+
+.table-row {
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+}
+
+.table-cell {
+  display: inline-block;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.table-cell .icon-select {
+  margin-left: 16px;
+}
+
+.task-reward {
+  width: 560px;
+  /* height: 150px; */
+  /* background: rgba(247, 251, 252, 1); */
+  /* margin: 16px 0 0 68px; */
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+.task-reward .reward-row {
+  height: 34px;
+  line-height: 34px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+/* .task-reward .reward-row.target_form .el-input,
+.task-reward .reward-row.target_form >>> .el-input__inner {
+  width: 70px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+} */
+.task-reward .reward-row >>> .el-input__inner::-webkit-input-placeholder {
+  font-size: 12px;
+}
+.task-reward .reward-row.target_form >>> .el-input__inner {
+  padding: 0 3px;
+}
+.reward-row label {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  font-weight: normal;
+  margin-right: 5px;
+}
+.reward-row label.label1 {
+  width: 50px;
+}
+.reward-row >>> .el-input,
+.reward-row >>> .el-input__inner {
+  width: 121px;
+  height: 34px;
+  line-height: 34px;
+  display: inline-block;
+  border-radius: 0;
+  background-color: #fff;
+}
+.reward-row >>> .el-input--prefix .el-input__inner {
+  padding-left: 25px;
+}
+.reward-row >>> .el-input--prefix .el-input__prefix {
+  left: 7px;
+  top: 1px;
+}
+.task-reward >>> .el-form-item__content {
+  line-height: 34px;
+  margin-left: 0 !important;
+}
+.task-reward >>> .el-form-item {
+  display: inline-block;
+  width: 120px;
+}
+.task-reward .reward-amount >>> .el-form-item {
+  width: 120px;
+}
+.box_border .sanjiao {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+  border-width: 8px;
+  border-style: solid dashed dashed dashed;
+  border-color: #fff transparent transparent transparent;
+  z-index: 2;
+}
+.box_border .sanjiao1 {
+  border-width: 9px;
+  border-color: #ccc transparent transparent transparent;
+  bottom: -1px;
+  left: -1px;
+  z-index: 1;
+}
+.choose-employee {
+  width: 121px;
+  height: 34px;
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(227, 230, 235, 1);
+  margin-right: 10px;
+}
+.icon-question {
+  cursor: pointer;
+  margin-left: 5px;
+}
+.task-reward >>> .error_style {
+  border-color: #f56c6c !important;
+}
+.task-reward >>> .pass_style {
+  border-color: #67c23a !important;
+}
+</style>
+
+
+

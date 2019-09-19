@@ -1,0 +1,425 @@
+<template>
+  <div style="height:auto;">
+    <headerTitle :myTitle="myTitle" goBack="components" @goBackFunction="goBackFunction"></headerTitle>
+    <div class="choice-box">
+      <div class="addRuleTitle">选择内容：</div>
+      <div class="h5-conten">
+        <MyLibrary @getmanuscript="getmanuscript"></MyLibrary>
+      </div>
+    </div>
+    <div class="redPacket-box">
+      <div class="addRuleTitle">红包封面：</div>
+      <div class="content">
+        <div class="img-box">
+          <div class="name">
+            <img :src="userInfo.img?userInfo.img:defaultHead" alt />
+            <p>{{userInfo.name}}</p>
+          </div>
+          <div class="activity-name">
+            <el-input v-model="formData.title" maxlength="10" placeholder=" 请输入活动标题" ></el-input>
+            <span>{{formData.title.length}}/10</span>
+          </div>
+          <div class="textarea-box">
+            <el-input
+              v-model="formData.content"
+              maxlength="20"
+              type="textarea"
+              placeholder=" 请输入红包问候语"
+            ></el-input>
+            <span>{{formData.content.length}}/20</span>
+          </div>
+        </div>
+        <div class="right-form">
+          <el-form ref="form" :model="formData" label-width="100px" size="mini">
+            <el-form-item label="红包总额：" style="margin-top:35px;">
+              <div class="display-flex">
+                <el-input
+                  placeholder=" 建议每次活动金额在3000元左右"
+                  v-model="formData.money"
+                  style="width: 225px;"
+                  v-if="formData.type==2"
+                    maxlength="8"
+                >
+                  <i
+                    slot="prefix"
+                    class="iconfont icon-pin"
+                    style="color:#ff9420;"
+                    v-if="formData.type==2"
+                  ></i>
+                  <span slot="prefix" style="color:#FA766B;font-size:12px">￥</span>
+                </el-input>
+                <el-input
+                  placeholder="建议每次活动金额在3000元左右"
+                  v-model="formData.money"
+                  style="width: 225px;"
+                  v-if="formData.type==1"
+                   maxlength="8"
+                ></el-input>
+                <span
+                  style="color:#FA766B;position:absolute;left:3px;font-size:12px"
+                  v-if="formData.type==1"
+                >￥</span>
+                <p>
+                  账户余额：
+                  <span style="color:#FA766B">￥{{balance}}</span>
+                </p>
+              </div>
+            </el-form-item>
+            <el-form-item label="红包个数：">
+              <div class="display-flex">
+                <el-input v-model="formData.count" style="width: 100px"  maxlength="6"></el-input>
+                <p>
+                  当前为{{formData.type==1?'普通红包':'拼手气红包'}}，改为
+                  <span @click="switchChang()">{{redType}}</span>
+                </p>
+              </div>
+            </el-form-item>
+            <el-form-item label="领取人员：">
+              <el-select v-model="formData.user_type" placeholder="全部" style="width: 100px">
+                <el-option label="全部" value="1"></el-option>
+                <el-option label="客户" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="带来客户数：">
+              <el-input
+                v-model="formData.targetVisitor"
+                placeholder="最小值为1，建议3以上"
+                maxlength="6"
+                style="width:75%"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="活动时间：" style="padding-bottom:10px">
+              <span style="color:#ACACAC">{{createTime}}</span>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </div>
+    <div class="btn-box">
+      <el-button type="primary" @click="onSubmit" size="mini">完成</el-button>
+      <el-button size="mini" @click="cancel">取消</el-button>
+    </div>
+  </div>
+</template>
+<script>
+import api from "api";
+import headerTitle from "components/header-title";
+import MyLibrary from "@/components/my-library.vue";
+export default {
+  components: {
+    MyLibrary,
+    headerTitle
+  },
+  data() {
+    return {
+      active: 1,
+      defaultHead: "../../assets/images/default-headImg.png",
+      userInfo:{
+        name:"",
+        img:""
+      }, //商家信息
+      redType: "普通红包", //红包类型
+      myTitle: this.$route.query.main_id ? "修改红包" : "添加红包",
+      createTime: "",
+      formData: {
+        title: "", //标题
+        content: "", //祝福语
+        money: "", //总额
+        count: "", //个数
+        type: 2, //红包类型 1: 普通红包 2：随机红包
+        user_type: "1", //领取人员范围 1.员工+客户 2.仅客户（不包含员工）
+        targetVisitor: "", //带来客户数量目标
+        manuscript_id: "" //绑定活动的活动ID
+      },
+      balance: "0" //商家账户余额
+    };
+  },
+  mounted() {
+    var self = this;
+    self.balanceData();
+    if (self.$route.query.main_id) {
+      //判断是否是修改
+      self.details();
+    }
+  setTimeout(function(){
+      self.userInfo={
+      name:JSON.parse(localStorage.getItem('userInfo')).businessInfo.businessName,
+      img:JSON.parse(localStorage.getItem('userInfo')).businessInfo.businessLogo
+    } 
+  },1000)
+  },
+  methods: {
+    //选择活动内容
+    getmanuscript(data) {
+      console.log(data)
+      this.formData.manuscript_id = data.id;
+      data.taskStartDate = (data.taskStartDate || "").replace(/-/gi, "/");
+      data.taskEndDate = (data.taskEndDate || "").replace(/-/gi, "/");
+      this.createTime = data.taskStartDate + " - " + data.taskEndDate;
+    },
+    balanceData() {
+      var self = this;
+      api.request(
+        "getAccountDetail",
+        Object.assign({ id: self.$store.state.login.userInfo.userUuid }),
+        result => {
+          if (result.status == 0) {
+            self.balance = result.data.balance;
+          } else {
+            self.$message.error(result.message);
+          }
+        }
+      );
+    },
+    // 上一步
+    goBackFunction() {
+      if (this.active < 2) {
+        this.$router.go(-1);
+      } else {
+        this.active--;
+      }
+    },
+    onSubmit() {
+      let self = this;
+      let reg = /^\+?[1-9]\d*$/;
+      let reg1 = /^\d+(\.\d{1,2})?$/;
+      if (!self.formData.manuscript_id) {
+        self.$message.error("请选择任务内容");
+        return;
+      }
+      if (!self.formData.title) {
+        self.$message.error("红包标题不能为空");
+        return;
+      }
+      if (!self.formData.content) {
+        self.$message.error("红包标题祝福语不能为空");
+        return;
+      }
+      if (!self.formData.money) {
+        self.$message.error("红包总金额不能为空");
+        return;
+      }
+      if (parseFloat(self.formData.money) > self.balance) {
+        self.$message.error("红包总金额不能超出用户余额");
+        return;
+      }
+      if (!reg1.test(self.formData.money)) {
+        self.$message.error(`请填写正确的红包总金额`);
+        return;
+      }
+      if (!self.formData.count) {
+        self.$message.error("红包个数不能为空");
+        return;
+      }
+      if (!reg.test(self.formData.count)) {
+        self.$message.error(`红包个数必须为整数`);
+        return;
+      }
+      if (!self.formData.targetVisitor) {
+        self.$message.error("带来客户数不能为空");
+        return;
+      }
+      if (!reg.test(self.formData.targetVisitor)) {
+        self.$message.error(`带来客户数必须为整数`);
+        return;
+      }
+      self.formData.count = parseInt(self.formData.count);
+      self.formData.money = parseFloat(self.formData.money);
+      if (!this.$route.query.main_id) {
+        api.request("redpacketCreate", Object.assign(self.formData), result => {
+          if (result.status == 0) {
+            self.$message.success("添加成功");
+            self.$router.go(-1);
+          } else {
+            self.$message.error(result.message);
+          }
+        });
+      } else {
+        self.formData.modify = true;
+        api.request("redpacketCreate", Object.assign(self.formData), result => {
+          if (result.status == 0) {
+            self.$message.success("修改成功");
+            self.$router.go(-1);
+          } else {
+            self.$message.error(result.message);
+          }
+        });
+      }
+    },
+    //修改先查询详情赋值给页面 进行修改
+    details() {
+      var self = this;
+      api.request(
+        "redpacketdetails",
+        Object.assign({ main_id: self.$route.query.main_id }),
+        result => {
+          if (result.status == 0) {
+            self.formData = {
+              title: result.data.red_packet_title, //标题
+              content: result.data.red_packet_content, //祝福语
+              money: result.data.original_money, //总额
+              count: result.data.red_packet_num, //个数
+              type: result.data.red_packet_type, //红包类型 1: 普通红包 2：随机红包
+              user_type: result.data.red_packet_user_type + "", //领取人员范围 1.员工+客户 2.仅客户（不包含员工）
+              targetVisitor: result.data.target_visitor, //带来客户数量目标
+              manuscript_id: result.data.m_id //绑定活动的活动ID
+            };
+            result.data.active_start_date = (
+              result.data.active_start_date || ""
+            ).replace(/-/gi, "/");
+            result.data.active_end_date = (
+              result.data.active_end_date || ""
+            ).replace(/-/gi, "/");
+            self.createTime =
+              result.data.active_start_date +
+              " - " +
+              result.data.active_end_date;
+            self.redType =
+              result.data.red_packet_type == 1 ? "拼手气红包" : "普通红包";
+          } else {
+            self.$message.error(result.message);
+          }
+        }
+      );
+    },
+    switchChang() {
+      this.formData.money = ""; //总额
+      this.formData.count = ""; //个数
+      if (this.formData.type == 1) {
+        this.formData.type = 2;
+        this.redType = "普通红包";
+      } else {
+        this.formData.type = 1;
+        this.redType = "拼手气红包";
+      }
+    },
+    cancel() {
+      this.$router.go(-1);
+    }
+  }
+};
+</script>
+
+<style scoped>
+.btn-box {
+  padding-bottom: 40px;
+  margin-top: 40px;
+  padding-left: 100px;
+}
+.btn-box > button {
+  width: 100px;
+  height: 34px;
+  border-radius: 4px;
+  text-align: center;
+}
+.h5-conten {
+  width: 82%;
+  /* margin: 0 auto; */
+}
+.choice-box {
+  display: flex;
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.right-form {
+  width: 60%;
+  margin-left: 50px;
+  margin-top: 32px;
+}
+.display-flex {
+  display: flex;
+}
+.display-flex p {
+  margin-left: 17px;
+  color: #b1bfcd;
+  font-size: 12px;
+}
+.display-flex p > span {
+  color: #3898ec;
+  cursor: pointer;
+}
+.form-box {
+  width: 95%;
+  background: #f7fbfc;
+  overflow: hidden;
+  margin-top: -10px;
+}
+
+.content {
+  display: flex;
+  background: #f7fbfc;
+  height: 540px;
+  width: 82%;
+}
+.redPacket-box {
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  margin-top: 33px;
+}
+.activity-name {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 37px;
+}
+.textarea-box {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 28px;
+}
+.textarea-box span {
+  position: absolute;
+  right: 5px;
+  top: 30px;
+  color: #b1bfcd;
+}
+.activity-name span {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  color: #b1bfcd;
+}
+.img-box .name {
+  display: flex;
+  height: 30px;
+  margin: 0 auto;
+  margin-top: 60px;
+  width: auto;
+  justify-content: center;
+}
+.img-box .name p {
+  line-height: 30px;
+  font-size: 18px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(251, 211, 146, 1);
+  line-height: 22px;
+}
+.img-box .name > img {
+  width: 30px;
+  height: 30px;
+  /* border: 1px solid #b1bfcd; */
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.addRuleTitle {
+  font-size: 14px;
+  text-align: right;
+  color: rgba(60, 74, 85, 1);
+}
+
+.img-box {
+  width: 305px;
+  height: 460px;
+  overflow: hidden;
+  background: url("../../assets/images/red-packet.png") no-repeat;
+  background-size: contain;
+  margin: 40px 0 43px 60px;
+}
+</style>

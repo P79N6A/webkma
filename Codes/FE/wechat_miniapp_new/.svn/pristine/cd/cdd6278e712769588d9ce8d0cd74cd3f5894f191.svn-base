@@ -1,0 +1,8 @@
+/* pages/employee-details/employee-details.wxss */
+.mb-10{
+  margin-bottom: 10rpx;
+}
+
+.detail-box .detail-head{
+  margin-bottom: 43rpx;
+}

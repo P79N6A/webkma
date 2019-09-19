@@ -1,0 +1,13 @@
+<i-row i-class="cell">
+  <i-col span="8" i-class="rank-cell">
+    <view style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+      <view class="rank-title"> 访问地区前5名 </view>
+      <view class="rank-list">
+        <view wx:for="{{rankList}}" wx:key="item.name" wx:for-index="index" wx:if="{{index < 5}}">{{item.name}} {{item.value}}</view>
+      </view>
+    </view>
+  </i-col>
+  <i-col span="16" i-class="cell">
+    <ec-canvas id="chart_{{uid}}" canvas-id="chart_{{uid}}" ec="{{ec}}" wx:if="{{!isDisposed}}"></ec-canvas>
+  </i-col>
+</i-row>

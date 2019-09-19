@@ -1,0 +1,267 @@
+const
+  activityService = require('../../services/activity-service.js'),
+  statisticsService = require('../../services/statistics-service.js'),
+  utils = require('../../utils/util.js')
+
+let self;
+Page({
+ 
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    id: "",
+    articleid: "",
+    activeNavTab: "baseData",
+    pageSize: 20,
+    dataList: [{
+      key: "share",
+      title: "分享数",
+      total: 0
+    }, {
+      key: "visitor",
+      title: "访客数",
+      total: 0
+    }, {
+      key: "access",
+      title: "访问数",
+      total: 0
+    }],
+    avgLifeTime: "", // 平均访问时长
+    areaTopList: "", // 访问地区TOP排名
+    pageStatus: "loading",
+    formPageStatus: "loading",
+    formList: null,
+    formDetailInfo: {},
+    formDetailShow: false
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function(options) {
+    self = this;
+    self.setData({
+      id: options.id
+    });
+    console.log("参数",options)
+    Promise.all([
+      new Promise((resolve, reject) => {
+        // 获取表单列表
+        activityService.getFormList({
+          id: self.data.id
+        }, (err, res) => {
+          if (err) {
+            self.setData({
+              formPageStatus: "error-network"
+            });
+            return reject(err);
+          }
+          if (res.status != 0) {
+            self.setData({
+              formPageStatus: "error-data"
+            });
+            return reject(res.message);
+          }
+          self.setData({
+            formPageStatus: res.data.length == 0 ? "empty" : "",
+            formList: res.data.map((item, index) => {
+              return {
+                controlId: item.controlId,
+                name: item.name,
+                total: item.total,
+                todayTotal: item.todayTotal,
+                _open: false,
+                detail: {
+                  _isLoading: false
+                }
+              }
+            })
+          });
+          resolve();
+        });
+      }),
+      new Promise((resolve, reject) => {
+        //获取获取活动 - 统计现状
+        statisticsService.aggsTypeByBelongModule({
+          as_belong_module: [self.data.id]
+        }, (err, res) => {
+          if (err) return reject(err);
+          if (res.status != 0) return reject(res.message);
+          self.data.dataList.forEach(item => {
+            item.total = res.data.group[0]["scan_" + item.key];
+          });
+          self.data.areaTopList = res.data.area_top_list.slice(0, 5).join("、");
+          self.data.avgLifeTime = ((time) => {
+            if (!time) return "";
+            if (time < 60) return `${time}秒`;
+            return `${Math.floor(time / 60)}分${Math.floor(time % 60)}秒`;
+          })(res.data.avg_life_time);
+          self.setData(self.data);
+          resolve();
+        });
+      })
+    ]).then(results => {
+      self.setData({
+        pageStatus: ""
+      });
+    }).catch(err => {
+      self.setData({
+        pageStatus: "error-data"
+      });
+      console.error(err);
+    });
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function() {
+
+  },
+
+  getFormContent: function() {
+    if (self.data.formList.length > 0) {
+      let openItem = self.data.formList.find(item => {
+        return item._open
+      });
+      if (!openItem) {
+        self.data.formList[0]._open = true;
+        self.loadFormContent(self.data.formList[0], 1);
+      }
+    }
+  },
+
+  loadFormContent: function(control, pageIndex) {
+    pageIndex = pageIndex || 1;
+    control.detail._isLoading = true;
+    self.setData(self.data);
+    activityService.getFormContent({
+      id: self.data.id,
+      controlId: control.controlId,
+      pageIndex: pageIndex,
+      pageSize: self.data.pageSize
+    }, (err, res) => {
+      if (err) return console.error(err);
+      if (res.status != 0) return console.error(res.message);
+      let dataListPart = res.data.list.map(row => {
+        return {
+          id: row.id,
+          date: utils.formatTime(new Date(row.createTime))
+        }
+      })
+      control.detail = {
+        list: pageIndex == 1 ? dataListPart : control.detail.list.concat(dataListPart),
+        total: res.data.total,
+        _isLoading: false
+      };
+      self.setData(self.data);
+    });
+  },
+
+  loadFormContentDetail: function(id) {
+    activityService.getFormContentDetail({
+      id: id
+    }, (err, res) => {
+      if (err) return console.error(err);
+      if (res.status != 0) return console.error(res.message);
+      self.setData({
+        formDetailInfo: res.data.map((item) => {
+          return {
+            name: item.name,
+            type: item.type,
+            content: (() => {
+              switch (item.type) {
+                case "text_radio-option":
+                case "text_checkbox-option":
+                case "radio_text":
+                case "checkbox_text":
+                  return JSON.parse(item.content).map(option => {
+                    return option.text
+                  }).join(", ");
+                case "text_image-checkbox-option":
+                case "text_image-radio-option":
+                case "radio_image":
+                case "checkbox_image":
+                case "text_upload":
+                  return JSON.parse(item.content);
+                default:
+                  return item.content;
+              }
+            })()
+          }
+        })
+      })
+    })
+  },
+
+  previewImage: function(e) {
+    let urls = e.currentTarget.dataset.imgs.map(item => {
+      return item.img
+    });
+    wx.previewImage({
+      current: urls[e.currentTarget.id],
+      urls: urls
+    });
+  },
+
+  navbarTabChange: function(e) {
+    self.setData({
+      activeNavTab: e.detail.key
+    });
+    switch (e.detail.key) {
+      case "formData":
+        self.getFormContent();
+        break;
+    }
+  },
+
+  formToggle: function(e) {
+    let item = self.data.formList.find(item => {
+      return item.controlId == e.currentTarget.id
+    });
+    if (item) {
+      item._open = !item._open;
+      self.setData(self.data);
+      if (item._open) self.loadFormContent(item);
+    }
+  },
+
+  stopScroll: function(event) {
+    event && event.stopPropagation && event.stopPropagation();
+  },
+
+  formContentDetailOpen: function(e) {
+    if (e.currentTarget.id) {
+      self.setData({
+        formDetailShow: true
+      });
+      self.loadFormContentDetail(e.currentTarget.id);
+    }
+  },
+
+  formContentDetailClose: function(e) {
+    self.setData({
+      formDetailShow: false
+    });
+  },
+
+  formContentRefresh: function(e) {
+    // todo: 效果不好，暂时屏蔽
+    // let item = self.data.formList.find(item => {
+    //   return item.controlId == e.currentTarget.id
+    // });
+    // if (item && !item.detail._isLoading) {
+    //   self.loadFormContent(item, 1);
+    // }
+  },
+
+  formContentMore: function(e) {
+    let item = self.data.formList.find(item => {
+      return item.controlId == e.currentTarget.id
+    });
+    if (item && !item.detail._isLoading && item.detail.list.length < item.detail.total) {
+      self.loadFormContent(item, Math.ceil(item.detail.total / self.data.pageSize));
+    }
+  }
+})

@@ -1,0 +1,53 @@
+/* pages/task-data.wxss */
+/* 头部标签栏 */
+.task_top {
+  margin-bottom: 20rpx;
+}
+
+.task_top_tag {
+  width: 100%;
+  height: 90rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22rpx;
+  color: #B1BFCD;
+  background: #FDF6EC;
+}
+
+.top_tag_value {
+  color: #F68411;
+}
+
+.top_tag_icon {
+  margin-left: 5rpx;
+}
+
+/* 漏斗图 */
+.task_funnel {
+  background: #fff;
+
+}
+
+/* 标题头 */
+.content_title {
+  /* height: 35rpx; */
+  line-height: 34rpx;
+  padding: 27rpx 20rpx 56rpx 25rpx;
+  background-color: #fff;
+  position: relative;
+}
+
+.side-line {
+  width: 5rpx;
+  height: 40rpx;
+  background-color: #24D0C6;
+  position: absolute;
+  left: 0;
+  top: 24rpx;
+}
+
+.title_label {
+  font-size: 26rpx;
+  color: #3C4A55;
+}

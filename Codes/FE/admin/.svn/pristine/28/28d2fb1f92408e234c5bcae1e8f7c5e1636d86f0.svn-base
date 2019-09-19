@@ -1,0 +1,410 @@
+<template>
+  <div class="promote-edit-box">
+    <fold :title="edit=='true'?'编辑数据报告':'添加数据报告'">
+      <div class="form-box" v-if="edit == 'false' && !ruleForm.id">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="数据报告名称">
+                  <el-input v-model="ruleForm.name" placeholder="请输入数据报告名称"></el-input>
+                  <span class="ml-10 grey-deep">必填，字符在1-20个之间</span>
+              </el-form-item>
+              <el-form-item label="数据统计时间" class="timeBox">
+                  <el-col :span="3">
+                    <el-form-item>
+                      <el-date-picker type="date" placeholder="开始日期" v-model="startDate" style="width:150px;"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col class="line" :span="2">
+                    <el-input v-model="startTimedot" style="width:100px;margin-left:30px;" placeholder="格式00:00"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="1">
+                    <span style="margin-left:43px;">至</span>
+                  </el-col>
+                  <el-col :span="3">
+                    <el-form-item>
+                      <el-date-picker type="date" placeholder="结束日期" v-model="endDate" style="width:150px;margin-left: 21px;"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col class="line" :span="2">
+                    <el-input v-model="endTimedot" style="width:100px;margin-left:50px;" placeholder="格式00:00"></el-input>
+                  </el-col>
+              </el-form-item>
+              <el-form-item label="所属推广计划">
+                <el-input v-model="promotionPlanName" disabled></el-input>
+              </el-form-item>
+              <el-form-item label="花费推广费用">
+                  <el-input v-model="ruleForm.extensionCost" placeholder="请输入花费推广费用"></el-input>
+                  <span class="ml-10 grey-deep">必填，仅支持输入数字</span>
+              </el-form-item>
+              <el-form-item label="曝光次数">
+                  <el-input v-model="ruleForm.exposureCount" placeholder="请输入曝光次数" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">必填，仅支持输入整数</span>
+              </el-form-item>
+              <el-form-item label="点击次数">
+                  <el-input v-model="ruleForm.clickCount" placeholder="请输入点击次数" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">必填，仅支持输入整数</span>
+              </el-form-item>
+              <el-form-item label="点击率">
+                  <el-input v-model="ruleForm.clickRate" placeholder="请输入点击率"></el-input>
+                  <span class="ml-10 grey-deep">必填，输入范围为0-100，支持多位小数</span>
+              </el-form-item>
+              <el-form-item label="转化指标">
+                  <el-input v-model="ruleForm.conversionIndex" placeholder="请输入转化指标" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">非必填，仅支持输入整数</span>
+              </el-form-item>
+              <el-form-item label="转化成本">
+                  <el-input v-model="ruleForm.conversionCost" placeholder="请输入转化成本"></el-input>
+                  <span class="ml-10 grey-deep">非必填，字符类型数字，最大支持2位小数</span>
+              </el-form-item>
+              <el-form-item label="广告诊断">
+                  <el-input v-model="ruleForm.advertisementDiagnosis" placeholder="请输入广告诊断" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">非必填，输入范围1~10；衡量标准：优秀8~10 分，较好4~7 分，一般1~3 分</span>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="resetForm" style="margin:50px 0 0 360px;">返回</el-button>
+                  <el-button type="primary" @click="submitForm">提交</el-button>
+              </el-form-item>
+          </el-form>
+      </div>
+      <div class="form-box" v-if="edit == 'true'">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="数据报告名称">
+                  <el-input v-model="ruleForm.name" placeholder="请输入数据报告名称"></el-input>
+                  <span class="ml-10 grey-deep">必填，字符在1-20个之间</span>
+              </el-form-item>
+              <el-form-item label="数据统计时间" class="timeBox">
+                  <el-col :span="3">
+                    <el-form-item>
+                      <el-date-picker type="date" placeholder="开始日期" v-model="startDate" style="width:150px;"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col class="line" :span="2">
+                    <el-input v-model="startTimedot" style="width:100px;margin-left:30px;" placeholder="格式00:00"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="1">
+                    <span style="margin-left:43px;">至</span>
+                  </el-col>
+                  <el-col :span="3">
+                    <el-form-item>
+                      <el-date-picker type="date" placeholder="结束日期" v-model="endDate" style="width:150px;margin-left: 21px;"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col class="line" :span="2">
+                    <el-input v-model="endTimedot" style="width:100px;margin-left:50px;" placeholder="格式00:00"></el-input>
+                  </el-col>
+              </el-form-item>
+              <el-form-item label="所属推广计划">
+                <el-input v-model="promotionPlanName" disabled></el-input>
+              </el-form-item>
+              <el-form-item label="花费推广费用">
+                  <el-input v-model="ruleForm.extensionCost" placeholder="请输入花费推广费用"></el-input>
+                  <span class="ml-10 grey-deep">必填，仅支持输入数字</span>
+              </el-form-item>
+              <el-form-item label="曝光次数">
+                  <el-input v-model="ruleForm.exposureCount" placeholder="请输入曝光次数" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">必填，仅支持输入整数</span>
+              </el-form-item>
+              <el-form-item label="点击次数">
+                  <el-input v-model="ruleForm.clickCount" placeholder="请输入点击次数" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">必填，仅支持输入整数</span>
+              </el-form-item>
+              <el-form-item label="点击率">
+                  <el-input v-model="ruleForm.clickRate" placeholder="请输入点击率"></el-input>
+                  <span class="ml-10 grey-deep">必填，输入范围为0-100，支持多位小数</span>
+              </el-form-item>
+              <el-form-item label="转化指标">
+                  <el-input v-model="ruleForm.conversionIndex" placeholder="请输入转化指标" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">非必填，仅支持输入整数</span>
+              </el-form-item>
+              <el-form-item label="转化成本">
+                  <el-input v-model="ruleForm.conversionCost" placeholder="请输入转化成本"></el-input>
+                  <span class="ml-10 grey-deep">非必填，字符类型数字，最大支持2位小数</span>
+              </el-form-item>
+              <el-form-item label="广告诊断">
+                  <el-input v-model="ruleForm.advertisementDiagnosis" placeholder="请输入广告诊断" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+                  <span class="ml-10 grey-deep">非必填，输入范围1~10；衡量标准：优秀8~10 分，较好4~7 分，一般1~3 分</span>
+              </el-form-item>
+              <el-form-item class="btn-box">
+                  <el-button type="primary" @click="resetForm" style="margin:50px 0 0 360px;">返回</el-button>
+                  <el-button type="primary" @click="submitForm">提交</el-button>
+              </el-form-item>
+          </el-form>
+      </div>
+      <div class="form-box info-box" v-if="edit == 'info'">
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">数据报告名称</span>
+          <span class="grey-deep">{{ruleForm.name}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">数据统计时间</span>
+          <span class="grey-deep">{{startDate}}-{{endDate}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">所属推广计划</span>
+          <span class="grey-deep">{{promotionPlanName}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">花费推广费用</span>
+          <span class="grey-deep">{{ruleForm.extensionCost}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">曝光次数</span>
+          <span class="grey-deep">{{ruleForm.exposureCount}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">点击次数</span>
+          <span class="grey-deep">{{ruleForm.clickCount}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">点击率</span>
+          <span class="grey-deep">{{ruleForm.clickRate}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">转化指标</span>
+          <span class="grey-deep">{{ruleForm.conversionIndex}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">转化成本</span>
+          <span class="grey-deep">{{ruleForm.conversionCost}}</span>
+        </div>
+        <div class="flex">
+          <span style="color:#000; margin-right: 50px;">广告诊断</span>
+          <span class="grey-deep">{{ruleForm.advertisementDiagnosis}}</span>
+        </div>
+        <div class="text-center">
+          <el-button type="primary" @click="resetForm">返回</el-button>
+        </div>
+      </div>
+    </fold>
+  </div>
+</template>
+
+<script>
+import api from "../../axios/api-service";
+import fold from "../../components/com-fold";
+export default {
+  name: "weChat-promote-edit",
+  components:{ fold },
+  data() {
+    return {
+      ruleForm: {
+          mainId: '', //推广计划id
+          id: '', //数据报告id
+          name: '', // 报告名称
+          startTime: "", //上传开始时间
+          endTime: "", //上传结束时间
+          clickCount: '', //点击次数
+          exposureCount: '', //曝光次数
+          clickRate: '', //点击率
+          conversionIndex: '', //转化指标
+          conversionCost: '', //转化花费
+          extensionCost: '', //推广花费
+          advertisementDiagnosis: '' //广告诊断
+      },
+      startDate: '', // 报告开始时间
+      endDate: '', // 报告结束时间
+      startTimedot: '', //开始时间点
+      endTimedot: '', //结束时间点
+      rules: {
+        // name: [
+        //   {: true, message: '请输入活动名称', trigger: 'blur' },
+        //   { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        // ],
+      },
+      promotionPlanName: "", //计划名
+      edit: "" //是否修改
+    };
+  },
+  mounted(){
+    this.promotionPlanName = sessionStorage.getItem('promotionPlanName') || '';
+    this.ruleForm.mainId = this.$route.query.mainId || '';
+    this.edit = this.$route.query.edit || '';
+    this.ruleForm.id = this.$route.query.id || '';
+    if (!!this.ruleForm.id) {
+        this.getPromotionDataDetail();
+    }
+  },
+  methods: {
+    // 表单验证
+    fomvalidation() {
+        var self = this;
+        if (!this.ruleForm.name) {
+            this.messenger.error('请输入数据报告名称！');
+            return false;
+        } else if( this.ruleForm.name.length>20 ) {
+            this.messenger.error('数据报告名称字符在1-20个之间！');
+            return false;
+        }
+
+        if (!this.startDate) {
+            this.messenger.error('请选择数据统计开始时间！');
+            return false;
+        }
+        if (!this.startTimedot) {
+            this.messenger.error('请输入数据统计开始时间点，格式 00:00！');
+            return false;
+        } else if (!/^(?:[01]?\d|2[0-4]):(?:[0-5]?\d|60)$/.test(this.startTimedot)) {
+            this.messenger.error('请输入正确的数据统计开始小时和分钟，格式 00:00！');
+            return false;
+        }
+        if (!this.endDate) {
+            this.messenger.error('请选择数据统计结束时间！');
+            return false;
+        }
+        debugger
+        if (!this.endTimedot) {
+            this.messenger.error('请输入数据统计结束时间点，格式 00:00！');
+            return false;
+        } else if (!/^(?:[01]?\d|2[0-4]):(?:[0-5]?\d|60)$/.test(this.endTimedot)) {
+            this.messenger.error('请输入正确的数据统计结束小时和分钟，格式 00:00！');
+            return false;
+        } 
+
+        var startDateStr = self.formateDate(self.startDate).split(' ')[0] + self.timedotFormat(self.startTimedot);
+        var endDateStr = self.formateDate(self.endDate).split(' ')[0] + self.timedotFormat(self.endTimedot);
+        if (new Date(endDateStr).getTime() < new Date(startDateStr).getTime()) {
+            this.messenger.error('开始时间不能大于结束时间！');
+            return false;
+        }
+
+        if(!this.ruleForm.extensionCost){
+            this.messenger.error('花费推广费用不能为空！');
+            return false;
+        } else if(!/^\d{1,}(\.\d{1,2})?$/.test(this.ruleForm.extensionCost) || parseFloat(this.ruleForm.extensionCost) <= 0){
+            this.messenger.error('花费推广费用为数字，且小数点后最多只能有2位的数！');
+            return false;
+        }
+        if(!this.ruleForm.exposureCount){
+            this.messenger.error('曝光次数不能为空！');
+            return false;
+        } else if(!/^\d{1,}$/.test(this.ruleForm.exposureCount)){
+            this.messenger.error('曝光次数仅支持数字！');
+            return false;
+        }
+        if(!this.ruleForm.clickCount){
+            this.messenger.error('点击次数不能为空！');
+            return false;
+        } else if(!/^\d{1,}$/.test(this.ruleForm.clickCount)){
+            this.messenger.error('点击次数仅支持数字！');
+            return false;
+        }
+        var clickRate = Number(this.ruleForm.clickRate);
+        if(!this.ruleForm.clickRate){
+            this.messenger.error('点击率不能为空！');
+            return false;
+        } else if((clickRate !== 0 && !clickRate) || clickRate < 0 || clickRate>100 ){
+            this.messenger.error('点击率支持多位小数，且范围为0~100！');
+            return false;
+        }
+        if(!!this.ruleForm.conversionIndex && !/^\d{1,}$/.test(this.ruleForm.conversionIndex)){
+            this.messenger.error('转化指标仅支持整数！');
+            return false;
+        }
+        if(!!this.ruleForm.conversionCost && (!/^\d{1,}(\.\d{1,2})?$/.test(this.ruleForm.conversionCost) || parseFloat(this.ruleForm.conversionCost) <= 0)){
+            this.messenger.error('转化成本为数字，且小数点后最多只能有2位的数！');
+            return false;
+        }
+        if(!!this.ruleForm.advertisementDiagnosis && (!/^\d{1,}$/.test(this.ruleForm.advertisementDiagnosis) || parseInt(this.ruleForm.advertisementDiagnosis)>10 )){
+            this.messenger.error('广告诊断仅支持数字，且范围为1~10！');
+            return false;
+        }
+        return true;
+    },
+    //提交表单
+    submitForm(){
+      var self = this;
+      if (!this.fomvalidation()) { return false; }
+      self.startDate = self.formateDate(self.startDate).split(' ')[0];
+      self.endDate = self.formateDate(self.endDate).split(' ')[0];
+      self.ruleForm.startTime = self.startDate + self.timedotFormat(self.startTimedot);
+      self.ruleForm.endTime = self.endDate + self.timedotFormat(self.endTimedot);
+      console.log("时间处理",self.ruleForm.startTime,"结束",self.ruleForm.endTime)
+      api.request("savePromotionDataReport",self.ruleForm,result => {
+        if (result.status == 0) {
+            self.messenger.success((self.edit == 'true' ? '修改' : '添加') + '成功!');
+            var param = `?mainId=${self.ruleForm.mainId}`;
+            this.$router.push({
+              path: `/wechat-promote${param}`
+            });
+        } else {
+            self.messenger.error(result.message);
+        }
+      })
+      console.log("表单数据",this.ruleForm)
+    },
+    resetForm(){
+      var param = `?mainId=${this.$route.query.mainId}`;
+      this.$router.push({
+        path: `/wechat-promote${param}`
+      });
+    },
+    //获取数据报告列表
+    getPromotionDataDetail(cb){ 
+      var self = this;
+      var _option = {
+          id: self.ruleForm.id,
+          mainId: self.ruleForm.mainId
+      }
+      api.request("getPromotionDataDetail",_option,result => {
+        if (result.status == 0) {
+          self.ruleForm = $.extend({}, result.data);
+          self.startDate = self.formateDate(self.ruleForm.startTime).split(' ')[0];
+          self.endDate = self.formateDate(self.ruleForm.endTime).split(' ')[0];
+          self.startTimedot = $.trim(self.formateDate(self.ruleForm.startTime).split(' ')[1]).substring(0,5);
+          self.endTimedot = $.trim(self.formateDate(self.ruleForm.endTime).split(' ')[1]).substring(0,5);
+          // self.reportData = result.data.list;
+        } else {
+          self.messenger.error(result.message);
+        }
+        !!cb && cb();
+      })
+    },
+    //时间格式转换
+    timedotFormat(str){
+        if(!str) return false;
+        var tempArr = str.split(':');
+        tempArr[0] = parseInt(tempArr[0]) < 10 ? '0'+parseInt(tempArr[0]) : tempArr[0];
+        tempArr[1] = parseInt(tempArr[1]) < 10 ? '0'+parseInt(tempArr[1]) : tempArr[1];
+        return ' '+tempArr[0] + ':' + tempArr[1];
+    },
+    //日期格式转换
+    formateDate(datetime) {
+        function addDateZero(num) {
+            return (num < 10 ? "0" + num : num);
+        }
+        var d = new Date(datetime);
+        var formatdatetime = d.getFullYear() + '-' + addDateZero(d.getMonth() + 1) + '-' + addDateZero(d.getDate()) + ' ' + addDateZero(d.getHours()) + ':' + addDateZero(d.getMinutes()) + ':' + addDateZero(d.getSeconds());
+        return formatdatetime;
+    }
+  }
+};
+</script>
+<style scoped>
+  .promote-edit-box >>> .el-input{
+    width: 400px;
+  }
+  .promote-edit-box >>> .timeBox .el-input{
+    width: 150px;
+  }
+  .promote-edit-box >>> .el-form-item__label{
+    width: 130px!important;
+  }
+  /* .promote-edit-box >>> .el-form-item__content{
+    margin-left: 0;
+    text-align: center;
+  } */
+  .ml-10{
+    margin-left: 10px;
+  }
+
+  .promote-edit-box .form-box{
+    width: 1200px;
+    margin: 0 auto;
+  }
+  .info-box div{
+    margin-bottom: 30px;
+  }
+  .info-box div span:nth-of-type(1){
+    width: 100px;
+  }
+
+</style>

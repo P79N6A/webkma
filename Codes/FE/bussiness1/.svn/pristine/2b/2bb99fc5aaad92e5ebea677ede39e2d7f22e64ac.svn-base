@@ -1,0 +1,962 @@
+<template>
+  <div class="page-main-box scroll-box" style="overflow-x: hidden;">
+    <el-row style="min-height:100%;" class="row-box">
+      <el-col :span="19" style="height:100%;">
+        <div class="total-data" ref="companyStyle">
+          <div class="data-info" style="margin-bottom:18px;">
+            <el-row class="info" style="padding-bottom:7px;">
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">今日曝光</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">昨日曝光</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">今日访客</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">昨日访客</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">客户总数</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">交易总额</div>
+              </el-col>
+            </el-row>
+            <el-row class="info font-18 yellow-num">
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">{{scan_exposure.today || '0'}}</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">{{scan_exposure.yesterday || '0'}}</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">{{scan_visitor.today || '0'}}</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">{{scan_visitor.yesterday || '0'}}</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="grid-content bg-purple-dark">{{customerSum || '0'}}</div>
+              </el-col>
+              <el-col :span="4">
+                <div class="red-deep"> <span>￥</span> {{orderSum || '0'}}</div>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="echart-box">
+            <div id="statisticalTrend" ref="statisticalTrend" style="width:100%;height:100%;"></div>
+          </div>
+        </div>
+        <div class="underway-task">
+          <headerTitle :myTitle="myTitle"></headerTitle>
+          <scrollBox :options="{scrollX: true, scrollY: false,scrollbars:true}" @scroll-end="loadMoreTask"
+            :refresh="refreshEvt">
+            <div class="item-task-box" style="min-width:100%;height:520px;padding:0 30px;" v-if="overviewTaskList.length > 0">
+              <div class="task-item" :class="current==index?'selected':''" v-for="(item,index) in overviewTaskList"
+                :key="index" @click="activeBox(index)" v-if="item.newDate!='已过期'">
+                <div class="task-title" :style="{'padding-left':(item.isRed==1?'30px':'17px')}">
+                  <img style="width:14px;height:15px;position:absolute;left:12px;top:13px;" v-if="item.isRed==1" src="../../../static/images/icon-redpack.png">
+                  <span class="text-box">{{item.name}}</span>
+                </div>
+                <div class="task-info">
+                  <div class="activity">
+                    <span class="task-img fl" :style="{backgroundImage: `url('${item.cover}')`}"></span>
+                    <div class="font-12">
+                      <p>【{{item.manuscriptType==1?'H5':(item.manuscriptType==2?'海报':"文章")}}】{{item.name}}</p>
+                      <p class="gray mb-7" v-if="item.newDate!='已过期'">剩余 &nbsp;&nbsp;{{item.newDate.day}}天{{item.newDate.hour}}小时</p>
+                      <p class="gray mb-7" v-if="item.newDate=='已过期'">剩余 &nbsp;&nbsp; <span style="color:#FA766B;">{{item.newDate}}</span></p>
+                      <div style="height:16px;" v-if="item.isTarget==1">
+                        <span class="gray fl mr-7">目标完成率</span>
+                        <p>
+                          <el-progress :percentage="item.completionRate" color="#FE5E3A" :show-text="false"></el-progress>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="line-height:22px;">
+                    <p class="font-14 yellow-num statistics" style="text-align:center;">
+                      <span>{{item.userNumber}}</span>
+                      <span>{{item.marketingForce || '暂无'}}</span>
+                      <span>{{item.ranking == -1 ? '暂无':item.ranking}}</span>
+                    </p>
+                    <p class="statistics">
+                      <span class="tipText-color">累计获客</span>
+                      <span class="tipText-color">营销指数</span>
+                      <span class="tipText-color">排名</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="nav-title">
+                  <p class="fl employee" :class="{ 'active':(item.active == tit.key)}"
+                    v-for="(tit) in navTitle.tabs" :key="tit.key" @click="buttonActive(item.active = tit.key)">
+                    {{tit.title}}</p>
+                </div>
+                <div class="nav-info" v-if="item.active == 'employee'">
+                  <div v-if="item.empRank.length!==0">
+                    <div class="font-12 mb-12" style="height:24px;line-height:12px;" v-for="(data,index) in item.empRank" :key="index">
+                      <div v-if="index<5">
+                        <img class="tips" v-if="index==0" src="../../../static/images/icon-num1.png">
+                        <img class="tips" v-if="index==1" src="../../../static/images/icon-num2.png">
+                        <img class="tips" v-if="index==2" src="../../../static/images/icon-num3.png">
+                        <span class="tips-num" v-if="index>2">{{index + 1}}</span>
+                        <img class="photo" :src="data.face">
+                        <span class="black-deep employee-name">{{data.name}}</span>
+                        <span class="yellow-num">{{data.value}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align:center;" v-else>暂无数据</div>
+                </div>
+                <div class="nav-info" v-if="item.active == 'customer'">
+                  <div v-if="item.customerRank.length!==0">
+                    <div class="font-12 mb-12" style="height:24px;line-height:12px;" v-for="(data,index) in item.customerRank" :key="index">
+                      <div v-if="index<5">
+                        <img class="tips" v-if="index==0" src="../../../static/images/icon-num1.png">
+                        <img class="tips" v-if="index==1" src="../../../static/images/icon-num2.png">
+                        <img class="tips" v-if="index==2" src="../../../static/images/icon-num3.png">
+                        <span class="tips-num" v-if="index>2">{{index + 1}}</span>
+                        <img class="photo" :src="data.face">
+                        <span class="black-deep employee-name">{{data.name}}</span>
+                        <span class="yellow-num">{{data.value}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align:center;" v-else>暂无数据</div>
+                </div>
+              </div>  
+            </div>
+            <div class="item-task-box task-empty" v-else>
+            </div>    
+          </scrollBox>
+        </div>
+      </el-col>
+      <el-col :span="5" style="height:100%;">
+        <div style="position:relative;min-width:325px;">
+          <headerTitle :myTitle="rightTitle"></headerTitle>
+          <div style="position:absolute;right:13px;bottom:17px;">
+            <!-- <i class="iconfont icon-date font-12"></i> -->
+            <el-date-picker class="pull-left" v-model="dateArr" type="daterange"
+              :start-placeholder="weekDate[5]==undefined?'开始日期':(year +'/'+ weekDate[5])" :end-placeholder="weekDate[11]==undefined?'结束日期':(year +'/'+ weekDate[11])" format="yyyy/MM/dd"
+              value-format="yyyy/MM/dd" @change="chooseDate(dateArr)">
+            </el-date-picker>
+          </div>
+        </div>
+        <div class="rank-echart-box">
+          <div class="font-14 black-deep">
+            <pieRank title="员工龙虎榜" width="300" valueWidth="47" :dataSource="employeeRankList.list" :objData="employeeRankList.guestNum"></pieRank>
+          </div>
+          <div class="font-14 black-deep">
+            <pieRank title="任务龙虎榜" width="300" valueWidth="47" :dataSource="taskRankList.list" :objData="taskRankList.guestNum"></pieRank>
+          </div>
+          <div class="font-14 black-deep">
+            <pieRank title="客户龙虎榜" width="300" valueWidth="47" :dataSource="customerRankList.list" :objData="customerRankList.guestNum"></pieRank>
+          </div>
+        </div>
+        <div class="region-echart">
+          <headerTitle :myTitle="regionTitle"></headerTitle>
+          <div class="region">
+            <div class="fl" style="width:187px;height:140px;margin-right:22px;">
+              <div id="areaDtatistics" ref="areaDtatistics"></div>
+            </div>
+            <div class="region-rank">
+              <div>访问地区前5</div>
+              <div>
+                <p v-for="(are,idnex) in areaRanking" :key="are.name">{{idnex+1}}.{{are.name}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import pagination from "components/ui-pagination";
+import api from "api";
+import defaultHead from "assets/images/default-headImg.png";
+import headerTitle from "components/header-title";
+import scrollBox from "components/custom-scroll";
+import pieRank from "../../components/pie-ranking";
+import echarts from "bdcharts";
+import eventBus from '../../utils/eventBus';
+export default {
+  components: {
+    pagination,
+    api,
+    defaultHead,
+    headerTitle,
+    scrollBox,
+    pieRank,
+    echarts
+  },
+  name: "dashbord",
+  data: function () {
+    return {
+      year: "", //年份
+      defaultDate: [],
+      weekDate: [], //7天日期
+      scan_exposure: { //曝光 
+        today: "",
+        yesterday: ""
+      },
+      scan_visitor: { //访客
+        today: "",
+        yesterday: ""
+      },
+      dateArr: "", //日期
+      current: "", //当前选中状态
+      navTitle: {
+        tabs:[
+          { key: "employee", title: "员工龙虎榜",selected:true},
+          { key: "customer", title: "客户龙虎榜" }
+        ],
+        navKey: "employee"
+      },
+      myTitle: "进行中的任务",
+      rightTitle: "营销力排行",
+      regionTitle: "地区排行",
+      pagination: {
+        pageIndex: 1,
+        pageSize: 6,
+        total: 0
+      },
+      refreshEvt: "task-refresh",
+      color: ['#3AA1FF', '#4ECB73', '#FBD437', '#F04864', '#975FE5', '#36CBCB'], //排行榜颜色
+      areaRanking: [], //地域分布前5
+      employeeRankList: {}, //员工营销
+      taskRankList: {}, //任务营销
+      customerRankList: {}, //客户营销
+      overviewTaskList: [], //进行中的任务
+      customerSum: "", //客户总额
+      orderSum: "", //成交总额
+      flag: false, //分页判断
+      startTime: '', //开始时间
+      endTime: '' //结束时间
+    };
+  },
+  created() {
+    var now = new Date();
+    this.year = now.getFullYear();
+  },
+  mounted() {
+    this.init();
+    this.aggsTime();
+    this.aggsGeo();
+    this.getMarketRank();
+    this.getOverviewTask();
+    window.onresize = () => { //监听窗口变化
+      return (() => {
+        this.statisticalTrend.resize();
+      })()
+    };
+    let self = this;
+    eventBus.$on('getPageSize',()=>{
+      self.statisticalTrend.resize();
+    });
+  },
+  methods: {
+    // 日期选择
+    chooseDate(time) {
+      this.getMarketRank(time[0],time[1])
+    },
+    // 获取营销数据龙虎榜
+    getMarketRank(start,end) {
+      let self = this;
+      new Promise((resolve, reject)=>{
+        api.request("getMarketingOverview",{
+          merchantId: localStorage.businessId,
+          secret_key: localStorage.businessSecret
+        },result=>{ 
+          if(result.status == 0){
+            var xdata = [];
+            result.data.list.forEach((ele,index) => {
+              for (let obj in ele){
+                switch (obj) {
+                  case "date":
+                    var xArray = ele[obj].split("-");
+                    xdata.push(xArray[1] + '/' + xArray[2]) //x轴数据
+                    break;
+                }
+              }
+            })
+            resolve(xdata)
+          }
+        })
+      }).then((data)=>{
+        self.startTime = !!start?start:self.year +'/'+ data[5];
+        self.endTime = !!end?end:self.year +'/'+ data[11];
+        api.request("getMarketRank", { businessId:localStorage.businessId,startDate:self.startTime,endDate:self.endTime,pageIndex:1,pageSize:6},
+          result => {
+            if (result.status == 0) {
+              self.employeeRankList = result.data.employeeRank;
+              self.taskRankList = result.data.taskRank;
+              self.customerRankList = result.data.customerRank;
+              console.log("营销",result.data)
+            }
+          }
+        )
+      })
+    },
+    // 初始化方法
+    init() {
+      var self = this;
+      self.statisticalTrend = echarts.init(self.$refs.statisticalTrend);
+      self.areaDtatistics = echarts.init(self.$refs.areaDtatistics);
+    },
+    // 时间戳转日期
+    timeCount(timers) {
+      if (isNaN(timers)) return
+      timers = timers/1000
+      let oneDay = 86400;
+      let oneHour = 3600;
+      let oneMinute = 60;
+      let sec = timers % 60 //秒
+      let day = Math.floor(timers / oneDay) //天
+      timers = timers-(day * oneDay)
+      let hour = Math.floor(timers / oneHour) //时
+      timers = timers - (hour * oneHour)
+      let minute = Math.floor(timers / oneMinute) % 60//分
+      return {
+        day: day,
+        hour: hour,
+        minute: minute,
+        sec: sec
+      }
+    },
+    // 返回数组的最大值
+    arrayMax(arrayName) {
+      var max = arrayName[0];
+      for (let i = 0; i < arrayName.length; i++) {
+        max = arrayName[i] > max ? arrayName[i] : max;
+      }
+      return max;
+    },
+    // 趋势统计
+    aggsTime() {
+      var self = this;
+      var option = {
+        tooltip: {
+          trigger: 'axis'
+        },
+        color: ["#8f4dd2", "#2ec7c9"],
+        legend: {
+          data: ['曝光量', '访客量'],
+          orient: 'vertical',
+          top: 30,
+          right: 10,
+          itemHeight: 10,
+          itemGap: 15,
+        },
+        grid: {
+          containLabel: true,
+          left: 16,
+          right: 100,
+          bottom: 10,
+          top: 10
+        },
+        xAxis: {
+          nameTextStyle: {
+            color: "#B1BFCD"
+          },
+          nameGap: 10,
+          position: "bottom",
+          type: "category",
+          boundaryGap: false,
+          data: [],
+          axisTick: {
+            interval: 2,
+            lineStyle: {
+              color: "#B1BFCD"
+            },
+            alignWithLabel: false
+          },
+          axisLabel: {
+            color: "#B1BFCD",
+            fontSize: 10,
+            interval: 0
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#1091cf',
+              width: 1
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#F0F0F0'
+            }
+          },
+
+        },
+        yAxis: {
+          nameTextStyle: {
+            color: "#63717b"
+          },
+          nameGap: 10,
+          type: "value",
+          min: 0,
+          splitNumber: 5,
+          axisLabel: {
+            color: "#B1BFCD",
+            fontSize: 10,
+            interval: 0
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#1091cf',
+              width: 1
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#F0F0F0'
+            }
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['rgb(249,249,249)', 'rgb(255,255,255)']
+            }
+          },
+        },
+        series: [
+          {
+            name: "曝光量",
+            type: "line",
+            smooth:true,
+            data: [],
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#8f4dd2' // 0% 处的颜色
+                }, {
+                  offset: 1, color: '#fcfcfe' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            },
+            itemStyle: {
+              barBorderRadius: 2
+            }
+          },
+          {
+            name: "访客量",
+            type: "line",
+            smooth:true,
+            data: [],
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#2ec7c9' // 0% 处的颜色
+                }, {
+                  offset: 1, color: '#effbfb' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            },
+            itemStyle: {
+              barBorderRadius: 2
+            }
+          }
+        ]
+      };
+      api.request("getMarketingOverview",{
+        merchantId: localStorage.businessId,
+        secret_key: localStorage.businessSecret
+      },result=>{
+        if(result.status == 0){
+          self.customerSum = result.data.customerNumber;
+          self.orderSum = result.data.orderAmount;
+          var xdata = [],
+            accessData = [],
+            scan_exposure = [],
+            scan_visitor = [];
+          // 拼装数据
+          result.data.list.forEach((ele,index) => {
+            for (let obj in ele){
+              switch (obj) {
+                case "date":
+                  var xArray = ele[obj].split("-");
+                  xdata.push(xArray[1] + '/' + xArray[2]) //x轴数据
+                  break;
+                case "exposureNum":
+                  accessData.push(ele[obj]); //Y轴数据
+                  scan_exposure.push(ele[obj]); //曝光量数据
+                  break;
+                case "visitorNum":
+                  scan_visitor.push(ele[obj]); //访客数据
+                  break;
+              }
+            }
+          })
+          self.weekDate = xdata;
+          console.log("Y轴",accessData,"X轴",xdata,"曝光",scan_exposure,"访客",scan_visitor)
+          // X轴Y轴数据配置
+          option.xAxis.data = xdata;    
+          var accessMax = self.arrayMax(accessData);
+          console.log("Y轴最大值",accessMax)
+          option.yAxis.max = function (value) {
+            accessMax = accessMax != 0 ? accessMax : 5;
+            for (let i = 0; i < 10; i++) {
+              if ((accessMax + i) % 5 == 0) {
+                return accessMax + i;
+              }
+            }
+          }; 
+          // 曝光量
+          option.series[0].data = scan_exposure;
+          // option.series[0].data = [0, 50, 4, 3, 1, 2, 0, 0, 0, 0, 0, 0];
+          option.series[0].name = "曝光量";
+          self.scan_exposure = {
+            today: scan_exposure[11],
+            yesterday: scan_exposure[10]
+          };
+  
+          // 访客量
+          option.series[1].data = scan_visitor;
+          // option.series[1].data = [2, 3, 4, 3, 1, 2, 0, 5, 0, 0, 0, 0];
+          option.series[1].name = "访客量";
+          self.scan_visitor = {
+            today: scan_visitor[11],
+            yesterday: scan_visitor[10]
+          };
+
+          self.statisticalTrend.setOption(option);
+          console.log("测试数据",result)
+        }
+      })
+    },
+    // 地区统计
+    aggsGeo() {
+      // debugger
+      var self = this;
+      api.request("getRegionStatistics", { businessId: localStorage.businessId })
+        .then(
+          result => {
+            if (result.status == 0) {
+              // debugger
+              self.areaRanking = result.data.city.length > 5 ? result.data.city.splice(0, 5) : result.data.city;
+              
+               var option = {
+              tooltip: {
+                trigger: "item",
+                textStyle: {
+                  fontSize: 12
+                }
+              },
+              visualMap: {
+                orient: "horizontal",
+                type: "continuous",
+                min: 0,
+                // max: maxData,
+                // right: 20,
+                right: 255,
+                // top: "top",
+                top: 300,
+                itemHeight: 166,
+                itemWidth: 13,
+                hoverLink: true,
+                text: ["高", "低"], // 文本，默认为数值文本
+                calculable: false,
+                inRange: {
+                  color: ["#ddfdfe", "#167ce0"]
+                }
+              },
+              series: [
+                {
+                  name: "地域浏览",
+                  type: "map",
+                  mapType: "china",
+                  zoom: 1.1,
+                  top: 15,
+                  left: 22,
+                  roam: false,
+                  label: {
+                    normal: {
+                      show: false
+                    },
+                    emphasis: {
+                      show: true
+                    }
+                  },
+                  data: result.data.province
+                },
+                // {
+                //   name: "地域浏览",
+                //   type: "pie",
+                //   radius: [0, "30%"],
+                //   center: [120, 320],
+                //   data: areaData
+                // }
+              ]
+            };
+            self.areaDtatistics.setOption(option);
+            }
+          }
+        );
+    },
+    // 进行中的任务
+    getOverviewTask() {
+      let self = this;
+      api.request("getOverviewTask",{
+        pageIndex: self.pagination.pageIndex,
+        pageSize: self.pagination.pageSize
+      },result=>{
+        if(result.status == 0){
+          if(self.pagination.pageIndex === 1){
+            self.overviewTaskList = [];
+          }
+          var temp = '';
+          result.data.list.forEach((item,index) => {
+            temp = item.activeEndDate - item.newTime;
+            item.newDate = temp > 0 ? self.timeCount(temp) : "已过期" ;
+            // item.newDate = item.activeEndDate - item.newTime;
+            item.active = "employee";     
+          })
+          if(!!self.flag){
+            for (var i = 0; i < result.data.list.length; i++) {
+              self.overviewTaskList.push(result.data.list[i])
+            }
+          }else{
+            self.overviewTaskList = result.data.list
+          }
+          self.pagination.total = result.data.total;
+          self.$nextTick(() => {
+            eventBus.$emit(self.refreshEvt);
+          });
+          console.log("进行中的任务",self.overviewTaskList)
+        }
+      })
+    },
+    // 滑动分页
+    loadMoreTask() {
+      let { total, pageIndex, pageSize } = this.pagination;
+      if (Math.ceil(total / pageSize) > pageIndex) {
+        this.flag = true;
+        this.pagination.pageIndex++;
+        this.getOverviewTask();
+      }
+    },
+    activeBox(index) {
+      this.current = index;
+    },
+    
+    buttonActive() {}
+  }
+};
+</script>
+<style scoped>
+/* 公共样式 */
+.fl {
+  float: left;
+}
+
+.gray {
+  color: #acacac;
+}
+
+.mr-7 {
+  margin-right: 7px;
+}
+
+.mb-7 {
+  margin-bottom: 7px;
+}
+
+.mb-12 {
+  margin-bottom: 12px;
+}
+
+.pie {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+}
+
+.pie-name {
+  display: inline-block;
+  width: 45px;
+  margin-right: 3px;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  top: 4px;
+}
+
+.tips {
+  width: 12px;
+  height: 15px;
+  vertical-align: -2px;
+}
+
+.tips-num {
+  display: inline-block;
+  width: 12px;
+  height: 15px;
+  text-align: center;
+}
+
+.photo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50px;
+  margin-left: 11px;
+  vertical-align: -7px;
+}
+
+.selected {
+  border-top: 3px solid #00bad0 !important;
+}
+
+.active {
+  line-height: 33px !important;
+  border-top: 3px solid #00bad0 !important;
+  border-bottom: none !important;
+}
+
+/* 组件样式 */
+.page-main-box >>> .el-range-editor.el-input__inner {
+  width: 220px;
+  height: 26px;
+  border: none;
+}
+
+.page-main-box >>> .el-range-input {
+  font-size: 12px;
+}
+
+.page-main-box >>> .el-date-editor .el-range-separator {
+  line-height: 17px;
+  padding: 0;
+}
+
+.page-main-box >>> .el-date-editor .el-range__icon {
+  line-height: 20px;
+}
+
+.page-main-box >>> .el-date-editor .el-range__close-icon {
+  display: none;
+}
+
+.page-main-box >>> .row-box > .el-col:nth-of-type(1) {
+  border-right: 11px solid #f1f3fc;
+}
+
+.page-main-box >>> .info > .el-col {
+  text-align: center;
+}
+
+.page-main-box >>> .title-box .font-style {
+  border: none;
+  margin-left: 10px;
+}
+
+.page-main-box >>> .el-progress {
+  top: 5px;
+}
+
+/* 报表样式 */
+/* .page-main-box .echart-box #statisticalTrend{
+    width: 100%;
+    height: 100%;
+  } */
+
+.page-main-box #areaDtatistics {
+  width: 187px;
+  height: 140px;
+}
+
+/* 内容样式 (左侧)*/
+.page-main-box {
+  /* min-width: 1550px; */
+}
+
+.page-main-box .total-data {
+  height: 320px;
+  border-bottom: 13px solid #f1f3fc;
+  padding-top: 23px;
+  overflow: hidden;
+}
+
+.page-main-box .total-data .echart-box {
+  width: 94%;
+  height: 208px;
+  margin: 0 37px 22px 48px;
+}
+
+/* .page-main-box .underway-task{
+    min-height: 580px;
+  } */
+
+.page-main-box .item-task-box {
+  /* display: flex; */
+  box-sizing: border-box;
+  writing-mode: vertical-lr;
+}
+
+.page-main-box .task-empty{
+  min-width:100%;
+  height:520px;
+  writing-mode: horizontal-tb;
+  text-align:center;
+  line-height:520px;
+  background-image:url('../../../static/images/cover-data-empty.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.page-main-box .task-item {
+  display: inline-block;
+  width: 250px;
+  height: 500px;
+  writing-mode: horizontal-tb;
+  border: 1px solid #e3e6eb;
+  margin-right: 30px;
+}
+
+.page-main-box .task-item:last-child{
+  margin-right: 0px;
+}
+
+.page-main-box .task-item:hover {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  /* border-top: 3px solid #00bad0!important; */
+}
+
+.page-main-box .task-item .text-box {
+  display: inline-block;
+  width: 192px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page-main-box .task-title {
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #e3e6eb;
+  position: relative;
+}
+
+.page-main-box .task-info {
+  height: 190px;
+  padding: 16px 16px 0px;
+}
+
+.page-main-box .statistics{
+  display: flex;
+}
+
+.page-main-box .statistics span{
+  display: inline-block;
+  width: 33%;
+  text-align: center;
+}
+
+.page-main-box .task-info .activity {
+  height: 102px;
+  clear: both;
+  margin-bottom: 15px;
+}
+
+.page-main-box .task-img{
+  display:inline-block;
+  width:66px;
+  height:102px;
+  margin-right:6px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.page-main-box .task-info .activity > div > p:nth-of-type(1) {
+  /* height: 34px; */
+  color: #3c4a55;
+  line-height: 18px;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 18px;
+}
+
+.page-main-box .nav-title {
+  display: flex;
+  height: 36px;
+  margin-bottom: 19px;
+}
+
+.page-main-box .nav-title p {
+  width: 50%;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-top: 1px solid #e3e6eb;
+  border-bottom: 1px solid #e3e6eb;
+}
+
+.page-main-box .nav-title p:first-child {
+  border-right: 1px solid #e3e6eb;
+}
+
+.page-main-box .nav-info {
+  height: 213px;
+  padding-left: 17px;
+}
+
+.page-main-box .nav-info .employee-name {
+  display: inline-block;
+  width: 115px;
+  height: 13px;
+  padding-left: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  top: 1px;
+}
+
+/* 右侧样式 */
+.page-main-box .rank-echart-box {
+  min-width: 330px;
+  height: 564px;
+  padding: 0 87px 16px 18px;
+  border-bottom: 10px solid #f1f3fc;
+}
+
+.page-main-box >>> .rank-title{
+  line-height: 40px!important;
+  margin-bottom: 0!important;
+}
+
+.page-main-box .region{
+  min-width: 286px;
+}
+</style>
+

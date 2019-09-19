@@ -1,0 +1,31 @@
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.cell {
+  height: 100%;
+  background-color: #fff;
+}
+
+.rank-cell {
+  height: 100%;
+  background-color: #fff;
+  font-size: 24rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rank-title {
+  font-weight: 700;
+  text-align: center;
+}
+
+.rank-list {
+  padding-left: 60rpx;
+  padding-top: 20rpx;
+  text-align: left;
+}

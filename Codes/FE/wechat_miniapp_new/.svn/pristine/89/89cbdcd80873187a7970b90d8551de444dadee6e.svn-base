@@ -1,0 +1,25 @@
+<view class='msg_list'>
+  <block wx:if="{{recentContactList.length>0}}">
+    <view class='msg_item' wx:for="{{recentContactList}}" wx:key="SessionId" catchtap='toMessageSend' data-accountid='{{item.SessionId}}'>
+      <view class='unread_count' wx:if="{{!!item.UnreadMsgCount}}">{{item.UnreadMsgCount}}</view>
+      <image class='head-img' src="{{item.SessionImage || '/images/icon-defaultPhoto.png'}}"></image>
+      <view style='float:left;'>
+        <view class='name'>{{item.SessionNick}}</view>
+        <view class='msg-info'>{{item.MsgShow}}</view>
+      </view>
+      <view class='msg-info msg-date'>{{item.MsgTimeStamp}}</view>
+    </view>
+    <!-- <view class='weui-loadmore' hidden="{{recentContactList.length<10}}">
+    <text class="weui-loadmore__tips">已经到底部了</text>
+  </view> -->
+    <i-load-more wx:if="{{recentContactList.length>=10}}" tip="已经到底部了" loading="{{false}}" />
+  </block>
+  <view style='text-align:center;' wx:if="{{recentContactList.length == 0}}">
+    <image class='empty-img' src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/icon-empty.png"></image>
+    <view style='color:#999;font-size:24rpx;'>你暂时还没有任何私信好友</view>
+  </view>
+</view>
+<view wx:if="{{!!isShowFastNav}}">
+  <comp-fast-nav redpack-id="{{redpackId}}">
+  </comp-fast-nav>
+</view>

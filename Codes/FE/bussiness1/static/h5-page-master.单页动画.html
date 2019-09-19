@@ -1,0 +1,220 @@
+﻿<!doctype html>
+<!-- DataConfig
+    [{
+        "path":"/manuscript/publish/setting",
+        "method": "get",
+        "queryString": ["relationId={{{%main_id%}}}"],
+        "objName": "pageResult"
+    }]
+-->
+<html style="overflow:hidden;">
+
+<head>
+    <meta charset="utf-8 ">
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no" />
+    <!--uc-->
+    <meta name="layoutmode" content="standard" />
+    <title>{{pageResult.data.name}}</title>
+    <meta name="keywords" content="{{(pageResult.data.keywords || []).join(',')}}">
+    <meta name="description" content="{{pageResult.data.description}}">
+    <link rel="shortcut icon" href="/public/favicon.ico" />
+    <!-- {{css_join}} -->
+    <!-- import flexible -->
+    <!-- <link rel="styleSheet" href="../MidWay/public/bower_components/animate.css/animate.min.css" />
+    <link rel="styleSheet" href="../MidWay/public/bower_components/swiper-4.3.5/dist/css/swiper.min.css" /> -->
+    <link rel="styleSheet" href="../MidWay/public/dist/vendor.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+        }
+
+        .page-body {
+            position: relative;
+            overflow: hidden;
+            margin: 0px auto;
+            width: 10rem;
+        }
+
+        .page-body .page-panel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: white;
+            -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.24);
+            box-shadow: 0px 0px 20px rgba(245, 102, 102, 0.24);
+            opacity: 0;
+            transition: opacity 2s;
+            -moz-transition: opacity 2s;
+            -webkit-transition: opacity 2s;
+            -o-transition: opacity 2s;
+            display: none;
+        }
+
+        .page-body .page-panel .page-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .page-body .page-show {
+            opacity: 1;
+
+        }
+
+        .layer-hiden {
+            transition: opacity 2s;
+            opacity: 0;
+        }
+
+        .page-qrcode {
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            color: #9eabb8;
+            padding: 200px 20px 0;
+            display: none;
+        }
+
+        .page-qrcode [data-qrcode] {
+            width: 200px;
+            height: 100%;
+            margin: 0 auto 20px;
+        }
+
+        .swiper-container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .page-body .page-panel,
+        .page-body .layui-m-layer {
+            animation-duration: 1s;
+
+        }
+
+        .page-body .ani {
+            visibility: hidden;
+        }
+
+        #control_5082293c-48c7-4541-8163-c3394277af61 .st0 {
+            fill: #0AFBFF;
+        }
+
+
+
+        #control_c960d6f4-5d07-4324-8e60-63e9501c6c00 .st0 {
+            fill: #0AFBFF;
+        }
+
+
+
+        #control_bd0237de-5da9-407c-97f6-65f4de40e58e .st0 {
+            fill: #0AFBFF;
+        }
+    </style>
+</head>
+
+<body class="page-body">
+    <div id="page-panel" data-container="true" class="page-panel swiper-container">
+        <div class="page-content swiper-wrapper" style="height:30.9375rem;background-image:url(http://bos-kcmsdesign.iwanqi.cn/00000000-0000-0000-0000-000000000000/KMA/e1983591-1928-4db7-b89f-ebb2dba6018b.jpg);background-size:100%">
+            <div class="swiper-slide" data-page="1">
+                <img class="ani" style="max-width:100%; height:500px;" swiper-animate-effect="slideInDown" swiper-animate-duration="0.5s"
+                    swiper-animate-delay="0" src="img/zhiling2.jpg">
+                <div class="box single ui-widget-content ani" swiper-animate-effect="rotateIn" swiper-animate-duration="0.5s" swiper-animate-delay="0.5s"
+                    style="width: 4.6875rem; height: 4.6875rem; position: absolute; min-width: 0.09375rem; min-height: 0.09375rem; z-index: 1; left: 2.78125rem; top: 4.71875rem;">
+                    <div style="width:100%; height:100%;" id="control_5082293c-48c7-4541-8163-c3394277af61">
+                        <a>
+                            <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
+
+                                <path class="st0" d="M74.9,32.5c-2.5-7.6-9.9-12.3-17.6-11.4C55.7,13.5,49,7.8,40.9,7.8c-8,0-14.7,5.7-16.3,13.2
+                            c-7.7-0.9-15.2,3.8-17.7,11.4C4.4,40.1,7.8,48.2,14.5,52c-3.2,7.1-1.1,15.6,5.4,20.3c6.5,4.7,15.2,4.1,21-1.1
+                            c5.7,5.2,14.5,5.9,21,1.2c6.5-4.7,8.6-13.2,5.4-20.3C74,48.3,77.3,40.2,74.9,32.5z M64.5,34.3c0.8-0.3,1.6,0.2,1.9,1l0,0
+                            c0.3,0.8-0.2,1.6-1,1.9l-16,5.2c-0.8,0.3-1.6-0.2-1.9-1l0,0c-0.3-0.8,0.2-1.6,1-1.9L64.5,34.3z M39.4,18.2c0-0.8,0.7-1.5,1.5-1.5
+                            s1.5,0.7,1.5,1.5v16.9c0,0.8-0.7,1.5-1.5,1.5s-1.5-0.7-1.5-1.5V18.2z M15.4,35.2L15.4,35.2c0.3-0.8,1.1-1.2,1.9-1l16,5.2
+                            c0.8,0.3,1.2,1.1,1,1.9l0,0c-0.3,0.8-1.1,1.2-1.9,1l-16-5.2C15.6,36.8,15.2,36,15.4,35.2z M27.2,64.8c-0.5,0.7-1.4,0.8-2.1,0.3l0,0
+                            c-0.7-0.5-0.8-1.4-0.3-2.1l9.9-13.6c0.5-0.7,1.4-0.8,2.1-0.3c0.7,0.5,0.8,1.4,0.3,2.1L27.2,64.8z M56.6,65.2
+                            c-0.7,0.5-1.6,0.3-2.1-0.3l-9.9-13.6c-0.5-0.7-0.3-1.6,0.3-2.1c0.7-0.5,1.6-0.3,2.1,0.3l9.9,13.6C57.4,63.8,57.3,64.7,56.6,65.2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="box single ui-widget-content ani" swiper-animate-effect="lightSpeedIn" swiper-animate-duration="0.5s" swiper-animate-delay="1s"
+                    style="width: 4.6875rem; height: 4.6875rem; position: absolute; min-width: 0.09375rem; min-height: 0.09375rem; z-index: 2; left: 2.8125rem; top: 8.4375rem;">
+                    <div style="width:100%; height:100%;" id="control_c960d6f4-5d07-4324-8e60-63e9501c6c00">
+                        <a>
+                            <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
+
+                                <path class="st0" d="M74.9,32.5c-2.5-7.6-9.9-12.3-17.6-11.4C55.7,13.5,49,7.8,40.9,7.8c-8,0-14.7,5.7-16.3,13.2
+                            c-7.7-0.9-15.2,3.8-17.7,11.4C4.4,40.1,7.8,48.2,14.5,52c-3.2,7.1-1.1,15.6,5.4,20.3c6.5,4.7,15.2,4.1,21-1.1
+                            c5.7,5.2,14.5,5.9,21,1.2c6.5-4.7,8.6-13.2,5.4-20.3C74,48.3,77.3,40.2,74.9,32.5z M64.5,34.3c0.8-0.3,1.6,0.2,1.9,1l0,0
+                            c0.3,0.8-0.2,1.6-1,1.9l-16,5.2c-0.8,0.3-1.6-0.2-1.9-1l0,0c-0.3-0.8,0.2-1.6,1-1.9L64.5,34.3z M39.4,18.2c0-0.8,0.7-1.5,1.5-1.5
+                            s1.5,0.7,1.5,1.5v16.9c0,0.8-0.7,1.5-1.5,1.5s-1.5-0.7-1.5-1.5V18.2z M15.4,35.2L15.4,35.2c0.3-0.8,1.1-1.2,1.9-1l16,5.2
+                            c0.8,0.3,1.2,1.1,1,1.9l0,0c-0.3,0.8-1.1,1.2-1.9,1l-16-5.2C15.6,36.8,15.2,36,15.4,35.2z M27.2,64.8c-0.5,0.7-1.4,0.8-2.1,0.3l0,0
+                            c-0.7-0.5-0.8-1.4-0.3-2.1l9.9-13.6c0.5-0.7,1.4-0.8,2.1-0.3c0.7,0.5,0.8,1.4,0.3,2.1L27.2,64.8z M56.6,65.2
+                            c-0.7,0.5-1.6,0.3-2.1-0.3l-9.9-13.6c-0.5-0.7-0.3-1.6,0.3-2.1c0.7-0.5,1.6-0.3,2.1,0.3l9.9,13.6C57.4,63.8,57.3,64.7,56.6,65.2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="box single ui-widget-content ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="1.5s" swiper-animate-iteration="3"
+                    style="width: 4.6875rem; height: 4.6875rem; position: absolute; min-width: 0.09375rem; min-height: 0.09375rem; z-index: 3; left: 2.84375rem; top: 12.5rem;">
+                    <div style="width:100%; height:100%;" id="control_bd0237de-5da9-407c-97f6-65f4de40e58e">
+                        <a>
+                            <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
+
+                                <path class="st0" d="M74.9,32.5c-2.5-7.6-9.9-12.3-17.6-11.4C55.7,13.5,49,7.8,40.9,7.8c-8,0-14.7,5.7-16.3,13.2
+                            c-7.7-0.9-15.2,3.8-17.7,11.4C4.4,40.1,7.8,48.2,14.5,52c-3.2,7.1-1.1,15.6,5.4,20.3c6.5,4.7,15.2,4.1,21-1.1
+                            c5.7,5.2,14.5,5.9,21,1.2c6.5-4.7,8.6-13.2,5.4-20.3C74,48.3,77.3,40.2,74.9,32.5z M64.5,34.3c0.8-0.3,1.6,0.2,1.9,1l0,0
+                            c0.3,0.8-0.2,1.6-1,1.9l-16,5.2c-0.8,0.3-1.6-0.2-1.9-1l0,0c-0.3-0.8,0.2-1.6,1-1.9L64.5,34.3z M39.4,18.2c0-0.8,0.7-1.5,1.5-1.5
+                            s1.5,0.7,1.5,1.5v16.9c0,0.8-0.7,1.5-1.5,1.5s-1.5-0.7-1.5-1.5V18.2z M15.4,35.2L15.4,35.2c0.3-0.8,1.1-1.2,1.9-1l16,5.2
+                            c0.8,0.3,1.2,1.1,1,1.9l0,0c-0.3,0.8-1.1,1.2-1.9,1l-16-5.2C15.6,36.8,15.2,36,15.4,35.2z M27.2,64.8c-0.5,0.7-1.4,0.8-2.1,0.3l0,0
+                            c-0.7-0.5-0.8-1.4-0.3-2.1l9.9-13.6c0.5-0.7,1.4-0.8,2.1-0.3c0.7,0.5,0.8,1.4,0.3,2.1L27.2,64.8z M56.6,65.2
+                            c-0.7,0.5-1.6,0.3-2.1-0.3l-9.9-13.6c-0.5-0.7-0.3-1.6,0.3-2.1c0.7-0.5,1.6-0.3,2.1,0.3l9.9,13.6C57.4,63.8,57.3,64.7,56.6,65.2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+    <!-- </div>
+    </div> -->
+    <div id="page-qrcode" class="page-qrcode">
+        <div id="qrcode-panel" data-qrcode="true">
+
+        </div>
+        <div> 请打开微信扫一扫，扫描以上二维码预览 </div>
+    </div>
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+    <script type="text/javascript" src="../MidWay/public/dist/vendor.js" merge="true"></script>
+    <!-- <script type="text/javascript" src="../MidWay/public/bower_components/zepto/zepto.min.js"></script>
+    <script src="../MidWay/public/bower_components/layer.mobile-v2.0/layer_mobile/layer.js"></script>
+    <script src="../MidWay/public/bower_components/swiper-4.3.5/dist/js/swiper.js"></script>
+    <script src="../MidWay/public/bower_components/swiper-4.3.5/dist/js/swiper.animate1.0.3.min.js"></script> -->
+    <script type="text/javascript" src="../MidWay/public/dist/h5-framework.js"></script> 
+    {{js_join}} 
+</body>
+
+</html>

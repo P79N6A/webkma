@@ -1,0 +1,212 @@
+<template>
+  <div class="app-login">
+    <div class="logo">
+      <a href="index.html">
+        <img style="vertical-align: middle;" src="../assets/images/logo.png" alt />
+      </a>
+      <span>管理后台</span>
+    </div>
+    <div class="content">
+      <div class="form">
+        <div class="form-tips">登录您的账号</div>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" @keyup.enter.native="submitForm('ruleForm')" class="form-container">
+          <el-form-item prop="loginName">
+            <img class="icon" src="../assets/images/icon/icon-user.png">
+            <el-input type="text" v-model="ruleForm.loginName" placeholder="请输入您的用户名" autocomplete="off" @focus="changeSelectUser"></el-input>
+          </el-form-item>
+          <el-form-item prop="loginPwd">
+            <img class="icon" src="../assets/images/icon/icon-pwd.png">
+            <el-input type="text" onfocus="this.type='password'" v-model="ruleForm.loginPwd" placeholder="请输入您的密码" autocomplete="off" @focus="changeSelectPwd"></el-input>
+          </el-form-item>
+          <el-form-item class="save-account">
+            <el-checkbox-group v-model="ruleForm.saveUser">
+              <el-checkbox label="记住账号" name="saveUser"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="border-left" :style="{'top': top + 'px'}"></div>
+      </div>
+      <el-alert title="登录成功" center style=" position: fixed;top:0;" v-if="successful" type="success" show-icon></el-alert>
+      <el-alert title="用户名或密码错误" center style=" position: fixed;top:0;" v-if="failure" type="error" show-icon></el-alert>
+    </div>
+    <div class="copyright"> Copyright©2019 万商云集（成都）科技股份有限公司 版权所有 </div>
+  </div>
+</template>
+<script>
+import api from "../axios/api-service"
+import { setTimeout } from 'timers';
+import { constants } from 'crypto';
+export default {
+  name: "login",
+  data() {
+    return {
+      ruleForm: { 
+        loginName: "",
+        loginPwd: "",
+        saveUser:[]
+      },
+      successful: false,
+      failure: false,
+      top: 99,
+      // 校验规则
+      rules: {
+        loginName: { required: true, message: '用户名不能为空', trigger: 'blur' },
+        loginPwd: { required: true, message: '密码不能为空', trigger: 'blur' }
+      }
+    }
+  },
+  mounted() {
+    // if(!!sessionStorage.getItem('sessionId')){
+    //   this.$router.push("/bussiness-list")
+    // }
+    if (!!localStorage.getItem('rememberName')) {
+        this.ruleForm.loginName = localStorage.getItem('rememberName');
+    }
+  },
+  methods: {
+    changeSelectUser(){
+      this.top = 99;
+    },
+    changeSelectPwd(){
+      this.top = 160;
+    },
+    submitForm(formName) {
+      let self = this;
+      self.$refs[formName].validate((valid) => {
+        if (valid) {
+          let userInfo = {
+            user_account: self.ruleForm.loginName,
+            user_password: self.ruleForm.loginPwd
+          };
+          // debugger
+          api.request(
+            "login",
+            userInfo,
+            function (result) {
+              if (result.status == 0) {
+                self.messenger.success("登录成功");
+                sessionStorage.setItem('sessionId', result.data.session_id);
+                sessionStorage.setItem('userInfoKey', JSON.stringify(result.data.data[0]));
+                self.successful = true;
+                setTimeout(()=>{
+                  self.successful = false;
+                },1000)
+                if (self.ruleForm.saveUser.length > 0) {
+                    localStorage.setItem('rememberName', self.ruleForm.loginName);
+                    self.loginPwd = "";
+                } else {
+                    self.username = "";
+                    self.loginPwd = "";
+                    localStorage.removeItem('rememberName');
+                }
+                self.$router.push({ path: "/main" });
+              } else {
+                self.failure = true;
+                setTimeout(()=>{
+                  self.failure = false;
+                },1000)
+                // self.messenger.error(result.message);
+              }
+            }
+          );
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    }
+
+  }
+};
+</script>
+<style scoped>
+  .app-login >>> .form-container .el-form-item__content{
+    margin-left: 0!important;
+  }
+  
+  .app-login >>> .form-container .el-form-item__content .el-input__inner{
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #ccc;
+    padding-left: 22px;
+  }
+
+  .app-login >>> .form-container .save-account{
+    margin-bottom: 0;
+  }
+
+  .app-login >>> .form-container .el-checkbox__label{
+    color: #C0C4CC!important;
+  }
+
+  .app-login >>> .form-container .el-form-item__content .el-button{
+    width: 100%;
+    border-color: #29C7B6;
+    background-color: #29C7B6;
+  }
+
+  .icon{
+    position: absolute;
+    top: 12px;
+    z-index: 999;
+  }
+
+  .app-login .logo {
+    height:80px;
+    line-height: 80px;
+    background:rgba(255,255,255,1);
+  }
+
+  .app-login .logo a{
+    display: inline-block;
+    height: 80px;
+    margin: 0 14px 0 365px;
+  }
+
+  .app-login .logo span{
+    font-size: 18px;
+    color: #606266;
+    position: relative;
+    top: 3px;
+  }
+
+  .app-login .content {
+    background: url('../assets/images/login-bg.png') repeat;
+    height: 559px;
+    padding-top: 141px;
+  }
+
+  .app-login .content .form{
+    width: 292px;
+    height: 276px;
+    background-color: #ffffff;
+    padding: 32px 44px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .app-login .content .form-tips{
+    font-size: 18px;
+    color: #606266;
+    margin-bottom: 39px;
+  }
+
+  .app-login .content .border-left{
+    width: 5px;
+    height: 40px;
+    background-color: #5393F4;
+    position: absolute;
+    left: 0;
+    transition:top 0.5s;
+  }
+
+  .app-login .copyright{
+    font-size: 14px;
+    color: #999999;
+    text-align: center;
+    margin-top: 47px;
+  }
+</style>

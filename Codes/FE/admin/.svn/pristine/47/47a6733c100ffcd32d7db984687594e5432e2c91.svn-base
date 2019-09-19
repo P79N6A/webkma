@@ -1,0 +1,25 @@
+let httpConfig = { apiHost: "", apiHostNode: "", kmaApiHost:"", kpaasApiHost: "" }
+
+switch (process.env.NODE_ENV) {
+    case "development"://本地调试环境
+    case "bata_development"://开发环境
+        httpConfig.apiHost = "http://service.kem.dev.cn:8666/httpserver/kem/";
+        httpConfig.apiHostNode = "http://api.kem.dev.cn/";
+        httpConfig.kmaApiHost = "http://api.kma.dev.cn/";
+        httpConfig.kpaasApiHost = "http://192.168.1.126:7000/";
+        break;
+    case "bata_production"://测试环境
+        httpConfig.apiHost = "https://servicebeta.cloudmarkee.com/httpserver/kem/";
+        httpConfig.apiHostNode = "https://apibeta.cloudmarkee.com/"
+        httpConfig.kmaApiHost = "http://api.kma.biaoxiaoxu.cn/";
+        httpConfig.kpaasApiHost = "http://api.kpaas.biaoxiaoxu.cn/";
+        break;
+    case "production"://正式环境
+        httpConfig.apiHost = "https://service.cloudmarkee.com/httpserver/kem/";
+        httpConfig.apiHostNode = "https://api.cloudmarkee.com/";
+        httpConfig.kmaApiHost = "http://api.tuixb.cn/";
+        httpConfig.kpaasApiHost = "http://api-kpaas.cloudmarkee.com/";
+        break;
+}
+
+export default httpConfig

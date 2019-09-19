@@ -1,0 +1,275 @@
+<template>
+  <div class="head_design">
+    <div class="pull-left head_middle">
+    </div>
+    <div>
+      <div class="pull-right" style="margin-right:10px;">
+        <div style="line-height:50px; height:50px;">
+          <el-button class="head_btn" type="primary" size="medium"  :loading="savingStatus"
+            @click="saveManuscript"> 保存 </el-button>
+          <!-- <el-button class="head_btn" type="primary" size="medium" icon="iconfont icon-preview" @click="btnPreview"
+            ng-show="!isGroupEdit"> 预览 </el-button> icon="iconfont icon-save" icon="iconfont icon-release"  -->
+          <el-button class="head_btn" type="primary" size="medium" @click="releaseSetting"
+            ng-show="!isGroupEdit" style="    width: 120px;"> 预览/发布 </el-button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="dialogOptions.visible">
+      <releaseSetting :manuscript="manuscript" :posterImage="posterImage" :previewUrl="previewUrl"
+        :dialogOptions="dialogOptions" type="1" v-if="!!previewUrl" @refleshDetail="refleshDetail"></releaseSetting>
+    </div>
+
+  </div>
+</template>
+<script>
+import api from "api";
+import { createPreviewWindow } from "../../utils";
+import releaseSetting from "components/release-setting";
+export default {
+  name: "designHeader",
+  components: { releaseSetting },
+  data: function () {
+    return {
+
+      savingStatus: false,
+      releaseStatus: false,
+      manuscript: {
+        id: "",
+        name: "",
+        description: "",
+        cover: "",
+        catIds: "",
+        manuscriptType: ""
+      },
+
+      dialogOptions: {
+        visible: false
+      },
+      posterImage: { png: "", jpg: "" },
+      previewUrl: ""
+    };
+  },
+  mounted() {
+    this.manuscript.id = !!this.$route.query ? this.$route.query.id : "";
+    // 非设计师获取活动详情信息
+    if(localStorage.role != '2') this.getActivityDetail();
+  },
+
+  methods: {
+    //获取活动详情，用于编辑
+    getActivityDetail() {
+      let self = this;
+      api.request(
+        "getManuscriptInfo",
+        {
+          id: self.manuscript.id
+        },
+        result => {
+          if (result.status == 0) {
+             self.manuscript.modify = !!result.data.pages;
+             self.manuscript.manuscriptStatus = result.data.manuscriptStatus;
+             self.manuscript.name = result.data.name != '未命名素材' ? result.data.name : '';
+             self.manuscript.description = result.data.description || '';
+             self.manuscript.manuscriptType = result.data.manuscriptType;
+             self.manuscript.reward = result.data.award;
+             self.manuscript.activityData = [];
+             !!result.data.activeStartDate && self.manuscript.activityData.push(timeFormdate(result.data.activeStartDate));
+             !!result.data.activeEndDate && self.manuscript.activityData.push(timeFormdate(result.data.activeEndDate));
+          }
+        }
+      );
+    },
+    saveManuscript() {
+      var self = this;
+      self.savingStatus = true;
+      setTimeout(() => {
+        self.savingStatus = false;
+      }, 10000);
+      Promise.all([
+        new Promise(function (resolve, rej) {
+          self.buildTemplateData(function (result) {
+            resolve(result);
+          });
+        }),
+        new Promise(function (resolve, rej) {
+          self.autoGenerateImage(function (url) {
+            resolve(url);
+          });
+        })
+      ])
+        .then(function (results, result) {
+          let data = results[0];
+          data.cover = results[1];
+          return new Promise((resolve, reject) => {
+            api.request(
+              "updateManuscript",
+              {
+                id: self.manuscript.id,
+                cover: data.cover,
+                // content 中只保存站点相关的数据
+                content: JSON.stringify({
+                  config: data.config,
+                  data: data.data
+                }),
+                // pages 中保存各个页面的数据
+                pages: JSON.stringify(data.pages),
+                htmlData: data.htmlData,
+                activityPluginControls: data.activityControls
+              },
+              retsult => resolve(retsult)
+            );
+          });
+        })
+        .then(result => {
+          if (result.status == 0) {
+            Kdo.utils.messenger.success("稿件保存成功");
+          } else {
+            Kdo.utils.messenger.error(result.message);
+          }
+          self.savingStatus = false;
+        });
+    },
+
+
+    //生成稿件的数据对象
+    buildTemplateData(callback) {
+      var params = {
+        templateNumber: Kdo.data.config.site.get().templateNumber,
+        config: Kdo.data.config.site.get(),
+        data: Kdo.data.site.controls,
+        pages: Kdo.data.pages,
+        activityControls: [],
+        coverImg: "",
+        isEditor: true,
+        goodsNumber: 0
+      };
+      _.each(params.pages, function (item) {
+        if (item.number === Kdo.data.config.page.get().number) {
+          item.config = Kdo.data.config.page.get();
+          item.data = Kdo.data.page.controls;
+          Kdo.data.pages.forEach(function (page) {
+            page.data.forEach(function (controlConfig) {
+              if (controlConfig.pluginType) {
+                var item = {
+                  id: controlConfig.controlId,
+                  type: null
+                };
+                switch (controlConfig.pluginType) {
+                  case "form":
+                    item.type = 1;
+                    break;
+                  case "draw":
+                    item.type = 2;
+                    break;
+                  case "game":
+                    item.type = 3;
+                    break;
+                  case "goods":
+                    params.goodsNumber++;
+                    return true;
+                    break;
+                  case "vote":
+                    item.type = 4;
+                    break;
+                  case "call":
+                    item.type = 5;
+                    break;
+                  default:
+                    return true;
+                    break;
+                }
+                params.activityControls.push(item);
+              }
+            });
+          });
+        }
+      });
+      Kdo.page.release
+        .page()
+        .then(function (content) {
+          params.htmlData = content;
+          callback(params);
+        })
+        .catch(function (err) {
+          self.$message.error("编译静态页面出错");
+        });
+    },
+
+
+    releaseSetting() {
+      var self = this;
+      self.btnPreview();
+      this.dialogOptions.visible = true;
+      // 自动生成封面图
+      self.manuscript.cover = "";
+      self.autoGenerateImage(function (url) {
+        self.manuscript.cover = url;
+        self.posterImage.png = url;
+      });
+      self.autoGenerateImage(function (url) {
+        self.posterImage.jpg = url;
+      }, "jpeg");
+
+
+    },
+
+    autoGenerateImage(callback, imageType) {
+      var self = this;
+      //自动生成封面图片
+      if (!!imageType) {
+        Kdo.domToImage.getImageUrl(Kdo.container.$body().parent(), function (url) {
+          callback(url || "");
+        }, "jpeg");
+      } else {
+        Kdo.domToImage.getImageUrl(Kdo.container.$body().parent(), function (url) {
+          callback(url || "");
+          self.$emit("takePhoto");
+        });
+      }
+    },
+
+    btnPreview() {
+      var self = this;
+      self.buildTemplateData(function (data) {
+        api.request(
+          "previewManuscript",
+          {
+            // 预览只发送id和htmlData 数据
+            id: data.templateNumber,
+            htmlData: data.htmlData
+          },
+          result => {
+            // 打开窗口预览
+            if (result.status == 0) {
+              self.previewUrl = result.data + '?session_id='+ localStorage.sessionId +'&preview=true/' + Math.ceil(Math.random() * 10)
+            } else {
+              Kdo.utils.messenger.error(result.message);
+            }
+          }
+        );
+      });
+    },
+    //刷新活动详情数据
+    refleshDetail() {
+      this.getActivityDetail();
+    }
+
+
+
+  }
+};
+</script>
+<style scoped>
+.head_btn {
+  height: 34px;
+  width: 96px;
+  font-size: 12px;
+  border-radius: 0;
+  background-color: #434476 !important;
+  border-color: #434476 !important;
+}
+.head_design >>> .el-dialog__body {
+  padding: 0;
+}
+</style>

@@ -1,0 +1,131 @@
+<template>
+	<div class="bussiness-list">
+    <el-row class="operation">
+      <search  :placeholder="searchOpt.placeholder"
+                  @searchHandler="searchHander"
+                  :style="{ width: (searchOpt.size || '300px')}"
+                    ></search>
+    </el-row>
+		<el-table
+              ref="bussinessTable"
+              :data="bussinessList"
+              tooltip-effect="dark"
+              row-key="id"
+              class="table"
+              header-row-class-name="table-header"
+              header-cell-class-name="table-header"
+            >
+              <el-table-column
+                show-overflow-tooltip
+                prop="fb_content"
+                label="反馈内容"
+                align="center"
+                class-name="number_color"
+              ></el-table-column>
+              <el-table-column
+                show-overflow-tooltip
+                prop="fb_user_name"
+                label="反馈用户"
+                align="center"
+                class-name="number_color"
+                width="280"
+              ></el-table-column>
+              <el-table-column
+                prop="fb_user_concat"
+                label="绑定手机"
+                align="center"
+                class-name="number_color"
+                width="280"
+              >
+                <template slot-scope="scope">
+                  {{scope.row.fb_user_concat==null?'未绑定手机':scope.row.fb_user_concat}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="fb_create_time_fmt"
+                label="反馈时间"
+                align="center"
+                class-name="number_color"
+                show-overflow-tooltip
+                width="280"
+              ></el-table-column>
+            </el-table>
+            <div style="margin:20px 10px;">
+              <pagination
+                v-if="paginationOpt.pageCount > 1"
+                class="pull-right"
+                :paginationOpt="paginationOpt"
+                @switchPage="pagesFn"
+              />
+            </div>
+	</div>
+</template>
+<script scope>
+import api from "../../axios/api-service";
+import search from "../../components/com-search";
+import pagination from "../../components/ui-pagination";
+import slideBtn from "../../components/slide-btn";
+
+export default {
+  name:'designer-list',
+  components: { search, pagination, slideBtn },
+	data() {
+		return {
+      bussinessList: [], //商家列表数据
+      key_word: '', //关键词
+      searchOpt: {
+        placeholder: '请输入反馈内容、用户、手机等关键信息'
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageCount: '',
+        pageSize: 15
+      }
+		}
+  },
+  mounted(){
+    this.getList();
+  },
+  methods: {
+    getList(cb) {
+      let _this = this;
+      let _option = {
+        key_word: this.key_word,
+        pageIndex: this.paginationOpt.pageIndex,//开始条数，不可空，正整数
+        pageSize: this.paginationOpt.pageSize//取用条数，不可空，正整数
+      }
+      api.request("getOpinionList", _option, result => {
+        if (result.status == 0) {
+          _this.bussinessList = result.data.list;
+          _this.paginationOpt.totalCount = result.data.total;
+          _this.paginationOpt.pageCount = Math.ceil(
+            _this.paginationOpt.totalCount / _this.paginationOpt.pageSize
+          );
+        } else {
+          _this.messenger.error('获取问题反馈列表失败');
+        }
+        !!cb && cb();
+      });
+    },  
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getList(cb);
+    },
+    //搜索
+    searchHander(data) {
+      this.key_word = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    }
+  }
+}
+</script>
+<style scope>
+.operation {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+}
+</style>
+
+

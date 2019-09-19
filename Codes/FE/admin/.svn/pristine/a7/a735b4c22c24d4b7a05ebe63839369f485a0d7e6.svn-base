@@ -1,0 +1,86 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import eventBus from './utils/eventBus.js'
+Vue.use(Router)
+
+import login from './views/login'
+import management from './views/management'
+import bussinessList from './views/bussiness-list'
+import bussinessManagement from './views/bussiness-management'
+import materialList from './views/material/list.vue'
+import materialLabel from './views/material/label.vue'
+
+const router = new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'login',
+      component: login
+      // redirect: '/dashbord'
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
+    {
+      path: '/management',
+      name: 'management',
+      component: management,
+      children: [
+        {
+          path: '/material-list',
+          name: 'material-list',
+          component: materialList
+        },
+        {
+          path: '/material-label',
+          name: 'material-label',
+          component: materialLabel
+        },
+        // {
+        //   path: '/a-list',
+        //   name: 'a-list',
+        //   component: login
+        // }
+        {
+          path: '/bussiness-management',
+          name: 'bussiness-management',
+          component: bussinessManagement
+        },
+        {
+          path: '/bussiness-list',
+          name: 'bussiness-list',
+          component: bussinessList
+        },
+        {
+          path: '/a-list',
+          name: 'a-list',
+          component: login
+        },
+        {
+          path: '/designer-list',
+          name: 'designer-list',
+          component: login
+        }
+      ]
+    }
+   
+  ]
+})
+router.beforeEach((to, from, next) => {
+  let isLogin = localStorage.getItem('sessionId');
+  console.log("seesion",isLogin)
+  if (isLogin) {
+    next();
+    // eventBus.$emit('initBreadCrumb');
+  } else {
+    if (to.path === '/login') {
+      next()
+    } else {
+      next('/login')
+    }
+  }
+})
+
+export default router

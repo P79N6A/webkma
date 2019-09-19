@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "AI分析",
+  "usingComponents": {
+    "custom-overview": "/components/custom-overview/custom-overview",
+    "comp-navbar": "/components/navbar/navbar",
+    "comp-page-box-tips": "/components/page-box-tips/page-box-tips"
+  }
+}

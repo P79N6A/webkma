@@ -1,0 +1,20 @@
+<template>
+	<div class="bussiness-list">
+		
+	</div>
+</template>
+<script scope>
+export default {
+	name:'bussiness-list',
+	data() {
+		return {
+			msg: '商家列表'
+		}
+	}
+}
+</script>
+<style scope>
+
+</style>
+
+

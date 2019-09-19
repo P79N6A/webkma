@@ -1,0 +1,6 @@
+﻿.design_text_editor {
+    position: relative;
+    z-index: 1998;
+    word-break: break-all;
+    line-height: normal;
+}

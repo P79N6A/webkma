@@ -1,0 +1,23 @@
+<view class='container'>
+  <block wx:if='{{cashList.length == 0 ? false : true}}'>
+    <!-- 提现 -->
+    <view class='cash_item flex' wx:for='{{cashList}}' wx:key='{{key}}'>
+      <view class='cash-info flex'>
+        <view class='font-bd {{item.state==0?"color-red":""}}'>
+          <image class='state_image' wx:if="{{item.state==200}}" src='../../images/withdraw-success.png'></image>
+          <image class='state_image' wx:else src='../../images/withdraw-fail.png'></image>
+          {{item.state==0?'提现失败':'提现成功'}} {{item.state==0&&item.errMsg?'('+item.errMsg+')':''}}
+          <text  class='font-bd {{item.state==0?"color-red":""}}' wx:if="{{item.state==0}}"></text>
+        </view>
+        <text class="font-22">{{item.createTime}}</text>
+      </view>
+      <view>
+        <text>￥ {{item.amount}}</text>
+      </view>
+    </view>
+    <i-load-more  wx:if="{{showTips}}"  i-class="my-load-more" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.isLoading}}" />
+  </block>
+  <block wx:if="{{cashList.length<1}}">
+    <comp-page-box-tips type="{{myDataPageStatus}}"></comp-page-box-tips>
+  </block>
+</view>

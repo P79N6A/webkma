@@ -1,0 +1,182 @@
+<template>
+  <div class="rank-echart">
+    <div class="font-14 black-deep">
+      <p class="rank-title font-12">{{title}}</p>
+      <div class="rank-box" :style="{width:width+'px'}">
+        <div style="position:absolute;top:47px;left:64px;text-align:center;display:none;">
+          <span class="grey-deep font-12">总获客数</span>
+          <p class="font-14">{{objData}}</p>
+        </div>
+        <div id="rank-data" ref="rankData"></div>
+        <div class="font-12 rank-info" v-if="dataSource.length!==0">
+          <p v-for="(item,index) in dataSource" :key="index">
+            <span class="pie" :style="{backgroundColor:color[index]}"></span>
+            <span class="pie-name text" style="width:60px;" :title="item.name">{{item.name}}</span>
+            <span class="text ellipsis" :style="{width:valueWidth+'px'}" :title="item.value">{{item.value}}</span>
+          </p>
+        </div>
+        <div class="font-12 rank-info" v-else>
+          <p v-for="(item,index) in defaultData" :key="index">
+            <span class="pie" :style="{backgroundColor:color[index]}"></span>
+            <span class="pie-name text" style="width:60px;">{{item.name}}</span>
+            <span class="text">{{item.value}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import api from "api";
+import echarts from "bdcharts";
+import eventBus from '../utils/eventBus';
+
+export default {
+  name: 'pie-ranking',
+  components: {
+    echarts
+  },
+  props: {
+    "title": {
+      type: String,
+      default:'排行榜'
+    },
+    objData:{
+      type: Number,
+      default: 0
+    },
+    dataSource: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    width: {
+      type: String
+    },
+    valueWidth: {
+      type: String
+    }
+  },
+  data() {
+    return {
+      color: ['#32D9CF', '#FA766B', '#61ABFF', '#EC7DE5', '#FAE76B', '#FABC6B'], //排行榜颜色
+      defaultColor:['#DDE4EB'],
+      notData: [{name:'第1名',value:0}],
+      defaultData:[
+        {name:'第1名',value:0},
+        {name:'第2名',value:0},
+        {name:'第3名',value:0},
+        {name:'第4名',value:0},
+        {name:'第5名',value:0},
+        {name:'其他',value:0},
+      ]
+    }
+  },
+  mounted(){
+    this.rankStatistical()
+  },
+  watch: {
+    dataSource() {
+      this.rankStatistical();
+      this.rankData.resize();　
+    }
+  },
+  methods: {
+    //员工排行榜统计
+    rankStatistical(){
+      let self = this;
+      let option = {
+          color: this.dataSource.length==0?self.defaultColor:self.color,
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          series: [
+            {
+              name:self.title,
+              type:'pie',
+              radius: '80%',
+              center: ['50%', '50%'],
+              // radius: ['65%', '90%'],
+              avoidLabelOverlap: false,
+              hoverAnimation: false,
+              legendHoverLink:false,
+              label: {
+                show: false,
+              },
+              data: this.dataSource.length==0?this.notData:this.dataSource
+            }
+          ]
+      };
+      self.rankData = echarts.init(self.$refs.rankData);
+      self.rankData.setOption(option);
+    },
+  }
+}
+</script>
+<style scoped>
+  .text{
+    font-size: 10px;
+    color: #B1BFCD;
+  }
+
+  .ellipsis{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    top: 4px;
+  }
+
+  .pie{
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+  }
+
+  .pie-name{
+    display: inline-block;
+    width: 45px;
+    margin-right: 3px;
+    border-right: 1px solid #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    top: 4px;
+  }
+
+  .rank-title{
+    line-height:10px;
+    padding-left:14px;
+    margin-bottom:36px;
+  }
+
+  .rank-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+  }
+
+  .rank-echart{
+    width: 280px;
+  }
+
+  .rank-echart .rank-box{
+    display:flex;
+    height: 132px;
+    padding-left: 15px;
+    position:relative;
+  }
+
+  .rank-echart #rank-data{
+    width: 132px;
+    height: 132px;
+  }
+</style>
+
+

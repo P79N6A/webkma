@@ -1,0 +1,24 @@
+<i-row i-class="cell">
+  <i-col span="16" i-class="cell">
+    <ec-canvas id="chart_{{uid}}" canvas-id="chart_{{uid}}" ec="{{ec}}" wx:if="{{!isDisposed}}"></ec-canvas>
+  </i-col>
+  <i-col span="8" i-class="stat-cell">
+    <view style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+      <view class="row-text">
+        <text class="row-icon-male">●</text>
+        <text>男</text>
+        <text class="row-value">{{dataSource.male}}</text>
+      </view>
+      <view class="row-text">
+        <text class="row-icon-female">●</text>
+        <text>女</text>
+        <text class="row-value">{{dataSource.female}}</text>
+      </view>
+      <view class="row-text">
+        <text class="row-icon-unknown">●</text>
+        <text>未知</text>
+        <text class="row-value">{{dataSource.total-dataSource.male-dataSource.female}}</text>
+      </view>
+    </view>
+  </i-col>
+</i-row>

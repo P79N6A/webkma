@@ -1,0 +1,1 @@
+<view class="i-class iconfont {{ type === '' ? '' : type }} {{ custom }}" style="font-size: {{ size }}px; {{ color ? 'color:' + color : '' }}"></view>

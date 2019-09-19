@@ -1,0 +1,101 @@
+﻿
+#_panelId_ {
+    font-size: 0.4375rem;
+}
+  #_panelId_ .vote {
+    padding: 0.3125rem;
+    overflow: hidden;
+    display: none;
+  }
+  #_panelId_ .pull-left {
+    float: left;
+  }
+  #_panelId_ .text-center {
+    text-align: center;
+  }
+  #_panelId_ .vote.style1 {
+    padding-left: 0.15625rem;
+    padding-right: 0.15625rem;
+  }
+  #_panelId_ .vote.style1 .item {
+    float: left;
+    padding: 0.25rem;
+  }
+  #_panelId_ .vote.style1 .item-image {
+    width: 100%;
+    height: auto;
+  }
+  #_panelId_ .vote .item-name {
+    overflow: hidden;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  #_panelId_ .vote .vote-num {
+      margin: 0.3125rem auto 0.46875rem;
+      text-align: center;
+  }
+  #_panelId_ .vote .submit {
+      width: 100%;
+      height: 0.9375rem;
+      line-height: 0.9375rem;
+      border-radius: 0.1rem; 
+      background-color: red;
+      text-align: center;
+  }
+  #_panelId_ .vote.style2,
+  #_panelId_ .vote.style3 {
+      min-width: 10rem;
+      box-sizing: border-box;
+  }
+  #_panelId_ .vote.style3 {
+    padding-top: 0.15625rem;
+    padding-bottom: 0.15625rem;
+  }
+  #_panelId_ .vote.style2 .item {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 0.3125rem;
+  }
+  #_panelId_ .vote.style2 .item:last-child {
+    margin-bottom: 0;
+  }
+  #_panelId_ .vote.style2 .image-wrap {
+      width: 3.125rem;
+      height: 3.125rem;
+      float: left;
+      margin-right: 0.3125rem;
+  }
+  #_panelId_ .vote.style2 .item-image {
+    width: 100%;
+    height: 100%;
+  }
+  #_panelId_ .vote.style2 .vote-num {
+    display: inline-block;
+    margin: 0;
+  }
+  #_panelId_ .vote.style3 .item {
+    display: flex;
+    flex-wrap: nowrap;
+    line-height: 0.9375rem;
+    padding: 0.15625rem 0;
+  }
+  #_panelId_ .vote.style2 .submit,
+  #_panelId_ .vote.style3 .submit {
+    width: 3.75rem;
+    float: right;
+  } 
+  #_panelId_ .vote.style3 .vote-num {
+    width: 3rem;
+    margin: 0 0.3125rem;
+  }
+  #_panelId_ .vote.style3 .item-name1 {
+    width: 5.5rem;
+    height: 0.9375rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+  }

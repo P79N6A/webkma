@@ -1,0 +1,126 @@
+.modal {
+  position: fixed;
+  width: 750rpx;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
+.modal .mask{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,.5);
+}
+.modal .modal-body{
+  position: absolute;
+  top: 60rpx;
+  left: 70rpx;
+  width: 610rpx;
+  height: 920rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.modal .modal-body image{
+  position: absolute;
+}
+.modal .modal-body .bg{
+  width: 610rpx;
+  height: 920rpx;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+.modal .close{
+  position: absolute;
+  width: 82rpx;
+  height: 82rpx;
+  left: 333rpx;
+  top: 1037rpx;
+  z-index: 3;
+}
+.modal .modal-body .cover1{
+  width:550rpx;
+  height:340rpx;
+  top:55rpx;
+  left:30rpx;
+  z-index:1;
+}
+.modal .modal-body .head-img{
+  width:136rpx;
+  height:136rpx;
+  border-radius: 50%;
+  top:116rpx;
+  left:86rpx;
+  z-index: 3;
+}
+
+.modal .modal-body .text{
+  position: absolute;
+  text-align: center;
+  color: #fbd392;
+  font-size: 26rpx;
+  z-index: 3;
+}
+.modal .modal-body .desc{
+  font-size: 34rpx;
+  width:100%;
+  height: auto;
+}
+
+.modal .modal-body .money{
+  width: 100%;
+  top: 285rpx;
+  left: 0;
+  font-size: 76rpx;
+}
+.modal .modal-body .unit{
+  font-size: 36rpx;
+  margin-left: 10rpx;
+}
+.modal .modal-body .info{
+  width: 280rpx;
+  left: 250rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  color: #000;
+}
+.modal .modal-body .name{
+  top: 130rpx;
+  font-size: 36rpx;
+}
+.modal .modal-body .job{
+  top: 205rpx;
+  font-size: 30rpx;
+}
+.modal .modal-body .fail-head{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width:530rpx;
+  height:60rpx;
+  line-height: 60rpx;
+  top: 212rpx;
+  left: 40rpx;
+  z-index: 3;
+  justify-content: center;
+  color: #fbd392;
+}
+.modal .modal-body .fail-head .img{
+  position: static;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+.modal .modal-body .btn{
+  position: absolute;
+  top: 625rpx;
+  left: 215rpx;
+  width: 184rpx;
+  height: 184rpx;
+  border-radius: 50%;
+  z-index: 4;
+}

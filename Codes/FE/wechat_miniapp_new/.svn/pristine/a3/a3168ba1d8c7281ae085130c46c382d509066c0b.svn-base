@@ -1,0 +1,45 @@
+<view>
+    <view class="header-box">
+        <view class="header-content">
+            <view class="img-box">
+                <image src="{{userInfo.face?userInfo.face:defaultImg}}" alt="" />
+                <view class="name-box">
+                    <view class="name">
+                        {{(userInfo.name==null||userInfo.name=="")?userInfo.nick_name:userInfo.name}}
+                    </view>
+                    <view class="number">{{userInfo.phone}}</view>
+                </view>
+            </view>
+            <view class="price-box">
+                <view class="price-text">成交金额</view>
+                <view class="price">
+                    <text>￥</text>
+                    {{userInfo.transaction_amount}}
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="conten-box">
+        <view style="display: flex">
+            <view class="add-btn">+</view>
+            <view class="addRemarks">
+                <text hidden="{{!isShow}}" bindtap="addChange">添加备注</text>
+                <view hidden="{{isShow}}" class="input-box">
+                    <input value="{{remark}}" maxlength="150" style="width:100%" bindinput="getData" bindblur="Preservation" confirm-type="done" />
+                </view>
+            </view>
+        </view>
+        <view class="list-box">
+            <view class="list" wx:for="{{remarksList}}" ::key="index">
+                <view class="after-box"></view>
+                <view class="after-left"></view>
+                <view class="time">
+                    <view>{{item.create_time}}</view>
+                </view>
+                <view class="des">
+                    <view>{{item.remark}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

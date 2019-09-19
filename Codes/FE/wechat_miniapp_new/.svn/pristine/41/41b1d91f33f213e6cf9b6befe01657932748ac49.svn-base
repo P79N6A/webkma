@@ -1,0 +1,36 @@
+<!-- 人脉关系图 -->
+<view class="container" style="width:100vw;height:44vh;">
+  <image style="width:100%;height:100%;" src="../../images/chart-image.jpg" mode="aspectFit"></image>
+</view>
+<!-- 雷达报表（四维度） -->
+<view class="container" style="width:100vw;height:40vh;">
+  <charts-flow-radar dataSource="{{radarDataSource}}"></charts-flow-radar>
+</view>
+<!-- 地图 -->
+<view class="container" style="width:100vw;height:40vh;">
+  <charts-map dataSource="{{mapDataSource}}"></charts-map>
+</view>
+<!-- 浏览习惯 -->
+<view class="container" style="width:100vw;height:30vh;">
+  <charts-daily-browse-line dataSource="{{dailyLineDataSource}}"></charts-daily-browse-line>
+</view>
+<!-- 任务饼图 -->
+<view class="container" style="width:100vw;height:30vh;">
+  <charts-task-pie dataSource="{{taskDataSource}}"></charts-task-pie>
+</view>
+<!-- 性别饼图 -->
+<view class="container" style="width:100vw;height:30vh;">
+  <charts-gender-pie dataSource="{{genderDataSource}}"></charts-gender-pie>
+</view>
+<!-- 活动插件报名饼图 -->
+<view class="container" style="width:100vw;height:30vh;">
+  <charts-activity-plugin-form-pie dataSource="{{formDataSource}}">
+    <view>from context panel</view>
+  </charts-activity-plugin-form-pie>
+</view>
+<!-- 活动插件订单饼图 -->
+<view class="container" style="width:100vw;height:30vh;">
+  <charts-activity-plugin-order-pie dataSource="{{orderDataSource}}">
+    <view>order context panel</view>
+  </charts-activity-plugin-order-pie>
+</view>

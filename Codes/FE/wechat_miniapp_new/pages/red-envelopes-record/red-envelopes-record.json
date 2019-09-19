@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#F35543",
+  "navigationBarTitleText": "红包记录",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-navbar": "/components/navbar/navbar"
+  }
+}

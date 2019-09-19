@@ -1,0 +1,6 @@
+/* pages/login/login.wxss */
+
+.content-area {
+  margin: 0 auto;
+  width: 80%;
+}

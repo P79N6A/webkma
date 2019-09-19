@@ -1,0 +1,300 @@
+<template>
+  <div class="bussiness-list">
+    <div class="navigator" style="position:relative;">
+      <navigator :tabs="navigatorOpts.tabs" @navigator-event="transferTab"></navigator>
+      <el-row class="operation" style="width:300px; position:absolute; top:-6px; right:20px;">
+        <search
+          :placeholder="searchOpt.placeholder"
+          @searchHandler="searchHander"
+          :style="{ width: (searchOpt.size || '300px')}"
+        ></search>
+      </el-row>
+    </div>
+    
+    <el-table
+      ref="bussinessTable"
+      :data="bussinessList"
+      tooltip-effect="dark"
+      row-key="id"
+      class="table"
+      header-row-class-name="table-header"
+      header-cell-class-name="table-header"
+    >
+      <el-table-column
+        show-overflow-tooltip
+        prop="activityName"
+        label="推广计划"
+        align="center"
+        class-name="number_color"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="cover"
+        label="缩略图"
+        align="center"
+        class-name="number_color"
+      >
+        <template slot-scope="scope">
+            <img style="width: 30px;height: 30px;cursor: pointer; vertical-align: middle;"
+                :src="scope.row.cover + '@w_100,h_100'" alt=""
+                img-preview-dire="scope.row.cover" @click="imgBigger(scope.row.cover)" />
+        </template>
+      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="templateName"
+        label="使用模板"
+        align="center"
+        class-name="number_color"
+      >
+        <template slot-scope="scope">
+            {{scope.row.templateName==null?'自定义':scope.row.templateName}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="timeAdv"
+        label="广告时间"
+        align="center"
+        class-name="number_color"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+            {{scope.row.timeOnline+'至'+scope.row.timeOffline}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="businessName"
+        label="所属商家"
+        align="center"
+        class-name="number_color"
+      ></el-table-column>
+      <el-table-column
+        prop="publicName"
+        label="所属公众号"
+        align="center"
+        class-name="number_color"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        prop="state"
+        label="状态"
+        align="center"
+        class-name="number_color"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+            {{!!scope.row.state?(scope.row.state==1?'审核失败':(scope.row.state==2?'审核通过':(scope.row.state==3?'已结束':'已暂停'))):'审核中'}}
+        </template>
+      </el-table-column>
+      <el-table-column prop label="操作" align="center" width="200" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <slideBtn :activeText="'启用'" :prop-value-map="{2:2,4:4}" :inactiveText="'暂停'" v-if="scope.row.state==2||scope.row.state==4" :slideBtnOpt="scope.row" @slide-event="setSingleState" style="margin-right: 10px;"/>
+          <span class="btn-plain" @click="resolve(scope.row)" v-if="scope.row.state==0">通过</span>
+          <span class="btn-plain" @click="reject(scope.row)" v-if="scope.row.state==0">驳回</span>
+          <span class="btn-plain" @click="jumpToPromotionData(scope.row)"  v-if="scope.row.state==2||scope.row.state==3">推广数据</span>
+          <span class="btn-plain" @click="queryDetail(scope.row)">详情</span>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div style="margin:20px 10px;">
+      <pagination
+        v-if="paginationOpt.pageCount > 1"
+        class="pull-right"
+        :paginationOpt="paginationOpt"
+        @switchPage="pagesFn"
+      />
+    </div>
+    <comDialog title="" :modal-show.sync="modalVisible">
+      <img :src="imgSrc">
+    </comDialog>
+    <el-dialog title="确认计划审核失败" :visible.sync="dialogForm.visible" width="550px" custom-class="account-dialog">
+      <el-form>
+        <el-form-item label="驳回原因" :label-width="'80px'">
+          <el-input v-model="dialogForm.reason" autocomplete="off" placeholder="请输入审核计划失败原因"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogForm.visible = false">取 消</el-button>
+        <el-button type="primary" @click="checkReject">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script scope>
+import api from "../../axios/api-service";
+import search from "../../components/com-search";
+import comDialog from "../../components/com-dialog";
+import pagination from "../../components/ui-pagination";
+import navigator from "../../components/navigator";
+import slideBtn from "../../components/slide-btn";
+
+export default {
+  name: "designer-list",
+  components: { search, pagination, navigator, comDialog, slideBtn},
+  data() {
+    return {
+      appid: '',
+      bussinessList: [], //商家列表数据
+      key_word: "", //关键词
+      searchOpt: {
+        placeholder: "请输入推广名称进行搜索"
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageCount: "",
+        pageSize: 15
+      },
+      navigatorOpts: {
+        //tab切换
+        tabs: [
+          { key: "0", title: "待审核", selected: true },
+          { key: "2", title: "推广中" },
+          { key: "1", title: "审核失败" },
+          { key: "3", title: "已结束" },
+          { key: "4", title: "已暂停" }
+        ],
+        selectedKey: ""
+      },
+      state: 0,
+      imgSrc: "", //图片路径
+      modalVisible: false, //弹出框状态
+      dialogForm: {
+        visible: false,
+        currentItem: '',
+        reason: ''
+      }
+    };
+  },
+  mounted() {
+    this.appid = this.$route.query.appid || '';
+    this.getList();
+  },
+  methods: {
+    //tab菜单切换
+    transferTab(evt){ 
+      this.state= evt;
+      this.getList();
+    },
+    getList(cb) {
+      let _this = this;
+      let _option = {
+        state: this.state,
+        search: this.key_word,
+        pageIndex: this.paginationOpt.pageIndex, //开始条数，不可空，正整数
+        pageSize: this.paginationOpt.pageSize //取用条数，不可空，正整数
+      };
+      if (this.appid!=''){
+          _option.appId = this.appid;
+      }
+      api.request("getweChatAdvList", _option, result => {
+        if (result.status == 0) {
+          _this.bussinessList = result.data.list;
+          _this.paginationOpt.totalCount = result.data.total;
+          _this.paginationOpt.pageCount = Math.ceil(
+            _this.paginationOpt.totalCount / _this.paginationOpt.pageSize
+          );
+        } else {
+          _this.messenger.error("获取朋友圈推广列表失败");
+        }
+        !!cb && cb();
+      });
+    },
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getList(cb);
+    },
+    //搜索
+    searchHander(data) {
+      this.key_word = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    },
+    //放大图片
+    imgBigger(src){
+      this.state = 'img';
+      this.imgSrc = src + '@w_356,h_720';
+      this.modalVisible = true;
+    },
+    //设置开启暂停状态
+    setSingleState(data) {
+      var self = this;
+      var type = (self.state == '4'?'2':'4') 
+      var opt = { 'mainId': data.mainId, "state": type };
+      api.request("isPass",opt,result => {
+        if(result.status==0){
+          self.messenger.success(type=='4'?'推广暂停成功':'推广恢复成功');
+        }else{
+          self.messenger.error(result.message);
+        } 
+        self.getList();
+      })
+    },
+    //通过
+    resolve(item) {
+      let _this = this;
+      this.messenger.confirm('你确定推广计划审核成功吗？',function(tag){
+          if(tag){
+              let opt = { 'mainId': item.mainId, "state": 2 };
+              api.request('isPass', opt, json => {
+                if (json.status == 0) {
+                    _this.messenger.success('已审核成功');
+                    _this.getList();
+                } else {
+                    _this.messenger.error(json.message);
+                }
+              });
+          }
+      })
+    },
+    //驳回
+    reject(item) {
+      this.dialogForm.currentItem = item;
+      this.dialogForm.visible = true;
+    },
+    //确认驳回
+    checkReject() {
+      let _this = this;
+      if(!this.dialogForm.reason) {
+        this.messenger.error('请输入审核失败原因');
+        return false;
+      }
+      let opt = { 'mainId': _this.dialogForm.currentItem.mainId, "state": 1, "reason": this.dialogForm.reason };
+      api.request('isPass', opt, json => {
+        if (json.status == 0) {
+            _this.messenger.success('已驳回成功');
+            _this.getList();
+            _this.dialogForm.visible = false;
+            _this.dialogForm.reason = '';
+        } else {
+            _this.messenger.error(json.message);
+        }
+      });
+    }, 
+    //详情
+    queryDetail(item) {
+      let param = !!item ? `?mainId=${item.mainId}` : '';
+      this.$router.push({
+        path: `/wechat-detail${param}`
+      });
+    },
+    //推广数据
+    jumpToPromotionData(item){
+      let param = !!item ? `?mainId=${item.mainId}` : '';
+      sessionStorage.setItem('promotionPlanName', item.activityName);
+      this.$router.push({
+        path: `/wechat-promote${param}`
+      });
+    }
+  }
+};
+</script>
+<style scope>
+.operation {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+}
+</style>
+
+

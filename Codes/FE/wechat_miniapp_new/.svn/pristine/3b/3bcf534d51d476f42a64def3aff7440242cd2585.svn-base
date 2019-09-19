@@ -1,0 +1,31 @@
+<!-- {{type == 3?'body_box_poster': 'body_box'}} -->
+<view class="body_box" wx:if="{{!articleid && type != '3'}}">
+  <view class="cover_box">
+    <canvas canvas-id="canvas_cover" class="canvas_cover"></canvas>
+  </view>
+</view>
+<view class='body_box_poster' wx:if="{{!articleid && type == '3'}}" style='width:{{canvasW}};box-shadow: {{!!canvasW ? "0 0 10px 2px #ccc" : ""}};'>
+  <view class="cover_box" style='width:{{canvasW}}'>
+    <canvas canvas-id="canvas_cover" class="canvas_cover"></canvas>
+  </view>
+</view>
+<view class="body_box_article" wx:if="{{!!articleid}}">
+  <view class="cover_box" style='width:72vm;height:76vh;border-radius:none;'>
+    <canvas canvas-id="canvas_cover" class="canvas_cover"></canvas>
+  </view>
+</view>
+<view class="footer_box">
+  <block wx:if="{{coverSaveStatus == 1}}">
+    <view>
+      <icon type="success" size="18" color="#24d0c6" style="margin-right: 6px;" />
+      <text style='vertical-align: middle;'>图片已保存到相册，马上去分享吧</text>
+    </view>
+    <view class="link font-bd" bindtap="showHelp"> 如何分享朋友圈？ </view>
+  </block>
+  <block wx:elif="{{coverSaveStatus == 2}}">
+    <button class="weui-btn" hover-class="btn-blue-hover" type="primary" style="width: 80vw;" open-type="openSetting" bindopensetting="saveImage">授权保存</button>
+  </block>
+</view>
+<!-- <view hidden="{{true}}">
+  <canvas canvas-id="canvas_cover_report" class="canvas_cover_report"></canvas>
+</view> -->

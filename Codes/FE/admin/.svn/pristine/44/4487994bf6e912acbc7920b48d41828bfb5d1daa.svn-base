@@ -1,0 +1,51 @@
+{
+  "_from": "@babel/runtime-corejs2@^7.2.0",
+  "_id": "@babel/runtime-corejs2@7.5.0",
+  "_inBundle": false,
+  "_integrity": "sha1-tKybLyju9Exwgie9gQ9b+2bKc+U=",
+  "_location": "/@babel/runtime-corejs2",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@babel/runtime-corejs2@^7.2.0",
+    "name": "@babel/runtime-corejs2",
+    "escapedName": "@babel%2fruntime-corejs2",
+    "scope": "@babel",
+    "rawSpec": "^7.2.0",
+    "saveSpec": null,
+    "fetchSpec": "^7.2.0"
+  },
+  "_requiredBy": [
+    "/@vue/babel-preset-app"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/@babel/runtime-corejs2/download/@babel/runtime-corejs2-7.5.0.tgz",
+  "_shasum": "b4ac9b2f28eef44c708227bd810f5bfb66ca73e5",
+  "_spec": "@babel/runtime-corejs2@^7.2.0",
+  "_where": "D:\\kma-b\\admin\\node_modules\\@vue\\babel-preset-app",
+  "author": {
+    "name": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "deprecated": false,
+  "description": "babel's modular runtime helpers with core-js@2 polyfilling",
+  "devDependencies": {
+    "@babel/helpers": "^7.5.0"
+  },
+  "gitHead": "49da9a07c81156e997e60146eb001ea77b7044c4",
+  "license": "MIT",
+  "name": "@babel/runtime-corejs2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/babel/babel/tree/master/packages/babel-runtime-corejs2"
+  },
+  "version": "7.5.0"
+}

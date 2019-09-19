@@ -1,0 +1,16 @@
+<view class="container">
+  <view class='share-section'>
+    <view class='header'>
+      <image class='pull-left' src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/logo-reverse.png'></image>
+      <text class='pull-left'>推小宝</text>
+    </view>
+    <view class='text'>{{shareObj.title}}</view>
+    <view>
+      <image src="{{shareObj.imageUrl}}" style='width:420rpx;height:330rpx;'></image>
+    </view>
+  </view>
+  <button class="weui-flex__item replace-btn" open-type="share" wx:if="{{!!shareObj.imageUrl}}">
+    发送微信群
+  </button>
+</view>
+<canvas canvas-id="card_canvas" class="canvas_cover" style="width: 420px; height: 330px;"></canvas>

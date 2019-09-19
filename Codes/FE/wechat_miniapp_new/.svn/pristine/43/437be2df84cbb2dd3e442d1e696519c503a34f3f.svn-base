@@ -1,0 +1,33 @@
+/* pages/user-customer/user-customer.wxss */
+.title{
+  height: 35rpx;
+  line-height: 34rpx;
+  padding: 27rpx 20rpx 28rpx 25rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #DDE4EB;
+  position: relative;
+}
+
+.search{
+  height: 70rpx;
+  position: relative;
+  bottom:8px;
+}
+
+.search_input{
+  width: 560rpx;
+  height: 70rpx;
+  align-items: center;
+  background: #F7F7FF;
+}
+
+.search_input input{
+  font-size: 26rpx;
+  width: 450rpx;
+  height: 40rpx;
+}
+
+.search_input icon{
+  margin-left: 30rpx;
+  margin-right: 10rpx;
+}

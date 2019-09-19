@@ -1,0 +1,33 @@
+.navbar {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  height: 100rpx;
+  background: #fff;
+  /* box-shadow: 0px 0px 5px #ccc; */
+  /* border-bottom: 1px solid #f8f8f8; */
+}
+
+.navbar__item {
+  /* color: rgb(178, 178, 178); */
+  color: #333333;
+}
+
+.navbar__item.bar__item_on {
+  /* color: rgb(85, 85, 85); */
+  color: #24d0c6;
+}
+
+.navbar__item .navbar__title {
+  text-align: center;
+  height: 100%;
+  line-height: 100rpx;
+}
+
+.navbar__slider {
+  position: relative;
+  /* bottom: 4rpx; */
+  height: 4rpx;
+  /* background: #24d0c6; */
+  transition: transform 0.3s;
+}

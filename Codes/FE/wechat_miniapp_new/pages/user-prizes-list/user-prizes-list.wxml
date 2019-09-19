@@ -1,0 +1,31 @@
+<view class="page">
+  <comp-page-box-tips type="{{tipStatus}}"></comp-page-box-tips>
+  <block wx:if="{{prizeList.length > 0 && !tipStatus}}">
+    <view class="prizesItem" wx:for="{{prizeList}}" wx:key="*this" bindtap='prizesDetail' data-relationid="{{item.relationId}}" data-controlid="{{item.controlId}}">
+      <view class="flex listTop">
+        <image class="companyLogo" src="{{item.businessLogo}}"></image>
+        <text class="companyName">{{item.businessName}}</text>
+      </view>
+      <view class="flex justify-content-between ">
+        <view>
+          <view class="prizesInfo">
+            <text class='prizesInfo_label'>活动名称：</text>
+            <text class='prizesInfo_value'>{{item.name}}</text>
+          </view>
+          <view class="prizesInfo">
+            <text class='prizesInfo_label'>活动奖品：</text>
+            <text class='prizesInfo_value'>{{item.prizeName}}</text>
+          </view>
+          <view class="prizesInfo">
+            <text class='prizesInfo_label'>中奖时间：</text>
+            <text class='prizesInfo_value'>{{item.createtime}}</text>
+          </view>
+        </view>
+        <view class="weui-cell__ft">
+          <image style="width: 24rpx;height: 24rpx; margin-top: 48rpx;" src="/images/icon-arrows.png "></image>
+        </view>
+      </view>
+    </view>
+    <i-load-more i-class="my-load-more" wx:if="{{prizeList.length != 0 && pageIndex > 1}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='加载中'}}" />
+  </block>
+</view>

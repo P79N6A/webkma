@@ -1,0 +1,146 @@
+.container{
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f1f3fc;
+  overflow: hidden;
+}
+.pull-left{
+  float: left;
+}
+.search-wrap{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 750rpx;
+  height: 90rpx;
+  padding-left: 30rpx;
+  box-sizing: border-box;
+  font-size: 26rpx;
+  background-color: #f1f3fc;
+  z-index: 999;
+}
+.search-wrap .text{
+  width: 610rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  margin-top: 15rpx;
+  background-color: #fff;
+  color: #999;
+}
+.search-wrap .text .icon{
+  width: 25rpx;
+  height: 25rpx;
+  margin: 19rpx 15rpx 0 20rpx;
+  float: left;
+}
+.search-wrap .text input{
+  width: 490rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  float: left;
+}
+.search-wrap .cancel-text{
+  margin: 25rpx 0 0 27rpx;
+  color: #3898ec;
+}
+.log-list,
+.card-list{
+  overflow: hidden;
+  min-height: calc(100vh - 90rpx);
+  background-color: #fff;
+  margin-top: 90rpx;
+  padding-left: 30rpx;
+  padding-bottom: 30rpx;
+  box-sizing: border-box; 
+}
+.log-list .title{
+  font-size: 26rpx;
+  color: #000;
+  margin: 40rpx 0 20rpx;
+}
+.log-list .log-item{
+  height: 100rpx;
+  line-height: 100rpx;
+  color: #999;
+  font-size: 26rpx;
+  border-bottom: 1rpx solid #d2d3d5;
+}
+.log-list .log-item image{
+  width: 25rpx;
+  height: 25rpx;
+  float: right;
+  margin: 40rpx 40rpx 0 0;
+}
+.log-list .empty-btn{
+  text-align: center;
+  margin: 45rpx 0 0 -30rpx;
+  font-size: 26rpx;
+  color: #3898ec;
+}
+
+.card-list{
+  padding-left: 0;
+}
+.card-list .item{
+  margin:25rpx auto 0;
+  width: 590rpx;
+  height: 225rpx;
+  padding: 35rpx 50rpx;
+  margin-bottom: 25rpx;
+  position: relative;
+  border-radius:20rpx;
+  background-color:#fff;
+  box-shadow:0px 2rpx 10rpx rgba(0,0,0,0.1);
+}
+.card-list .item .pic{
+  width: 78rpx;
+  height: 78rpx;
+  float: left;
+  margin-right: 20rpx;
+  border: 6rpx #fff solid;
+  border-radius:50%;
+  box-shadow:0px 2rpx 10rpx rgba(0,0,0,0.1);
+}
+.card-list .item .pic .face{
+  width: 78rpx;
+  height: 78rpx;
+  border-radius:50%;
+}
+.card-list .item .text{
+  font-size: 24rpx;
+  float: left;
+}
+
+.card-list .item .text view{
+  margin-bottom: 27rpx;
+}
+.card-list .item .text view:last-child{
+  margin-bottom: 0;
+}
+.card-list .item .text .name{
+  color: #000;
+  font-size: 26rpx;
+}
+
+.card-list .item .text .phone{
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 10rpx;
+}
+.card-list .item .agree-icon{
+  width: 88rpx;
+  height: 88rpx;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.empty-img{
+  width: 275rpx;
+  height: 302rpx;
+  margin: 250rpx auto 50rpx;
+}
+.eslip{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}

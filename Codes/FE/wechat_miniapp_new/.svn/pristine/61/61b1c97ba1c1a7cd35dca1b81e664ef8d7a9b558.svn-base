@@ -1,0 +1,41 @@
+.body_box {
+  width: 75vw;
+  height: 85vh;
+  padding: 0;
+  margin: 3vh auto 2vh;
+  border-radius: none;
+  box-shadow: 0 0 10px 2px #ccc;
+}
+.body_box_article {
+  width: 72vw;
+  height: 76vh;
+  margin: 3vh auto 2vh;
+  padding: 0rpx;
+  background: #fff;
+}
+.body_box_poster{
+  height: 85vh;
+  padding: 0;
+  margin: 3vh auto 2vh;
+  border-radius: none;
+  /* box-shadow: 0 0 10px 2px #ccc; */
+}
+.cover_box {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas_cover {
+  width: 100%;
+  height: 100%;
+}
+
+.footer_box {
+  text-align: center;
+  height: 15vh;
+}
+
+.footer_box .link{
+  color: #24d0c6;
+  line-height: 5vh;
+}

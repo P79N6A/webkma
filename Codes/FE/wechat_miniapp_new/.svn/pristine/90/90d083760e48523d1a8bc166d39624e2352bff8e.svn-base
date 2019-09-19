@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "企业任务",
+  "onPullDownRefresh":true,
+  "usingComponents": {
+    "task-list-item": "/components/tasks-item/tasks-item",
+    "base-line": "/components/base-line/base-line",
+    "share-menu": "/components/share-menu/share-menu"
+  }
+}

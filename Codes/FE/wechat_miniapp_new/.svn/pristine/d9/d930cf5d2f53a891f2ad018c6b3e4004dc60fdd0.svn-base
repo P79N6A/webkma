@@ -1,0 +1,73 @@
+/* components/plug-in-unit.wxss */
+@import "../icon/iconfont.wxss";
+.plug-unit{
+  width: calc(100vw - 80rpx);
+  padding: 20rpx 40rpx;
+  display: flex;
+  justify-content: space-between;
+  border-bottom:1rpx solid #DDE4EB;
+  background: #ffffff
+}
+.photo{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 11rpx
+}
+.infocont{
+  display: flex;
+  justify-content: flex-start
+}
+.info{
+  max-width: 350rpx;
+  height: 80rpx;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-around;
+}
+.nick-name{
+  max-width:154rpx;
+  font-size: 22rpx;
+  color: #3C4A55;
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis
+}
+.price{
+  width:250rpx;
+  color: #FA766B;
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 22rpx;
+  margin-left: 90rpx;
+}
+.price_timer{
+  color: #B1BFCD !important
+}
+.phone{
+  font-size: 20rpx;
+  color: #B1BFCD;
+}
+.operationBtn{
+  width: 190rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+.operationBtn text{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 80rpx;
+  height: 80rpx;
+  background: #F7F7FF;
+  font-size: 38rpx;
+  color: #b1bfcd
+}
+.operationBtn text:last-child{
+  margin-left: 30rpx;
+}
+.icon-company-information{
+  font-size: 40rpx !important;
+}

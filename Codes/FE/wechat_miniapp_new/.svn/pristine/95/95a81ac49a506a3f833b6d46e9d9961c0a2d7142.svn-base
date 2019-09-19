@@ -1,0 +1,20 @@
+<!--pages/post-img/post-img.wxml-->
+<view class="body_box_poster">
+  <view class="cover_box" style='width:{{canvasW}}'>
+    <canvas canvas-id="canvas_cover" class="canvas_cover"></canvas>
+  </view>
+</view>
+<view class='img-wrap'>
+  <image src="{{src}}" class='img-src' style='width: {{showImg.width}};height: {{showImg.height}};' wx:if="{{!!src}}"></image>
+</view>
+<block wx:if="{{coverSaveStatus == 2 && !!src}}">
+  <button class="weui-btn" hover-class="btn-blue-hover" type="primary" style="width: 80vw;position:fixed;bottom: 1vh;left:10vw;z-index:9999;" open-type="openSetting" bindopensetting="download">授权保存</button>
+</block>
+<block wx:elif="{{coverSaveStatus != 2 && !!src}}">
+<view class='share-bar' bindtap='download' >
+  <image src="../../images/post-img_download.png" style='display:inline-block;width:34rpx;height:34rpx; margin-right:10rpx;'></image>
+  <text style='font-size:36rpx;'>下载</text>
+</view>
+</block>
+<comp-fast-nav>
+</comp-fast-nav>

@@ -1,0 +1,91 @@
+let menusConfig = [
+    {
+        key: "management",
+        title: "用户管理",
+        icon: "iconfont icon-dashbord",
+        href: "",
+        children: [
+			{
+                key: "bussiness-list",
+                title: "商家列表",
+                href: "/bussiness-list",
+                icon: "iconfont icon-form-marketing",
+                children: [
+                    {
+                        key: "a-list",
+                        title: "aa列表",
+                        href: "/a-list",
+                        icon: ""
+                    }
+                ]
+            },
+            {
+                key: "designer-list",
+                title: "设计师列表",
+                href: "/designer-list",
+                icon: "iconfont icon-form-marketing"
+            }
+        ]
+    },
+    {
+        key: "activity-management",
+        title: "活动管理",
+        icon: "iconfont icon-dashbord",
+        href: "",
+        children: [
+			{
+                key: "activity-list",
+                title: "活动列表",
+                href: "/activity-list",
+                icon: "iconfont icon-form-marketing"
+            },
+            {
+                key: "poster-list",
+                title: "海报列表",
+                href: "/poster-list",
+                icon: "iconfont icon-form-marketing"
+            },
+            {
+                key: "activity-categor",
+                title: "活动分类",
+                href: "/activity-categor",
+                icon: "iconfont icon-form-marketing"
+            },
+            {
+                key: "sms-list",
+                title: "短信列表",
+                href: "/sms-list",
+                icon: "iconfont icon-form-marketing"
+            },
+            {
+                key: "email-list",
+                title: "邮件列表",
+                href: "/email-list",
+                icon: "iconfont icon-form-marketing"
+            }
+        ]
+    },
+    {
+        key: "material-management",
+        title: "素材管理",
+        icon: "iconfont icon-dashbord",
+        href: "",
+        children: [
+			{
+                key: "material-list",
+                title: "素材列表",
+                href: "/material-list",
+                icon: "iconfont icon-form-marketing"
+            },
+            {
+                key: "material-label",
+                title: "素材标签",
+                href: "/material-label",
+                icon: "iconfont icon-form-marketing"
+            }
+        ]
+    },
+    
+];
+
+export default menusConfig

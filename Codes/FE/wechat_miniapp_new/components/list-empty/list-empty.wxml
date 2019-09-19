@@ -1,0 +1,4 @@
+<view style='text-align:center;'>
+  <image class='empty-img' src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/icon-empty.png"></image>
+  <view style='color:#999;font-size:24rpx;'>您暂时还没有任何名片</view>
+</view>

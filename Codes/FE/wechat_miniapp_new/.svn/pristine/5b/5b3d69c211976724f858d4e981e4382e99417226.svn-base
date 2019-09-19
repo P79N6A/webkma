@@ -1,0 +1,53 @@
+page{
+  overflow: hidden;
+}
+.container{ 
+  height:100%;
+} 
+.pull-left{
+  float: left;
+}
+.share-section{
+  width: 465rpx;
+  height: 548rpx;
+  padding: 25rpx 25rpx 40rpx;
+  margin: 95rpx auto 100rpx;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+}
+.share-section .header{
+  height: 44rpx;
+  line-height: 44rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+.share-section .header image{
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 10rpx;
+}
+.share-section .text{
+  font-size: 26rpx;
+  line-height: 40rpx;
+  color: #555;
+  margin: 15rpx auto;
+}
+.replace-btn{
+  width: 370rpx;
+  height: 95rpx;
+  line-height: 95rpx;
+  background-color: #e34037;
+  color: #fff;
+  font-size: 34rpx;
+  border: none;
+}
+.replace-btn::after{
+  border:none;
+}
+.canvas_cover {
+  position: absolute;
+  top: -1000rpx;
+  left: 0;
+  z-index: 1;
+}

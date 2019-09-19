@@ -1,0 +1,69 @@
+<!--pages/pass-card/pass-card.wxml-->
+<view class='container'>
+  <view class="card-wrap">
+    <view class="flex">
+      <image class="head-img flex_item" src="{{userInfo.face || '/images/icon-defaultPhoto.png'}}"></image>
+      <view class="flex_item">
+        <view class="font-30 black-deep bold">{{userInfo.name}}</view>
+        <view class="font-24 black-light">{{userInfo.job || '暂无职位'}}</view>
+      </view>
+    </view>
+    <view class="text-center">
+      <image class="qrcode" src="{{qrcodeImg}}"></image>
+    </view>
+    <view class="text-center font-24 black-light">
+      扫一扫小程序码，面对面递名片
+      <view class='pull-right' style='width: 60rpx;height:50rpx;text-align:center;'>
+        <image class="icon-download" src="/images/download.png" bindtap='downloadCard'></image>
+      </view>
+    </view>
+  </view>
+  <view class="option-wrap">
+    <view class="option-item">
+      <image class="option-icon pull-left" src="/images/icon-pass.png"></image>
+      <button class="button pull-left" open-type="share" data-type='share'>
+        <view class="font-30 black-deep" style='margin:32rpx 0 12rpx 0;'>发名片</view>
+        <view class="font-24 black-light">发送名片到好友或者微信群</view>
+      </button>
+      <image class="icon-arrow-right pull-right" src="/images/icon-arrows.png"></image>
+      <view class="h-line pull-right"></view>
+    </view>
+    <!-- <view class="option-item">
+      <image class="option-icon pull-left" src="/images/icon-exchange.png"></image>
+      <button class="share-button pull-left" open-type="share" data-type='exchange'>
+        <view class="font-30 black-deep" style='margin:32rpx 0 12rpx 0;'>交换名片</view>
+        <view class="font-24 black-light">与小伙伴交换名片</view>
+      </button>
+      <image class="icon-arrow-right pull-right" src="/images/icon-arrows.png"></image>
+      <view class="h-line pull-right"></view>
+    </view> -->
+    <view class="option-item" bindtap='toRedEnvelopesPage'>
+      <image class="option-icon pull-left"  style="width: 30rpx;" src="/images/icon-redpack.png"></image>
+      <button class="pull-left button">
+        <view class="font-30 black-deep" style='margin:30rpx 0 10rpx 0;'>红包名片</view>
+        <view class="font-24 black-light">增加名片曝光</view>
+      </button>
+      <image class="icon-arrow-right pull-right" src="/images/icon-arrows.png"></image>
+      <view class="h-line pull-right"></view>
+    </view>
+    <view class="option-item" bindtap='toShareCardPage'>
+      <image class="option-icon pull-left" src="/images/icon-cardimg.png"></image>
+      <button class="pull-left button">
+        <view class="font-30 black-deep" style='margin:30rpx 0 10rpx 0;'>名片图片</view>
+        <view class="font-24 black-light">分享名片图片到朋友圈</view>
+      </button>
+      <image class="icon-arrow-right pull-right" src="/images/icon-arrows.png"></image>
+    </view>
+  </view>
+</view>
+<view class="body_box">
+  <view class="cover_box">
+    <canvas canvas-id="canvas_cover" class="canvas_cover" style="width: 720px; height: 900px;"></canvas>
+    <canvas canvas-id="canvas_cover_1" class="canvas_cover_1" style="width: 420px; height: 330px;"></canvas>
+  </view>
+</view>
+<view class="footer_box" wx:if="{{coverSaveStatus == 2}}">
+  <block>
+    <button class="weui-btn" hover-class="btn-blue-hover" type="primary" style="width: 80vw;" open-type="openSetting" bindopensetting="saveImg">授权保存</button>
+  </block>
+</view>

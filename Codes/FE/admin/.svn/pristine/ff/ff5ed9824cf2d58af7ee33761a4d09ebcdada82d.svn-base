@@ -1,0 +1,230 @@
+<template>
+  <div class="activity-list-box">
+    <fold title="海报列表">
+      <div class="fr operation">
+        <search :placeholder="searchOpt.placeholder"
+                @searchHandler="searchHander"
+                :style="{ width: '240px'}"
+                ></search>
+      </div>
+      <el-table
+        ref="activityTable"
+        :data="posterList"
+        tooltip-effect="dark"
+        row-key="id"
+        class="table"
+        header-row-class-name="table-header"
+        header-cell-class-name="table-header"
+      >
+        <el-table-column
+          show-overflow-tooltip
+          prop="name"
+          label="海报名称"
+          align="center"
+          width="150"
+          class-name="number_color"
+        ></el-table-column>
+        <el-table-column
+          show-overflow-tooltip
+          prop="cover"
+          label="封面缩略图"
+          align="center"
+          class-name="number_color"
+        >
+          <template slot-scope="scope">
+              <img style="width: 30px;height: 30px;cursor: pointer; vertical-align: middle;"
+                  :src="scope.row.cover + '@w_100,h_100'" alt=""
+                  img-preview-dire="scope.row.cover" @click="imgBigger(scope.row.cover)" />
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="_category"
+          label="海报标签"
+          align="center"
+          class-name="number_color"
+        ></el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="发布时间"
+          align="center"
+          width="250"
+          class-name="number_color"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="sourceName"
+          label="使用模板"
+          align="center"
+          class-name="number_color"
+        ></el-table-column>
+        <el-table-column
+          prop="sort"
+          label="海报排序"
+          align="center"
+          class-name="number_color"
+        >
+          <template slot-scope="scope">
+            <span v-if="!scope.row._sortEdit" @click="scope.row._sortEdit = true">{{scope.row.sort}}</span>
+            <input style="width:56px;border:1px solid #ccc;" v-if="scope.row._sortEdit" type="text" v-model="scope.row.sort"  @blur="changeSortNum(null, scope.row)" @keyup="changeSortNum($event, scope.row)" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="状态" align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <slideBtn :activeText="'启用'" :prop-value-map="{0:1,1:0}" prop-key="enable" :slideBtnOpt="scope.row" @slide-event="setSingleState" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="address" label="操作" align="center" width="200" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span class="btn-plain" @click="preview(scope.row)">预览</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="margin:20px 10px;">
+        <pagination
+          class="pull-right"
+          :paginationOpt="paginationOpt"
+          @switchPage="pagesFn"
+        />
+      </div>
+      <comDialog title="" :modal-show.sync="modalVisible">
+        <img :src="imgSrc">
+      </comDialog>
+    </fold>
+  </div>
+</template>
+
+<script>
+import api from "../../axios/api-service";
+import fold from "../../components/com-fold";
+import comDialog from "../../components/com-dialog";
+import search from "../../components/com-search";
+import pagination from "../../components/ui-pagination";
+import slideBtn from "../../components/slide-btn";
+import { createPreviewWindow } from "../../utils";
+
+export default {
+  name: "poster-list",
+  components: { fold, pagination, comDialog, search, slideBtn },
+  data() {
+    return {
+      businessId: "", //商家id
+      searchOpt: { //搜索
+        placeholder: '请输入海报名称关键字进行搜索'
+      },
+      searchKeyword: "", 
+      posterList: [], //活动列表
+      paginationOpt: { //分页
+        pageIndex: 1,
+        pageCount: '',
+        pageSize: 15
+      },
+      imgSrc: "", //图片路径
+      modalVisible: false, //弹出框状态
+    };
+  },
+  mounted() {
+    this.getActivitiyList();
+  },
+  methods: {
+    //搜索
+    searchHander(data) {
+      this.searchKeyword = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getActivitiyList();
+    },
+    //获取活动列表
+    getActivitiyList(cb){
+      var self = this;
+      var query = {
+          pageIndex: self.paginationOpt.pageIndex,
+          pageSize: self.paginationOpt.pageSize,
+          nameSearch: self.searchKeyword,
+          businessId: self.businessId,
+          orderBy: "",
+          manuscriptType: 2
+      };
+      api.request("getActivitiyList",query,result => {
+        if(result.status == 0){
+          $.each(result.data.list, function (index1, item1) { item1._sortEdit = false; });
+          self.posterList = result.data.list.map(function (item) {
+            item.stateText = item.enable == 0 ? '正常' : '禁用';
+            item._category = JSON.parse(item.cats || "[]").map(function (cat) { return cat.name }).join(", ") || "无";
+            return item;
+          });
+          self.paginationOpt.totalCount = result.data.total;
+          self.paginationOpt.pageCount = Math.ceil(
+            self.paginationOpt.totalCount / self.paginationOpt.pageSize
+          );
+        }else{
+          self.messenger.error(result.message);
+        }
+        !!cb && cb();
+      })
+    },
+    //分页
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getActivitiyList(cb);
+    },
+    //放大图片
+    imgBigger(src){
+      this.state = 'img';
+      this.imgSrc = src + '@w_356,h_720';
+      this.modalVisible = true;
+    },
+    //设置状态
+    setSingleState(data) {
+      var self = this;
+      api.request("activitiyEnable",{
+        id: data.id,
+        enable: data.enable
+      },result => {
+        if (result.status === 0) {
+          self.getActivitiyList();
+          self.messenger.success("操作成功");
+        } else {
+          self.messenger.error("操作失败:" + result.message);
+        }
+      })
+    },
+    //海报作品添加排序值
+    changeSortNum(event,data) {
+      var self = this;
+      if (!!event && event.keyCode != 13) {
+          data.sort = data.sort.replace(/\D/g, '');
+          return false;
+      }
+      var rec = {
+          id: data.id,
+          sort: data.sort
+      };
+      if (!/^\d{1,}$/.test(rec.sort)) {
+        self.messenger.error('请输入0~1000之间的数字！');
+        return false;
+      } else if (rec.sort > 1000 || rec.sort < 0) {
+        self.messenger.error('请输入0~1000之间的数字！');
+        return false;
+      }
+      api.request("activitiySort",rec,result => {
+        if (result.status === 0) {
+          self.messenger.success('操作成功！');
+          self.getActivitiyList();
+        } else {
+          self.messenger.error(result.message);
+        }
+      })
+    },
+    // 预览
+    preview(data) {
+      var url = data.url;
+        // if (!/http[s]?:\/\//i.test(url)) url = 'http://' + url;
+        // window.open(previewUrl);
+      createPreviewWindow(data.url, data.id);
+        
+    }
+  }
+};
+</script>
+<style scoped>
+
+</style>

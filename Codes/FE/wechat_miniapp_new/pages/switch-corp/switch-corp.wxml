@@ -1,0 +1,15 @@
+<!--pages/switch-card/switch-card.wxml-->
+<view class='container'>
+  <view class='corp-box'> 
+    <!-- 企业切换 -->
+    <view class='corp-info'>
+      <block wx:for='{{corpList}}' wx:for-index="index" wx:key='{{key}}'>
+        <view class="corp {{current == index?'current':'corp'}}"  bindtap='selectCorp' data-item='{{item}}' data-index='{{index}}' >
+          <text>{{ item.businessName }}</text>
+          <!-- <text>{{ item.name }}</text> -->
+          <image class='corp-selection' src='/images/icon-selection.png'></image>
+        </view>
+      </block>
+    </view>
+  </view> 
+</view>

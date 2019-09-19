@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "comp-fast-nav": "/components/fast-nav/fast-nav"
+  }
+}

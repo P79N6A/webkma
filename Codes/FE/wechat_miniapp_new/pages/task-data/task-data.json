@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "任务数据",
+  "usingComponents": {
+    "comp-navbar": "/components/navbar/navbar",
+    "custom-overview": "/components/custom-overview/custom-overview",
+    "task-list-item": "/components/tasks-item/tasks-item",
+    "base-line": "/components/base-line/base-line"
+  }
+}

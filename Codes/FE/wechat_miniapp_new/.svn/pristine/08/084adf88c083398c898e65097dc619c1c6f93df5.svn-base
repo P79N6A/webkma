@@ -1,0 +1,23 @@
+<!--components/customer-info/customer-info.wxml-->
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<view class='info-box flex justify-content-between' wx:for="{{customerList}}" wx:key="item">
+  <view class='flex' style='width:60%;'>
+    <view style='width:40rpx; position:relative;'>  
+      <view class='mark font-16 color-white'>{{item.connections_level}}度</view>
+       <text class="line" wx:if="{{item.connections_level==1}}"></text>
+       <text class="line-son" wx:else></text>
+    </view> 
+    <view class='photo-box ml-16'>
+      <image class='photo' src='{{item.face}}'></image>
+      <text class='score color-white font-18'>{{cont.keepOneCount(item.marketing_power)}}分</text>
+    </view>
+    <view class='flex flex-column ml-16'>
+      <text class='font-22 title-color'>{{(item.name==null||item.name=="")?item.nick_name:item.name}}</text>
+      <text class='font-20 color-gray'>{{item.phone || '暂无'}}</text>
+      <text class='font-20 color-gray'>来自 <text class='font-20 color-blue'>{{item.from_name}}</text> </text>
+    </view>
+  </view>
+  <view style='width:20%;' bindtap="{{item.flag=='2'?'detailsInfo':'telCall'}}" data-call='{{item.phone}}' data-id='{{item.id}}'>
+    <image class='photo' src="{{item.flag=='2'?'../../images/icon-card.png':'../../images/icon-call.png'}}"></image>    
+  </view>
+</view>

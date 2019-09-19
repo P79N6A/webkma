@@ -1,0 +1,36 @@
+<!-- Loading Panel Start -->
+<view hidden='{{!authSettingUserInfo}}'>
+  <view style='text-align:center; padding-top:30vh;'>
+    <image mode="aspectFit" style="height: 200rpx; width:200rpx" src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/loading-300.gif" />
+  </view>
+</view>
+<!-- Loading Panel End -->
+<!-- Network Panel Start -->
+<view hidden='{{isNetwork}}'>
+  <view style='text-align:center; padding-top:25vh;'>
+    <image mode="aspectFit" style="height: 24vh;" src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/cover-network-error.png" />
+    <view>你的网络似乎不太好哎</view>
+    <view class="content-area">
+      <i-button type="success" bind:click="onReady">重新加载</i-button>
+    </view>
+  </view>
+</view>
+<!-- Network Panel End -->
+<!-- Authorize Panel Start -->
+<view hidden='{{!isNetwork || authSettingUserInfo}}'>
+  <view style='text-align:center; padding:10vh 0 6vh;'>
+    <image mode="aspectFit" style="height: 200rpx; width:200rpx" src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/logo-reverse.png" />
+  </view>
+  <view class="content-area">
+    <view style='border-top:1px solid #A0A0A0;'>
+      <view style="padding:0 60rpx;">
+        <view class='font-bd' style='margin-top:40rpx;'>登录后该应用将获得以下权限</view>
+        <view class='font-tips' style='margin-top:20rpx;'>● 获得你的公开信息（昵称、头像等）</view>
+      </view>
+      <view style="margin-top: 60rpx;">
+        <i-button type="success" open-type='getUserInfo' bind:getuserinfo="btnLogin">确认登录</i-button>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- Authorize Panel End -->

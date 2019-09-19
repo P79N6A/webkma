@@ -1,0 +1,75 @@
+<!--pages/employee-details/employee-details.wxml-->
+<view class='detail-box'>
+  <view class='detail-head'> 
+    <!-- 客户信息 -->
+    <view class='info-card' style='min-height:409rpx;'>
+      <view class='user-info flex'>
+        <view class='user-photo'>
+          <image src="{{singleItem.face || '../../images/icon-default-photo.png'}}"></image>
+        </view>
+        <view class='flex flex-column' style='width:500rpx;position:relative;'>
+          <text class='font-30 title-color mt-12'>姓名</text>
+          <text class='font-22 color-gray' style='margin:6rpx 0;'>17609399909</text>
+          <text class='font-22 color-gray tips'>产品中心</text>
+          <view class='font-20 mt-12 mb-10 flex'>
+            <view class="certi-logo pull-left">
+              <view class="logo-wrap">
+                <image src="../../images/icon-pass.png"></image>
+              </view>
+              <view class="pull-left eplipes font-20" style='max-width:140rpx;'>
+                版本名称
+              </view>
+            </view>
+            <text class='color-gray eplipes'>公司名萨达萨达多所多大所大多撒多撒旦撒旦撒大大的阿萨德撒撒称</text>
+          </view>
+        </view>
+      </view>
+      <view class='data-info flex'>
+        <view>
+          <text>累计奖励</text>
+          <text class='font-36 color-red'> <text class='font-22'>￥</text>56</text>
+        </view>
+        <view>
+          <text>营销力</text>
+          <text class='font-36 color-green'>23</text>
+        </view>
+        <view>
+          <text>排名</text>
+          <text class='font-36 color-green'>43</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 用户行为方阵 -->
+  <view class='user-behavior bg-color mb-20'>
+    <view class='title' style='border:none;'>
+      <view class='side-line'></view>
+      <text class='font-26 title-color'>营销力方阵</text>
+    </view>
+    <view class="container" style="width:100vw;height:40vh;">
+      <charts-flow-radar dataSource="{{radarDataSource}}"></charts-flow-radar>
+    </view>
+  </view>
+  <!-- 客户来源 -->
+  <view class='bg-color mb-20'>
+    <custom-overview wx:if="{{customer.list.length>0}}" title="TA的客户" count="{{customer.count}}" listData="{{customer.list}}"></custom-overview>
+  </view>
+  <!-- TA的任务 -->
+  <view class='user-task bg-color mb-20'>
+    <view class='title' style='border:none;'>
+      <view class='side-line'></view>
+      <text class='font-26 title-color'>TA的任务</text>
+      <view class='drop-option'>
+        <view bindtap="taskAction" style='position:relative;'>
+          <text class='font-22 tips-gary'>{{taskActionText}}</text> 
+          <text class='corner'></text>
+          <!-- <icon type='icon-zhankai1'></icon> -->
+        </view>
+      </view>
+    </view>
+    <view wx:for="{{task.list}}" wx:key="index">
+      <task-list-item  item="{{item}}" urls="{{task.urls}}" bind:itemDataEvent="itemDataEvent"></task-list-item>
+    </view>
+     <i-load-more wx:if="{{task.list.length != 0}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='玩命加载中'}}" />
+  </view>
+</view>

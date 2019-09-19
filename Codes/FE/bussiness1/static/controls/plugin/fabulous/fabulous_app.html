@@ -1,0 +1,21 @@
+<div style="width:100%;height:100%;">
+  <div class="js-data-value" data-kid="{{{data.kid}}}" data-text="{{{data.fabulousText}}}" style="display: none;"></div>
+  <div class="fabulous_box">
+    {{{if data.style==1}}} 
+      <div class="item" style="background-color: {{{data.backgroundColor}}};color: {{{data.color}}};">
+        <i class="iconfont icon-hua icon"></i>
+        <span class="show-text">{{{data.fabulousText}}}</span>
+      </div>
+    {{{else if data.style==2}}}
+      <div class="item" style="background-color: {{{data.backgroundColor}}};color: {{{data.color}}};">
+        <i class="iconfont icon-zan1 icon"></i>
+        <span class="show-text">{{{data.fabulousText}}}</span>        
+      </div>
+    {{{else if data.style==3}}}
+      <div class="item" style="background-color: {{{data.backgroundColor}}};color: {{{data.color}}};">
+        <i class="iconfont icon-zan icon"></i>
+        <span class="show-text">{{{data.fabulousText}}}</span>        
+      </div>
+    {{{/if}}}
+  </div>
+</div>

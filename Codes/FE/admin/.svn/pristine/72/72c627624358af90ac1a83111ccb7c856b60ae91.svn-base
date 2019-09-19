@@ -1,0 +1,473 @@
+<template>
+	<div class="bussiness-detail">
+		<el-collapse v-model="activeName">
+		<el-collapse-item name="1">
+			<template slot="title">
+			<i class="header-icon el-icon-info" style="margin: 0 6px;"></i>商家详情
+			</template>
+			<div class="label-info" v-if='!isEdit'>
+				<el-row class="business-block">
+					<el-row class="business-block-title">注册账号</el-row>
+					<el-row class="business-block-body">
+						<el-form ref="form" :model="bussinessDate" label-width="120px" class="block-wrap">
+							<el-form-item label="公司Logo">
+								<form class="form_upload">
+									<upload
+									type="businessLogo"
+									upfileId="upfileId1"
+									uploadTip="jpg/jpeg/gif/png <3M"
+									:imageUrl="bussinessDate.businessLogo"
+									fileType="/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/"
+									:cb="uploadCb"
+									></upload>
+								</form>
+								<span class="help-inline">上传图片必须为jpg、jpeg、gif、png格式文件且文件大小不超过3M</span>
+							</el-form-item>
+							<el-form-item label="公司名称">
+								<el-input v-model="bussinessDate.businessName" placeholder="请输入公司名称"></el-input>
+								<span class="help-inline">请输入公司名称</span>
+							</el-form-item>
+							<el-form-item label="账号">
+								<el-input v-model="bussinessDate.businessPhone" placeholder="请输入手机号"></el-input>
+								<span class="help-inline">请输入手机号</span>
+							</el-form-item>
+							<el-form-item label="密码">
+								<el-input type="text" onfocus="this.type='password'" v-model="bussinessDate.voucher" autocomplete="off" placeholder="请输入密码"></el-input>
+								<span class="help-inline">6-20位，至少包含字母、数字、符号任意两项</span>
+							</el-form-item>
+							<el-form-item label="确认密码">
+								<el-input type="text" onfocus="this.type='password'" v-model="revoucher" autocomplete="off" placeholder="请确认密码"></el-input>
+								<span class="help-inline">6-20位，至少包含字母、数字、符号任意两项</span>
+							</el-form-item>
+							<el-form-item label="截止时间">
+								<el-date-picker
+									v-model="bussinessDate.endTime"
+									type="date"
+									placeholder="选择日期">
+									</el-date-picker>
+							</el-form-item>
+							<!-- <el-form-item label="版本名称">
+								<el-select v-model="bussinessDate.version" placeholder="请选择版本">
+								<el-option label="区域一" value="shanghai"></el-option>
+								<el-option label="区域二" value="beijing"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="小游戏">
+								<el-checkbox-group v-model="bussinessDate.games">
+									<el-checkbox label="美食/餐厅线上活动" name="games"></el-checkbox>
+									<el-checkbox label="地推活动" name="games"></el-checkbox>
+									<el-checkbox label="线下主题活动" name="games"></el-checkbox>
+									<el-checkbox label="单纯品牌曝光" name="games"></el-checkbox>
+								</el-checkbox-group>
+							</el-form-item>
+							<el-form-item label="互动">
+								<el-checkbox-group v-model="bussinessDate.plugins">
+									<el-checkbox label="美食/餐厅线上活动" name="plugins"></el-checkbox>
+									<el-checkbox label="地推活动" name="plugins"></el-checkbox>
+									<el-checkbox label="线下主题活动" name="plugins"></el-checkbox>
+									<el-checkbox label="单纯品牌曝光" name="plugins"></el-checkbox>
+								</el-checkbox-group>
+							</el-form-item> -->
+						</el-form>
+					</el-row>
+				</el-row>
+				<el-row class="business-block">
+					<el-row class="business-block-title">增量资源</el-row>
+					<el-row class="business-block-body">
+						<el-form ref="form" label-width="120px" class="block-wrap">
+							<!-- <el-form-item label="短信">
+								<el-input v-model="bussinessDate.businessName"></el-input>
+								<span>条 （当前已发送：0条）</span>
+							</el-form-item>
+							<el-form-item label="邮件">
+								<el-input v-model="bussinessDate.businessPhone"></el-input>
+								<span>封 （当前已发送：0封）</span>
+							</el-form-item> -->
+							<el-form-item label="人员">
+								<el-input v-model="bussinessDate.staffCount"></el-input>
+								<span>名 （当前已创建：{{bussinessDate.staffCreated || '0'}}名）</span>
+							</el-form-item>
+							<el-form-item label="朋友圈推广金额">
+								<el-input @change="moneyBuy" v-model="bussinessDate.friendsMoneyBuy"></el-input>
+								<span>元</span>
+							</el-form-item>
+						</el-form>
+					</el-row>
+				</el-row>
+			</div>
+			<div class="label-info" v-else>
+				<el-row class="business-block">
+					<el-row class="business-block-title">编辑账号</el-row>
+					<el-row class="business-block-body">
+						<el-form ref="form" :model="bussinessDate" label-width="120px" class="block-wrap">
+							<el-form-item label="公司Logo">
+								<form class="form_upload">
+									<upload
+									type="businessLogo"
+									upfileId="upfileId1"
+									uploadTip="jpg/jpeg/gif/png <3M"
+									:imageUrl="bussinessDate.businessLogo"
+									fileType="/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/"
+									:cb="uploadCb"
+									></upload>
+								</form>
+							</el-form-item>
+							
+							<el-form-item label="账号：">
+								<span>{{bussinessDate.businessPhone}}</span>
+							</el-form-item>
+							<el-form-item label="公司名称：">
+								<span>{{bussinessDate.businessName}}</span>
+							</el-form-item>
+							<el-form-item label="账号状态：">
+								<span>{{bussinessDate.state == '0'? '正常':'禁用'}}</span>
+							</el-form-item>
+							<el-form-item label="发布推广数：">
+								<span>{{bussinessDate.extensionCount}}</span>
+							</el-form-item>
+							<el-form-item label="截止时间">
+								<el-date-picker
+									v-model="bussinessDate.endTime"
+									type="date"
+									placeholder="选择日期">
+									</el-date-picker>
+							</el-form-item>
+						</el-form>
+					</el-row>
+				</el-row>
+				<el-row class="business-block">
+					<el-row class="business-block-title">增量资源</el-row>
+					<el-row class="business-block-body">
+						<el-form ref="form" label-width="120px" class="block-wrap">
+							<el-form-item label="人员">
+								<el-input v-model="bussinessDate.staffCount"></el-input>
+								<span>名 （当前已创建：{{bussinessDate.staffCreated || '0'}}名）</span>
+							</el-form-item>
+							<el-form-item label="朋友圈推广金额">
+								<el-input @change="moneyBuy" v-model="bussinessDate.friendsMoneyBuy"></el-input>
+								<span>元</span>
+							</el-form-item>
+							<el-form-item label="商家资金余额">
+								<span>￥{{bussinessDate.balance}}元</span>
+							</el-form-item>
+						</el-form>
+					</el-row>
+				</el-row>
+			</div>
+		</el-collapse-item>
+		</el-collapse>
+		<el-row class="text-center" style="margin:20px 0;">
+			<el-button type="primary" @click="submit">确定{{!bussinessDate.businessId ? '创建': '修改'}}</el-button>
+		</el-row>
+	</div>
+</template>
+<script scope>
+import api from "../../axios/api-service";
+import upload from '../../components/com-upload'
+export default {
+	name:'bussiness-detail',
+	components: { upload },
+	data() {
+		return {
+			activeName: '1',
+			isEdit: false, //是否编辑
+			bussinessDate: {
+				"businessId": "",
+				"businessName": "",//公司名称
+				"businessPhone": "",//用户名
+				"voucher": "", //密码
+				"businessType": "1",//1商家  2是设计师
+				"staffCount": "",//员工数量
+				"smsCount": "",//短信数量
+				"emailCount": "",//邮件数量
+				"businessLogo": 'https://resource.ikmark.com/tuixiaobao/weapp/default-logo.jpg',//公司 logo
+				"businessCover": 'https://resource.ikmark.com/tuixiaobao/weapp/default-business-card.jpg',//公司封面
+				"games": '', //小游戏key字符串集合
+				"plugins": '', //插件key字符串集合
+				"friendsMoneyBuy":'',//推广金额
+				"smsUsed": 0,
+				"emailUsed": 0,
+				"smsOldCount": 0,
+				"staffCreated": 0,
+				"endTime": "",//截止时间
+				"version": ''//版本id
+			},
+			revoucher: '',  //重复密码 
+			edit: '', //是否是修改 
+			case: [], //营销方案  
+			search: '', //模板筛选条件
+			game: [], //小游戏
+			plugin: [], //互动插件
+			versionList: [] //版本列表
+		}
+	},
+	mounted(){
+		this.isEdit = this.$route.query.edit || false;
+		this.bussinessDate.businessId = this.$route.query.businessId || '';
+		if(this.isEdit) this.getDetail();
+	},
+	methods: {
+		//获取商家详情
+		getDetail() {
+			let _this = this;
+			let _option = {
+				businessId: _this.bussinessDate.businessId
+			}
+			api.request("getBussinessInfo", _option, result => {
+				if (result.status == 0) {
+					result.data[0].version = result.data[0].version + '';
+					_this.bussinessDate = result.data[0];
+					_this.bussinessDate.smsOldCount = _this.bussinessDate.smsCount;
+					_this.bussinessDate.emailOldCount = _this.bussinessDate.emailCount;
+				} else {
+					_this.messenger.error(result.message);
+				}
+			});
+		},
+		//上传图片回调
+		uploadCb(data) {
+			this.bussinessDate = Object.assign(this.bussinessDate, data);
+		},
+		//朋友圈金额监听
+		moneyBuy(){
+			this.bussinessDate.friendsMoneyBuy = parseFloat(this.bussinessDate.friendsMoneyBuy).toFixed(2);
+		},
+		//表单验证
+		_fomvalidation(){
+			var _tag = true
+				, regArr = [
+					// /^[\u4e00-\u9fa5（）()\w]{1,80}$/
+					{ type: 'businessName', reg: /^[\u4e00-\u9fa5\[\]]{2,40}$/ },
+					{ type: 'businessPhone', reg: /^1[0-9]{10}$/ },
+					{ type: 'voucher', reg: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z@_~\!#\$%\^&\*\(\)-=\+\?]{6,20}$/ },
+					{ type: 'resource', reg: /^0|([1-9][0-9]{0,5})$/ }
+				];
+			if (_tag && !this.bussinessDate.businessName) {
+				this.messenger.error('请输入公司名称！');
+				_tag = false;
+			} else if (_tag && !regArr[0].reg.test(this.bussinessDate.businessName)) {
+				this.messenger.error('公司名称可以由2～40个中文和中括号组成！');
+				_tag = false;
+			}
+			if (_tag && !this.bussinessDate.businessPhone) {
+				this.messenger.error('请输入手机号！');
+				_tag = false;
+			} else if (_tag && !regArr[1].reg.test(this.bussinessDate.businessPhone)) {
+				this.messenger.error('请输入正确的手机号');
+				_tag = false;
+			}
+			if (this.isEdit == false) {
+				if (_tag && !this.bussinessDate.voucher) {
+					this.messenger.error('请输入密码！');
+					_tag = false;
+				} else if (_tag && !regArr[2].reg.test(this.bussinessDate.voucher)) {
+					this.messenger.error('密码为6-20位，至少包含字母、数字、符号任意两项！');
+					_tag = false;
+				}
+				if (_tag && !!this.bussinessDate.voucher && !this.revoucher) {
+					this.messenger.error('请输入确认密码！');
+					_tag = false;
+				} else if (_tag && !!this.bussinessDate.voucher && this.bussinessDate.voucher != this.revoucher) {
+					this.messenger.error('两次密码输入不一致，请重新输入！');
+					_tag = false;
+				}
+			}
+			//判断当前选择的资源是否符合版本资源数量
+			// var currentVersion = _.filter($scope.pageControl.versionList, function(n){ return n.id == $scope.pageControl.data.version })[0];
+			// var pluginLen = _.filter($scope.pageControl.plugin,function(n){ return n.active == true; }).length;
+			// var gameLen = _.filter($scope.pageControl.game,function(n){ return n.active == true; }).length;
+
+			// if(!!currentVersion && gameLen > currentVersion.minigameQuantity && _tag){
+			// 	this.messenger.error('当前选择的版本小游戏数量最多为'+ currentVersion.minigameQuantity + '个！');
+			// 	_tag = false;
+			// }
+			// if(!!currentVersion && pluginLen > currentVersion.pluginQuantity && _tag){
+			// 	this.messenger.error('当前选择的版本互动数量最多为'+ currentVersion.pluginQuantity + '个！');
+			// 	_tag = false;
+			// }
+			if(!this.bussinessDate.endTime && _tag){
+				this.messenger.error('请选择版本截止时间！');
+				_tag = false;
+			}
+			// if(!$scope.pageControl.data.version && _tag){
+			// 	this.messenger.error('请选择版本！');
+			// 	_tag = false;
+			// }
+			// debugger
+			// var smsCount = Number($scope.pageControl.data.smsCount);
+			// if (_tag && $scope.pageControl.data.smsCount === '') {
+			// 	this.messenger.error('请输入短信数量！');
+			// 	_tag = false;
+			// } else if (_tag && !regArr[3].reg.test(smsCount)) {
+			// 	this.messenger.error('短信数量应为0-100000之间的数字！');
+			// 	_tag = false;
+			// } else if (_tag && smsCount > 100000 || smsCount < 0) {
+			// 	this.messenger.error('短信数量应为0-100000之间的数字！');
+			// 	_tag = false;
+			// } else if (_tag && $scope.pageControl.data.smsOldCount > 0 && smsCount < $scope.pageControl.data.smsOldCount) {
+			// 	this.messenger.error('短信数量必须大于或等于已使用短信数！');
+			// 	_tag = false;
+			// }
+
+			// var emailCount = Number($scope.pageControl.data.emailCount);
+			// if (_tag && $scope.pageControl.data.emailCount === '') {
+			// 	this.messenger.error('请输入邮件数量！');
+			// 	_tag = false;
+			// } else if (_tag && !regArr[3].reg.test(emailCount)) {
+			// 	this.messenger.error('邮件数量应为0-100000之间的数字！');
+			// 	_tag = false;
+			// } else if (_tag && emailCount > 100000 || emailCount < 0) {
+			// 	this.messenger.error('邮件数量应为0-100000之间的数字！');
+			// 	_tag = false;
+			// } else if (_tag && $scope.pageControl.data.emailOldCount > 0 && emailCount < $scope.pageControl.data.emailOldCount) {
+			// 	this.messenger.error('邮件数量必须大于或等于已使用邮件数！');
+			// 	_tag = false;
+			// }
+			var staffCount = Number(this.bussinessDate.staffCount);
+			if (_tag && this.bussinessDate.staffCount === '') {
+				this.messenger.error('请输入员工数量！');
+				_tag = false;
+			} else if (_tag && !regArr[3].reg.test(this.bussinessDate.staffCount)) {
+				this.messenger.error('员工数量应为0-100000之间的数字！');
+				_tag = false;
+			} else if (_tag && staffCount > 100000 || staffCount < 0) {
+				this.messenger.error('员工数量应为0-100000之间的数字！');
+				_tag = false;
+			} else if (_tag && this.bussinessDate.staffCreated > 0 && staffCount < this.bussinessDate.staffCreated) {
+				this.messenger.error('员工数量必须大于或等于已创建数！');
+				_tag = false;
+			}
+			 
+			var friendsMoneyBuy = Number(this.bussinessDate.friendsMoneyBuy);
+			if (_tag && this.bussinessDate.friendsMoneyBuy=== ''){
+				this.messenger.error('推广金额应为大于或等于0数字！');
+				_tag = false;
+			} else if (_tag && friendsMoneyBuy > 10000000){
+				this.messenger.error('推广金额不能超过一千万！');
+				_tag = false;
+			} else if (_tag && friendsMoneyBuy<0){
+				this.messenger.error('推广金额应为大于或等于0的数字！');
+				_tag = false;
+			}
+			// else if (_tag && !regArr[3].reg.test(this.bussinessDate.friendsMoneyBuy)){
+			// 	this.messenger.error('推广金额应为大于或等于0的数字！');
+			// 	_tag = false;
+			// } 
+			return _tag;
+		},
+		//提交
+		submit() {
+			let _this = this;
+            this._lock = false;
+			if (!this._fomvalidation()) { return false; }
+			if (_this._lock) {
+				return false;
+			}
+			_this._lock = true;
+			_this.bussinessDate.endTime = window.timeFormdate(_this.bussinessDate.endTime);
+			api.request("savebusiness", _this.bussinessDate, result => {
+				if (result.status == 0) {
+					_this.messenger.success((_this.isEdit ? '修改' : '新增') + '成功!');
+					this.$router.push({
+						path: `/bussiness-list`
+					});
+				} else {
+					_this.messenger.error(result.message);
+				}
+				_this._lock = false;
+			});
+		}
+	}
+}
+</script>
+<style scoped>
+.bussiness-detail {
+	padding: 10px 20px 0;
+}
+.bussiness-detail >>> .el-collapse .el-collapse-item{
+    border: 1px solid #555!important;
+  }
+  .bussiness-detail >>> .el-collapse .el-collapse-item .el-collapse-item__header{
+    height: 41px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #555;
+    border-bottom: none;
+    overflow: hidden;
+  }
+  .bussiness-detail >>> .el-collapse .el-collapse-item .el-collapse-item__content{
+    padding: 30px!important;
+  }
+  .bussiness-detail >>> .el-collapse .el-collapse-item .el-button{
+    padding: 8px 12px!important;
+    border-radius: 0; 
+  }
+  .bussiness-detail >>> .el-collapse .el-input__inner{
+    height: 32px;
+    line-height: 32px;
+    border-radius: 0;
+    margin-right: 10px;
+  }
+  .bussiness-detail >>> .el-row .grid-content{
+    background-color: #fafafa!important;
+    padding: 25px;
+    margin: 8px;
+  }
+
+
+
+.business-block {
+    width: 100%;
+    min-width: 900px;
+    height: auto;
+    overflow: hidden;
+}
+
+.form_upload {
+	width: 142px;
+	float: left;
+	margin-right: 10px;
+}
+
+.help-inline {
+    font-size: 13px;
+    color: #737373;
+    display: inline-block;
+}
+
+.business-block-title {
+    width: 100%;
+    height: 54px;
+    line-height: 54px;
+    border: 1px solid #e7ecf1 !important;
+    padding: 0 20px;
+}
+
+    .business-block-title .icon-settings {
+        float: left;
+        margin: 20px 5px 0 0;
+    }
+
+.business-block-body {
+    overflow: hidden;
+    border: 1px solid #e7ecf1;
+    border-top: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+
+    .business-block-body .block-wrap {
+        width: 900px;
+        margin: 0 auto;
+    }
+
+    .business-block-body >>> .el-input__inner {
+		width: 320px;
+	}
+	.business-block-body >>> .el-input {
+		width: 320px;
+		margin-right: 10px;
+	}
+</style>
+

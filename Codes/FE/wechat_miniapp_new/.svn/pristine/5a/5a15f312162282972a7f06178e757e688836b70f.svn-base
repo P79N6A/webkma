@@ -1,0 +1,154 @@
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.font-bd {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.flex_box {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
+}
+
+.flex__column {
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+
+.section_row {
+  padding: 3vh 10rpx;
+}
+
+.section_row + .section_row {
+  border-top: 1rpx solid #f8f8f8;
+}
+
+.bg-normal {
+  background-color: #e0edff;
+}
+
+.bg-blue {
+  background: linear-gradient(to right, #1188d8, #51b2f9);
+}
+
+.bg-orange {
+  background: linear-gradient(to right, #ff5a2a, #ff7947);
+}
+
+.bg-purple {
+  background: linear-gradient(to right, #a981f3, #bb98f4);
+}
+
+.bg-red {
+  background: #fa766b;
+}
+
+.bg-green {
+  background: rgb(36, 208, 198);
+}
+
+.font-tip {
+  color: #63717b;
+}
+
+.text-empty-color{
+  color: #999999;
+}
+
+.pie-box {
+  font-size: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
+}
+
+.pie-box .wrap {
+  width: 25vw;
+  height: 25vw;
+  text-align: center;
+  margin: 1vh auto;
+}
+
+.pie-box .pie-chart {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pie-box .content-box {
+  text-align: left;
+  position: relative;
+}
+
+.pie-box .content-box .row-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 4vh;
+  display: flex;
+  align-items: center;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+}
+
+.pie-box .content-box .row-text .icon {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 10rpx;
+}
+
+.pie-box .content-box .row-text .text {
+  margin-left: 10rpx;
+}
+
+.rank-box {
+  font-size: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
+}
+
+.rank-box .wrap {
+  width: 25vw;
+}
+
+.rank-box .item-count {
+  font-size: 54rpx;
+  color: #333;
+}
+
+.rank-box .rank-row {
+  line-height: 4vh;
+  display: flex;
+  align-items: center;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+}
+
+.rank-box .rank-num {
+  padding: 0rpx 6rpx;
+  margin: 0 4rpx;
+  color: #fff;
+  background: rgb(153, 153, 153);
+  border-radius: 3px;
+  height: 30rpx;
+  line-height: 30rpx;
+}
+
+.rank-box .rank-trend {
+  width: 18rpx;
+  height: 30rpx;
+}

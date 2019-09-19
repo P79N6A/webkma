@@ -1,0 +1,47 @@
+/* pages/messages/messages.wxss */
+.msg_list{
+
+}
+.msg_list .msg_item{
+  height: 85rpx;
+  padding: 30rpx;
+  background-color: #fff;
+  border-top: #eee 1rpx solid;
+}
+.msg_list .msg_item .unread_count{
+width: 36rpx;
+height: 36rpx;
+line-height: 36rpx;
+border-radius: 50%;
+color: #fff;
+font-size: 26rpx;
+position: absolute;
+left: 100rpx;
+background-color: #fa766b;
+text-align: center;
+}
+.msg_list .msg_item .head-img{
+  width: 90rpx;
+  height: 90rpx;
+  float: left;
+  margin-right: 30rpx;
+  border-radius: 50%;
+}
+.msg_list .msg_item .name{
+font-size: 30rpx;
+color: #000;
+margin-bottom: 10rpx;
+}
+.msg_list .msg_item .msg-info{
+  font-size: 24rpx;
+  color: #999;
+}
+.msg_list .msg_item .msg-date{
+  float: right;
+}
+
+.msg_list .empty-img{
+  width: 250rpx;
+  height: 257rpx;
+  margin: 250rpx auto 50rpx;
+}

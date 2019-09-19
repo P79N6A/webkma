@@ -1,0 +1,93 @@
+<template>
+  <div class="forward-box">
+    <el-table :data="tableData" min-height="250" border style="width: 100%" :header-cell-style="{background:'#F7FBFC'}">
+      <el-table-column prop="name" label="活动名" align="center">
+      </el-table-column>
+      <el-table-column prop="forwardCount" label="转发次数" align="center">
+      </el-table-column>
+      <el-table-column prop="userCount" label="获客人数" align="center">
+      </el-table-column>
+    </el-table>
+    <pagination v-if="paginationOpt.pageCount > 1" class="pull-right" :paginationOpt="paginationOpt"
+      @switchPage="employeePagesFn" />
+  </div>
+</template>
+
+<script>
+import api from 'api';
+import pagination from "../../../../../components/ui-pagination";
+export default {
+  name: "Forward",
+  props: {
+    IDList: {
+      type: Object,
+      default: () => {
+        return {
+          merchantId: 0,
+          taskId: 0,
+          rootUserId: 0,
+          userId: 0,
+        }
+      }
+    },
+  },
+  components: {
+    pagination
+  },
+  data() {
+    return {
+      tableData: [],
+      paginationOpt: {
+        pageIndex: 1,
+        pageSize: 10,
+        totalCount: 0,
+        pageCount: 0
+      },
+    }
+  },
+  mounted() {
+    this.forwardDetails()
+  },
+  methods: {
+    forwardDetails(cb) {
+      var self = this;
+      let data_ = {
+        "businessId": localStorage.getItem('businessId'),
+        "pageIndex": self.paginationOpt.pageIndex,
+        "pageSize": self.paginationOpt.pageSize,
+        "sorts": {},
+        "rootUserId": self.IDList.rootUserId,
+        "taskId": self.$route.query.id,
+        "targetUserId": this.IDList.userId
+      }
+      api.request('taskForwardList', data_, result => {
+        if (result.status === 0) {
+          for (var i = 0; i < result.data.list.length; i++) {
+            result.data.list[i].name = self.$route.query.myTitle
+          }
+          self.tableData = result.data.list
+          self.paginationOpt.totalCount = result.data.totalCount;
+          self.paginationOpt.pageCount = Math.ceil(
+            self.paginationOpt.totalCount / self.paginationOpt.pageSize
+          );
+        }
+        !!cb && cb();
+      })
+    },
+    //分页
+    employeePagesFn(pageIndex, cb) {
+      let self = this;
+      self.paginationOpt.pageIndex = pageIndex;
+      self.forwardDetails(cb);
+    },
+  }
+}
+</script>
+
+<style scoped>
+.forward-box {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+</style>

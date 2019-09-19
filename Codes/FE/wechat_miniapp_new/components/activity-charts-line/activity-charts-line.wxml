@@ -1,0 +1,5 @@
+<comp-navbar bind:tabchange="navbarTabChange" tabs="{{[{key:'share',title:'分享趋势'},{key:'visitor',title:'访客趋势'},{key:'access',title:'访问趋势'}]}}" activeTab="{{activeNavTab}}">
+</comp-navbar>
+<view class="chart-box">
+  <ec-canvas class="canvas_line_chatrs" canvas-id="canvas_line_chatrs" ec="{{canvas_share}}"></ec-canvas>
+</view>

@@ -1,0 +1,101 @@
+.pg_hearder {
+  width: 100%;
+  height: 360rpx;
+  background: url('https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/top-BG.png');
+  background-size: 100%;
+  overflow: hidden;
+}
+.user-dashord {
+  width: 594rpx;
+  height: 120rpx;
+  margin: 70rpx 0 0 50rpx;
+  font-size: 22rpx;
+  color: #fff;
+}
+.user-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 33rpx;
+}
+.user-info {
+  max-width: 340rpx;
+}
+.user-name {
+  font-size: 30rpx;
+}
+.user-data {
+  width: auto;
+}
+.btn-group {
+  width: 710rpx;
+  margin: 34rpx auto;
+}
+.my-btn {
+  width: 350rpx;
+  height: 100rpx;
+  line-height: 94rpx;
+  font-size: 36rpx;
+  border-radius: 10rpx;
+  color: #24D0C6FF;
+  border: 1rpx solid transparent;
+}
+.btn-passcard {
+  background:rgba(36,208,198,1);
+  border-color: rgba(255,255,255,0.6); 
+  color: #fff;
+}
+.pg_content {
+  margin: 32rpx auto;
+  padding: 22rpx 0;
+  background-color: #fff;
+}
+.content_title {
+  width: 730rpx;
+  height: 53rpx;
+  font-size: 22rpx;
+}
+.content_title .text {
+  height: 40rpx;
+  line-height: 40rpx;
+  font-size: 26rpx;
+  padding-left: 25rpx;
+  border-left: 5rpx solid rgba(36,208,198,1);
+  font-weight:400；
+}
+.condition {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 53rpx;
+  padding: 0 21rpx;
+  color: #B1BFCDFF;
+  background-color: rgba(247,247,255,1);
+}
+
+.body_box {
+  position: absolute;
+  top: -2000rpx;
+  left: 15rpx;
+  width: 720rpx;
+  height: 900rpx;
+  background: #fff;
+  border-radius: 5rpx;
+  box-shadow: 0 0 10px 2px #ccc;
+  z-index: -2;
+  visibility: hidden;
+}
+
+.cover_box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas_cover_1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}

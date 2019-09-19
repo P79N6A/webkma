@@ -1,0 +1,131 @@
+<template>
+  <div class="scroll-box">
+     <headerTitle :myTitle="myTitle"></headerTitle>
+    <!-- <pageTitle :pageTitle="pageTitleOpt" @search-event="search" /> -->
+    <el-row class="navigator">
+      <navigator :tabs="navigatorOpts.tabs" @navigator-event="transferTab"></navigator>
+      <div class="header-goBack" @click="goBack">返回上一页</div>
+    </el-row>
+    <el-row v-if="navigatorOpts.selectedKey === '1'">
+      <taskAnalyze></taskAnalyze>
+    </el-row>
+    <el-row v-if="navigatorOpts.selectedKey === '2'" style="height:calc(100% - 110px)">
+      <connectionNetwork></connectionNetwork>
+    </el-row>
+    <el-row v-if="navigatorOpts.selectedKey === '3'">
+     <forwardingUser></forwardingUser>
+    </el-row>
+     <el-row v-if="navigatorOpts.selectedKey === '4'">
+     <browseUsers></browseUsers>
+    </el-row>
+     <el-row v-if="navigatorOpts.selectedKey === '5'">
+     <integral></integral>
+    </el-row>
+    <el-row v-if="navigatorOpts.selectedKey === '6'">
+      <task-assignment :manuscriptType="$route.query.manuscriptType"></task-assignment>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import headerTitle from "components/header-title";
+import slideBtn from "components/slide-btn";
+import api from "api";
+import eventBus from '../../../utils/eventBus'
+import navigator from "components/navigator";
+import taskAnalyze from './components/task-analyze';
+import taskAssignment from './components/task-assignment'
+import forwardingUser from './components/forwarding-user'
+import integral from './components/integral'
+import customerInfo from 'components/customer-info'
+import connectionNetwork from './components/connection-network'
+import browseUsers from './components/browse-users'
+export default {
+  components: {
+    navigator,
+    headerTitle,
+    taskAnalyze,
+    taskAssignment,
+    forwardingUser,
+    integral,
+    customerInfo,
+    browseUsers,
+    connectionNetwork
+  },
+  name: "connection-data",
+  data: function () {
+    return {
+      myTitle:"我的活动 / "+this.$route.query.myTitle,
+      // manuscriptType: 2,
+      pageTitleOpt: {
+        text: "我的任务",
+        search: {
+          value: "",
+          placeholder: "请输入关键词搜索活动"
+        },
+        showSearch: true
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageSize: 10,
+        totalCount: 1,
+        pageCount: 0
+      },
+      searchCondition: {
+        mauscriptType: '', //活动类型
+        manuscriptStatus: '' //活动状态
+      },
+      keyWords: "",
+      list: {
+        width: '100%',
+        data: []
+      },
+      
+      navigatorOpts: {
+        tabs: [
+          { key: '1', title: "任务分析", selected: true },
+          { key: '2', title: "人脉图" },
+          { key: '3', title: "转发用户" },
+          { key: '4', title: "浏览用户" },
+          { key: '5', title: "营销力积分" },
+          { key: '6', title: "任务分派" },
+        ],
+        selectedKey: '1'
+      },
+      searchTotal: '', //搜索活动总条数
+      activityTotal: '' //全部活动总条数
+    };
+  },
+  created() {
+
+  },
+  mounted() {
+    if (this.$route.query.manuscriptType == 2) {
+      this.navigatorOpts.tabs.splice(0, 5)
+      this.navigatorOpts.selectedKey = '6'
+    }
+  },
+  methods: {
+    //根据页面宽度计算出最合适的pagesize
+    // 切换tabs
+    transferTab(tab) {
+      var self = this;
+      self.navigatorOpts.selectedKey = tab;
+    },
+    goBack() {
+      this.$router.go(-1)
+    },
+  }
+};
+</script>
+<style scoped>
+/* 返回按钮 */
+.header-goBack {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  color: #3898ec;
+  cursor: pointer;
+  font-size: 12px;
+}
+</style>

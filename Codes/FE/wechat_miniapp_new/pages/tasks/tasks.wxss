@@ -1,0 +1,241 @@
+/* pages/task-list/task-list.wxss */
+@import "/components/icon/iconfont.wxss";
+.headers{
+  position: relative;
+  width: 100%;
+  height: 377rpx;
+  margin-bottom: 20rpx;
+  background-size: 100% 100%;
+  background-image: url("https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/reward_bg.png")
+}
+.top_title{
+  text-align: center;
+  font-size: 16rpx;
+  color: #ffffff;
+  position: relative;
+}
+.title_cont{
+  width: 100%;
+  height: 30rpx;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  padding-top: 25rpx;
+}
+.mind{
+  font-size: 24rpx;
+  margin: 0rpx 9rpx;
+  color: #ffffff;
+  margin-bottom: 13rpx;
+}
+.circular{
+  width: 14rpx;
+  height: 14rpx;
+  border-radius:50% ;
+  background: #ffffff
+}
+.line{
+  width: 51rpx;
+  height: 3rpx;
+  background: #ffffff;
+}
+.headers .iconfont{
+  position: absolute;
+  top:0rpx;
+  right: 20rpx;
+  color: #ffffff;
+  font-size: 36rpx;
+  z-index: 1
+}
+/* 排名 */
+.ranking{
+  padding: 0rpx 13rpx;
+  display:flex;
+  justify-content:space-between;
+}
+.ranking_item{
+  width: 235rpx;
+  height: 243rpx;
+  text-align: center;
+  margin-top:64rpx
+}
+.ranking_item:nth-child(2){
+  height: 266rpx !important;
+  margin-top: 42rpx;
+}
+.rank_imgs{
+  position: relative;
+  height: 153rpx;
+  width: 113rpx;
+  margin: 0 auto;
+}
+.ranking_img{
+  width: 91rpx;
+  height: 153rpx;
+}
+.ranking_num{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 32rpx;
+  height: 40rpx;
+}
+.ranking_info{
+  margin-top:20rpx;
+}
+.ranking_info_text1{
+  font-size: 16rpx;
+  color: #ffffff;
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis
+}
+.ranking_info_text2{
+  font-size: 26rpx;
+  color: #FFFF00;
+}
+.ranking_item:nth-child(2) .ranking_info{
+  margin-top: 34rpx;
+}
+
+/* 搜索 */
+.search{
+  background: #ffffff;
+  padding: 10rpx;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+  position: relative;
+}
+.search_input{
+  width: 560rpx;
+  height: 70rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: #F7F7FF
+}
+.search_input input{
+  font-size: 26rpx;
+  width: 450rpx;
+}
+.search_input text{
+  display: block;
+  margin-left: 30rpx;
+  margin-right: 10rpx;
+  color: #b1bfcd
+}
+.condition{
+  display: flex;
+  width:154rpx;
+  height:53rpx;
+  background:rgba(247,247,255,1);
+  opacity:1;
+  border-radius:10rpx;
+  font-size: 22rpx;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+}
+.condition text{
+  color: #b1bfcd
+}
+.search .condition_list{
+  width: 154rpx;
+  height: auto;
+  background: #ffffff;
+  border-radius: 16rpx;
+  position: absolute;
+  right: 13rpx;
+  top:78rpx;
+  font-size: 22rpx;
+  z-index: 1;
+  box-shadow:  1px 0px 4px #cccccc;
+}
+.list_item{
+  width: 100%;
+  text-align:center;
+  height: 53rpx;
+  color: #3C4A55;
+  background: #ffffff;
+  line-height: 53rpx;
+}
+.condition .iconfont{
+  font-size: 40rpx;
+}
+.content{
+  background: #ffffff;
+  padding-top: 18rpx;
+}
+
+/* 生成排行 */
+.body_box {
+  position: absolute;
+  top: -2000rpx;
+  left: 15rpx;
+  width: 720rpx;
+  height: 900rpx;
+  background: #fff;
+  border-radius: 5rpx;
+  box-shadow: 0 0 10px 2px #ccc;
+  z-index: -2;
+  visibility: hidden;
+}
+
+.cover_box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas_cover {
+  width: 100%;
+  height: 100%;
+  border-radius: 5rpx;
+}
+
+.canvas_cover_1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.canvas_cover_2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.footer_box {
+  position: fixed;
+  display: flex;
+  bottom: 0;
+  text-align: center;
+  width: 750rpx;
+  height: 15vh;
+  background-color: rgba(0,0,0,.3);
+  align-items: center;
+}
+
+.footer_box .link{
+  color: #24d0c6;
+  line-height: 5vh;
+}
+
+.share-button{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 720rpx;
+  height: 145rpx;
+  padding-left: 106rpx;
+  border: 0 none !important;
+  background-color: transparent !important;
+  line-height: normal;
+  text-align: left;
+}
+.share-button::after {
+  border: none;
+}

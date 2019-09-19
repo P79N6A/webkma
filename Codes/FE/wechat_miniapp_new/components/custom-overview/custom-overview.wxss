@@ -1,0 +1,64 @@
+.block {
+  background-color: #fff;
+  overflow: hidden;
+}
+.row-title {
+  display: inline-block;
+  width: auto;
+  height: 40rpx;
+  line-height: 40rpx;
+  margin-top: 20rpx;
+  border-left: 5rpx solid #24D0C6FF;
+}
+.home-title {
+  display: flex;
+  height: 48rpx;
+  line-height: 48rpx;
+  align-items: center;
+  margin: 40rpx 0 0 31rpx;
+}
+.icon-custom {
+  display: inline-block;
+  width: 48rpx;
+  height: 48rpx;
+}
+.row-title .title {
+  color:rgba(60,74,85,1);
+  font-size: 26rpx;
+  margin-left: 20rpx;
+}
+.row-title .count {
+  color:rgba(177,191,205,1);
+  font-size: 24rpx;
+}
+.row-title .total {
+  color:rgba(177,191,205,1);
+  font-size: 24rpx;
+}
+.headimg-list {
+  width: 672rpx;
+  height: 70rpx;
+  color: #B1BFCDFF;
+  margin: 33rpx auto;
+}
+.headimg-wrap {
+  float: left;
+  position: relative;
+  width: 500rpx;
+  height: 60rpx;
+}
+.headimg-wrap image {
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.overview-btn {
+  float: right;
+  padding: 16rpx;
+  background-color: #F7F7FFFF;
+  color: #B1BFCDFF;
+  font-size: 24rpx;
+  border-radius: 50rpx;
+}

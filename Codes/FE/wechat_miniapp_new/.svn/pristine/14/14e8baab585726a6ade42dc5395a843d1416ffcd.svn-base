@@ -1,0 +1,391 @@
+const
+  activityService = require('../../services/activity-service.js'),
+  cardsService = require('../../services/cards.js'),
+  config = require('../../config.js'),
+  base64 = require('../../utils/base64.js'),
+  utils = require('../../utils/util.js');
+
+let self;
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    id: "",
+    h5Info: null,
+    articleInfo: null,
+    coverSaveStatus: 0,
+    type: 0, //判断活动类型
+    canvasW: ''
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function(options) {
+    self = this;
+    self.data.id = options.id || '';
+    self.data.from_user = options.from_user || '';
+    self.data.from_company = options.from_company || '';
+    self.data.userId = getApp().globalData.userInfo.data[0].user_uuid;
+    self.data.forwardKey = options.forwardKey || '';
+    self.data.rootUserId = options.rootUserId || '';
+
+    wx.showLoading({
+      title: '数据加载中'
+    });
+    
+    new Promise((resolve, reject) => {
+      let option = {
+        forwardKey: self.data.forwardKey, //上级forwardKey
+        relationId: self.data.id,
+        rootUserId: self.data.rootUserId || self.data.userId,
+        sourceType: 0,
+        clientType: 'weapp'
+      };
+      activityService.getforwardKey(option, (err, res) => {
+        if (!!res && res.status == 0) {
+          self.data.myforwardKey = res.data.forwardKey;
+          self.data.rootUserId = res.data.rootUserId;
+          self.data.timeStamp = new Date().getTime();
+        } 
+        resolve(null);
+      });
+    }).then((result) => {
+      this.getActivityDetail();
+    }).catch(() => {
+      utils.toast.fail({
+        title: "获取分享key失败"
+      });
+    })  
+    wx.hideShareMenu();
+  },
+  // 获取活动详情
+  getActivityDetail: function() {
+    let self = this;
+    activityService.activityInfo(self.data.id, (err, res) => {
+      if (err) return self.errMessage(err);
+      if (res.status !== 0) return self.errMessage(res.message);
+      wx.setNavigationBarTitle({
+        title: res.data.name
+      });
+      self.data.h5Info = res.data;
+      self.setData({
+        type: self.data.h5Info.manuscriptType
+      })
+      if (self.data.h5Info.manuscriptType == 2) {
+        self.buildPostImg();
+      } else {
+        self.buildImg();
+      }
+    });
+  },
+  buildImg: function() {
+    let self = this;
+    wx.showLoading({
+      title: '正在生成图片'
+    });
+    wx.createSelectorQuery().select('.cover_box').fields({
+      size: true,
+    }, (box) => {
+      let
+        qrcodeInfo = {
+          source: null,
+          size: {
+            width: 100,
+            height: 100
+          }
+        },
+        coverInfo = {
+          source: null,
+          size: {
+            width: box.width,
+            height: box.height - qrcodeInfo.size.height - 10
+          }
+        };
+      Promise.all([
+        new Promise((resolve, reject) => {
+          // cover image info
+          let params = [`c_1`, `x_0`, `y_0` , `h_${Math.round(box.height - 110)}`];
+          wx.getImageInfo({
+            src: `${self.data.h5Info.cover}@${params.join(',')}`,
+            success: resolve,
+            fail: reject
+          })
+        }),
+        new Promise((resolve, reject) => {
+          //生成带标识的二维码
+          console.log(`${self.data.h5Info.url}?rootUserId=${self.data.userId}&forwardKey=${self.data.myforwardKey}`)
+          activityService.creatQrcode(JSON.stringify({
+            "width": 200,
+            "type": 'link',
+            "id": self.data.h5Info.relationId,
+            "src": `${self.data.h5Info.url}?rootUserId=${self.data.userId}&forwardKey=${self.data.myforwardKey}`
+          }), function (err, res) {
+            if (res.status == 0) {
+              base64.base64src(res.data.file, res => {
+                console.log(res) // 返回图片地址，直接赋值到image标签即可
+                wx.getImageInfo({
+                  src: res,
+                  success: resolve,
+                  fail: reject
+                })
+              });
+
+            } else {
+              reject();
+            }
+          })
+        })
+      ]).then((result) => {
+        coverInfo.source = result[0];
+        qrcodeInfo.source = result[1];
+        console.log(qrcodeInfo.source.path)
+        const ctx = wx.createCanvasContext('canvas_cover');
+        // 设置底色
+        ctx.setFillStyle('white');
+        ctx.fillRect(0, 0, box.width, box.height);
+        // 绘制封面
+        ctx.drawImage(coverInfo.source.path,
+          0, 0, coverInfo.size.width, coverInfo.size.height, coverInfo.size.width, coverInfo.size.height
+        );
+
+        
+        // 绘制小程序码
+        ctx.drawImage(qrcodeInfo.source.path,
+          box.width - qrcodeInfo.size.width - 10,
+          coverInfo.size.height + 5 ,
+          qrcodeInfo.size.width,
+          qrcodeInfo.size.height
+        );
+
+        // 绘制活动名称
+        let name = self.data.h5Info.name,
+          maxWidth = box.width - qrcodeInfo.size.width - 5,
+          maxLength = Math.floor(maxWidth / 18);
+        ctx.setTextBaseline('top');
+        ctx.setFontSize(15);
+        ctx.setTextAlign('left');
+        ctx.setFillStyle('black');
+        if (name.length <= maxLength) {
+          ctx.fillText(name, 10, coverInfo.size.height + 23, maxWidth);
+        } else {
+          ctx.fillText(name.substring(0, maxLength), 10, coverInfo.size.height + 10, maxWidth);
+          ctx.fillText(name.substring(maxLength).length > maxLength ? name.substring(maxLength, 2 * maxLength - 1) + '...' : name.substring(maxLength), 10, coverInfo.size.height + 20 * 2 - 10, maxWidth);
+        }
+        // 绘制提示文字
+        ctx.setFillStyle('#999')
+        ctx.setFontSize(11);
+        ctx.setTextAlign('left');
+        ctx.fillText("长按识别" + (self.data.h5Info.goodsNumber > 0?'二维码':'小程序码') +"查看H5", 10, box.height - 46);
+        ctx.draw(true, self.saveImage);
+
+        wx.hideLoading();
+      }).catch(self.errMessage);
+    }).exec();
+  },
+  buildPostImg: function () {
+    let self = this;
+    wx.createSelectorQuery().select('.cover_box').fields({
+      size: true,
+    }, (box) => {
+      let
+        qrcodeInfo = {
+          source: null,
+          size: {
+            width: 100,
+            height: 100
+          }
+        },
+        coverInfo = {
+          source: null,
+          size: {
+            width: box.width,
+            height: box.height - qrcodeInfo.size.height - 10
+          }
+        };
+      Promise.all([
+        new Promise((resolve, reject) => {
+          // todo: 生成带登陆者身份的小程序
+          var option = {
+            data: {
+              "from_user": self.data.from_user,
+              "from_company": self.data.from_company,
+              "rootUserId": self.data.rootUserId || getApp().globalData.userInfo.data[0].user_uuid,
+              "forwardKey": self.data.myforwardKey,
+              "timeStamp": self.data.timeStamp
+            },
+            type: 'conf_card'
+          };
+
+          cardsService.saveCustomConfig(option, function (err, res) {
+            if (res.status == 0) {
+              resolve(res.data);
+            } else {
+              reject();
+            }
+          })
+        }).then((id) => {
+          return new Promise((resolve, reject) => {
+            activityService.creatQrcode(JSON.stringify({
+              "width": 200,
+              "page": "pages/index/index",
+              "id": self.data.h5Info.relationId,
+              "isHyaline": true,
+              "scene": `act=card&id=${id}`
+            }), function (err, res) {
+              if (res.status == 0) {
+                wx.getImageInfo({
+                  src: res.data.file,
+                  success: resolve,
+                  fail: reject
+                })
+              } else {
+                reject();
+              }
+            })
+          })
+        }),
+        new Promise((resolve, reject) => {//获取海报图片
+          // cover image info
+          var poster = self.data.h5Info.posterImage;
+          if (!!poster) {
+            var posterImg = JSON.parse(poster),
+              posterPng = posterImg.png;
+            wx.getImageInfo({
+              src: posterPng + '@s_0,h_' + parseInt(coverInfo.size.height),
+              success: resolve,
+              fail: reject
+            })
+          } else {
+            resolve(true);
+          }
+        })
+      ]).then((result) => {
+        qrcodeInfo.source = result[0];
+        coverInfo.source = result[1];
+        let _canvasW = (coverInfo.source.width * 750 / wx.getSystemInfoSync().windowWidth);
+        self.setData({
+          canvasW: _canvasW + 'rpx'
+        })
+        const ctx = wx.createCanvasContext('canvas_cover');
+        // 设置底色
+        ctx.setFillStyle('white');
+        ctx.fillRect(0, 0, box.width, box.height);
+        // 绘制封面
+        ctx.drawImage(coverInfo.source.path,
+          0, 0, coverInfo.source.width, coverInfo.size.height
+        );
+
+        // 绘制小程序码
+
+        ctx.drawImage(qrcodeInfo.source.path,
+          coverInfo.source.width - qrcodeInfo.size.width - 10,
+          coverInfo.size.height + 5,
+          qrcodeInfo.size.width,
+          qrcodeInfo.size.height
+        );
+        //绘制名片信息
+        let name = self.data.h5Info.employeeInfo.name,
+          phone = self.data.h5Info.employeeInfo.phone,
+          job = self.data.h5Info.employeeInfo.job,
+          businessName = self.data.h5Info.businessInfo.businessName;
+
+        job = job.length > 10 ? job.substring(0, 10) : job;
+
+        let nickname = name.length > 6 ? name.substring(0, 6) + '...' : name;
+        utils.fillTextFn(ctx, nickname, 12, '#000000', 10, coverInfo.size.height + 16, box.width - 10);
+
+        // 公司名称处理
+        ctx.setFontSize(10);
+        let _busName_width = coverInfo.source.width - qrcodeInfo.size.width - 20;
+        let _busName_maxlength = (_busName_width / ctx.measureText('司').width);
+        if (businessName.length > _busName_maxlength){
+          businessName = businessName.substring(0, _busName_maxlength) + '...';
+        }
+
+        if (_busName_width - 10 < ctx.measureText(nickname).width + ctx.measureText(phone).width) {
+          //一行显示不下时
+          //绘制职位
+          utils.fillTextFn(ctx, phone, 10, '#000000', 10, box.height - 75, box.width - 10);
+          utils.fillTextFn(ctx, job, 10, '#999999', 10, box.height - 55, box.width - 10);
+          //绘制分割线
+          ctx.drawImage('../../images/article-line.png', 10, coverInfo.size.height + 78, coverInfo.source.width - qrcodeInfo.size.width - 30, 1);
+          //绘制公司名称
+          utils.fillTextFn(ctx, businessName, 10, '#999999', 10, box.height - 25, box.width - 10);
+        } else {
+          utils.fillTextFn(ctx, phone, 12, '#000000', 20 + ctx.measureText(nickname).width, coverInfo.size.height + 16, box.width - 20);
+          utils.fillTextFn(ctx, job, 10, '#999999', 10, box.height - 68, box.width - 10);
+          //绘制分割线
+          ctx.drawImage('../../images/article-line.png', 10, coverInfo.size.height + 68, coverInfo.source.width - qrcodeInfo.size.width - 30, 1);
+          //绘制公司名称
+          utils.fillTextFn(ctx, businessName, 10, '#999999', 10, box.height - 30, box.width - 10);
+        }
+
+        ctx.draw(true, self.saveImage);
+
+        wx.hideLoading();
+      }).catch(self.errMessage);
+    }).exec();
+  },
+  saveImage: function() {
+    wx.createSelectorQuery().select('.cover_box').fields({
+      size: true,
+    }, (box) => {
+      wx.canvasToTempFilePath({
+        fileType: "png",
+        destWidth: box.width * 3,
+        destHeight: box.height * 3,
+        canvasId: 'canvas_cover',
+        success: (res) => {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: (res) => {
+              self.setData({
+                coverSaveStatus: 1
+              });
+              if (getApp().globalData.userInfo) {
+                // 分享数+1
+                activityService.behaviorRecord({
+                  "forwardKey": self.data.myforwardKey,
+                  "relationId": self.data.id,
+                  "rootUserId": self.data.rootUserId || self.data.userId,
+                  "clientType": "weapp",
+                  "indexType": "user_forward",
+                  "timeStamp": self.data.timeStamp
+                });
+              }
+            },
+            fail: (err) => {
+              utils.toast.fail({
+                title: "图片保存失败"
+              });
+              console.error("图片保存失败", err);
+              self.setData({
+                coverSaveStatus: 2
+              });
+            }
+          })
+        },
+        fail: self.errMessage
+      })
+    }).exec();
+  },
+
+  showHelp: function() {
+    let urls = [`${config.bosHost}help-share-moments.jpg`];
+    wx.previewImage({
+      current: urls[0],
+      urls: urls
+    })
+  },
+
+  errMessage: function(err) {
+    wx.hideLoading();
+    utils.toast.fail({
+      title: "图片生成失败"
+    });
+    console.error(err);
+  }
+})

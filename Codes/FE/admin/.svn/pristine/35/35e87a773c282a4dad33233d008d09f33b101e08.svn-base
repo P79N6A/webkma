@@ -1,0 +1,71 @@
+let menusConfig = [
+    {
+        key: "user-management",
+        title: "用户管理",
+        icon: "iconfont icon-dashbord",
+        href: "",
+        children: [
+			{
+                key: "bussiness-list",
+                title: "商家列表",
+                href: "/bussiness-list",
+                icon: "",
+                // children: [
+                //     {
+                //         key: "a-list",
+                //         title: "aa列表",
+                //         href: "/a-list",
+                //         icon: ""
+                //     }
+                // ]
+            },
+            {
+                key: "designer-list",
+                title: "设计师列表",
+                href: "/designer-list",
+                icon: ""
+            }
+        ]
+    },
+    {
+        key: "activity-management",
+        title: "活动管理",
+        icon: "iconfont icon-dashbord",
+        href: "",
+        children: [
+			{
+                key: "activity-list",
+                title: "活动列表",
+                href: "/activity-list",
+                icon: ""
+            },
+            {
+                key: "poster-list",
+                title: "海报列表",
+                href: "/poster-list",
+                icon: ""
+            },
+            {
+                key: "activity-categor",
+                title: "活动分类",
+                href: "/activity-categor",
+                icon: ""
+            },
+            {
+                key: "sms-list",
+                title: "短信列表",
+                href: "/sms-list",
+                icon: ""
+            },
+            {
+                key: "email-list",
+                title: "邮件列表",
+                href: "/email-list",
+                icon: ""
+            }
+        ]
+    }
+    
+];
+
+export default menusConfig

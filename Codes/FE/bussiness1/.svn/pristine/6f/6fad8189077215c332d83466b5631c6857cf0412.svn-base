@@ -1,0 +1,386 @@
+<!doctype html>
+<html style="overflow:hidden;">
+<head>
+    <meta charset="utf-8 ">
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no" />
+    <!--uc-->
+    <meta name="layoutmode" content="standard" />
+    <title>这是一个活动标题的预约页</title>
+    <link rel="styleSheet" href="/public/dist/vendor.css" />
+    <link rel="styleSheet" href="/public/dist/h5-framework.css" />
+    <style>
+        /* 设置预约 */
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        input::-webkit-input-placeholder { /* WebKit browsers 适配谷歌 */
+            color: #B1BFCD;;
+        }
+        input:-moz-placeholder { /* Mozilla Firefox 4 to 18 适配火狐 */
+            color: #B1BFCD;;
+        }
+        input::-moz-placeholder { /* Mozilla Firefox 19+ 适配火狐 */
+            color: #B1BFCD;;
+        }
+        input:-ms-input-placeholder { /* Internet Explorer 10+  适配ie*/
+            color: #B1BFCD;;
+        }
+        .page-body .return{
+            font-size: 0.32rem;
+            color: #3898EC;
+            text-align: center;
+            margin-top: 0.52rem;
+            cursor: pointer;
+        }
+        .eplipes {
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+</head>
+
+<body class="page-body">
+    <div id="page-panel" data-container="true" class="page-panel swiper-container">
+        
+    </div>
+    <!-- msg模板  -->
+    <div id="msg-model">
+        <div class="msg-content">
+            <span class="small-font"></span>
+        </div>
+    </div>
+    <!-- 快速导航 -->
+    <div id="fastNav">
+
+    </div>
+    <!-- 内联 flexible -->
+    <script type="text/javascript">
+        !function () { var a = "@charset \"utf-8\";html{color:#000;background:#fff;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}html *{outline:0;-webkit-text-size-adjust:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}html,body{font-family:sans-serif}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{margin:0;padding:0}input,select,textarea{font-size:100%}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}abbr,acronym{border:0;font-variant:normal}del{text-decoration:line-through}address,caption,cite,code,dfn,em,th,var{font-style:normal;font-weight:500}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:500}q:before,q:after{content:''}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}a:hover{text-decoration:underline}ins,a{text-decoration:none}", b = document.createElement("style"); if (document.getElementsByTagName("head")[0].appendChild(b), b.styleSheet) b.styleSheet.disabled || (b.styleSheet.cssText = a); else try { b.innerHTML = a } catch (c) { b.innerText = a } }(); !function (a, b) { function c() { var b = f.getBoundingClientRect().width; b / i > 540 && (b = 540 * i); var c = b / 10; f.style.fontSize = c + "px", k.rem = a.rem = c } var d, e = a.document, f = e.documentElement, g = e.querySelector('meta[name="viewport"]'), h = e.querySelector('meta[name="flexible"]'), i = 0, j = 0, k = b.flexible || (b.flexible = {}); if (g) { console.warn("将根据已有的meta标签来设置缩放比例"); var l = g.getAttribute("content").match(/initial\-scale=([\d\.]+)/); l && (j = parseFloat(l[1]), i = parseInt(1 / j)) } else if (h) { var m = h.getAttribute("content"); if (m) { var n = m.match(/initial\-dpr=([\d\.]+)/), o = m.match(/maximum\-dpr=([\d\.]+)/); n && (i = parseFloat(n[1]), j = parseFloat((1 / i).toFixed(2))), o && (i = parseFloat(o[1]), j = parseFloat((1 / i).toFixed(2))) } } if (!i && !j) { var p = (a.navigator.appVersion.match(/android/gi), a.navigator.appVersion.match(/iphone/gi)), q = a.devicePixelRatio; i = p ? q >= 3 && (!i || i >= 3) ? 3 : q >= 2 && (!i || i >= 2) ? 2 : 1 : 1, j = 1 / i } if (f.setAttribute("data-dpr", i), !g) if (g = e.createElement("meta"), g.setAttribute("name", "viewport"), g.setAttribute("content", "initial-scale=" + j + ", maximum-scale=" + j + ", minimum-scale=" + j + ", user-scalable=no"), f.firstElementChild) f.firstElementChild.appendChild(g); else { var r = e.createElement("div"); r.appendChild(g), e.write(r.innerHTML) } a.addEventListener("resize", function () { clearTimeout(d), d = setTimeout(c, 300) }, !1), a.addEventListener("pageshow", function (a) { a.persisted && (clearTimeout(d), d = setTimeout(c, 300)) }, !1), "complete" === e.readyState ? e.body.style.fontSize = 12 * i + "px" : e.addEventListener("DOMContentLoaded", function () { e.body.style.fontSize = 12 * i + "px" }, !1), c(), k.dpr = a.dpr = i, k.refreshRem = c, k.rem2px = function (a) { var b = parseFloat(a) * this.rem; return "string" == typeof a && a.match(/rem$/) && (b += "px"), b }, k.px2rem = function (a) { var b = parseFloat(a) / this.rem; return "string" == typeof a && a.match(/px$/) && (b += "rem"), b } }(window, window.lib || (window.lib = {}));
+        var _href = window.location.href.match(/id=([0-9]+)/);
+        var _kid = _href[1];
+        lanh.kid = _kid;
+    </script>
+    <script type="text/javascript" src="/public/dist/vendor.js" merge="true"></script>
+    <script type="text/javascript" src="/public/dist/h5-framework.js"></script>
+    <script>
+        $(function(){
+			// 获取预约接口数据
+            var rootUserId = Utils.getQueryString('rootUserId'),
+                forwardKey = Utils.getQueryString('forwardKey'),
+                clientType = Utils.getQueryString('clientType'),
+                session_id = Utils.getQueryString('session_id'),
+                returnUrl = decodeURIComponent(Utils.getQueryString('returnUrl')),
+                _index = Utils.getQueryString('index'),
+                _pagePanel = $('#page-panel'),
+                _business_id = '',
+                _controlId = '',
+                _totalFee = '';
+
+			var appointment = {
+				loadformTpl: function(config) {
+                    var self = this;
+                    new Promise(function(resolve, reject) {
+                        $.get("/public/layer/theme/default/appointment.html", function (data) {
+                            resolve(Utils.getTemplate(data, config.is_pay == 2 ? 'appointment-pay' : 'appointment-common'));
+                        });
+                    }).then(function(result) {
+                        // 模板替换
+                        var tpl = result.replace('${title}', config.title)
+                                        .replace('${remark}', config.remark)
+                                        .replace('${content}', config.fromSetting.map(function(item, index){
+                                            var str = '<input id="input_' + item.sort + '" type="text" placeholder="' + item.name + '" data-type="' + item.type + '" autocomplete="off"/>';
+                                            if(item.type == 'phone_text') {
+                                                str = '<input id="input_' + item.sort + '" type="text" placeholder="' + item.name + '" data-type="' + item.type + '" maxlength="11" autocomplete="off"/>';
+                                                str = config.is_code == 1 ? str : 
+                                                str + '<div class="verification" style="position: relative;">' +
+                                                    '<input id="verify" name="verify" type="text" maxlength="11" placeholder="验证码">' +
+                                                    '<div class="verify-btn" id="send-verify">发送验证码</div>' +
+                                                    '<div class="verify-btn" id="reset-verify" style="display: none;"></div>' +
+                                                '</div>';
+                                            }
+                                            return str;
+                                        }).join(''))
+                                        .replace('${goods}', '<div class="goods"><img src="'+config.goods_img+'"><div><p class="eplipes">'+config.goods_name+'</p><p class="tips">'+config.remark+'</p></div></div>');
+
+                        
+                        _pagePanel.html(tpl);
+                        
+                        // 按钮操作
+                        var eventType = Utils.getPlatform() == "pc" ? 'click' : 'touchend';
+                        var _sendVerifyCode = _pagePanel.find('#send-verify'),
+                            _verifyCode = _pagePanel.find('#verify'),
+                            _resetVerifyCode = _pagePanel.find('#reset-verify'),
+                            _makeBtn = _pagePanel.find('#makeBtn'),
+                            _returnBtn = _pagePanel.find('#return-btn');
+                        
+                        function sendCode(data) {
+                            var _time = 120, _timer = null;
+                            var _phone = _pagePanel.find('#input_1').val();
+                            var arr = [
+                                {
+                                    'value': _phone,
+                                    'emptyErr': '请填写手机号',
+                                    'regErr': '手机号码格式不正确',
+                                    'type': 'phone'
+                                }
+                            ]
+                            Utils.formValidation(arr, function (tag) {
+                                if (!tag) return false;
+                                $.ajax({//获取验证码
+                                    url: lanh.apiHost.replace(/:\d+/g, '') + "sms/send/verify/code?session_id=" + session_id,
+                                    type: "POST",
+                                    contentType: "application/json",
+                                    dataType: "json",
+                                    headers: { session_id: session_id },
+                                    data: JSON.stringify({
+                                        phone: _phone,
+                                        businessId: _business_id
+                                    }),
+                                    success: function (result) {
+                                        if(result.status == 0) {
+                                            _sendVerifyCode.hide();
+                                            _resetVerifyCode.html(_time + 's').show();
+                                            _timer = setInterval(function(){
+                                                if(_time == 0) {
+                                                    _sendVerifyCode.html('重新发送').show();
+                                                    _resetVerifyCode.hide();
+                                                    clearInterval(_timer);
+                                                    return false;
+                                                }
+                                                _time = _time - 1;
+                                                _sendVerifyCode.html(_time + 's');
+                                            },1000)
+                                        }
+                                    },
+                                    error: function (result) {
+                                        Utils.simpleMsg(result.data.message);
+                                    }
+                                });
+                            })
+                           
+                        }
+
+                        _sendVerifyCode.on(eventType, sendCode);//发送验证码
+
+                        _makeBtn.on(eventType, function () {//提交表单
+                            var arr = [];
+                            $.each(config.fromSetting, function (index, item) {
+                                var _obj = {
+                                    'value': _pagePanel.find('#input_' + item.sort).val(),
+                                    'emptyErr': '请填写' + item.name,
+                                    'regErr': '请输入正确的' + item.name
+                                }
+                                if (item.type == 'name_text') {
+                                    _obj['reg'] = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/;
+                                } else if (item.type == 'phone_text') {
+                                    _obj['type'] = 'phone';
+                                }
+                                arr.push(_obj);
+                                if(item.type == 'phone_text' && config.is_code == 2) {
+                                    arr.push({
+                                        'value': _pagePanel.find('#verify').val(),
+                                        'emptyErr': '请输入验证码'
+                                    })
+                                }
+                            });
+
+                            Utils.formValidation(arr, function (tag) {//表单验证
+                                if (!tag) return false;
+                                var formData = [];
+                                $.each(config.data, function (index, item) {
+                                    formData.push({
+                                        name: item.name,
+                                        sort: item.sort,
+                                        type: item.type,
+                                        content: $(elem).find('#input_' + index).val()
+                                    })
+                                });
+                                if(clientType == 'weapp') {//小程序
+                                    var _param = {
+                                        rootUserId: rootUserId,
+                                        id: lanh.kid,
+                                        clientType: clientType,
+                                        forwardKey: forwardKey,
+                                        session_id: session_id,
+                                        userId: Utils.getQueryString('userId'),
+                                        totalFee: _totalFee,
+                                        index: _index,
+                                        controlId: _controlId,
+                                        formData: encodeURIComponent(formData),
+                                        toUrl: '/pages/appointment-pay/appointment-pay'
+                                    };
+                                    
+                                    wx.miniProgram.postMessage({ data: _param });
+                                }
+                                new Promise(function(resolve, reject){
+                                    $.ajax({//支付
+                                        url: lanh.apiHost.replace(/:\d+/g, '') + "wx/pay/h5api?session_id=" + session_id,
+                                        type: "POST",
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                        headers: { session_id: session_id },
+                                        data: JSON.stringify({
+                                            totalFee: _totalFee
+                                        }),
+                                        success: function (result) {
+                                            if(result.status == 0) {
+                                                resolve();
+                                            }
+                                        },
+                                        error: function (result) {
+                                            reject(new Error(result.message));
+                                        }
+                                    });
+                                }).then(function (result1) {//提交表单，
+                                    console.log(result1);
+                                    
+                                    self.loadSuccTpl(config);
+                                }).catch(function(err) {
+                                    Utils.simpleMsg(err);
+                                })
+                                
+                            })
+                        })
+                        
+                        _returnBtn.on(eventType, function(){//返回原文
+                            window.location.href = returnUrl;
+                        });
+                    })
+				},
+				loadSuccTpl: function(config) {//加载成功模板
+                    var self = this;
+                    new Promise(function(resolve, reject) {
+                        $.get("/public/layer/theme/default/appointment.html", function (data) {
+                            resolve(Utils.getTemplate(data, config.is_pay == 2 ? 'appointment-pay_succ' : 'appointment-common_succ'));
+                        });
+                    }).then(function(result) {
+                        // 模板替换
+                        var tpl = result.replace('${content}', config.success_conten)
+                                        .replace('${qrcode}', config.customer_service_code || '../../../../static/images/icon-qrcode.png');
+
+                        
+                        _pagePanel.html(tpl);
+
+                        var copyInfo = _pagePanel.find('#copy-info');
+
+
+                    })
+				}
+            }
+            
+            new Promise((res, rej) => {
+                var config = {
+                    "relationId": "31001190916000000037",
+                    "business_id": "afaca544-97b8-445f-9fbf-828a0cf642eb",
+                    "style": "style2",
+                    "data": [{
+                        "button_title": "czsvcsv",
+                        "button_name": "按钮文字",
+                        "title": "svds",
+                        "remark": "vv",
+                        "is_code": 2,
+                        "is_pay": 2,
+                        "fromSetting": [{
+                            "type": "name_text",
+                            "name": "姓名",
+                            "sort": 0
+                        }, {
+                            "type": "phone_text",
+                            "name": "手机",
+                            "sort": 1
+                        }, {
+                            "type": "default_text",
+                            "name": "普通文本",
+                            "sort": 2,
+                            "isRequire": true
+                        }],
+                        "goods_name": "vsdv",
+                        "goods_remark": "vsd",
+                        "goods_price": "11",
+                        "goods_original_price": "11",
+                        "goods_img": "https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/default/964dfa71-828d-4b9f-bf5b-73ea3fd46dfb.jpg",
+                        "success_conten": "safsaffffffffffffffffffffffffffff",
+                        "customer_service_code": "",
+                        "btnStyle": {
+                            "color": "#ffffff",
+                            "bg": "rgba(0,186,208,1)"
+                        },
+                        "spread": false,
+                        "controlId": "control_qjftx5vgao",
+                        "is_pay_slide": true,
+                        "is_code_slide": true
+                    }, {
+                        "button_title": "预约按钮2标题",
+                        "button_name": "预约活动2",
+                        "title": "成都市是出生地VB所不不不不不不不不不不不不不不不不不不不",
+                        "remark": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊",
+                        "is_code_slide": true,
+                        "is_pay_slide": true,
+                        "fromSetting": [{
+                            "type": "name_text",
+                            "name": "姓名",
+                            "sort": 0
+                        }, {
+                            "type": "phone_text",
+                            "name": "手机",
+                            "sort": 1
+                        }, {
+                            "type": "default_text",
+                            "name": "普通文本",
+                            "sort": 2,
+                            "isRequire": true
+                        }],
+                        "goods_name": "神灯神灯所",
+                        "goods_remark": "哒哒哒哒哒哒多多多多多多多多",
+                        "goods_price": "10",
+                        "goods_original_price": "10",
+                        "goods_img": "https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/default/b7cea418-563f-45c7-a492-cd7f9eba843b.jpg",
+                        "success_conten": "第三方的VB所付多吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧吧v                   ",
+                        "customer_service_code": "",
+                        "btnStyle": {
+                            "color": "#ffffff",
+                            "bg": "rgba(0,186,208,1)"
+                        },
+                        "spread": true,
+                        "controlId": "control_tucfy0w83p",
+                        "is_pay": 2,
+                        "is_code": 2
+                    }]
+                }
+                
+                $.ajax({
+                    url: lanh.apiHost.replace(/:\d+/g, '') + "activity/plugin/getAppointmentByRelationId?session_id=" + session_id + "&relationId=" + lanh.kid,
+                    type: "GET",
+                    contentType: "application/json",
+                    dataType: "json",
+                    headers: { session_id: session_id },
+                    data: {},
+                    success: function (result) {
+                        _business_id = result.data.business_id;
+                        _controlId = result.data.controlId;
+                        res(result.data.data[_index]);
+                    },
+                    error: function (err) {
+                        reject('获取预约设置失败：err'+JSON.stringify(err));
+                    }
+                })
+            }).then((config) => {
+                _totalFee = config.goods_price;
+                appointment.loadformTpl(config);
+            })
+
+        })
+    </script>
+</body>
+
+</html>

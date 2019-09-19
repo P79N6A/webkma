@@ -1,0 +1,10 @@
+<view class='nav-spread' style="padding:{{!!redpackId ? '34rpx 0' : '20rpx 0 14rpx'}}">
+  <view catchtap='toRedpackLog' wx:if="{{!!redpackId}}">
+    <image src='/images/fast-nav-redpack.png'></image>
+    <text>红包</text>
+  </view>
+  <view catchtap='jumpIndex'>
+    <image src='/images/fast-nav-index.png' style="width:{{!!redpackId ? '40rpx' : '30rpx'}};height:{{!!redpackId ? '40rpx' : '30rpx'}};margin:{{!!redpackId ? '0 auto 9rpx' : '0 auto 2rpx'}}"></image>
+    <text>首页</text>
+  </view>
+</view>

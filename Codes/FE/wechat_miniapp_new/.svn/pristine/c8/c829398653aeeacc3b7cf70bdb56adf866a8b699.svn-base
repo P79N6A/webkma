@@ -1,0 +1,4 @@
+{
+  "navigationBarTitleText": "私信",
+  "usingComponents": {"comp-fast-nav": "/components/fast-nav/fast-nav"}
+}

@@ -1,0 +1,173 @@
+/* pages/messages-send/messages-send.wxss */
+
+.msg-send {
+  padding-bottom: 110rpx;
+}
+
+.msg-send .msg-list {
+  padding: 25rpx 20rpx;
+  overflow: hidden;
+}
+
+.msg-send .msg-list .msg-item {
+  /* width: calc(100% - 110rpx); */
+  width: 100%;
+  margin: 15rpx 0;
+}
+
+.msg-send .msg-list  .msg-item-time {
+  /* width: auto; */
+  height: 50rpx;
+  color: #aaa;
+  font-size: 26rpx;
+  padding: 10rpx;
+  border-radius: 5rpx;
+  /* background-color: #d2d2d3; */
+}
+
+.msg-send .msg-list  .head-img {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+}
+
+.msg-send .msg-list .msg-content {
+  width: auto;
+  max-width: calc(100% - 270rpx);
+  font-size: 30rpx;
+  word-wrap: break-word;
+  padding: 15rpx 20rpx;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.msg-send .msg-list .msg-other-item {
+  float: left;
+}
+
+.msg-send .msg-list .msg-other-item .head-img {
+  float: left;
+  margin-right: 20rpx;
+}
+
+.msg-send .msg-list .msg-other-item .msg-content {
+  color: #000;
+  float: left;
+  margin-left: 13rpx;
+  background-color: #fff;
+}
+
+.msg-send .msg-list .msg-other-item .msg-arrow {
+  width: 13rpx;
+  height: 27rpx;
+  position: absolute;
+  top: 27rpx;
+  left: -12rpx;
+}
+
+.msg-send .msg-list .msg-own-item {
+  float: right;
+}
+
+.msg-send .msg-list .msg-own-item .head-img {
+  float: right;
+  margin-left: 20rpx;
+}
+
+.msg-send .msg-list .msg-own-item .msg-content {
+  color: #fff;
+  float: right;
+  margin-right: 10rpx;
+  background-color: #24d0c6;
+}
+
+.msg-send .msg-list .msg-own-item .msg-arrow {
+  width: 13rpx;
+  height: 27rpx;
+  position: absolute;
+  top: 27rpx;
+  right: -10rpx;
+}
+
+.msg-send .msg-list .msg-content .you_can {
+  font-size: 26rpx;
+  color: #999;
+  margin: 20rpx 0 25rpx 0;
+}
+
+.msg-send .msg-list .msg-content  .ser_list {
+  margin-bottom: 20rpx;
+}
+
+.msg-send .msg-list .msg-content  .ser_list .ser_list_item {
+  width: 379rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 25rpx;
+  font-size: 26rpx;
+  border: 1rpx #eee solid;
+}
+
+.msg-send .msg-list .msg-content  .ser_list .ser_list_item image {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.msg-send .msg-list .msg-content  .ser_list .ser_list_item .left-pic {
+  margin-right: 20rpx;
+}
+
+.msg-send .msg-list .msg-content  .ser_list .ser_list_item .right-pic {
+  float: right;
+  margin-top: 20rpx;
+}
+
+.footer {
+  width: 750rpx;
+  height: auto;
+  min-height: 110rpx;
+  /* line-height: 110rpx; */
+  padding: 15rpx 30rpx;
+  position: fixed;
+  bottom: 0;
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border-top: #eee 1rpx solid;
+}
+
+.footer .msg-input {
+  /* width: calc(100% - 160rpx); */
+  width: 520rpx;
+  height: auto;
+  min-height: 50rpx;
+  line-height: 40rpx;
+  background-color: #fff;
+  border: #eee 1rpx solid;
+  border-radius: 5rpx;
+  float: left;
+  padding: 20rpx 5rpx;
+}
+
+.footer .send-btn {
+  position: absolute;
+  bottom: 20rpx;
+  right: 30rpx;
+  width: 135rpx;
+  height: 80rpx;
+  color: #fff;
+  font-size: 30rpx;
+  float: right;
+  border:none !important;
+  outline:none;
+}
+.footer .send-btn::after{
+  border: none;
+}
+
+.msg-send .fl {
+  float: left;
+}
+
+.msg-send .fr {
+  float: right;
+}

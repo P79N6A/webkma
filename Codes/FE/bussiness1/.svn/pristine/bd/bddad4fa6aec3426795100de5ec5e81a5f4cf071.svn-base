@@ -1,0 +1,847 @@
+<template>
+  <div class="task-main">
+    <div class="task-title border-gray">
+      <el-row class="font-12 black-deep">
+        <el-col :span="4"><div class="grid-content bg-purple-dark">曝光量</div></el-col>
+        <el-col :span="5"><div class="grid-content bg-purple-dark">咨询量</div></el-col>
+        <el-col :span="5"><div class="grid-content bg-purple-dark">成交量</div></el-col>
+        <el-col :span="5"><div class="grid-content bg-purple-dark">客户总数</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-dark">交易额</div></el-col>
+      </el-row>
+      <el-row class="font-18 yellow-num">
+        <el-col :span="4"><div class="grid-content bg-purple-dark">{{relation.exposureNum || 0}}</div></el-col>
+        <el-col :span="5"><div class="grid-content bg-purple-dark">{{relation.consultNum || 0}}</div></el-col>
+        <el-col :span="5"><div class="grid-content bg-purple-dark">{{relation.orderNum || 0}}</div></el-col>
+        <el-col :span="5"><div class="grid-content bg-purple-dark">{{relation.visitorNum || 0}}</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-dark red-light">￥{{relation.orderAmount || 0}}</div></el-col>
+      </el-row>
+    </div>
+    <div class="task-echarts" style="min-width:1550px;">
+      <el-row>
+        <el-col :span="19" style="border-right:9px solid #F5F6FA;">
+          <div>
+            <!-- 营销力排行 -->
+            <div class="marke-rank border-gray">
+              <headerTitle :myTitle="markeTitle"></headerTitle>
+              <div style="display:flex;justify-content:space-around;padding-left:20px;">
+                <pieRank title="员工龙虎榜" width="330" valueWidth="67" :dataSource="employeeRankList.list" :objData="employeeRankList.guestNum"></pieRank>
+                <pieRank title="团队龙虎榜" width="330" valueWidth="67" :dataSource="teamRankList.list" :objData="teamRankList.guestNum"></pieRank>
+                <pieRank title="客户龙虎榜" width="330" valueWidth="67" :dataSource="customerRankList.list" :objData="customerRankList.guestNum"></pieRank>
+              </div>
+            </div>
+            <!-- 阅读习惯 -->
+            <div class="read-habit border-gray">
+              <headerTitle :myTitle="readTitle"></headerTitle>
+              <div style="width:100%;height:218px;">
+                <div id="read-time" ref="read-time" style="width:100%;height:100%;"></div>
+              </div>
+            </div>
+            <!-- 地域分布 -->
+            <div class="regional">
+              <headerTitle :myTitle="regioTitle"></headerTitle>
+              <div class="reg-box">
+                <div>
+                  <div id="areaDtatistics" ref="areaDtatistics" style="width:100%;height:100%;"></div>
+                </div>
+                <div>
+                  <el-table
+                    :data="tableData"
+                    header-row-class-name="row-head"
+                    style="width: 100%">
+                    <el-table-column
+                      prop="name"
+                      align="center"
+                      label="地区">
+                    </el-table-column>
+                    <el-table-column
+                      prop="value"
+                      align="center"
+                      label="访客数">
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="5">
+          <div class="border-gray" style="min-width:328px;">
+            <!-- 营销漏斗 -->
+            <div class="funnel" style="position:relative;">
+              <headerTitle :myTitle="funnelTitle"></headerTitle>
+              <div class="funnel-img">
+                <div ref="funnel-echart" id="funnel-echart" style="width:100%;height:100%;"></div>
+                <img src="../../../../../static/images/instructions.png" class="instructions">
+              </div>
+              <p class="font-14 tipText-color" style="position:absolute;left:105px;">交易转换率{{isNaN((relation.orderNum / relation.exposureNum)*100)==true || isFinite((relation.orderNum / relation.exposureNum)*100)==false?' 0':((relation.orderNum / relation.exposureNum)*100).toFixed(2)}}%</p>
+            </div>
+          </div>
+          <div>
+            <!-- 停留时间 -->
+            <div class="stay border-gray">
+              <headerTitle :myTitle="stayTitle"></headerTitle>
+              <div style="width:100%;height:250px;">
+                <div id="residenceTime" ref="residenceTime" style="width:100%;height:100%;"></div> 
+              </div>
+            </div>
+            <!-- 男女比例 -->
+            <div class="proportion">
+              <headerTitle :myTitle="proportionTitle"></headerTitle>
+              <div style="width:100%;height:250px;">
+                <div id="sex-proportion" ref="sex-proportion" style="width:100%;height:100%;"></div>
+              </div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
+</template>
+
+<script>
+import api from "api";
+import headerTitle from "components/header-title";
+import pieRank from "../../../../components/pie-ranking";
+import echarts from "bdcharts";
+import eventBus from "../../../../utils/eventBus"
+export default {
+  name: 'taskAnalyze',
+  components: {
+    headerTitle,
+    pieRank
+  },
+  data() {
+    return {
+      markeTitle: "营销力排行",
+      readTitle: "阅读习惯分时图",
+      regioTitle: "地域分布",
+      funnelTitle: "营销漏斗",
+      stayTitle: "停留时间",
+      proportionTitle: "男女比例",
+      tableData: [],
+      relation: {}, //统计数据
+      timeDate: '', //当前日期
+      employeeRankList: {}, //员工营销
+      teamRankList: {}, //任务营销
+      customerRankList: {} //客户营销
+    }
+  },
+  mounted(){
+    this.getQueryTaskRelation();
+    this.redTimeStatistical();
+    this.aggsGeo();
+    this.sexProportion();
+    this.aggsAccessTime();
+    this.getMarketRank();
+    window.onresize = () => { //监听窗口变化
+      return(()=>{
+        this.readTime.resize();
+      })()
+    };
+    let self = this;
+    eventBus.$on('getPageSize',()=>{
+      self.readTime.resize();
+    });
+  },
+  methods: {
+    // 返回数组的最大值
+    arrayMax(arrayName) {
+      var max = arrayName[0];
+      for (let i = 0; i < arrayName.length; i++) {
+        max = arrayName[i] > max ? arrayName[i] : max;
+      }
+      return max;
+    },
+    //当前日期
+    getNowFormatDate:function () {
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      this.timeDate = year + seperator1 + month + seperator1 + strDate
+
+    },
+    // 获取任务统计数据 (营销漏斗)
+    getQueryTaskRelation() {
+      let self = this;
+      var option = {
+          calculable: true,
+          color:['#ff9224','#00ada3','#32d9cf','#54fbcf'],
+          series: [
+              {
+                name:'漏斗图',
+                type:'funnel',
+                left: 20,
+                top: 30,
+                bottom: 20,
+                width: '80%',
+                min: 0,
+                max: 100,
+                minSize: '10%',
+                maxSize: '100%',
+                sort: 'descending',
+                gap: 5,
+                label: {
+                    show: true,
+                    position: 'inside'
+                },
+                labelLine: {
+                    length: 10,
+                    lineStyle: {
+                        width: 1,
+                        type: 'solid'
+                    }
+                },
+                itemStyle: {
+                    borderColor: '#fff',
+                    borderWidth: 1
+                },
+                emphasis: {
+                    label: {
+                        fontSize: 20
+                    }
+                },
+                data: [
+                    {value: 25, name: ''},
+                    {value: 50, name: ''},
+                    {value: 75, name: ''},
+                    {value: 100, name: ''}
+                ]
+              }
+          ]
+      };
+      api.request("getQueryTaskRelation", { 
+          businessId:localStorage.businessId,
+          taskId:self.$route.query.id
+        },
+        result => {
+          if(result.status == 0){
+            self.relation = result.data;
+
+            option.series[0].data[0].name = '成交 ' + result.data.orderNum;
+            option.series[0].data[1].name = '客户 ' + result.data.visitorNum;
+            option.series[0].data[2].name = '咨询 ' + result.data.consultNum;
+            option.series[0].data[3].name = '浏览 ' + result.data.exposureNum;
+
+            self.funnelEchart = echarts.init(self.$refs["funnel-echart"]);
+            self.funnelEchart.setOption(option);
+            console.log("统计",result)
+          }
+        }
+      )
+    },
+    // 获取营销数据龙虎榜
+    getMarketRank() {
+      let self = this;
+      api.request("getMarketRank", { businessId:localStorage.businessId,taskId:self.$route.query.id,pageIndex:1,pageSize:6},
+        result => {
+          if (result.status == 0) {
+            self.employeeRankList = result.data.employeeRank;
+            self.teamRankList = result.data.teamRank;
+            self.customerRankList = result.data.customerRank;
+            console.log("营销龙虎",result)
+          }
+        }
+      )
+    },
+    //阅读时长
+    redTimeStatistical(){
+      this.getNowFormatDate();
+      let self = this,
+          businessId = "",
+          date = new Date(self.timeDate),
+          Ymd = date.toLocaleDateString();
+      var option = {
+        tooltip: {
+          formatter: function(params) {
+            return [
+              `时间: ${params.data[0].trim().split(" ")[1]}:00`, 
+              `浏览数: ${params.data[1]}`
+            ].join('</br>');
+          }
+        },
+        color: "#2ec7c9",
+        grid: {
+          containLabel: true,
+          left: 36,
+          right: 36,
+          bottom: 20,
+          top: 10
+        },
+        xAxis: [
+          {
+            type: 'time',
+            min: Ymd + ' 00:00:00',
+            max: Ymd + ' 24:00:00',
+            interval: 6 * 60 * 60 * 1000,
+            axisLabel: {
+              formatter: function(v) {
+                var date = new Date(v);
+                return `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
+              },
+              color: "#B1BFCD",
+              fontSize: 10
+            },
+            axisLine:{
+              lineStyle:{
+                color: "#B1BFCD"
+              }
+            }
+          },
+          {
+            type: 'category',
+            position: 'bottom',
+            data:['凌晨','上午','下午','晚上'],
+            axisTick: {
+                interval: 2
+            },
+            axisLabel: {
+              color: "#B1BFCD",
+              fontSize: 10
+            },
+            axisLine:{
+              lineStyle:{
+                color: "#B1BFCD"
+              }
+            }
+          }
+        ],
+        yAxis: {
+          axisLabel:{
+            color: "#B1BFCD",
+            fontSize: 10
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine:{
+            show:false,
+            lineStyle:{
+                color: '#B1BFCD',
+                width: 1
+            }
+          }
+        },
+        series: [
+          {
+            type: "line",
+            smooth:true,
+            data: [],
+            itemStyle: {
+              barBorderRadius: 2
+            },
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#2ec7c9' // 0% 处的颜色
+                }, {
+                  offset: 1, color: '#effbfb' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            },
+          }
+        ]
+      };
+      api.request("taskBrowseTimespan", { "businessId":localStorage.businessId, "taskId": self.$route.query.id}, result => {
+        if (result.status == 0) {
+          var newArr = [],
+              yData = [];
+          for (var i = 0; i < result.data.length; i++) {
+            newArr.push([Ymd + ' ' + result.data[i].timespan,result.data[i].value])
+            yData.push(result.data[i].value);
+          } 
+          var accessMax = self.arrayMax(yData);
+          option.yAxis.max = function (value) {
+            accessMax = accessMax != 0 ? accessMax : 5;
+            for (let i = 0; i < 10; i++) {
+              if ((accessMax + i) % 5 == 0) {
+                return accessMax + i;
+              }
+            }
+          }; 
+          option.series[0].data = newArr;
+          option.series[0].name = "时长";
+          console.log("阅读时长",newArr)
+          self.readTime = echarts.init(self.$refs["read-time"]);
+          self.readTime.setOption(option);
+        }
+      });
+    },
+    //地区统计
+    aggsGeo() {
+      // debugger
+      var self = this;
+      api.request("getRegionStatistics", { businessId: localStorage.businessId,"taskId": self.$route.query.id })
+        .then(
+          result => {
+            if (result.status == 0) {
+              // debugger
+              self.tableData = result.data.city.length > 5 ? result.data.city.splice(0, 5) : result.data.city;
+              
+               var option = {
+              tooltip: {
+                trigger: "item",
+                textStyle: {
+                  fontSize: 12
+                }
+              },
+              visualMap: {
+                orient: "horizontal",
+                type: "continuous",
+                min: 0,
+                // max: maxData,
+                // right: 20,
+                right: 255,
+                // top: "top",
+                top: 300,
+                itemHeight: 166,
+                itemWidth: 13,
+                hoverLink: true,
+                text: ["高", "低"], // 文本，默认为数值文本
+                calculable: false,
+                inRange: {
+                  color: ["#ddfdfe", "#167ce0"]
+                }
+              },
+              series: [
+                {
+                  name: "地域浏览",
+                  type: "map",
+                  mapType: "china",
+                  zoom: 1.1,
+                  top: 15,
+                  left: 22,
+                  roam: false,
+                  label: {
+                    normal: {
+                      show: false
+                    },
+                    emphasis: {
+                      show: true
+                    }
+                  },
+                  data: result.data.province
+                },
+                // {
+                //   name: "地域浏览",
+                //   type: "pie",
+                //   radius: [0, "30%"],
+                //   center: [120, 320],
+                //   data: areaData
+                // }
+              ]
+            };
+            self.areaDtatistics = echarts.init(self.$refs["areaDtatistics"]);
+            self.areaDtatistics.setOption(option);
+            }
+          }
+        );
+    },
+    //停留时间
+    aggsAccessTime() {
+      var self = this,businessId = "";
+      api.request(
+        "taskTimesegList",
+        { "businessId": localStorage.businessId, "taskId": self.$route.query.id },
+        result => {
+          if (result.status == 0) {
+            console.log("停留时间",result)
+            let xAxisData = [],
+              yMaxData = 5,
+              dataList = [];
+            for (let i in result.data) {
+              xAxisData.push(i);
+              dataList.push(result.data[i]);
+              yMaxData =
+                yMaxData < result.data[i] ? result.data[i] : yMaxData;
+            }
+            var option = {
+              grid: {
+                containLabel: true,
+                left: 16,
+                right: 60,
+                bottom: 15,
+                top: 26
+              },
+              xAxis: {
+                type: "category",
+                name: "时间(s)",
+                nameTextStyle: {
+                  color: "#63717b"
+                },
+                axisTick: {
+                  interval: 0,
+                  lineStyle: {
+                    color: "#63717b"
+                  },
+                  show: false
+                },
+                splitLine: {
+                  show: true,
+                  lineStyle: {
+                    color: '#F0F0F0'
+                  }
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: '#1091cf',
+                    width: 1
+                  }
+                },
+                axisLabel: {
+                  color: '#63717b',
+                },
+                nameGap: 10,
+                data: xAxisData
+              },
+              yAxis: {
+                name: "数量",
+                // show: false,
+                nameTextStyle: {
+                  color: "#63717b"
+                },
+                splitLine: {
+                  show: true,
+                  lineStyle: {
+                    color: '#F0F0F0'
+                  }
+                },
+                splitArea: {
+                  show: true,
+                  areaStyle: {
+                    color: ['rgb(255,255,255)', 'rgb(249,249,249)']
+                  }
+                },
+                axisTick: {
+                  interval: 0,
+                  lineStyle: {
+                    color: "#63717b"
+                  },
+                  show: false
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: '#1091cf',
+                    width: 1
+                  }
+                },
+                axisLabel: {
+                  color: '#63717b'
+                },
+                nameGap: 10,
+                type: "value",
+                max: function (value) {
+                  for (let i = 0; i < 10; i++) {
+                    if ((yMaxData + i) % 5 == 0) {
+                      return yMaxData + i;
+                    }
+                  }
+                },
+                min: 0,
+                splitNumber: 5
+              },
+              series: [
+                {
+                  data: dataList,
+                  type: "bar",
+                  itemStyle: {
+                    color: "#4bd6eb"
+                  },
+                }
+              ]
+            };
+            self.residenceTime = echarts.init(self.$refs["residenceTime"]);
+            self.residenceTime.setOption(option);
+          }
+        }
+      );
+    },
+    //性别比例
+    sexProportion(){
+      var self = this,
+        businessId = "",
+        sexIcon = {
+          'male': '../../../../../static/images/male.png',
+          'female': '../../../../../static/images/girl.png'
+        };
+      api.request("taskSexList", { "businessId": localStorage.businessId, "taskId": self.$route.query.id}, result => {
+        if (result.status == 0) {
+          var data = result.data,
+          count = result.data.male + result.data.female + result.data.unknown;
+          var male = !!isNaN(((data.male / count)*100).toFixed(2))?0:((data.male / count)*100).toFixed(2),
+            female = !!isNaN(((data.female / count)*100).toFixed(2))?0:((data.female / count)*100).toFixed(2),
+            unknown = !!isNaN(((data.unknown / count)*100).toFixed(2))?0:((data.unknown / count)*100).toFixed(2);
+          console.log("男",male,"女",female,"未知",unknown)
+          var option = {
+            legend: {
+                top: 180,
+                itemGap: 30,
+                itemWidth: 10,
+                itemHeight:10,
+                textStyle:{
+                    padding:[5, 4, 3, 1]
+                }
+            },
+            xAxis: [{
+                type: 'value',
+                show: false,
+                max: count // 居中显示
+            }],
+            yAxis: [{
+                type: 'category',
+                show: false,
+                data: ['性别比例']
+            }],
+            color: ['#24d0c6', '#F68411', '#DCDCDC'],
+            series: [{
+                    name: '男 ' + data.male,
+                    type: 'bar',
+                    stack: '性别比例',
+                    barWidth: 5,
+                    label: {
+                        normal: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        barBorderRadius: 10
+                    },
+                    data: [{
+                        value: data.male,
+                        label: {
+                            normal: {
+                                offset: [0, 0],
+                                formatter: [
+                                    '{male|}',
+                                    '{b|}',
+                                    '{c|' + (male==0.00?'0%':male + '%') + '}'
+                                ].join('\n'),
+                                textStyle:{
+                                  color: '#24d0c6'
+                                },
+                                rich: {
+                                    male: {
+                                        height: 20,
+                                        align: 'center',
+                                        backgroundColor: {
+                                            image: sexIcon.male
+                                        }
+                                    },
+                                    b: {
+                                        fontSize: 18,
+                                        fontWeight: 100,
+                                        align: 'center',
+                                        padding: [10, 0, 10, 0]
+                                    }
+                                }
+                            }
+                        }
+                    }]
+                },
+                {
+                    name: '女 ' + data.female,
+                    type: 'bar',
+                    stack: '性别比例',
+                    barWidth: 5,
+                    label: {
+                        normal: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        barBorderRadius: 10
+                    },
+                    data: [{
+                        value: data.female,
+                        label: {
+                            normal: {
+                                offset: [0, 0],
+                                formatter: [
+                                    '{Female|}',
+                                    '{b|}',
+                                    '{c|' + (female==0.00?'0%':female + '%') + '}'
+                                ].join('\n'),
+                                textStyle:{
+                                  color: '#F68411'
+                                },
+                                rich: {
+                                  Female: {
+                                      height: 20,
+                                      align: 'center',
+                                      backgroundColor: {
+                                          image: sexIcon.female
+                                      }
+                                  },
+                                  b: {
+                                      fontSize: 18,
+                                      fontWeight: 100,
+                                      align: 'center',
+                                      padding: [10, 0, 10, 0]
+                                  }
+                                }
+                            }
+                        }
+                    }]
+                },
+                {
+                    name: '未知 ' + data.unknown,
+                    type: 'bar',
+                    stack: '性别比例',
+                    barWidth: '10px',
+                    label: {
+                        normal: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        barBorderRadius: 10
+                    },
+                    data: [{
+                        value: data.unknown,
+                        label: {
+                            normal: {
+                                offset: [0, 0],
+                                formatter: [
+                                    '{Female|}',
+                                    '{b|}',
+                                    '{c|' + (unknown==0.00?'0%':unknown + '%') +'}'
+                                ].join('\n'),
+                                textStyle:{
+                                  color: '#DCDCDC'
+                                },
+                                rich: {
+                                    Female: {
+                                        height: 20,
+                                        align: 'center',
+                                        backgroundColor: {
+                                            image: sexIcon.question
+                                        }
+                                    },
+                                    b: {
+                                        fontSize: 18,
+                                        fontWeight: 100,
+                                        align: 'center',
+                                        padding: [10, 0, 10, 0]
+                                    }
+                                }
+                            }
+                        }
+                    }]
+                }
+            ]
+          };
+          self.sexProportion = echarts.init(self.$refs["sex-proportion"]);
+          self.sexProportion.setOption(option);
+          console.log("比例",result)
+        }
+      })
+    }
+  }
+}
+</script>
+<style scoped>
+  .task-main >>> .title-box .font-style{
+    border: none;
+    margin-left: 10px;
+  }
+
+  .task-main >>> .el-table .row-head th{
+    background-color: #F7FBFC;
+  }
+
+  .task-main >>> .el-table .el-table__row td{
+    border: none;
+  }
+
+  .task-main >>> .el-table .el-table__row:nth-child(even){
+    background-color: #ffffff!important;
+  }
+
+  .task-main .task-title{
+    height: 80px;
+    padding-top: 14px;
+  }
+
+  .task-main .grid-content{
+    text-align: center;
+  }
+
+  .task-main .marke-rank{
+    height: 294px;
+  }
+
+  .task-main .read-habit{
+    height: 289px;
+    overflow: hidden;
+    /* background-color: aqua; */
+  }
+
+  .task-main .regional{
+    height: 380px;
+    padding-bottom: 37px;
+  }
+
+  .task-main .regional .reg-box{
+    width:100%;
+    height:276px;
+    display:flex;
+    justify-content: space-around;
+  }
+
+  .task-main .regional .reg-box > div{
+    width:403px;
+    height:241px;
+  }
+
+  .task-main .regional .reg-box > div:nth-of-type(2){
+    border: 1px solid #E3E6EB;
+  }
+
+  .task-main .funnel,
+  .task-main .stay,
+  .task-main .proportion{
+    height: 321px;
+    text-align: center;
+  }
+
+  .task-main .funnel .funnel-img{
+    width:311px;
+    height:194px;
+    /* background: no-repeat url('../../../../../static/images/funnel.png');
+    background-size: 70%;
+    background-position: center; */
+    position:relative;
+  }
+
+  .task-main .funnel .instructions{
+    width: 93px;
+    position: relative;
+    right: -67px;
+    top: -146px;
+    height: 113px;
+  }
+
+  /* .task-main .stay{
+    background-color: blueviolet;
+  }
+
+  .task-main .proportion{
+    background-color: burlywood;
+  } */
+
+</style>
+
+

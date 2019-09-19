@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "名片页",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "comp-fast-nav": "/components/fast-nav/fast-nav",
+    "task-list-item": "/components/tasks-item/tasks-item"
+  }
+}

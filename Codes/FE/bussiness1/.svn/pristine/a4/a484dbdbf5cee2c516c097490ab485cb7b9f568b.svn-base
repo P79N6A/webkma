@@ -1,0 +1,506 @@
+<template>
+  <div style="heigth:auto" class="reissue-details">
+    <div class="header-statistics">
+      <div class="left-text">
+        <div>
+          <p>{{againInfo.total_num}}</p>
+          <p>补发红包</p>
+        </div>
+        <div>
+          <p style="color:#FA766B">
+            <span
+              style="font-size:12px">￥</span>{{againInfo.total_money>10000?(((againInfo.total_money-againInfo.total_money%1000)/10000+'w')):(againInfo.total_money)}}
+          </p>
+          <p>补发金额</p>
+        </div>
+      </div>
+      <div>
+        余额不足会导致部分符合条件用户无法补发红包
+        <span style="cursor: pointer;" @click="cashRecharge">立即充值></span>
+      </div>
+    </div>
+    <div class="header-seach">
+      <p>
+        共{{tableTotal}}条，检索结果
+        <span>{{tableData.length}}</span>
+      </p>
+      <div class="search-wrap">
+        <el-input placeholder="请输入微信昵称" style="width: 240px;" v-model="data_.keyWords"></el-input>
+        <span class="search-btn" @click="select()">查询</span>
+        <el-button class="exportBtn" size="mini" @click="downExcel">
+          <!-- <img
+            src="https://resource.tuixb.cn/dev/00000000-0000-0000-0000-000000000000/KMA/default/4f3a8735-890f-479d-ac21-f14ab6b787e3.png"
+            alt /> -->
+          <i class="iconfont icon-excel-out"></i>
+          导出
+        </el-button>
+        <el-button class="reissueBtn" size="mini" @click="replacement()">补发红包</el-button>
+      </div>
+    </div>
+    <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}"
+      :header-cell-style="{background:'#F7FBFC'}" @selection-change="handleSelectionChange"
+      @sort-change="sortChangeHandler">
+      <el-table-column type="selection" min-width="30" :selectable="selectable" />
+      <el-table-column label="昵称/身份" min-width="120">
+        <template slot-scope="scope">
+          <div style="display: flex; margin:10px 0;">
+            <div>
+              <img style="width:40px;height:40px;margin-right:12px;border-radius:40px;"
+                :src="scope.row.w_face ||scope.row.u_face " />
+            </div>
+            <div class="font-12">
+              <p class="black-deep">{{scope.row.w_name?scope.row.w_name:scope.row.u_name}}</p>
+              <p class="tipText-color" v-if="scope.row.e_empl_name">{{scope.row.role}}:{{scope.row.e_empl_name}}</p>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="地区" align="center">
+        <template slot-scope="scope">
+          <p class="textStyle">{{ scope.row.w_province}}{{scope.row.w_city }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="hierarchy" label="人脉层级" align="center" sortable></el-table-column>
+      <el-table-column prop="browse_time_Length" label="浏览次数/时长" align="center" sortable>
+        <template slot-scope="scope">{{scope.row.browse_number|| 1}}/{{scope.row.browse_time_Length}}</template>
+      </el-table-column>
+      <el-table-column prop="visitor_number" label="带来浏览人数" align="center" sortable></el-table-column>
+      <el-table-column prop="exposure_number" label="带来浏览次数" align="center" sortable></el-table-column>
+      <el-table-column prop="again_time" label="补发记录" align="center" sortable></el-table-column>
+      <el-table-column prop="receive_time" label="领取次数" align="center" sortable></el-table-column>
+      <el-table-column prop="money" label="红包总额" align="center" sortable>
+        <template slot-scope="scope">
+          <span style="color:#FA766B">￥{{scope.row.money}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="发放状态" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.state==1">不符合条件</span>
+          <span v-if="scope.row.state==2">符合条件未发放</span>
+          <span v-if="scope.row.state==3">已发放</span>
+          <span v-if="scope.row.state==4">已补发</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="最近浏览时间" align="center" prop="latest_browse" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span>{{ scope.row.latest_browse.split(' ')[0] }}</span>
+          <br />
+          <span style="color: #B1BFCD">{{ scope.row.latest_browse.split(' ')[1] }}</span>
+        </template>
+      </el-table-column> -->
+    </el-table>
+    <el-dialog title :visible.sync="dialogVisible" width="450px" close="dialog">
+      <div style="display:flex;font-size:12px;heigth:28px;line-height: 28px;width:90%;margin:0 auto">
+        <p style="color:#B1BFCD">
+          已选
+          <span style="color:#F68411">{{ChoiceList.length}}</span>人，共
+          <span
+            style="color:#FA766B">{{totalPrice>10000?(((totalPrice-totalPrice%1000)/10000+'w')):(totalPrice)}}</span>元
+          <span style="color:#3C4A55">
+            账户余额：
+            <span style="color:#FA766B">￥{{balance>10000?(((balance-balance%1000)/10000+'w')):(balance)}}</span>
+          </span>
+        </p>
+      </div>
+      <p class="dialog-title">消息通知预览</p>
+      <div class="dialog-content">
+        <div class="dialog-img">
+          <img
+            src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/default/c71453c4-9da6-4620-badc-69411e2f42b8.png"
+            alt />
+          <p>推小宝</p>
+        </div>
+        <p class="dialog-name">你收到一个现金红包</p>
+        <p class="dialog-time">{{userInfoName.time}}</p>
+        <p class="dialog-text">
+          <span style="color:#B1BFCD">{{ this.$route.query.myTitle }}</span>大钜惠，
+          <span style="color:#B1BFCD">{{ userInfoName.name }}</span>送您一个现金红包，点击拆开有好运！金额直接存入零钱哦，拒绝套路！
+        </p>
+        <p class="dialog-details">详情</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogisShow">确 定</el-button>
+      </span>
+    </el-dialog>
+    <pagination v-if="tableData.length>0" class="pull-right" :paginationOpt="employeePagination"
+      @switchPage="employeePagesFn" />
+  </div>
+</template>
+
+<script>
+import api from "api";
+import httpConfig from "config/http";
+import pagination from "../../components/ui-pagination";
+export default {
+  components: {
+    pagination
+  },
+  data() {
+    return {
+      downUrl:
+        httpConfig.apiHost +
+        "award/redpacket/downloadRedpackstatistics?session_id=" +
+        localStorage.getItem("sessionId") + "&main_id=" + this.$route.query.main_id,
+      dialogVisible: false,
+      totalPrice: 0,
+      userInfoName: {
+        name: "",
+        time: ""
+      },
+      tableTotal: 0,
+      tableData: [],
+      ChoiceList: [],
+      againInfo: {},
+      reissueData_: {
+        // premoney: "", //每个红包的金额
+        ids: [], //补发红包的用户id数组 user_uuid
+        main_id: this.$route.query.main_id //活动id
+      },
+      employeePagination: {
+        pageIndex: 1,
+        pageSize: 8,
+        totalCount: 1,
+        pageCount: 0
+      },
+      data_: {
+        main_id: this.$route.query.main_id,
+        pageIndex: 1,
+        pageSize: 8,
+        keyWords: "",
+        state: 5,// 5代表未发放和已补发
+        orderBy: "",
+        orderType: "",// 排序方式  true 升序  false 降序  不传则为默认升序
+      },
+      balance: 0 //商家账户余额
+    };
+  },
+  mounted() {
+    var self = this;
+    self.userInfoName = {
+      name: JSON.parse(localStorage.getItem('userInfo')).businessInfo.businessName,
+      time: new Date().getMonth() + 1 + "-" + new Date().getDate()
+    };
+    self.tablesList();
+    self.balanceData();
+  },
+  methods: {
+    selectable(row, index) {
+      if (row.state != 4) {
+        return true
+      } else {
+        return false
+      }
+    },
+    //导出
+    downExcel() {
+      window.open(this.downUrl);
+    },
+    //商家账户余额
+    balanceData() {
+      var self = this;
+      api.request(
+        "getAccountDetail",
+        Object.assign({ id: self.$store.state.login.userInfo.userUuid }),
+        result => {
+          if (result.status == 0) {
+            self.balance = result.data.balance;
+          } else {
+            self.$message.error(result.message);
+          }
+        }
+      );
+    },
+    //红包统计列表
+    tablesList(cb) {
+      var self = this;
+      api.request("redpackstatistics", Object.assign(self.data_), result => {
+        if (result.status == 0) {
+          result.data.againInfo.total_money = result.data.againInfo.total_money.toFixed(2);
+          self.againInfo = result.data.againInfo;
+          for (var i = 0; i < result.data.userList.list.length; i++) {
+            if (result.data.userList.list[i].browse_time_Length < 5) {
+              result.data.userList.list[i].browse_time_Length = "<5秒";
+            } else {
+              result.data.userList.list[i].browse_time_Length = window.times(
+                result.data.userList.list[i].browse_time_Length
+              );
+            }
+          }
+          self.tableData = result.data.userList.list;
+          self.employeePagination.totalCount = result.data.userList.total;
+          self.employeePagination.pageCount = Math.ceil(
+            result.data.userList.total / self.employeePagination.pageSize
+          );
+          if (self.data_.keyWords == "") {
+            self.tableTotal = result.data.userList.total;
+          }
+        } else {
+          self.$message.error(result.message);
+        }
+      });
+      !!cb && cb();
+    },
+    //补发提交
+    dialogisShow() {
+      var self = this;
+      // self.reissueData_.premoney = parseFloat(self.totalPrice);
+      api.request(
+        "redpacketsendAgain",
+        Object.assign(self.reissueData_),
+        result => {
+          if (result.status == 0) {
+            self.$message.success("补发成功");
+            self.tablesList();
+          } else {
+            self.$message.error(result.message);
+          }
+        }
+      );
+      self.dialogVisible = !self.dialogVisible;
+    },
+    //排序
+    sortChangeHandler(orderBy) {
+      this.data_ = {
+        orderBy: "",
+        orderType: "",// 排序方式  true 升序  false 降序  不传则为默认升序
+      }
+      let { order, prop } = orderBy;
+      if (!!prop) {
+        this.data_.orderBy = [prop][0];
+        this.data_.orderType = order === "descending" ? true : false;
+        this.tablesList();
+      }
+    },
+    //点击补发
+    replacement() {
+      var self = this;
+      if (self.ChoiceList.length > 0) {
+        this.dialogVisible = !this.dialogVisible;
+        self.totalPrice = 0;
+        for (let i = 0; i < self.ChoiceList.length; i++) {
+          self.totalPrice += self.ChoiceList[i].money;
+        }
+      } else {
+        self.$message({
+          type: "warning",
+          message: "请选择需要补发的人员"
+        });
+      }
+    },
+    //跳转充值
+    cashRecharge() {
+      this.$router.push({ path: "/cash-recharge" });
+    },
+    handleSelectionChange(val) {
+      var self = this;
+      self.ChoiceList = val;
+      self.reissueData_.ids = [];
+      for (var i = 0; i < val.length; i++) {
+        self.reissueData_.ids.push(val[i].user_uuid);
+      }
+    },
+    //搜索
+    select() {
+      var self = this;
+      self.employeePagination.pageIndex = 1;
+      self.tablesList();
+    },
+    //分页
+    employeePagesFn(pageIndex, cb) {
+      let self = this;
+      self.employeePagination.pageIndex = pageIndex;
+      self.data_.pageIndex = pageIndex;
+      self.tablesList(cb);
+    }
+  }
+};
+</script>
+
+<style scoped>
+.black-deep {
+  width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.header-statistics > .left-text > div > p {
+  text-align: center;
+  width: 70px;
+}
+.el-input--mini .el-input__inner {
+  padding-left: 10px !important;
+}
+/* 搜索框样式 begin*/
+.search-wrap {
+  position: relative;
+  float: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.search-wrap >>> .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+  border-radius: 0;
+  /* width: 132px; */
+}
+.search-btn {
+  display: inline-block;
+  width: 64px;
+  height: 30px;
+  line-height: 30px;
+  background: #01bacf;
+  border-radius: 0 4px 4px 0;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.reissue-details >>> .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+  border-radius: 0;
+  /* width: 132px; */
+}
+.reissue-details >>> .el-dialog__headerbtn {
+  width: 40px;
+  height: 40px;
+  background: #fa766b;
+  display: inline-block;
+  right: 0;
+  top: 0;
+}
+.reissue-details >>> .el-dialog__headerbtn > i {
+  color: #ffffff;
+}
+.dialog-text {
+  width: 90%;
+  margin: 0 auto;
+  color: #3c4a55;
+  font-size: 14px;
+  padding: 57px 0 18px 0;
+  border-bottom: 1px solid rgba(227, 230, 235, 1);
+}
+.dialog-details {
+  font-size: 12px;
+  height: 43px;
+  line-height: 43px;
+  color: rgba(177, 191, 205, 1);
+  width: 90%;
+  margin: 0 auto;
+}
+.dialog-time {
+  width: 90%;
+  margin: 0 auto;
+  font-size: 12px;
+  color: rgba(177, 191, 205, 1);
+  padding-top: 5px;
+}
+.dialog-name {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 17px;
+  font-size: 14px;
+  color: rgba(60, 74, 85, 1);
+}
+.dialog-img {
+  width: 90%;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(227, 230, 235, 1);
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+}
+.dialog-img > img {
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  margin: 8px;
+}
+.dialog-title {
+  padding: 20px 0 15px 0;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 12px;
+  color: rgba(177, 191, 205, 1);
+}
+.dialog-content {
+  width: 90%;
+  margin: 0 auto;
+  height: auto;
+  border: 1px solid rgba(227, 230, 235, 1);
+}
+.header-statistics >>> .el-input--prefix .el-input__inner {
+  padding-left: 10px;
+}
+.header-seach {
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 0 15px 0;
+}
+.header-seach .reissueBtn {
+  background: #fa766b;
+  color: #ffffff;
+  border: none;
+  height: 30px;
+}
+
+.header-seach .exportBtn img {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+.header-seach .exportBtn {
+  background: #00bad0;
+  color: #ffffff;
+  height: 30px;
+  border-radius: 0;
+}
+
+.header-seach p {
+  color: #b1bfcd;
+}
+.header-seach p span {
+  color: #f68411;
+}
+.header-statistics {
+  width: 100%;
+  height: 70px;
+  background: #f7fbfc;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.header-statistics > .left-text > div {
+  width: 80px;
+  text-align: center;
+  margin-left: 27px;
+}
+.header-statistics > .left-text > div > p:nth-of-type(1) {
+  margin-top: 15px;
+  color: #f68411;
+  font-size: 16px;
+}
+.header-statistics > .left-text > div > p:nth-of-type(2) {
+  margin-right: 12px;
+  color: #b1bfcd;
+  font-size: 12px;
+}
+.header-statistics > .left-text {
+  width: 60%;
+  display: flex;
+}
+.header-statistics > div:nth-of-type(2) {
+  width: 40%;
+  text-align: right;
+  line-height: 70px;
+  color: #b1bfcd;
+}
+.header-statistics > div:nth-of-type(2) span {
+  color: #3898ec;
+  margin-right: 19px;
+  padding-left: 10px;
+}
+</style>

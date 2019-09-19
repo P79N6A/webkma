@@ -1,0 +1,274 @@
+<template>
+  <div class="material-label-box">
+    <fold title="素材标签">
+       <div class="label-form flex space-between">
+        <div class="left box flex">
+          <div class="sorting flex">
+            <el-button type="primary" style="margin-right:8px;" class="btn-sort" @click="btnSort">排序</el-button>
+            <el-button type="primary" style="margin-right:8px;display:none;" class="btn-submit" @click="btnSubmit">完成</el-button>
+            <el-button type="primary" style="display:none;" class="cancel" @click="btnCancel">取消</el-button>
+          </div>
+          <div class="addLabel flex">
+            <el-input v-model="addTag.name" maxlength="5" class="width300" placeholder="请输入新的标签名称"></el-input>
+            <el-button type="primary" class="mrl10" style="margin-right:76px;" @click="btnAdd">添加</el-button>
+          </div>
+        </div>
+        <div class="right box flex">
+          <div class="formSortin" style="position:relative;width:118px;">
+            <el-select v-model="searchTag.sequence" placeholder="默认排序" @change="btnSearchOrderby">
+              <el-option label="默认排序" value=""></el-option>
+              <el-option label="引用数降序" value="desc"></el-option>
+              <el-option label="引用数升序" value="asc"></el-option>
+            </el-select>
+            <i class="el-icon-caret-bottom" style="position:absolute;top:6px;right:14px;font-size:18px;"></i>
+          </div>
+          <div class="searchLabel flex mrl10">
+            <span style="width:66px;">关键字 ：</span>
+            <el-input v-model="searchTag.search" class="width300" placeholder="标签名称"></el-input>
+            <el-button type="primary" class="mrl10 keywords" @click="btnSearchName">搜索</el-button>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix" style="margin-top:40px;">
+        <el-row :gutter="20" id="sortable" v-if="sortTag">
+          <el-col :span="6" v-for="item in dataList" :id="item.id" :key="item.id">
+            <div class="grid-content bg-purple">
+              <div class="tips">{{item.name}}</div>
+              <p style="padding-top: 40px;">
+                <span>已引用 ：{{item.useTotal}}</span> 
+                <span class="del-btn">
+                  <a href="javascript:;" class="btn-icon" @click="btnDelete(item)">
+                      <i class="el-icon-delete-solid"></i>
+                  </a>  
+                </span> 
+              </p>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </fold>
+  </div>
+</template>
+
+<script>
+import api from "../../axios/api-service";
+import fold from "../../components/com-fold";
+export default {
+  name: "material-label",
+  components:{ fold },
+  data() {
+    return {
+      activeNames: "1", //折叠菜单
+      dataList:[], //标签列表
+      addTag: { //添加标签名
+        name: "",
+        type: "material"
+      }, 
+      searchTag : { //排序下拉菜单
+        sortby: "",
+        search: "",
+        sequence: ""
+      }, 
+      labelName: "", //搜索标签
+      tag:{ //标签卡片
+        name: "标签",
+        useTotal: 0
+      },
+      deleteTag:{ //删除标签
+        id: 0
+      },
+      sortTag :[] //排序
+    };
+  },
+  mounted(){
+    this.filterOptions();
+    this.getData();
+  },
+  methods: {
+    handleChange(val) { //折叠面板
+      console.log(val);
+    },
+
+    filterOptions() {
+        var options = {};
+        if (!!this.searchTag.sequence) {
+            this.searchTag.sortby = "total"
+        } else {
+            this.searchTag.sortby = ""
+        }
+        $.extend(options, this.searchTag);
+        return options;
+    },
+
+    getData(){ //获取标签列表
+      var self = this;
+      var opts = this.filterOptions();
+      api.request("getList", opts, result => {
+        self.dataList = result.data;
+      })
+      self.sortTag = [];
+    },
+
+    btnSearchOrderby(){ //下拉排序
+      this.getData();
+    },
+
+    btnSort(){ //排序
+      var self = this;
+      $(".btn-sort").hide();
+      $(".btn-submit").show();
+      $(".cancel").show();
+      $("#sortable .del-btn").hide();
+      $("#sortable .grid-content").attr("style", "cursor:all-scroll;border: 1px #36c6d3 dotted;margin-bottom: 20px;");
+      $("#sortable").sortable({
+          update: function (event, ui) {
+            self.sortTag = $('#sortable').sortable('toArray');
+          }
+      });
+    },
+
+    btnSubmit(){ //完成保存
+      var opt = [],self = this;
+      var list = self.sortTag;
+      for (var i = 0; i < list.length; i++) {
+          var obj = {
+              id: list[i],
+              sort: list.length - i
+          };
+          opt.push(obj);
+      }
+      if (opt.length == 0) return this.off();
+      api.request("tagOrder",{
+        data: opt
+      },result => {
+        if (result.status == 0) {
+            self.messenger.success("操作成功");
+            self.off();
+            self.dataList = [];
+            self.getData();    
+        } else {
+            self.messenger.error("操作失败");
+        }
+      })
+    },
+
+    btnCancel(){ //取消排序
+      this.off();
+      this.getData();
+    },
+
+    off() {
+      $(".btn-sort").show();
+      $(".btn-submit").hide();
+      $(".cancel").hide();
+      $("#sortable .del-btn").show();
+      $("#sortable .grid-content").attr("style","")
+      try {
+          $('#sortable').sortable('destroy');
+      } catch (e) {
+          $('#sortable');
+      }
+    },
+
+    btnAdd(){ //添加标签
+      if (!this.addTag.name) { alert("请输入新的标签名称"); return false; }
+      var self = this;
+      api.request("addTag",self.addTag,result => {
+        if (result.status == 0) {
+            self.messenger.success("添加成功");
+            self.addTag.name = '';
+            self.getData();
+        } else {
+          self.messenger.error(result.message);
+        }
+      })
+    }, 
+
+    btnDelete(tagObj){ //删除标签
+      var self = this;
+      self.messenger.confirm('删除标签后不可恢复，确认删除？',function(tag){
+        if(tag){
+          self.deleteTag.id = tagObj.id;
+          api.request("deleteTag",{
+            id: self.deleteTag.id
+          },result => {
+            if (result.status == 0) {
+                self.messenger.success("删除成功");
+                self.getData();
+            } else {
+                self.messenger.error("删除失败");
+            }
+          })
+        }
+      })
+    },
+
+    btnSearchName(){ //搜索标签
+      this.getData();
+    }
+  }
+};
+</script>
+<style scoped>
+ 
+  .material-label-box >>> .el-button{
+    padding: 8px 12px!important;
+    border-radius: 0; 
+  }
+  .material-label-box >>> .el-input__inner{
+    height: 32px;
+    line-height: 32px;
+    border-radius: 0;
+    margin-right: 10px;
+  }
+  .material-label-box >>> .el-row .grid-content{
+    background-color: #fafafa!important;
+    padding: 25px;
+    margin: 8px;
+    position: relative;
+  }
+
+
+  .width300{
+    width: 300px;
+  }
+  .box{
+    height: 32px;
+    line-height: 32px;
+  }
+  .mrl10{
+    margin-left: 10px;
+  }
+  .material-label-box .label-form .sorting{
+    margin-right: 14px; 
+  }
+  .material-label-box .clearfix .tips{
+    width: 94px;
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    left: -7px;
+    padding: .5em 1em;
+    z-index: 5;
+    box-shadow: 2px 2px 7px rgba(0,0,0,.4);
+    background-color: #36c6d3;
+  }
+  .material-label-box .clearfix .del-btn{
+    float: right;
+  }
+  .material-label-box .clearfix .del-btn .btn-icon{
+    display: inline-block;
+    text-decoration: none;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    color: #000;
+    border: 1px solid #999;
+    border-radius: 60px;
+  }
+  .material-label-box .clearfix .del-btn .btn-icon:hover{
+    background-color: #e6e6e6;
+    border-color: #adadad;
+  }
+</style>

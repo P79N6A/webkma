@@ -1,0 +1,70 @@
+<template>
+<div class="bread-crumb1">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+		<el-breadcrumb-item :to="{ path: item.href }" v-for="(item, index) in breadList" :key="index">{{item.title}}</el-breadcrumb-item>
+	</el-breadcrumb>
+</div>
+</template>
+<script scoped>
+import menusConfig from '../config/sidebar'
+import { constants } from 'crypto';
+import eventBus from '../utils/eventBus.js'
+export default {
+    name:'BreadCrumb',
+    componentName:'BreadCrumb',
+    props:{
+
+    },
+    data(){
+        return{
+			tempList: [],
+			breadList: [],
+			terminal: false
+        }
+	},
+	created() {
+		
+	},
+    mounted(){
+		this.getBreadList(menusConfig);
+		if(this.terminal) this.breadList = this.tempList;
+		eventBus.$on('initBreadCrumb', (item) => {
+			this.terminal = false;
+			this.tempList = [];
+			this.getBreadList(menusConfig);
+			if(this.terminal) this.breadList = this.tempList;
+		});
+    },
+    methods:{
+        getBreadList(menu) {
+			let self = this, i=0;
+			for(i; i<menu.length; i++) {
+				if(self.terminal) break;
+				self.tempList = [];
+				self.tempList.push(menu[i]);
+				if(self.$route.name == menu[i].key){
+					self.terminal = true;
+					break;
+				}
+				if(!!menu[i].children && menu[i].children.length > 0) {
+					self.getBreadList(menu[i].children);
+				}
+			}
+		}
+    }   
+}
+</script>
+<style scoped>
+.bread-crumb1{
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+	background: #dbdbdb;
+}
+.bread-crumb1 >>> .el-breadcrumb{
+	height: 100%;
+	line-height: 30px !important;
+}
+</style>
+
+

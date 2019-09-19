@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "企业任务",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "usingComponents": {
+    "task-list-item": "/components/tasks-item/tasks-item",
+    "share-menu": "/components/share-menu/share-menu"
+  }
+}

@@ -1,0 +1,2 @@
+<!--components/base-line/base-line.wxml-->
+<view class='cont'>{{textinfo}}</view>

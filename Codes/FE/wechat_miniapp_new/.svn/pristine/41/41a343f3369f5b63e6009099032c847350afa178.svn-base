@@ -1,0 +1,44 @@
+<!--pages/card-list/card-list.wxml-->
+<view class='card-list'>
+  <view class='search-wrap'>
+    <view class='text'>{{totalNum}}个名片</view>
+    <image class='icon' src="/images/icon-search.png" bindtap='searchCard'></image>
+  </view>
+  <view class='list'>
+    <view style='padding-top:90rpx;' wx:if="{{tpl == 'list'}}">
+      <view class='new-style'>
+        <view class='item' wx:for="{{list}}" wx:key="id">
+          <view class='info' bindtap='toCardDetail' data-item="{{item}}">
+            <view class='pic'>
+              <image class='face' src="{{!item.face?'/images/icon-default-photo.png':item.face}}"></image>
+            </view>
+            <view class='info-desc'>
+              <view class='text'>
+                <view class='name'>{{item.name}}</view>
+                <view>{{item.job||"暂无职位信息"}}</view>
+                <view class='eslip' style='width: 360rpx;'>{{item.company||"暂无公司信息"}}</view>
+                <view>
+                  <image class='phone' src='/images/icon-phone.png'></image>{{item.phone || '暂无手机号'}}
+                </view>
+              </view>
+
+              <view class="btn-group" wx:if="{{item.type == '2' && item.status == '1' && !!userInfo.phone}}">
+                <image class='agree-icon' src='/images/icon-agree.png'></image>
+                <image class='agree-icon' src='/images/icon-refuse.png'></image>
+              </view>
+
+              <view class="tag tag_agree" wx:if="{{item.status == 0 && item.type == 2}}">已同意</view>
+              <view class="tag tag_refuse" wx:if="{{item.status == 3 && item.type == 2}}">已拒绝</view>
+            </view>
+          </view>
+          
+        </view>
+      </view>
+      <i-load-more tip="{{listStatus.loadingText}}" loading="{{ listStatus.isLoading }}" />
+    </view>
+    <view style='text-align:center;' wx:if="{{list.length == 0 && tpl == 'list'}}">
+      <image class='empty-img' src="https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/icon-empty.png"></image>
+      <view style='color:#999;font-size:24rpx;'>您暂时还没有任何名片</view>
+    </view>
+  </view>
+</view>

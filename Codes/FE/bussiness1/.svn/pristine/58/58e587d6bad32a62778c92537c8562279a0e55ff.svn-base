@@ -1,0 +1,257 @@
+﻿<!doctype html>
+<!-- DataConfig
+    [{
+        "path":"/manuscript/publish/setting",
+        "method": "get",
+        "queryString": ["relationId={{{%main_id%}}}"],
+        "objName": "pageResult"
+    }]
+-->
+<html style="overflow:hidden;">
+
+<head>
+    <meta charset="utf-8 ">
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no" />
+    <!--uc-->
+    <meta name="layoutmode" content="standard" />
+    <title>{{pageResult.data.name}}</title>
+    <meta name="keywords" content="{{(pageResult.data.keywords || []).join(',')}}">
+    <meta name="description" content="{{pageResult.data.description}}">
+    <link rel="shortcut icon" href="/public/favicon.ico" />
+    <!-- {{css_join}} -->
+    <!-- import flexible -->
+    <!-- <link rel="styleSheet" href="../MidWay/public/bower_components/animate.css/animate.min.css" />
+    <link rel="styleSheet" href="../MidWay/public/bower_components/swiper-4.3.5/dist/css/swiper.min.css" /> -->
+    <link rel="styleSheet" href="../MidWay/public/dist/vendor.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+        }
+
+        .page-body {
+            position: relative;
+            overflow: hidden;
+            margin: 0px auto;
+            width: 10rem;
+        }
+
+        .page-body .page-panel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: white;
+            -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.24);
+            box-shadow: 0px 0px 20px rgba(245, 102, 102, 0.24);
+            opacity: 0;
+            transition: opacity 2s;
+            -moz-transition: opacity 2s;
+            -webkit-transition: opacity 2s;
+            -o-transition: opacity 2s;
+            display: none;
+        }
+
+        .page-body .page-panel .page-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .page-body .page-show {
+            opacity: 1;
+
+        }
+
+        .layer-hiden {
+            transition: opacity 2s;
+            opacity: 0;
+        }
+
+        .page-qrcode {
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            color: #9eabb8;
+            padding: 200px 20px 0;
+            display: none;
+        }
+
+        .page-qrcode [data-qrcode] {
+            width: 200px;
+            height: 100%;
+            margin: 0 auto 20px;
+        }
+
+        .swiper-container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .page-body .page-panel,
+        .page-body .layui-m-layer {
+            animation-duration: 1s;
+
+        }
+    </style>
+</head>
+
+<body class="page-body">
+    <div id="page-panel" data-container="true" class="page-panel swiper-container">
+        <div class="page-content swiper-wrapper" style="{{pageStyle}}">
+            <div class="swiper-slide"><img class="ani" swiper-animate-effect="bounceInDown" swiper-animate-duration="0.5s"
+                    swiper-animate-delay="0" src="img/zhiling1.jpg"></div>
+            <div class="swiper-slide" data-page="1">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper" style="height:max-content;">
+                        <div class="swiper-slide">
+                            <img class="ani" style="max-width:100%; height:500px;" swiper-animate-effect="slideInDown" swiper-animate-duration="0.5s"
+                                swiper-animate-delay="0" src="img/zhiling2.jpg">
+                            <h4>程序猿,你也配吃10元的盒饭?</h4>
+                            <p>又是一个阳光灿烂的中午，看了一上午的报纸，茶水也顺带喝了不少，肚子早已经咕咕作响了，今天中午吃点什么了，貌似楼下的新开张的盒饭还不错，于是我来到楼下准备买上一盒。<br> 菜色还不错，价格有6元，8元，10元，12元，20元的，像哥这样的精英管理人才，怎么着也的吃最高级的才配合身份，就在我准备购买时，一个响亮的声音响起。
+                            </p>
+                            <p>"老板，给我一份10元的盒饭"。</p>
+                            <p>顺势撇了一眼，一个小伙子，眉开眼笑的靠近盒饭铺，今天是1号，看样子是发工资了。就当他走近时，看到了我，刚才的欢愉的表情瞬时黯淡下去，他知道我认出了他，靠，满头白里带一点黑的头发，永远没睡醒的眼神，以及那凌乱的胡渣子，都出卖了他的身份。我继续狠狠的盯着他，他越发的羞愧了，我犀利的眼神正在和他做着底层通信，我默默的向他传达一个信息，<br>                                "你，也配吃10元的盒饭?"。
+                            </p>
+                            <p> 他哀怜的眼神似乎在祈求我不要拆穿他的身份，可惜，哥这么有正义感的人，怎么能在这个时候放弃原则!<br> "你不是隔壁公司的程序员么?"
+                                <br> 就这一瞬间，他整个人似乎崩溃下去，刚才欢愉的表情彻底变为哭丧，周围的小摊贩以及路人甲乙丙丁，都纷纷投来了鄙视的眼光，他瘟鸡一样的双手抓着头发，痛苦的蹲了下去。
+                            </p>
+                            <p> 就在这时，人群中终于有人忍不住了，大声呵骂到，<br> "呸，程序员也敢吃10元的盒饭，真不要脸"
+                                <br> 一位老大娘好心的提醒到，
+                                <br> "小伙子啊，你一个程序员，挣点钱不容易啊，怎么吃10元的盒饭啊"
+                            </p>
+                            <p>一名打扮妖艳入时的姑娘说到，<br> "人家当小姐的都才吃10元，你也敢要10元的?"
+                                <br> 我义正言辞的给他说到，
+                                <br> "我说一句话顶你写一万行代码，也才吃20元的盒饭，你竟敢吃10元的"
+                                <br> 老板也发话了，
+                                <br> "是程序员啊，太不好意思了，你吃6元的吧，不然人家知道我卖了你10元的，我这生意就做不了啊"
+                            </p>
+                            <p> 他终于发出颤抖的声音说到<br> "对不起，我刚才说错了，给我一份6元的"。
+                                <br> 这时人群中爆发出激烈的掌声，我知道，这是我又一次坚持原则，换来的荣誉的赞赏!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swiper-scrollbar"></div>
+                </div>
+
+            </div>
+            <div class="swiper-slide"><img class="ani" swiper-animate-effect="rollIn" swiper-animate-duration="0.5s" swiper-animate-delay="0"
+                    src="img/zhiling3.jpg"></div>
+            <div class="swiper-slide"><img class="ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="0"
+                    src="img/zhiling4.jpg"></div>
+
+        </div>
+    </div>
+    <div id="page-qrcode" class="page-qrcode">
+        <div id="qrcode-panel" data-qrcode="true">
+
+        </div>
+        <div> 请打开微信扫一扫，扫描以上二维码预览 </div>
+    </div>
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+    <script type="text/javascript" src="../MidWay/public/dist/vendor.js" merge="true"></script>
+    <!-- <script type="text/javascript" src="../MidWay/public/bower_components/zepto/zepto.min.js"></script>
+    <script src="../MidWay/public/bower_components/layer.mobile-v2.0/layer_mobile/layer.js"></script>
+    <script src="../MidWay/public/bower_components/swiper-4.3.5/dist/js/swiper.js"></script>
+    <script src="../MidWay/public/bower_components/swiper-4.3.5/dist/js/swiper.animate1.0.3.min.js"></script> -->
+    <script type="text/javascript" src="../MidWay/public/dist/h5-framework.js"></script>
+    <script type="text/javascript">
+        Utils.containerOptions = {
+            watchSlidesProgress: true,
+            on: {
+                init: function () {
+                    this.myIndex = 0;//activeIndex在滑动到一半时会切换，改用滑动完再切换的myIndex
+                    swiperAnimateCache(this); //隐藏动画元素 
+                    swiperAnimate(this); //初始化完成开始动画
+                    this.prevIndex = 0;
+                },
+                progress: function () {
+                    for (var i = 0; i < this.slides.length; i++) {
+                        var slide = this.slides.eq(i);
+                        var progress = this.slides[i].progress;
+                        var translate, boxShadow;
+                        translate = progress * this.height * 0.8;
+                        scale = 1 - Math.min(Math.abs(progress * 0.2), 1);
+                        if (i == this.myIndex) {
+                            slide.transform('translate3d(0,' + (translate) + 'px,0) scale(' + scale + ')');
+                            slide.css({ 'z-index': 0, 'boxShadow': '0px 0px 10px rgba(0,0,0,.5)' });
+                        }
+                    }
+                },
+                transitionEnd: function () {
+                    var self = this;
+                    this.myIndex = this.activeIndex;
+                    var len = this.slides.length;
+                    for (var i = 0; i < len; i++) {
+                        var slide = this.slides.eq(i);
+                        slide.transform('');
+                        slide.css('z-index', 1);
+                    }
+                    this.mousewheel.enable();
+                    if (this.prevIndex !== this.activeIndex) {
+                        swiperAnimate(this);
+                        setTimeout(function () {
+                            for (var c = 0; c < len; c++) {
+                                if (this.activeIndex !== c) {
+                                    var prevSwiper = self['childSwiper' + c];
+                                    if (!!prevSwiper) {
+                                        prevSwiper.setTranslate(0);
+                                    }
+                                }
+                            }
+                        }, 100);
+                    }
+                },
+                setTransition: function (speed) {
+                    for (var i = 0; i < this.slides.length; i++) {
+                        var slide = this.slides.eq(i);
+                        slide.transition(speed + 'ms');
+                    }
+                    this.mousewheel.disable();
+                },
+                slideChangeTransitionEnd: function () {
+                    var self = this;
+                    var index = this.activeIndex;
+                    let longPage = $('[data-page="' + index + '"] .swiper-container').length;
+                    if (longPage > 0 && !self['childSwiper' + index]) {
+                        console.log('create childSwiper');
+                        setTimeout(function () {
+                            self['childSwiper' + index] = new Swiper('[data-page="' + index + '"] .swiper-container', {
+                                direction: 'vertical',
+                                slidesPerView: 'auto',
+                                freeMode: true,
+                                nested: true,
+                                freeModeMomentumBounce: false,
+                                scrollbar: {
+                                    el: '[data-page="' + index + '"] .swiper-scrollbar',
+                                },
+                                mousewheel: true,
+                            });
+                        }, 0);
+                    }
+                    this.prevIndex = index;
+                }
+            }
+        };
+        console.log('parse');
+    </script>
+    <!-- {{js_join}} -->
+</body>
+
+</html>

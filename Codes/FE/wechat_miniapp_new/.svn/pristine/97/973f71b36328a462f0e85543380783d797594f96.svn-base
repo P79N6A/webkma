@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "custom-overview": "/components/custom-overview/custom-overview",
+    "task-list-item": "/components/tasks-item/tasks-item"
+  }
+}

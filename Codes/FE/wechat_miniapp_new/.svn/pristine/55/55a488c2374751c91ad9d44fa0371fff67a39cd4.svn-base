@@ -1,0 +1,128 @@
+<!--pages/customer-edit-info/customer-edit-info.wxml-->
+<view class='container'>
+  <form bindsubmit="formSubmit">
+    <view>
+      <!-- 客户姓名 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text class='required'>*</text>
+          <text>客户姓名</text>
+          <input name="userName" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{form.userName}}" placeholder="未填写" />
+          <!-- <text class='tips-gary'>{{form.userName}}</text> -->
+        </view>
+      </view>
+      <!-- 昵称 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>昵称</text>
+          <input name="wxName" placeholder-class="phcolor" placeholder="微信昵称" disabled='true' value="{{wxName}}" />
+          <!-- <text class='tips-gary'>{{form.userName}}</text> -->
+        </view>
+      </view>
+      <!-- 性别 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>性别</text>
+          <view bindtap="{{!btnState?'':'showSex'}}">
+            <text class='tips-gary'>{{sexIndex == 0 ? '男' : (sexIndex == 1 ? '女' : '未选择' )}}</text>
+            <icon type="icon-next" wx:if='{{!btnState?false:true}}' slot="icon" color="#B1BFCD" size="11" />
+          </view>
+        </view>
+      </view>
+      <!-- 公司 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text class='required'>*</text>
+          <text>公司</text>
+          <input name="company" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{form.company}}" placeholder="未填写" />
+        </view>
+      </view>
+      <!-- 职位 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text class='required'>*</text>
+          <text>职位</text>
+          <input name="job" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{form.job}}" placeholder="未填写" />
+        </view>
+      </view>
+      <!-- 生日 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>生日</text>
+          <!-- <input name="birthday" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{form.birthday}}" placeholder="未填写" /> -->
+          <text style="color:{{birthday!==null?'#B1BFCD':'#808080'}};" wx:if="{{!btnState}}">{{birthday==null?'未填写':birthday}}</text>
+          <picker wx:else mode="date" value="{{birthday}}" start="" end="{{timeDate}}" bindchange="bindDateChange">
+            <view class="picker" style="color:{{birthday!==null?'#B1BFCD':'#808080'}};">
+              {{birthday==null?'未填写':birthday}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <!-- 来源 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>来源</text>
+          <input name="source" placeholder-class="phcolor-source" style='color:#3898EC;' disabled='true' value="{{source}}" placeholder="暂无" />
+        </view>
+      </view>
+      <!-- 级别 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>级别</text>
+          <view bindtap="{{!btnState?'':'showIevel'}}">
+            <text class='tips-gary'>{{levelIndex == 0 ? '普通客户' : (levelIndex == 1 ? '一般客户' : '重要客户' )}}</text>
+            <icon type="icon-next" wx:if='{{!btnState?false:true}}' slot="icon" color="#B1BFCD" size="11" />
+          </view>
+        </view>
+      </view>
+      <!-- 手机 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text class='required'>*</text>
+          <text>手机</text>
+          <input name="phoneNumber" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{form.phoneNumber}}" placeholder="未填写" />
+        </view>
+      </view>
+      <!-- 状态 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>状态</text>
+          <view bindtap="{{!btnState?'':'showState'}}">
+            <text class='tips-gary' wx:if="{{stateIndex==0}}">微信潜客</text>
+            <text class='tips-gary' wx:if="{{stateIndex==1}}">初步沟通</text>
+            <text class='tips-gary' wx:if="{{stateIndex==2}}">见面拜访</text>
+            <text class='tips-gary' wx:if="{{stateIndex==3}}">确定意向</text>
+            <text class='tips-gary' wx:if="{{stateIndex==4}}">正式报价</text>
+            <text class='tips-gary' wx:if="{{stateIndex==5}}">签约成功</text>
+            <icon type="icon-next" wx:if='{{!btnState?false:true}}' slot="icon" color="#B1BFCD" size="11" />
+          </view>
+        </view>
+      </view>
+      <!-- 地区 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>地区</text>
+          <text style="color:{{region[0]!==null?'#B1BFCD':'#808080'}};" wx:if="{{!btnState}}">{{region[0]==null||region[0]==''?'请选择地区':(region[0] + (region[1]==null||region[1]==''?'':',' + region[1]) + (region[2]==null||region[2]==''?'':',' + region[2]))}}</text>
+          <picker wx:else mode="region" value="{{region}}" bindchange="bindRegionChange">
+            <view class="picker" style="color:{{region.length!==0?'#B1BFCD':'#808080'}};">
+              {{region[0]==null||region[0]==''?'请选择地区':(region[0] + (region[1]==null||region[1]==''?'':',' + region[1]) + (region[2]==null||region[2]==''?'':',' + region[2]))}}
+            </view>
+          </picker>
+          <!-- <input name="region" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{form.region}}" placeholder="未填写" /> -->
+        </view>
+      </view>
+      <!-- 地址 -->
+      <view class='customer-info'>
+        <view class='flex justify-content-between'>
+          <text>地址</text>
+          <input name="address" placeholder-class="phcolor" disabled='{{!btnState?true:false}}' value="{{address}}" placeholder="请输入详细地址" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 按钮 -->
+    <view class='customer-btn' wx:if="{{(mine=='false' || bid=='null')?false:true}}">
+      <button formType="submit">{{!btnState?'编辑':'保存'}}</button>
+    </view>
+  </form>
+</view>

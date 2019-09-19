@@ -1,0 +1,3 @@
+<web-view wx:if="{{!pageStatus}}" src="{{businessUrl}}" bindmessage="onMessageHandler">
+</web-view>
+<comp-page-box-tips type="{{pageStatus}}" bindtap='loadPage'></comp-page-box-tips> 

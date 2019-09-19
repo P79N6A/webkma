@@ -1,0 +1,26 @@
+/* pages/customer-details/customer-details.wxss */
+.remark-edit{
+  position: absolute;
+  top: 106rpx;
+  left: 0rpx;
+}
+
+.icon-jump{
+  width: 185rpx;
+  height: 80rpx;
+  position: absolute;
+  right: 0rpx;
+  top: -4rpx;
+}
+
+.icon-jump image{
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.icon-jump image:nth-of-type(1){
+  margin-right: 22rpx;
+}
+.font-24{
+  font-size: 24rpx !important;
+}

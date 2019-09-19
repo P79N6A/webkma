@@ -1,0 +1,9 @@
+﻿<div style="width:100%; height:100%; overflow: hidden;">
+    <div id="inner" style="position:relative; line-height: 0px; left: {{{data.left}}}; top: {{{data.top}}}; width: {{{data.width}}}; height:{{{data.height}}};">
+        <div id="inner_body">
+            {{{if !!data._isRelease && !!data.link}}}<a href="{{{data.link}}}">{{{else}}}<a>{{{/if}}}
+                <img src="{{{data.view}}}" style="position:relative; width:100%; height: 100%;" />
+            </a>
+        </div>
+    </div>
+</div>

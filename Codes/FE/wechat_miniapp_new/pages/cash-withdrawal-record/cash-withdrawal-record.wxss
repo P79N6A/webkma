@@ -1,0 +1,48 @@
+.container{
+  height: 100%;
+}
+.cash_item {
+  height: 140rpx;
+  border-bottom: 1px solid #f7f7ff;
+  background-color: #FFFFFF;
+  padding: 0 30rpx;
+  display: flex;
+  justify-content: space-between
+} 
+.cash_item view{
+  height: 68rpx;
+}
+.cash_item .cash-info{
+  flex-direction: column;
+  padding-top: 28rpx;
+}
+.cash_item .cash-info>view{
+  width: 100%;
+}
+.cash_item .cash-info text,
+.cash_item .cash-info .tips
+{
+  font-size: 20rpx;
+  color: rgb(178, 178, 178);
+}
+.cash_item .cash-info .tips{
+  margin-left: 20rpx;
+}
+.cash_item view:nth-of-type(2){
+  text-align: right;
+  line-height: 140rpx;
+  color: rgb(230, 67, 64);
+}
+.color-red{
+  color: rgb(230, 67, 64);
+}
+.font-22{
+  font-size: 22rpx !important;
+  color: #b1bfcd !important
+}
+
+.state_image{
+  width: 25rpx !important;
+  height: 25rpx !important;
+  margin-right: 12rpx;
+}

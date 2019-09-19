@@ -1,0 +1,111 @@
+<template>
+  <div>
+     <com-message/>
+    <router-view/>
+  </div>
+</template>
+
+<script>
+// import comSidebar from "components/com-sidebar";
+// import comHeader from "components/com-header";
+// import comFooter from "components/com-footer";
+import comMessage from "components/com-message";
+// import login from "view/login";
+
+export default {
+  name: "App",
+  data() {
+    return {
+    //   role: localStorage.getItem("role"),
+    //   isLogin: this.$store.state.login.isLogin,
+    //   isSinglePage:
+    //   this.$route.name == "design" ||
+    //   this.$route.name == "preview" ||
+    //   this.$route.name == "my-promotion-detail"
+    };
+  },
+  mounted() {
+
+  },
+  computed: {
+    // isLoginStatus: function() {
+    //   return this.isLogin;
+    // },
+    // isSinglePageStatus: function() {
+    //   return this.isSinglePage;
+    // }
+  },
+  components: { 
+    comMessage
+    // comSidebar, comHeader, comFooter, comMessage, login
+   }
+};
+</script>
+
+
+<style>
+html {
+  background-color: #eff7fa;
+}
+.el-input__inner{
+  background: #ffffff;
+}
+.app {
+  height: 100%;
+  padding-top: 75px;
+}
+
+.app-container-wrap {
+  width: 100%;
+  min-width: 1400px;
+  background-color: #F1F3FC ;
+  height: calc(100vh - 75px);
+}
+
+.app-container {
+  width: 1400px;
+  min-height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-content {
+  height: 100% !important;
+}
+
+.container {
+  /* width: 1240px; */
+  min-height: calc(100vh - 85px);
+  margin-left: 160px;
+  margin-top: 10px;
+  /* background-color: #fff; */
+  padding: 0;
+}
+
+.container.design-panel {
+  margin-left: auto;
+  margin-right: auto;
+  /* width: 1400px; */
+  min-width: 1400px;
+}
+::-webkit-scrollbar {
+  width: 7px; /*对垂直流动条有效*/
+  height: 7px; /*对水平流动条有效*/
+}
+/*定义滚动条的轨道颜色、内阴影及圆角*/
+::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  border-radius: 3px;
+  border: 1px solid #f1f3fc;
+}
+/*定义滑块颜色、内阴影及圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #9eabb8;
+}
+#app>div {
+  height: 100%;
+  overflow-y: auto;
+}
+</style>

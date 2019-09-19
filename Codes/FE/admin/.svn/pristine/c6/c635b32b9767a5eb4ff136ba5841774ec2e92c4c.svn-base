@@ -1,0 +1,223 @@
+<template>
+  <div class="bussiness-list">
+    <el-row class="operation">
+      <el-input
+        placeholder="标签名称不超过6个字符"
+        v-model="tagName"
+        class="com-search-input"
+        size="small"
+        maxlength="6"
+      ></el-input>
+      <el-button type="primary" @click="addTag()" style="line-height:0.5;">添加</el-button>
+      <search
+        :placeholder="searchOpt.placeholder"
+        @searchHandler="searchHander"
+        :style="{ width: (searchOpt.size || '220px')}"
+      ></search>
+    </el-row>
+    <el-table
+      ref="bussinessTable"
+      :data="tagList"
+      tooltip-effect="dark"
+      row-key="id"
+      class="table"
+      header-row-class-name="table-header"
+      header-cell-class-name="table-header"
+    >
+      <el-table-column
+        show-overflow-tooltip
+        prop="labelName"
+        label="标签名称"
+        align="center"
+        class-name="number_color"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="articleCount"
+        label="文章引用数"
+        align="center"
+        class-name="number_color"
+      ></el-table-column>
+      <el-table-column
+        prop="activityCount"
+        label="活动引用数"
+        align="center"
+        class-name="number_color"
+        width
+      ></el-table-column>
+      <el-table-column
+        prop="posterCount"
+        label="海报引用数"
+        align="center"
+        class-name="number_color"
+        width
+      ></el-table-column>
+      <el-table-column
+        prop="templateCount"
+        label="模板引用数"
+        align="center"
+        class-name="number_color"
+        width
+      ></el-table-column>
+      <el-table-column
+        prop="rank"
+        label="标签热度排名"
+        align="center"
+        class-name="number_color"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column prop label="状态" align="center" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <slideBtn
+            :activeText="'正常'"
+            :slideBtnOpt="scope.row"
+            :propValueMap="propValueMap"
+            @slide-event="setSingleState"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column prop="address" label="操作" align="center" width="200" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span class="btn-plain btn-delete" @click="deleteDesigner(scope.row)">删除</span>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div style="margin:20px 10px;">
+      <pagination
+        v-if="paginationOpt.pageCount > 1"
+        class="pull-right"
+        :paginationOpt="paginationOpt"
+        @switchPage="pagesFn"
+      />
+    </div>
+  </div>
+</template>
+<script scope>
+import api from "../../axios/api-service";
+import search from "../../components/com-search";
+import pagination from "../../components/ui-pagination";
+import slideBtn from "../../components/slide-btn";
+import { debuglog } from "util";
+
+export default {
+  name: "designer-list",
+  components: { search, pagination, slideBtn },
+  data() {
+    return {
+      tagList: [], //商家列表数据
+      search: "", //关键词
+      searchOpt: {
+        placeholder: "请输入标签名称"
+      },
+      propValueMap: {
+        1: 0,
+        0: 1
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageCount: "",
+        pageSize: 15
+      },
+      tagName: ""
+    };
+  },
+  mounted() {
+    this.getList();
+  },
+  methods: {
+    getList(cb) {
+      let _this = this;
+      let _option = {
+        orderBy: "desc",
+        search: this.search, //可空，模糊查询内如可是用户名，公司名称
+        pageIndex: this.paginationOpt.pageIndex, //开始条数，不可空，正整数
+        pageSize: this.paginationOpt.pageSize //取用条数，不可空，正整数
+      };
+      api.request("getTagList", _option, result => {
+        if (result.status == 0) {
+          _this.tagList = result.data.list.map(item => {
+            item.stateText = item.state == 1 ? "正常" : "禁用";
+            return item;
+          });
+          _this.paginationOpt.totalCount = result.data.total;
+          _this.paginationOpt.pageCount = Math.ceil(
+            _this.paginationOpt.totalCount / _this.paginationOpt.pageSize
+          );
+        } else {
+          _this.messenger.error(result.message);
+        }
+        !!cb && cb();
+      });
+    },
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getList(cb);
+    },
+    //搜索
+    searchHander(data) {
+      this.search = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    },
+    //设置状态
+    setSingleState(data) {
+      let opt = {
+        id: data.labelId,
+        state: data.state //标签状态 1：启用 2：禁用
+      };
+      api.request(updateTagStatus, opt, json => {
+        if (json.status == 0) {
+          this.getList();
+          this.messenger.success("操作成功");
+        } else {
+          this.messenger.error("操作失败:" + json.message);
+        }
+      });
+    },
+    //删除
+    deleteDesigner(item) {
+      this.$confirm("确定删除该标签吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          api.request("deleteTags", { id: item.labelId.toString() }, json => {
+            if (json.status == 0) {
+              this.getList();
+              this.messenger.success("操作成功");
+            } else {
+              this.messenger.error("操作失败:" + json.message);
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    //新增
+    addTag() {
+      if (this.tagName.trim().length == 0) {
+        this.messenger.error("请输入标签名称");
+        return;
+      }
+      api.request("addTags", { name: this.tagName }, json => {
+        if (json.status == 0) {
+          this.getList();
+          this.tagName = "";
+          this.messenger.success("操作成功");
+        } else {
+          this.messenger.error("操作失败:" + json.message);
+        }
+      });
+    }
+  }
+};
+</script>
+<style scope>
+.operation {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+}
+</style>
+
+

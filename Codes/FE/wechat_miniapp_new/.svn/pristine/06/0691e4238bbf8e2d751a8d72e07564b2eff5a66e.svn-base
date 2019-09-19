@@ -1,0 +1,19 @@
+<!--pages/user-customer/user-customer.wxml-->
+<view>
+  <view class='title' style='padding: 27rpx 10rpx 28rpx 15rpx;'>
+    <view class='search flex justify-content-between'>
+      <view class="search_input flex">
+        <icon type="icon-search" class="icon-search tips-gary"></icon>
+        <input bindinput='getKeyword'></input>
+      </view>
+      <view class='drop-option' style='top:10rpx;right:1rpx;'>
+        <view bindtap="customerAction" style='position:relative;'>
+          <text class='font-22 tips-gary'>{{customerActionText}}</text> 
+          <text class='corner'></text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <comp-customer-info customerList="{{customerList}}" flag="{{typeFlag}}"></comp-customer-info>
+  <i-load-more wx:if="{{customerList.length != 0}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='玩命加载中'}}" />
+</view>

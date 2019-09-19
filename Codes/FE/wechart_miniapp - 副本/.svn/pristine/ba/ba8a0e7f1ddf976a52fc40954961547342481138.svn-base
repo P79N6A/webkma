@@ -1,0 +1,21 @@
+<view class="fast-nav" catchtap='jumpIndex' wx:if="{{!redpackId}}">
+    <view style='margin-top:20rpx;'>返回</view>
+    <view class="">首页</view>
+</view>
+<view class="fast-nav" catchtap='spread' wx:if="{{!!redpackId && !open}}">
+    <view style='margin-top:20rpx;'>快速</view>
+    <view class="">导航</view>
+</view>
+<view class='nav-spread' wx:if="{{!!redpackId && !!open}}">
+  <view catchtap='toRedpackLog'>
+    <image src='/images/nav-redpack.png'></image>
+    <text>红包</text>
+  </view>
+  <view catchtap='jumpIndex'>
+    <image src='/images/nav-card.png'></image>
+    <text>推er</text>
+  </view>
+  <view catchtap='spread'>
+    <image class='arrow' src='/images/nav-arrow.png'></image>
+  </view>
+</view>

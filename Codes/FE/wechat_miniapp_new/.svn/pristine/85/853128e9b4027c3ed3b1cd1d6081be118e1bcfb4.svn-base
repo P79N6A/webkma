@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "任务",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "task-list-item": "/components/tasks-item/tasks-item",
+    "share-menu": "/components/share-menu/share-menu"
+  }
+}

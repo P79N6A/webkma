@@ -1,0 +1,145 @@
+<!--pages/task-data.wxml-->
+<view class="container">
+	<view class="nav_header">
+		<comp-navbar
+		 bind:tabchange="navbarTabChange"
+		 tabs="{{[{key: 'taskData', title:'任务数据'},{key: 'pluginData', title:'插件数据'}]}}"
+		 activeTab="{{activeNavTab}}"
+		 lineColor="#24D0C6"
+		 color="#24D0C6"
+		/>
+		<block wx:if="{{activeNavTab === 'taskData'}}">
+			<view class="task_container">
+				<view class="task_top tast-data-bg">
+					<view class="task_top_tag" bindtap="test">
+						<view class="top_tag_parm">该任务营销综合评分</view>
+						<view class="top_tag_value">174</view>
+						<view class="top_tag_parm">，任务综合指数排名</view>
+						<view class="top_tag_value">23</view>
+						<!--icon -->
+						<view class="top_tag_icon">?</view>
+					</view>
+					<view style="width: 100vw; height: 412rpx;">
+						<charts-flow-radar dataSource="{{radarDataSource}}" />
+					</view>
+				</view>
+				<view class="task_funnel tast-data-bg">
+					<view class="content_title">
+						<view class="side-line" />
+						<view class="title_label">营销漏斗</view>
+					</view>
+					<view class="task_funnel_bg_box" style="width: 311rpx; height: 256rpx; margin: 0 auto;)">
+						<!-- <charts-marketing-funnel dataSource="{{funnelDataSource}}; background-image: url('../../images/task-funnel-bg.png'" /> -->
+						<image src="../../images/task-funnel-bg.png" class="funnel_bg_img"/>
+            <view class="funnel_bg view1">
+              <view class="funnel_label">浏览</view>
+              <view class="funnel_value">135456</view>
+            </view>
+            <view class="funnel_bg view2">
+              <view class="funnel_label">客户</view>
+              <view class="funnel_value">102200</view>
+            </view>
+            <view class="funnel_bg view3">
+              <view class="funnel_label">咨询</view>
+              <view class="funnel_value">5895</view>
+            </view>
+            <view class="funnel_bg view4">
+              <view class="funnel_label">成交</view>
+              <view class="funnel_value">50</view>
+            </view>
+					</view>
+				</view>
+				<view class="comp-emp tast-data-bg">
+					<view class="content_title">
+						<view class="side-line" />
+						<view class="title_label title_value">完成任务员工</view>
+						<view class="title_value_left title_value">99</view>
+						<view class="title_value_right title_value">/{{322}}</view>
+					</view>
+					<view class="emp_info_box">
+						<view class="emp_info">
+							<view class="emp_photo_list">
+								<view
+								 wx:for="{{compPhoto}}"
+								 class="item_img"
+								 style="background-image: url({{item.url}}); z-index: {{20 - index}}"
+								 wx:key="{{index}}"
+								/>
+							</view>
+							<view class="item_log" wx:if="{{compPhoto.length >= 10}}">...</view>
+						</view>
+						<view class="total_num">+29546</view>
+					</view>
+				</view>
+				<view class="comp-emp tast-data-bg">
+					<view class="content_title">
+						<view class="side-line" />
+						<view class="title_label title_value">带来客户</view>
+						<view class="title_value_left title_value">99</view>
+					</view>
+					<view class="emp_info_box">
+						<view class="emp_info">
+							<view class="emp_photo_list">
+								<view
+								 wx:for="{{takePhoto}}"
+								 class="item_img"
+								 style="background-image: url({{item.url}}); z-index: {{20 - index}}"
+								 wx:key="{{index}}"
+								/>
+							</view>
+							<view class="item_log" wx:if="{{takePhoto.length >= 10}}">...</view>
+						</view>
+
+						<view class="total_num">+299</view>
+					</view>
+				</view>
+				<!--男女比例-->
+				<view class="male-radio tast-data-bg">
+					<view class="content_title">
+						<view class="side-line" />
+						<view class="title_label">男女比例</view>
+					</view>
+					<view class="container" style="width:100vw;height:161rpx;">
+						<charts-gender-pie dataSource="{{genderDataSource}}"></charts-gender-pie>
+					</view>
+				</view>
+				<!--人脉图谱-->
+				<view class="connection-picture tast-data-bg">
+					<view class="content_title">
+						<view class="side-line" />
+						<view class="title_label">人脉图谱</view>
+					</view>
+					<view class="container" style="width: 671rpx;height: 433rpx; margin: 0 auto;">
+						<image style="width:100%;height:100%;" src="../../images/chart-image.jpg" mode="aspectFit" />
+					</view>
+				</view>
+				<!--地域分布-->
+				<view class="areal-distribution tast-data-bg">
+					<view class="content_title noBp">
+						<view class="side-line" />
+						<view class="title_label">地域分布</view>
+					</view>
+					<view class="container" style="width:100vw;height: 356rpx;">
+						<charts-map dataSource="{{mapDataSource}}" />
+					</view>
+				</view>
+				<!--浏览习惯-->
+				<view class="areal-distribution">
+					<view class="content_title noBp">
+						<view class="side-line" />
+						<view class="title_label">浏览习惯</view>
+					</view>
+					<view class="container" style="width:100vw;height: 217rpx;">
+						<charts-daily-browse-line dataSource="{{dailyLineDataSource}}" />
+					</view>
+				</view>
+			</view>
+		</block>
+		<block wx:if="{{activeNavTab === 'pluginData'}}">
+			<view class="plugin_container">
+				插件数据
+			</view>
+		</block>
+	</view>
+</view>
+

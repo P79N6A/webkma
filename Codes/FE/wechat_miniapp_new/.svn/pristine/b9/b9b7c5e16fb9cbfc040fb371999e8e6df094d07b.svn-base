@@ -1,0 +1,78 @@
+<!--pages/task-list/task-list.wxml-->
+<view bindtap='closeAll' class='contentAll'>
+  <view class='headers' wx:if="{{pageType>0}}">
+    <text catchtap='downloadImg' class='iconfont icon-xiazai'></text>
+    <view class='top_title'>
+      <view class='title_cont'>
+        <view class='circular'></view>
+        <view class='line'></view>
+        <view class='mind'>热门任务榜</view>
+        <view class='line'></view>
+        <view class='circular'></view>
+      </view>
+      <view>{{rankingData[0].newTimeArr.y}}/{{rankingData[0].newTimeArr.m}}/{{rankingData[0].newTimeArr.d}}更新</view>
+    </view> 
+    <view class='ranking'>
+      <view class='ranking_item'> 
+        <view class='rank_imgs'>
+          <image class='ranking_img' mode='aspectFit' src='{{rankingData[1].cover}}'></image>
+          <image class='ranking_num' wx:if="{{rankingData.length>1}}" src='../../images/icon-num2.png'></image>
+        </view>
+        <view class='ranking_info'>
+          <view class='ranking_info_text1'>{{rankingData[1].name}}</view>
+          <view class='ranking_info_text2' wx:if="{{rankingData.length>1}}">{{rankingData[1].userNumber}}分</view>
+        </view>
+      </view>
+      <view class='ranking_item' > 
+        <view class='rank_imgs'>
+          <image class='ranking_img' mode='aspectFit' src='{{rankingData[0].cover}}'></image>
+          <image class='ranking_num' wx:if="{{rankingData.length>0}}" src='../../images/icon-num1.png'></image>
+        </view>
+        <view class='ranking_info'>
+          <view class='ranking_info_text1'>{{rankingData[0].name}}</view>
+          <view class='ranking_info_text2' wx:if="{{rankingData.length>0}}">{{rankingData[0].userNumber}}分</view>
+        </view>
+      </view>
+      <view class='ranking_item'> 
+        <view class='rank_imgs'>
+          <image class='ranking_img' mode='aspectFit' src='{{rankingData[2].cover}}'></image>
+          <image class='ranking_num' wx:if="{{rankingData.length>2}}" src='../../images/icon-num3.png'></image>
+        </view>
+        <view class='ranking_info'>
+          <view class='ranking_info_text1'>{{rankingData[2].name}}</view>
+          <view class='ranking_info_text2' wx:if="{{rankingData.length>2}}">{{rankingData[2].userNumber}}分</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='search'>
+    <view class="search_input">
+      <text class="iconfont icon-search"></text>
+      <input placeholder='搜索' bindinput='getKeyword' confirm-type='search'></input>
+    </view>
+    <view class='condition' catchtap='openConditionlist'>
+      <text>{{conditionTxt}}</text>
+      <text class="iconfont icon-zhankai1"></text>
+    </view>
+    <view class='condition_list' wx:if="{{isCondition}}">
+      <view class='list_item' data-item='{{item}}' wx:for="{{conditionlist}}" :key="{{index}}" catchtap='selectCondition'>{{item.value}}  </view>
+    </view>
+  </view>
+  <view class='content'>
+    <view wx:for="{{dataLsit}}" wx:key="index">
+      <task-list-item  item="{{item}}" urls="{{urls}}" bind:itemDataEvent="itemDataEvent"></task-list-item>
+    </view>
+    <base-line wx:if="{{total>10}}" textinfo="{{textinfo}}"></base-line>
+  </view>
+  <share-menu wx:if="{{isShare}}" bind:shareEvent='shareEvent'></share-menu>
+</view>
+<view class="body_box">
+  <view class="cover_box">
+    <canvas canvas-id="canvas_cover" class="canvas_cover" style="width: 750px; height: 376px;"></canvas>
+  </view>
+</view>
+<!-- <view class="footer_box" wx:if="{{coverSaveStatus == 2}}">
+  <block>
+    <button class="weui-btn" hover-class="btn-blue-hover" type="primary" style="width: 80vw;" open-type="openSetting" bindopensetting="saveImg">授权保存</button>
+  </block>
+</view> -->

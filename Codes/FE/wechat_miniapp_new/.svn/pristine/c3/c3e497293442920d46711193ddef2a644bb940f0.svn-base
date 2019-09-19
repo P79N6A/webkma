@@ -1,0 +1,64 @@
+<view class='modal' wx:if="{{!!showModal}}">
+  <view class='mask'></view>
+  <image class='close' src='/images/close-icon.png' catchtap='failClose'></image>
+  <view class='modal-body' wx:if="{{!!open}}">
+    <block>
+      <view class='fail-head' style='top:133rpx;'>
+        <image class='img' src='{{redpackInfo.face || "/images/icon-defaultPhoto.png"}}'></image>
+        <text>{{redpackInfo.nickname}}的红包</text>
+      </view>
+      <image class='bg' src='/images/redpack-get-2.png'></image>
+      <view class='text money'>{{redpackInfo.money}}<text class='unit'>元</text></view>
+      <view class='btn' catchtap='failClose'></view>
+    </block>
+  </view>
+  <view class='modal-body' wx:else>
+    <block wx:if="{{redpackInfo.state == 1 && !!relationId}}">
+      <image class='cover1' src='{{coverImg + "@s_2,w_549,h_333"}}'></image>
+      <image class='bg' src='/images/redpack-get-1.png'></image>
+      <view class='text desc' style='top:467rpx;'>感谢您关注我的活动，</view>
+      <view class='text desc' style='top:530rpx;'>奉上红包，预祝商祺！</view>
+      <view class='btn' catchtap='openRedpack'></view>
+    </block>
+    <block wx:if="{{redpackInfo.state == 1 && !!articleId}}">
+      <image class='cover1' src='{{coverImg}}'></image>
+      <image class='bg' src='/images/redpack-get-1.png'></image>
+      <view class='text desc' style='top:467rpx;'>感谢您关注我的文章，</view>
+      <view class='text desc' style='top:530rpx;'>奉上红包，预祝商祺！</view>
+      <view class='btn' catchtap='openRedpack'></view>
+    </block>
+    <block wx:if="{{redpackInfo.state == 1 && !relationId && !articleId}}">
+      <image class='head-img' src='{{redpackInfo.face || "/images/icon-defaultPhoto.png"}}'></image>
+      <image class='cover1' src='/images/share-cover1.png'></image>
+      <image class='bg' src='/images/redpack-get-1.png'></image>
+      <view class='text info name'>{{cardDetail.name}}</view>
+      <view class='text info job'>{{cardDetail.job || '暂无职位'}}</view>
+      <view class='text desc' style='top:467rpx;'>感谢您关注我的名片，</view>
+      <view class='text desc' style='top:530rpx;'>奉上红包，预祝商祺！</view>
+      <view class='btn' catchtap='openRedpack'></view>
+    </block>
+    <!-- 派完了 -->
+    <block wx:if="{{redpackInfo.state == 2}}">
+      <view class='fail-head' style='top:126rpx;'>
+        <image class='img' src='{{redpackInfo.face || "/images/icon-defaultPhoto.png"}}'></image>
+        <text>{{redpackInfo.nickname}}的红包</text>
+      </view>
+      <image class='bg' src='/images/redpack-get-2.png'></image>
+      <view class='text desc' style='top:260rpx;'>手慢了，红包派完了</view>
+      <view class='text desc' style='top:337rpx;'>去看看{{!!relationId ? '活动':'名片'}}吧</view>
+      <view class='text desc' style='top: 842rpx; font-size: 24rpx;' bindtap='toRedpackDetail'>看看大家的手气 ></view>
+      <view class='btn' catchtap='failClose'></view>
+    </block>
+    <!-- 超时 -->
+    <block  wx:if="{{redpackInfo.state == 3}}">
+      <view class='fail-head' style='top:126rpx;'>
+        <image class='img' src='{{redpackInfo.face || "/images/icon-defaultPhoto.png"}}'></image>
+        <text>{{redpackInfo.nickname}}的红包</text>
+      </view>
+      <image class='bg' src='/images/redpack-get-2.png'></image>
+      <view class='text desc' style='top:277rpx;'>该红包已超过24小时，如已领取，</view>
+      <view class='text desc' style='top:343rpx;'>可在“红包记录”中查询</view>
+      <view class='btn' catchtap='failClose'></view>
+    </block>
+  </view>
+</view>

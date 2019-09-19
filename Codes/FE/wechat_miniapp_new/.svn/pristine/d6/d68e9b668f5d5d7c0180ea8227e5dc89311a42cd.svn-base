@@ -1,0 +1,98 @@
+<!--pages/customer-details/customer-details.wxml-->
+<view class='detail-box'>
+  <view class='detail-head'> 
+    <!-- 客户信息 -->
+    <view class='info-card' style='min-height:456rpx;'>
+      <view class='user-info flex'>
+        <view class='user-photo'>
+          <image src="{{customerInfo.face || '../../images/icon-default-photo.png'}}"></image>
+        </view>
+        <view class='flex flex-column' style='width:500rpx;position:relative;'>
+          <text class='font-30 title-color mt-12'>{{customerInfo.name || customerInfo.nickname}}</text>
+          <text class='font-22 color-gray' style='margin:6rpx 0;'>{{customerInfo.phone || "暂无手机号"}}</text>
+          <view class='tips color-gray'>
+            <text class='font-20 color-blue' style='margin-right:8rpx;' wx:if="{{type==2}}" bindtap="geturl">{{(customerInfo.remark==''||customerInfo.remark==null)?'添加备注':'编辑'}}</text> 
+            <text class='font-20 color-gray ' style="text-indent: {{type==2?'49':'0'}}rpx;">{{customerInfo.remark}}</text>
+          </view>
+          <view class='icon-jump' wx:if="{{type==2}}">
+            <image src='../../images/icon-message.png' bindtap='sendMessenger'></image>
+            <image src='../../images/icon-edit.png' bindtap='editCustomerInfo'></image>
+          </view>
+        </view>
+      </view>
+      <view class='label' style='height:auto;'>
+        <text wx:for="{{customerInfo.label}}" wx:key="item">{{item}}</text>
+      </view>
+      <view class='data-info flex'>
+        <view>
+          <text>成交金额</text>
+          <text class='font-36 color-red'> <text class='font-22'>￥</text>{{customerInfo.transaction_amount || '0'}}</text>
+        </view>
+        <view>
+          <text>营销力</text>
+          <text class='font-36 color-green'>{{customerInfo.marketing_power || '0'}}</text>
+        </view>
+        <view>
+          <text>排名</text>
+          <text class='font-36 color-green'>{{(customerInfo.ranking == '-1'?'暂无排名':customerInfo.ranking) || '0'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 用户行为方阵 -->
+  <view class='user-behavior bg-color mb-20'>
+    <view class='menu-title' style='border:none;'>
+      <view class='side-line'></view>
+      <text class='font-26 title-color'>用户行为方阵</text>
+    </view>
+    <view class="container" style='height:510rpx;'>
+      <charts-user-behavior dataSource="{{marketingData}}"></charts-user-behavior>
+    </view>
+  </view>
+  <!-- 客户来源 -->
+  <view class='detail-source bg-color mb-20'>
+    <view class='menu-title' style='border:none;'>
+      <view class='side-line'></view>
+      <text class='font-26 title-color'>客户来源</text>
+    </view>
+    <scroll-view scroll-x style="width:93%;height:172rpx;padding:0 25rpx; white-space: nowrap;">
+      <view class='source-info' wx:for="{{sourceList}}" wx:key="item">
+        <view style="width:{{(index !== 2 && listLength == 2)?'592':'300'}}rpx;" class='flex'>
+          <view style="display:inline-block;width: {{(index !== 2 && listLength == 2)?'504':'211'}}rpx;position: relative;">
+            <text class='connection-line' style="width:{{(index !== 2 && listLength == 2)?'488':'200'}}rpx;"></text>
+            <text class='arrow'></text>
+          </view>
+          <view class='flex flex-column'>
+            <image class='source-photo' src='{{item.userImage}}'></image>
+            <text class='font-20 eplipes' style='width:87rpx;text-align:center;'>{{item.userName}}</text>
+          </view>
+          <text wx:if="{{item.from_type==1}}" style="left:{{(index !== 2 && listLength == 2)?'225':'83'}}rpx;" class='source-text font-20 tips-gary'>名片</text>
+          <text wx:if="{{item.from_type==2}}" style="left:{{(index !== 2 && listLength == 2)?'225':'83'}}rpx;" class='source-text font-20 tips-gary'>活动</text>
+          <text wx:if="{{item.from_type==3}}" style="left:{{(index !== 2 && listLength == 2)?'225':'83'}}rpx;" class='source-text font-20 tips-gary'>文章</text>
+          <text wx:if="{{item.from_name!==''||item.from_name!==null}}" class='source-activity font-20 tips-gary eplipes' style="width:{{(index !== 2 && listLength == 2)?'400':'180'}}rpx; left:{{(index !== 2 && listLength == 2)?'42':'10'}}rpx;">{{item.from_type=='1'?'':item.from_name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <!-- 参与的活动 -->
+  <view class='user-task bg-color mb-20'>
+    <view class='menu-title' style='border:none;'>
+      <view class='side-line'></view>
+      <text class='font-26 title-color'>TA参与的活动</text>
+      <view class='drop-option'>
+        <view bindtap="taskAction" style='position:relative;'>
+          <text class='font-22 tips-gary'>{{taskActionText}}</text> 
+          <text class='corner'></text>
+          <!-- <icon type='icon-zhankai1'></icon> -->
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{task.list.length > 0}}">
+      <view wx:for="{{task.list}}" wx:key="index">
+        <task-list-item  item="{{item}}" urls="{{task.urls}}" showShare="{{showTask}}" showRanking="{{showTask}}" showQueryInfo="{{showTask}}" bind:itemDataEvent="itemDataEvent"></task-list-item>
+      </view>
+      <i-load-more wx:if="{{task.list.length != 0}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='玩命加载中'}}" />
+    </view>
+    <view wx:else class='place-text'>暂无数据</view>
+  </view>
+</view>

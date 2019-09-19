@@ -1,0 +1,36 @@
+/* pages/switch-card/switch-card.wxss */
+.container{
+  height:100%;
+  background-color: #EEEEEE;
+}
+.corp-box{
+  border-bottom: 1rpx solid #EEEEEE;
+  background-color: #FFFFFF;
+}
+.corp-info .corp{ 
+  height: 100rpx;
+  font-size: 28rpx;
+  line-height: 100rpx;
+  color: rgb(85, 85, 85);
+  padding: 0rpx 30rpx;
+  border-top: 1rpx solid #EEEEEE;
+  display: flex;
+  justify-content: space-between;
+}
+.corp-selection{
+  width:40rpx;
+  height:40rpx;
+  margin: auto 0;
+}
+.corp>text{
+  width: 560rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;  
+}
+.corp.current{
+  color: #FFFFFF;
+  border: none;
+  background-color: rgb(36, 208, 198);
+  /* background-color: rgb(9, 160, 162); */
+}

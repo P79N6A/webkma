@@ -1,0 +1,15 @@
+<!--components/plug-in-unit.wxml-->
+<view class='plug-unit'>
+  <view class='infocont'>
+    <image class='photo' src='{{item.face}}'></image>
+    <view class='info'>
+      <view class='nick-name'>{{item.name}}</view>
+      <view class='phone'>{{item.phone}}</view>
+    </view>
+    <view class='price' wx:if="{{isPrice}}">￥{{item.money}}</view>
+  </view>
+  <view class='operationBtn'>
+    <text class="iconfont icon-tel" catchtap='callPhon' wx:if="{{isShowIphon!='hide'}}"></text>
+    <text class="iconfont icon-company-information" catchtap='dataInfoData'  wx:if="{{isShowInfo!='hide'}}"></text>
+  </view>
+</view>

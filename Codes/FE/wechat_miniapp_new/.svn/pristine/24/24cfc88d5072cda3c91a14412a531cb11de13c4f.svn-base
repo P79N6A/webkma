@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "企业客户",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "comp-customer-info": "/components/customer-info/customer-info"
+  }
+}

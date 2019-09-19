@@ -1,0 +1,162 @@
+import * as echarts from '../../../vendor/ec-canvas/echarts';
+
+Component({
+  /**
+   * 组件的属性列表
+   */
+  properties: {
+    dataSource: {
+      type: Array,
+      value: [],
+      observer: function(newVal, oldVal) {
+        console.log(newVal)
+        if (this.ecComponent) {
+          if (this.isLoaded) {
+            this.dispose();
+          }
+          this.init(newVal);
+        }
+      }
+    }
+  },
+
+  /**
+   * 组件的初始数据
+   */
+  data: {
+    ecComponent: {},
+    uid: Date.now(),
+    ec: {
+      lazyLoad: true // 将 lazyLoad 设为 true 后，需要手动初始化图表
+    },
+    isLoaded: false,
+    isDisposed: false
+  },
+
+  ready() {
+    this.ecComponent = this.selectComponent(`#chart_${this.data.uid}`);
+  },
+
+  lifetimes: {
+    ready() {
+      this.ecComponent = this.selectComponent(`#chart_${this.data.uid}`);
+    }
+  },
+
+  /**
+   * 组件的方法列表
+   */
+  methods: {
+    // 初始化图表
+    init(data) {
+      this.ecComponent.init((canvas, width, height) => {
+        const chart = echarts.init(canvas, null, {
+          width: width,
+          height: height
+        });
+        canvas.setChart(chart);
+
+        chart.setOption(genOptions(data));
+
+        this.chart = chart;
+        this.setData({
+          isLoaded: true,
+          isDisposed: false
+        });
+        return chart;
+      });
+    },
+    // 释放图表
+    dispose: function() {
+      if (this.chart) {
+        this.chart.dispose();
+      }
+      this.setData({
+        isDisposed: true
+      });
+    }
+  }
+});
+// 生成图标的配置项
+let genOptions = function(data) {
+  return {
+    backgroundColor: "#ffffff",
+    color: ["#F68411"],
+    tooltip: {
+      backgroundColor: "rgba(0,0,0,0.5)",
+      position: function (point, params, dom, rect, size) {
+        return {
+          right: 30,
+          top: 10
+        }
+      },
+      formatter: function(params, ticket, callback) {
+        return [
+          `● 曝光: ${params.value[0]}%`,
+          `● 访客: ${params.value[1]}%`,
+          `● 咨询: ${params.value[2]}%`,
+          `● 成交: ${params.value[3]}%`,
+        ].join("\n");
+      }
+    },
+    radar: {
+      radius:"60%",
+      name: {
+        formatter: function(value, indicator) {
+          return `${value} ${indicator.num}`
+        }
+      },
+      rich: {
+        a: {
+          fontSize: 22,
+          color: '#B1BFCD',
+          align: 'center'
+        },
+        b: {
+          fontSize: 22,
+          color: '#B1BFCD',
+          align: 'center'
+        }
+      },
+      indicator: [{
+          name: '曝光',
+          max: 100,
+          num: data[0]
+        },
+        {
+          name: '访客',
+          max: 100,
+          num: data[1]
+        },
+        {
+          name: '咨询',
+          max: 100,
+          num: data[2]
+        },
+        {
+          name: '成交',
+          max: 100,
+          num: data[3]
+        }
+      ]
+    },
+    series: [{
+      type: 'radar',
+      name: '统计',
+      data: [{
+        value: data
+      }],
+      lineStyle: {
+        normal: {
+          width: 2,
+          opacity: 0.3
+        }
+      },
+      areaStyle: {
+        normal: {
+          opacity: 0.3
+        }
+      }
+    }]
+  };
+}

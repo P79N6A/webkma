@@ -1,0 +1,247 @@
+<template>
+	<div class="bussiness-list">
+    <el-row class="operation">
+      <el-button type="primary" @click="toManagementPage('')">新增商家账户</el-button>
+      <a :href="downLoadUrl" target="_blanck" style="margin-left: 20px;"><el-button type="success">导出商家数据</el-button></a>
+      <search  :placeholder="searchOpt.placeholder"
+                  @searchHandler="searchHander"
+                  :style="{ width: (searchOpt.size || '220px')}"
+                    ></search>
+    </el-row>
+		<el-table
+              ref="bussinessTable"
+              :data="bussinessList"
+              tooltip-effect="dark"
+              row-key="id"
+              class="table"
+              header-row-class-name="table-header"
+              header-cell-class-name="table-header"
+            >
+              <el-table-column
+                show-overflow-tooltip
+                prop="businessPhone"
+                label="账号"
+                align="center"
+                class-name="number_color"
+              ></el-table-column>
+              <el-table-column
+                show-overflow-tooltip
+                prop="businessName"
+                label="商家名称"
+                align="center"
+                class-name="number_color"
+              ></el-table-column>
+              <!-- <el-table-column
+                prop="versionName"
+                label="版本名称"
+                align="center"
+                class-name="number_color"
+                width
+              ></el-table-column> -->
+              <el-table-column
+                prop="createtime"
+                label="创建时间"
+                align="center"
+                class-name="number_color"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop=""
+                label="商家状态"
+                align="center"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <slideBtn :activeText="'正常'" :slideBtnOpt="scope.row" @slide-event="setSingleState"/>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="操作"
+                align="center"
+                width="200"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span class="btn-plain" @click="editAccount(scope.row)">修改账号</span>
+                  <span class="btn-plain" @click="toManagementPage(scope.row)">详情</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="margin:20px 10px;">
+              <pagination
+                v-if="paginationOpt.pageCount > 1"
+                class="pull-right"
+                :paginationOpt="paginationOpt"
+                @switchPage="pagesFn"
+              />
+            </div>
+            <el-dialog title="修改账号" :visible.sync="dialogForm.visible" width="550px" custom-class="account-dialog">
+              <el-form>
+                <el-form-item label="账号" :label-width="'80px'">
+                  <el-input v-model="dialogForm.currentItem.businessPhone" autocomplete="off"></el-input>
+                  <span style="margin-left: 20px;color: #3e93e6;cursor: pointer;" @click="resetPwd">重置密码</span>
+                </el-form-item>
+                <el-form-item label="新密码：" :label-width="'80px'" v-show="!!dialogForm.newPwd">
+                  <span>{{dialogForm.newPwd}}</span>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogForm.visible = false">取 消</el-button>
+                <el-button type="primary" @click="checkModify">确 定</el-button>
+              </div>
+            </el-dialog>
+	</div>
+</template>
+<script scope>
+import httpConfig from '../../config/http';
+import api from "../../axios/api-service";
+import search from "../../components/com-search";
+import pagination from "../../components/ui-pagination";
+import slideBtn from "../../components/slide-btn";
+
+export default {
+  name:'bussiness-list',
+  components: { search, pagination, slideBtn },
+	data() {
+		return {
+      bussinessList: [], //商家列表数据
+      businesskeyword: '', //关键词
+      downLoadUrl: '',
+      searchOpt: {
+        placeholder: '请输入账号、公司名'
+      },
+      paginationOpt: {
+        pageIndex: 1,
+        pageCount: '',
+        pageSize: 15
+      },
+      dialogForm: {
+        visible: false,
+        currentItem: '',
+        newPwd: ''
+      }
+       
+		}
+  },
+  mounted(){
+    this.getList();
+  },
+  methods: {
+    getList(cb) {
+      let _this = this;
+      let _option = {
+        businessType: 1,
+        businesskeyword: this.businesskeyword,//可空，模糊查询内如可是用户名，公司名称
+        pageIndex: this.paginationOpt.pageIndex,//开始条数，不可空，正整数
+        pageSize: this.paginationOpt.pageSize//取用条数，不可空，正整数
+      }
+      api.request("getBussinessList", _option, result => {
+        if (result.status == 0) {
+          _this.bussinessList = result.data.data.map(item => {
+            item.createtime = window.timeFormdate(item.createtime);
+            item.stateText = item.state == 0 ? '正常' : '禁用';
+            return item;
+          });
+          _this.paginationOpt.totalCount = result.data.total;
+          _this.paginationOpt.pageCount = Math.ceil(
+            _this.paginationOpt.totalCount / _this.paginationOpt.pageSize
+          );
+          _this.downLoadUrl = httpConfig.apiHost + 'business/download?businessType=1&businesskeyword=' + _this.businesskeyword+ '&session_id=' + localStorage.getItem("sessionId");
+        } else {
+          _this.messenger.error(result.message);
+        }
+        !!cb && cb();
+      });
+    },  
+    pagesFn(pageIndex, cb) {
+      this.paginationOpt.pageIndex = pageIndex;
+      this.getList(cb);
+    },
+    //搜索
+    searchHander(data) {
+      this.businesskeyword = data;
+      this.paginationOpt.pageIndex = 1;
+      this.getList();
+    },
+    //编辑
+    toManagementPage(item) {
+      let param = !!item ? `?businessId=${item.businessId}&edit=true` : '';
+      this.$router.push({
+        path: `/bussiness-management${param}`
+      });
+    },
+    //设置状态
+    setSingleState(data) {
+      let _api = data.state == '0' ? 'openbusiness' : 'disablebusiness';
+      let opt = {
+          businessId: data.businessId,
+          businessType: 1,
+          state: data.state
+      };
+      api.request(_api, opt, json => {
+        if (json.status == 0) {
+            this.getList();
+            this.messenger.success("操作成功");
+        } else {
+            this.messenger.error("操作失败:" + json.message);
+        }
+      });
+    },
+    //修改账号
+    editAccount(item) {
+      this.dialogForm.currentItem = item;
+      this.dialogForm.visible = true;
+    },
+    //重置密码
+    resetPwd() {
+      let _this = this;
+      this.messenger.confirm('你确定要重置密码吗？',function(tag){
+          if(tag){
+              let option = {
+                  userId: _this.dialogForm.currentItem.userId,
+                  phone: _this.dialogForm.currentItem.businessPhone
+              }
+              api.request('resetPwd', option, json => {
+                if (json.status == 0) {
+                    _this.dialogForm.newPwd = json.data.password;
+                } else {
+                    _this.messenger.error(json.message);
+                }
+              });
+          }
+      })
+    },
+    checkModify() {
+      let _this = this;
+      if (!this.dialogForm.currentItem.businessPhone) {
+          this.messenger.error('账号不能为空！');
+          return false;
+      } else if (!/^1[0-9]{10}$/.test(this.dialogForm.currentItem.businessPhone)) {
+          this.messenger.error('账号格式不正确！');
+          return false;
+      }
+      api.request("savebusiness", this.dialogForm.currentItem, result => {
+				if (result.status == 0) {
+					_this.messenger.success('修改成功！');
+					_this.dialogForm.visible = false;
+				} else {
+					_this.messenger.error(result.message);
+				}
+			});
+    }
+  }
+}
+</script>
+<style>
+.bussiness-list .operation {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+}
+.bussiness-list .account-dialog .el-input {
+  width: 300px !important;
+}
+</style>
+
+

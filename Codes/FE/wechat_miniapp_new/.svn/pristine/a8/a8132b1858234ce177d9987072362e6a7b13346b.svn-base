@@ -1,0 +1,14 @@
+<!--components/plug-in-unit.wxml-->
+<view class='plug-unit'>
+  <view class='infocont'>
+    <image class='photo' src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/reward_bg.png'></image>
+    <view class='info'>
+      <view class='nick-name'>微信读取的昵称微信读取的昵称微信读取的昵称</view>
+      <view class='phone'>13512345678</view>
+    </view>
+  </view>
+  <view class='operationBtn'>
+    <text class="iconfont icon-tel" catchtap='shareBtn'  wx:if="{{isShowIphon}}"></text>
+    <text class="iconfont icon-company-information" catchtap='dataInfoData'   wx:if="{{isShowInfo}}"></text>
+  </view>
+</view>

@@ -1,0 +1,192 @@
+<template>
+  <div class="heigth:auto scroll-box">
+    <headerTitle :myTitle="myTitle" goBack='components' @goBackFunction="goBackFunction"></headerTitle>
+    <div class="chart-box">
+      <div class="header-time">
+        <p>红包消耗统计</p>
+        <el-date-picker v-model="dataArr"  @change="transform"  start-placeholder="开始日期" range-separator="至" end-placeholder="结束日期"
+          :default-time="['00:00:00', '00:00:00']" value-format="timestamp" type="datetimerange" size="small" />
+      </div>
+      <div id="chartmain" style="width:100%; height:300px;left:-60px" ref="chartmain" />
+    </div>
+    <div class="table-box">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="红包数据统计" name="stats">
+          <statsDetails ref="statsIndex" />
+        </el-tab-pane>
+        <el-tab-pane label="红包补发统计" name="reissue">
+          <reissueDetails ref="reissueIndex" />
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+  </div>
+</template>
+
+<script>
+import api from "api";
+import headerTitle from "components/header-title";
+import reissueDetails from "./reissue-details";
+import statsDetails from "./stats-details";
+export default {
+  components: {
+    headerTitle,
+    statsDetails,
+    reissueDetails,
+  },
+  data() {
+    return {
+       active: 1,
+      myChart: null,
+      myTitle: this.$route.query.myTitle,
+      dataArr: "",
+      activeName: 'stats',
+      openData_: {
+        main_id: this.$route.query.main_id,
+        startTime: "",
+        endTime: ""
+      },
+    }
+  },
+  watch: {
+    "$route"(to, from) {
+      var self = this;
+      self.myChart = self.$echarts.init(self.$refs.chartmain);
+    },
+  },
+  mounted() {
+    var self = this;
+    self.openList()
+    self.myChart = self.$echarts.init(self.$refs.chartmain);
+  },
+  methods: {
+    // 上一步
+    goBackFunction() {
+      if (this.active < 2) {
+        this.$router.go(-1);
+      } else {
+        this.active--
+      }
+    },
+    transform(event) {
+      var self=this;
+      if(event!=null){
+        self.createdate;//转换
+        self.openData_.startTime = event[0];
+        self.openData_.endTime = event[1];
+        self.openList()
+      }else{
+        self.openData_.startTime = "";
+         self.openData_.endTime= "";
+           self.openList()
+      }
+    },
+    //红包消耗
+    openList() {
+      var self = this;
+      api.request(
+        "openstatistics",
+        Object.assign(self.openData_),
+        result => {
+          if (result.status == 0) {
+              self.drawLine(result.data)
+          } else {
+            self.$message.error(result.message);
+          }
+        }
+      );
+    },
+    handleClick(tab, event) {
+      if (tab.index == 0) {
+        this.$refs.statsIndex.tableList()
+      } else {
+        this.$refs.reissueIndex.tablesList()
+      }
+    },
+    drawLine(val) {
+      var lineData = []
+      val.forEach(item => {
+        lineData.push({
+          value: [
+            item.date,
+            item.count
+          ]
+        });
+      });
+      this.myChart.setOption({
+        title: { text:"", left: "45%", bottom: "0px" },
+        tooltip: {},
+        xAxis: {
+          type: "category",
+          maxInterval: 1 * 3600 * 24 * 1000,
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: "#f5f1f5"
+            }
+          }
+        },
+        yAxis: {
+          type: "value",
+          minInterval: 1,
+          axisLine: {
+            show: false
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#f5f1f5"
+            }
+          }
+        },
+        series: [
+          {
+            name: "红包消耗",
+            smooth: true,
+            type: "line",
+            symbolSize: 5, //拐点圆的大小
+            itemStyle: {
+              color: "#4e8fed",
+              borderType: "solid",
+              borderWidth: 5
+            },
+            areaStyle: {
+              color: "#eaf0ff"
+            },
+            data: lineData
+          }
+        ]
+      });
+    },
+  }
+}
+</script>
+
+<style scoped>
+.chart-box {
+  width: 100%;
+  overflow: hidden;
+}
+.header-time {
+  display: flex;
+  height: auto;
+  width: 95%;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 19px 0 0px 0;
+}
+.header-time p {
+  font-size: 14px;
+  color: rgba(60, 74, 85, 1);
+}
+.table-box {
+  width: 95%;
+  margin: 0 auto;
+}
+.table-box >>> .el-tabs__active-bar {
+  height: 2px;
+}
+.chart-box >>> canvas {
+  width: 100%;
+  height: auto;
+}
+</style>

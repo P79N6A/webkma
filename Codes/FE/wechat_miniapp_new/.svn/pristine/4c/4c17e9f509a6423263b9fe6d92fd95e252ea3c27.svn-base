@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "AI分析",
+  "usingComponents": {
+    "comp-navbar": "/components/navbar/navbar",
+    "comp-page-box-tips": "/components/page-box-tips/page-box-tips",
+    "comp-activity-charts-overview": "/components/activity-charts-overview/activity-charts-overview",
+    "comp-activity-charts-line": "/components/activity-charts-line/activity-charts-line",
+    "comp-plug-in-unit":"/components/plug-in-unit/plug-in-unit"
+  }
+}

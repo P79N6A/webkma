@@ -1,0 +1,264 @@
+<template>
+  <!-- 模板分类 -->
+  <div
+    class="filter_bar"
+    :style="{'border-bottom': filter.list.length <= 2 ? '0': '1px solid #E3E6EB', 'margin': filter.list.length <= 2 ? '20px 40px 0px': '20px 40px 30px'}"
+  >
+    <el-row
+      class="filter_row"
+      v-show="!!allData ? true: index < 2"
+      v-for="(item, index) in filter.list"
+      :key="item.id"
+    >
+      <div class="text-right" style="width: 98px; display:table-cell;">
+        <span class="black-deep font-12" style="line-height: 24px;">{{item.label}}：</span>
+      </div>
+      <div style="display:table-cell;">
+        <div class="filter_columns" :class="{'expand': !!item._expand}">
+          <el-checkbox
+            size="small"
+            class="text-center"
+            fill="#00bad0"
+            style="margin-left: 10px; width:87px;"
+            v-model="item._selected"
+            :label="item.id"
+            @change="categoryFilter(item)"
+          >全部</el-checkbox>
+          <el-checkbox
+            size="small"
+            class="text-center"
+            style="width:87px;"
+            v-for="child in item.children"
+            :key="child.id"
+            v-model="child._selected"
+            :label="child.id"
+            @change="categoryFilter(item, child)"
+          >{{child.label}}</el-checkbox>
+        </div>
+      </div>
+      <div class style="width:50px; display:table-cell;">
+        <el-button
+          size="small"
+          style="width:14px; margin-left: 10px; padding:0;border: 0;"
+          v-if="item.children.length >= 10"
+          @click="item._expand = !item._expand;"
+        >
+          更多
+          <i
+            :class="!!item._expand ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"
+            style="margin-left: 3px;border: 1px solid #dcdfe6;"
+          ></i>
+        </el-button>
+      </div>
+    </el-row>
+    <div class="ladder-shaped" @click="allData = !allData" v-if="filter.list.length > 2">
+      <div class="inner"></div>
+      <div class="outer"></div>
+      <div class="text font_12">
+        全部选项
+        <i :class="allData ? 'el-icon-arrow-up' : 'el-icon-arrow-down' " style="margin-left:5px;"></i>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import api from "api";
+
+export default {
+  name: "com-category",
+  props: {},
+  data() {
+    return {
+      filter: {
+        list: []
+      },
+      allData: false //默认折叠，只展示两行
+    };
+  },
+  mounted() {
+    var self = this;
+    self.getCategory();
+  },
+  methods: {
+    getCategory() {
+      let self = this;
+      api.request("getCategoryTree", {}, result => {
+        if (result.status != 0)
+          return Kdo.utils.messenger.error(result.message);
+
+        self.filter.list = result.data.map(item => {
+          item._selected = false;
+          item._expand = false;
+          item.children.map(child => {
+            child._selected = false;
+          });
+          return item;
+        });
+      });
+    },
+    categoryFilter(item, child) {
+      let self = this;
+      if (!child) {
+        // 选择全选
+        item.children.forEach(_child => {
+          _child._selected = false;
+        });
+      } else {
+        // 选择二级
+        item._selected = false;
+        item.children.forEach(_child => {
+          if (child.id != _child.id) _child._selected = false;
+        });
+      }
+
+      let categories = [];
+      self.filter.list.forEach(item => {
+        let row;
+        if (item._selected) {
+          row = item.children.map(child => {
+            return child.id;
+          });
+        } else {
+          let selectedChild = item.children.find(child => {
+            return child._selected;
+          });
+          if (selectedChild) {
+            row = [selectedChild.id];
+          }
+        }
+        if (row) {
+          row.unshift(item.id);
+          categories.push(row);
+        }
+      });
+      // 固定格式: 1级分类,2级分类...|1级分类,2级分类...
+      this.$emit(
+        "trigger-event",
+        categories
+          .map(row => {
+            return row.join(",");
+          })
+          .join("|")
+      );
+    }
+  }
+};
+</script>
+<style>
+.filter_bar {
+  margin: 20px 40px 30px;
+  border-bottom: 1px solid #e3e6eb;
+  position: relative;
+}
+.filter_bar .filter_row {
+  /* margin-bottom: 2px; */
+  /* padding-bottom: 10px; */
+}
+.filter_bar .filter_row .filter_columns {
+  height: 34px;
+  overflow: hidden;
+}
+.filter_bar .filter_row .filter_columns.expand {
+  height: auto;
+}
+.filter_bar .filter_row .el-checkbox {
+  height: 24px;
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+.filter_bar .filter_row .el-checkbox.is-bordered.el-checkbox--small {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+/* .filter_bar .filter_row .el-checkbox__input {
+  position: absolute;
+  right: -1px;
+  top: -1px;
+} */
+.filter_bar .filter_row .el-checkbox__inner {
+  border: none;
+  display: none;
+}
+.filter_bar .filter_row .el-checkbox__input.is-checked .el-checkbox__inner,
+.filter_bar
+  .filter_row
+  .el-checkbox__input.is-indeterminate
+  .el-checkbox__inner {
+  /* background: url(../assets/images/angle-selected.png) no-repeat right top;
+  display: inline-block; */
+}
+
+.filter_bar .filter_row .el-checkbox__input.is-checked {
+  width: 100%;
+  height: 24px;
+  border-radius: 12px;
+  border: 1px #00bad0 solid;
+  background-color: #00bad0;
+  position: absolute;
+  left: 0;
+}
+.filter_bar
+  .filter_row
+  .el-checkbox.is-bordered.el-checkbox--small
+  .el-checkbox__inner {
+  width: 20px;
+  height: 20px;
+}
+.filter_bar .filter_row .el-checkbox__inner::after {
+  display: none;
+}
+.filter_bar .filter_row .el-checkbox__label {
+  padding-left: 0px;
+}
+.filter_bar .filter_row .el-checkbox__input.is-checked + .el-checkbox__label {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+.filter_bar .filter_row .el-checkbox + .el-checkbox {
+  margin-left: 10px;
+}
+/* .filter_bar .filter_row .filter_columns .el-radio__inner {
+  display: none;
+}
+.filter_bar .filter_row .filter_columns .el-radio__label {
+  padding-left: 5px;
+} */
+.filter_bar .ladder-shaped {
+  width: 100px;
+  height: 28px;
+  position: absolute;
+  left: 48%;
+  z-index: 10;
+}
+.filter_bar .ladder-shaped > div {
+  position: absolute;
+}
+.filter_bar .ladder-shaped .inner {
+  border-top: 25px solid #fff;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  height: 0;
+  width: 98px;
+  top: 0;
+  left: 1px;
+  z-index: 11;
+}
+.filter_bar .ladder-shaped .outer {
+  border-top: 26px solid #e3e6eb;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  height: 0;
+  width: 100px;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.filter_bar .ladder-shaped .text {
+  top: 2px;
+  left: 20px;
+  z-index: 12;
+  color: #acacac;
+  cursor: pointer;
+}
+</style>

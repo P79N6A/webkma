@@ -1,0 +1,195 @@
+<!--pages/overview/overview.wxml-->
+<view class='overview-container'>
+  <!-- 顶部 -->
+  <view class="hearder" style='margin-bottom: {{userType == "boss" ? "338rpx":"198rpx"}};'>
+    <view class='user-dashord flex align-items-center justify-content-between'>
+      <view class='flex_item'>
+        <image class='user-img' src="{{userInfo.face}}"></image>
+      </view>
+      <view class='flex_item user-info'>
+        <view class='font-32'>{{userInfo.name}}</view>
+        <view>{{userInfo.job || '暂无职位'}}</view>
+        <view style='margin:5rpx 0 8rpx;'>{{userInfo.phone || '暂无手机号'}}</view>
+        <view wx:if="{{!!userInfo.version}}">
+          <view class="certi-logo pull-left">
+            <view class="logo-wrap">
+              <image src="{{userInfo.versionLogo}}"></image>
+            </view>
+            <view class="pull-left eplipes" style='max-width:140rpx;'>
+              {{userInfo.version}}
+            </view>
+          </view>
+          <text>{{userInfo.company}}</text>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <button-form-id bind:click="toCardDeatil">
+          <icon type="icon-next" />
+        </button-form-id>
+      </view>
+    </view>
+  </view>
+  <!-- 员工数据 -->
+  <view class='overview' wx:if="{{userType != 'boss'}}">
+    <view class='flex justify-content-between'>
+      <view class='flex_item row_title_left'>
+        <image class='icon' src='/images/icon-promotion.png'></image>
+        <text>我的营销</text>
+      </view>
+      <button-form-id bind:click="toBossReport">
+        <view class='flex_item row_title_right'>生成营销报表</view>
+      </button-form-id>
+    </view>
+    <view class='flex justify-content-between my-data'>
+      <view class='flex_item'>
+        <view>
+          <button-form-id bind:click="">
+            <a href="javascript:;" class="link_text">我的奖励</a>
+          </button-form-id>
+        </view>
+        <view class='surplus'>{{dashbord.totalAward}}</view>
+      </view>
+      <view class='flex_item data-list'>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="">
+              <a href="javascript:;" class="link_text">我的任务</a>
+            </button-form-id>
+          </view>
+          <view class='number'>{{dashbord.empTaskCount}}</view>
+        </view>
+        <view class='flex_item line'></view>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="">
+              <a href="javascript:;" class="link_text">营销力</a>
+            </button-form-id>
+          </view>
+          <view class='number'>{{dashbord.empMarketPower}}</view>
+        </view>
+        <view class='flex_item line'></view>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="">
+              <a href="javascript:;" class="link_text">排名</a>
+            </button-form-id>
+          </view>
+          <view class='number {{dashbord.empMarketRank == -1 ? "font-26" : ""}}'>{{dashbord.empMarketRank == -1 ? '暂无' : dashbord.empMarketRank}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- boss数据 -->
+  <view class='overview boss-overview' wx:else>
+    <view class='flex justify-content-between'>
+      <view class='flex_item row_title_left'>
+        <image class='icon' src='/images/icon-promotion.png'></image>
+        <text>BOSS看板</text>
+      </view>
+      <button-form-id bind:click="">
+        <view class='flex_item row_title_right'>生成BOSS报表</view>
+      </button-form-id>
+    </view>
+    <view class='flex justify-content-between my-data'>
+      <view class='flex_item'>
+        <view>
+          <button-form-id bind:click="">
+            <a href="javascript:;" class="link_text">我的奖励</a>
+          </button-form-id>
+        </view>
+        <view class='surplus'>{{dashbord.totalAward}}</view>
+      </view>
+      <view class='flex_item data-list'>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="queryAllTask">
+              <a href="javascript:;" class="link_text">我的任务</a>
+            </button-form-id>
+          </view>
+          <view class='number'>{{dashbord.empTaskCount}}</view>
+        </view>
+        <view class='flex_item line'></view>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="">
+              <a href="javascript:;" class="link_text">营销力</a>
+            </button-form-id>
+          </view>
+          <view class='number'>{{dashbord.empMarketPower}}</view>
+        </view>
+        <view class='flex_item line'></view>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="">
+              <a href="javascript:;" class="link_text">排名</a>
+            </button-form-id>
+          </view>
+          <view class='number {{dashbord.empMarketRank == -1 ? "font-26" : ""}}'>{{dashbord.empMarketRank == -1 ? '暂无' : dashbord.empMarketRank}}</view>
+        </view>
+      </view>
+    </view>
+    <view class='flex justify-content-between my-data'>
+      <view class='flex_item'>
+        <view>
+          <button-form-id bind:click="">
+            <a href="javascript:;" class="link_text">企业订单总额</a>
+          </button-form-id>
+        </view>
+        <view class='surplus'>{{dashbord.orderTotalCost}}</view>
+      </view>
+      <view class='flex_item data-list'>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="toBossTaskPage" data-type="boss">
+              <a href="javascript:;" class="link_text">企业任务</a>
+            </button-form-id>
+          </view>
+          <view class='number'>{{dashbord.merchantTaskCount}}</view>
+        </view>
+        <view class='flex_item line'></view>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="jumpEmployeeList">
+              <a href="javascript:;" class="link_text">企业员工</a>
+            </button-form-id>
+          </view>
+          <view class='number' bindtap='jumpEmployeeList'>{{dashbord.merchantEmpCount}}</view>
+        </view>
+        <view class='flex_item line'></view>
+        <view class='flex_item'>
+          <view>
+            <button-form-id bind:click="jumpCustomerList">
+              <a href="javascript:;" class="link_text">企业客户</a>
+            </button-form-id>
+          </view>
+          <view class='number' bindtap='jumpCustomerList'>{{dashbord.merchantCustomerCount}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 客户总览模块 -->
+  <custom-overview wx:if="{{customer.list.length>0}}" title="TA的客户" where="home" count="{{customer.count}}" listData="{{customer.list}}"></custom-overview>
+  <!-- 今日待办 -->
+  <view class='task-list'>
+    <view class='task-list-hearder flex justify-content-between'>
+      <view class='flex_item row_title_left'>
+        <image class='icon' src='/images/icon-deal-record.png'></image>
+        <text>今日待办</text>
+      </view>
+      <button-form-id bind:click="openConditionlist">
+        <view class='flex_item row_title_right'>
+          <text>{{task.conditionTxt}}</text>
+          <icon type='icon-zhankai1'></icon>
+        </view>
+      </button-form-id>
+    </view>
+    <view wx:for="{{task.list}}" wx:key="index" wx:if="{{task.list.length> 0 && index < 10}}">
+      <task-list-item  item="{{item}}" urls="{{task.urls}}" bind:itemDataEvent="itemDataEvent"></task-list-item>
+    </view>
+    <button-form-id bind:click="queryAllTask"  wx:if="{{task.total>10}}">
+      <base-line textinfo="查看全部待办事项 >"></base-line>
+    </button-form-id>
+    <base-line textinfo="这是我的底线了" wx:else></base-line>
+  </view>
+</view>
+

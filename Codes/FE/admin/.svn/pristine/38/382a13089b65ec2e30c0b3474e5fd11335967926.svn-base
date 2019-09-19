@@ -1,0 +1,40 @@
+<template>
+  <div class="material-label-box">
+    <div class="navigator">
+      <navigator :tabs="navigatorOpts.tabs" @navigator-event="transferTab"></navigator>
+    </div>
+  </div>
+</template>
+
+<script>
+import navigator from "../../components/navigator";
+export default {
+  name: "material-list",
+  components:{
+    navigator
+  },
+  data() {
+    return {
+      navigatorOpts: {
+        tabs: [
+          { key: "release", title: "我发布的作品" },
+          { key: "draft", title: "我的作品素材" },
+          { key: "sms", title: "我发送的短信" },
+          { key: "mail", title: "我发送的邮件" }
+        ],
+        selectedKey: ""
+      }
+    };
+  },
+  methods:{
+    transferTab(){
+      
+    }
+  }
+};
+</script>
+<style scoped>
+  .material-label-box{
+    margin: 15px 20px 0;
+  }
+</style>

@@ -1,0 +1,97 @@
+<!--pages/red-envelopes-card/red-envelopes-card.wxml-->
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<view class='re-main'>
+  <view class='flex flex-column'>
+    <view class='re-title'> 
+      <text>添加红包推广可以获得更多关注哦</text>
+    </view> 
+    <view class='re-info border-radius flex flex-column' wx:if="{{(id!=='' || articleid!=='')?false:true}}">
+      <view class='flex justify-content-between flex-row'>
+        <view class='flex flex-column'>
+          <text class='fs36 color-black ellipsis'>{{userInfo.name}}</text>
+          <text class='fs26 ellipsis'>{{userInfo.job || '暂无职位'}}</text>
+        </view>
+        <view>
+          <image style='width:100rpx;height:100rpx;border-radius:100rpx;' src="{{userInfo.face==''?'/images/icon-defaultPhoto.png':userInfo.face}}"></image>
+        </view>
+      </view>
+      <text class='fs26 ellipsis'>{{userInfo.company}}</text>
+      <text class='fs26'>{{userInfo.phone}}</text>
+    </view>
+    <view class='re-activity border-radius flex flex-row' wx:if="{{id!==''?true:false}}">
+      <view style='width:200rpx;height:214rpx;margin-right:25rpx;'>
+        <image style='width:200rpx;height:214rpx;' src="{{coverImg}}"></image>
+      </view>
+      <view style='width:434rpx;'>
+        <view class='fs36 color-black' style='line-height:44rpx;margin:10rpx 0 24rpx;'>
+          <text class='two-ellipsis'>{{title}}</text>
+        </view>
+        <view class='fs26 two-ellipsis' style='line-height:40rpx;'>
+          <text>{{desc}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='re-activity border-radius flex flex-row' wx:if="{{articleid!==''?true:false}}">
+      <view style='width:200rpx;height:214rpx;margin-right:25rpx;'>
+        <image style='width:200rpx;height:214rpx;' src="{{descImg}}"></image>
+      </view>
+      <view style='width:434rpx;'>
+        <view class='fs36 color-black' style='line-height:44rpx;margin:10rpx 0 24rpx;'>
+          <text class='two-ellipsis'>{{detail.title}}</text>
+        </view>
+        <view class='fs26 two-ellipsis' style='line-height:40rpx;'>
+          <text>{{descText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <form bindsubmit="formSubmit" report-submit='true'>
+    <view class='re-setmoney border-radius flex justify-content-between' wx:if="{{switchIndex=='1'?true:false}}">
+      <view>
+        <text class='fs32 color-black'>单个金额</text>
+      </view>
+      <view class='ordinary flex flex-row'>
+        <input class='fs32' type="digit" maxlength="6" name='ordinaryNumber' value='{{ordinaryNumber}}' placeholder-style='color:#bdbdbd;' placeholder='0.00' bindinput='ordinary'/>
+        <text class='fs32 color-black'>元</text>
+      </view>
+    </view>
+    <view class='re-setmoney border-radius flex justify-content-between' wx:if="{{switchIndex=='2'?true:false}}">
+      <view>
+        <!-- <image src='/images/icon-tipsTime.png'></image> -->
+        <text class='spell'>拼</text>
+        <text class='fs32 color-black'>总金额</text>
+      </view>
+      <view class='luck flex flex-row'>
+        <input class='fs32' type="digit" maxlength="8" name='luckNumber' value='{{luckNumber}}' placeholder-style='color:#bdbdbd;' placeholder='0.00' bindinput='luck'/>
+        <text class='fs32 color-black'>元</text>
+      </view>
+    </view>
+    <view class='fs24 ml30' wx:if="{{switchIndex=='1'?true:false}}">
+      <text class='color-gray2'>当前为普通红包，</text>
+      <text class='color-orange' bindtap='luckCard'>改为拼手气红包</text>
+    </view>
+    <view class='fs24 ml30' wx:if="{{switchIndex=='2'?true:false}}">
+      <text class='color-gray2'>当前为拼手气红包，</text>
+      <text class='color-orange' bindtap='ordinaryCard'>改为普通红包</text>
+    </view>
+    <view class='re-setnumber border-radius mt30 flex justify-content-between'>
+      <view>
+        <text class='fs32 color-black'>红包个数</text>
+      </view>
+      <view class='re-number flex flex-row'>
+        <input class='fs32' type="number" name='number' value='{{number}}' placeholder-style='color:#bdbdbd;' placeholder='填写个数' bindinput='reNumber'/>
+        <text class='fs32 color-black'>个</text>
+      </view>
+    </view>
+    <view class='re-money'>
+      <text class='fs48 color-black'>￥</text>
+      <text class='fs80 color-black'>{{cont.fixed((luckNumber || ordinaryNumber*number)==0?'0.00': luckNumber || ordinaryNumber*number)}}</text>
+    </view>
+    <view class="re-btn opacity4" wx:if="{{((ordinaryNumber==''&& luckNumber=='') || number=='' || !!flag || (ordinaryNumber*number>200)||!!luckFlag)?true:false}}">
+      <button>塞钱进红包</button>
+    </view>
+    <view class="re-btn" wx:else>
+      <button formType="submit" >塞钱进红包</button>
+    </view>
+  </form>
+</view>

@@ -1,0 +1,43 @@
+/* components/share-menu/share-menu.wxss */
+
+.share-menu{
+  position: fixed;
+  top: 0; 
+  left: 0;
+  height: 100vh;
+  z-index: 20;
+}
+.share-menu .share-mask{
+  width: 750rpx;
+  height: calc(100vh - 230rpx);
+  background-color: rgba(0,0,0,.5);
+}
+.share-menu .menu-bar{
+  width: 750rpx;
+  height:230rpx;
+  display: flex;
+  justify-content: space-around;
+  background: #ffffff;
+  align-items: center;
+  align-self: center
+}
+.menu-item{
+  width: 170rpx;
+  height: 150rpx;
+  font-size: 32rpx !important;
+  text-align: center;
+  line-height: 40rpx;
+  color: #3C4A55  !important
+}
+button{
+  border: none !important;
+  padding: 0rpx !important;
+  box-sizing: inherit;
+}
+.menu-list .menu-item::after{
+  border: none;
+}
+.menu-item image{
+  width: 75rpx;
+  height: 75rpx;
+}

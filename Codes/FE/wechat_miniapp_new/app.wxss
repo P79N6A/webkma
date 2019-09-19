@@ -1,0 +1,510 @@
+/* @import "iconfont.wxss"; */
+
+page {
+  min-height: 100vh;
+  background-color: #F7F7FF;
+  color: #63717b;
+  font-size: 32rpx;
+  line-height: 1.6;
+  font-family: -apple-system-font, Helvetica Neue, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* flex */
+
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex__item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+/* font styles */
+
+.font-36 {
+  font-size: 36rpx;
+}
+
+.font-30{
+  font-size: 30rpx;
+}
+
+.font-26{
+  font-size: 26rpx;
+} 
+
+.font-22{
+  font-size: 22rpx;
+}
+
+.font-20{
+  font-size: 20rpx;
+}
+
+.font-18{
+  font-size: 18rpx;
+}
+
+.font-16{
+  font-size: 16rpx;
+}
+
+.title-color {
+  color: #3c4a55;
+}
+
+.color-white{
+  color: #fff;
+}
+
+.color-gray{
+  color: #B1BFCD;
+}
+
+.color-blue{
+  color: #3898EC;
+}
+
+.color-red{
+  color: #FA766B;
+}
+
+.color-green{
+  color: #24d0c6;
+}
+
+.bg-color{
+  background-color: #fff;
+}
+
+.font-bd {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.font-tips {
+  font-size: 24rpx;
+  color: #b1bfcd;
+}
+
+.tips-gary{
+  color: #b1bfcd;
+}
+
+.tips-bg{
+  background-color: #24D0C6;
+}
+
+/* base button rewrite */
+
+button[type=primary] {
+  color: #fff;
+  background-color: #24d0c6;
+}
+
+button[disabled][type=primary] {
+  background-color: #dee4e9;
+}
+
+button[disabled] {
+  color: #b1bfcd;
+}
+
+.button-hover[type=primary] {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #24d0c6;
+}
+
+button[disabled][plain] {
+  color: rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+}
+
+/* search and showActionSheet */
+
+.title-search{
+  height: 35rpx;
+  line-height: 34rpx; 
+  padding: 27rpx 20rpx 28rpx 25rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #DDE4EB;
+  position: relative;
+}
+
+.search-box{
+  height: 70rpx;
+  position: relative;
+  bottom:8px;
+}
+
+.search-input{
+  width: 560rpx;
+  height: 70rpx;
+  align-items: center;
+  background: #F7F7FF;
+}
+
+.search-input input{
+  font-size: 26rpx;
+  width: 450rpx;
+  height: 40rpx;
+}
+
+.search-input icon{
+  margin-left: 30rpx;
+  margin-right: 10rpx;
+}
+
+.drop-option{
+  width: 154rpx;
+  height: 53rpx;
+  line-height:42rpx;
+  text-align:center;
+  border-radius: 10rpx;
+  background-color: #F7F7FF;
+  position: absolute;
+  right: 20rpx;
+  top: 20rpx;
+}
+
+.corner{
+  width: 0rpx;      
+  height: 0rpx;
+  border: 10rpx solid #b1bfcd;
+  border-bottom-color: transparent;  
+  border-left-color: transparent;
+  border-right-color: transparent;
+  margin-left: 10rpx;
+  position: relative;
+  top: 32rpx;
+}
+
+/* menutitle */
+
+.menu-title{
+  height: 35rpx;
+  line-height: 34rpx;
+  padding: 27rpx 20rpx 28rpx 25rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #F7F7FF;
+  position: relative;
+}
+
+.side-line{
+  width: 5rpx;
+  height: 40rpx;
+  background-color: #24D0C6;
+  position: absolute;
+  left: 0;
+  top: 24rpx;
+}
+
+/* company-version-name style */
+
+.pull-left {
+  float: left;
+}
+
+.eplipes {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.certi-logo{
+  position: relative;
+  width: auto;
+  height: 30rpx;
+  line-height: 30rpx;
+  background-color: #ff992b;
+  padding: 0 10rpx 0 36rpx;
+  border-radius: 15rpx 5rpx 5rpx 15rpx;
+  color: #fff;
+  font-size: 24rpx;
+  align-items: center;
+  margin-right: 10rpx;
+}
+.certi-logo .logo-wrap{
+  position: absolute;
+  top: -3rpx;
+  left: 0rpx;
+  width: 36rpx;
+  height: 36rpx;
+  background-color: #ff992b;
+  border-radius: 50%;
+}
+.logo-wrap image{
+  width: 32rpx;
+  height: 32rpx;
+  margin: 2rpx;
+  border-radius: 50%;
+}
+
+/* details-page-style */
+
+.mt-12{
+  margin-top: 12rpx;
+}
+
+.mb-20{
+  margin-bottom: 20rpx;
+}
+
+.remark-edit{
+  position: absolute;
+  top: 106rpx;
+  left: 0rpx;
+}
+
+.icon-jump{
+  width: 185rpx;
+  height: 80rpx;
+  position: absolute;
+  right: 0rpx;
+  top: -4rpx;
+}
+
+.icon-jump image{
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.icon-jump image:nth-of-type(1){
+  margin-right: 22rpx;
+}
+
+.tips{
+  width: 500rpx;
+  max-height: 64rpx;
+  line-height:26rpx;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  position: relative;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+.detail-box{
+  position: relative;
+  overflow-x: hidden;
+}
+
+.detail-box .detail-head{
+  height: 360rpx;
+  background-image: url('https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/top-BG.png');
+  background-size: cover;
+  padding:57rpx 83rpx 0 70rpx;
+  margin-bottom:93rpx;
+  position: relative;
+}
+
+.detail-box .info-card{
+  width: 730rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  position: absolute;
+  top: 30rpx;
+  left: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.detail-box .info-card .label{
+  height:71rpx;
+  text-align:center;
+  margin-top:15rpx;
+  padding:0 53rpx;
+
+}
+
+.detail-box .info-card .label text{
+  display: inline-block;
+  height: 36rpx;
+  font-size: 20rpx;
+  color: #B1BFCD;
+  border-radius: 20rpx;
+  border: 1rpx solid #B1BFCD;
+  padding:0 12rpx;
+  margin-right: 25rpx;
+  line-height: 36rpx;
+}
+
+.detail-box .user-info{
+  /* height: 170rpx; */
+  padding: 40rpx 0 0 41rpx;
+  border-top-left-radius:10rpx;
+  border-top-right-radius:10rpx;
+  background-color: #fff;
+}
+
+.detail-box .user-photo{
+  width:120rpx;
+  height:120rpx;
+  margin-right:20rpx;
+}
+
+.detail-box .user-photo image{
+  width:120rpx;
+  height:120rpx;
+  border-radius:100rpx;
+}
+
+.detail-box .info-card .data-info{
+  width: 100%;
+  height: 135rpx;
+  padding-top: 30rpx;
+}
+
+.detail-box .data-info view{
+  display: flex;
+  flex-direction: column;
+  font-size: 22rpx;
+  color: #B1BFCD;
+  text-align: center;
+}
+
+.detail-box .data-info view text:nth-of-type(1){
+  margin-bottom: 5rpx;
+}
+
+.detail-box .data-info view{
+  width: 33%;
+  height: 83rpx;
+}
+
+.detail-box .data-info view:nth-of-type(2){
+  border-left: 1rpx solid #DDE4EB;
+  border-right: 1rpx solid #DDE4EB;
+}
+
+.detail-box .user-behavior{
+  height: 600rpx;
+}
+
+.detail-box .detail-source{
+  height: 260rpx;
+}
+
+.detail-box .source-info{
+  display: inline-block;
+  /* width: 200rpx; */
+  height: 120rpx;
+  padding-top: 20rpx;
+  position: relative;
+}
+
+.detail-box .source-info:first-child > view{
+  width: 100rpx!important;
+}
+
+.detail-box .source-info:first-child .connection-line,
+.detail-box .source-info:first-child .arrow{
+  display: none;
+}
+
+.detail-box .source-photo{
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 100rpx;
+}
+
+.detail-box .connection-line{
+  width:100rpx;
+  height:2rpx;
+  background-color:#24D0C6;
+  position:absolute;
+  top:46rpx;
+  left:5rpx;
+}
+
+.detail-box .source-text{
+  position: absolute;
+  left:83rpx;
+  top:33rpx;
+}
+
+.detail-box .source-activity{
+  display:inline-block;
+  width:180rpx;
+  text-align:center;
+  position:absolute;
+  left:5px;
+  top:72rpx;
+}
+
+.detail-box .arrow{
+  width: 0rpx;      
+  height: 0rpx;
+  border: 10rpx solid #24D0C6;
+  border-bottom-color: transparent;  
+  border-top-color: transparent;
+  border-right-color: transparent;
+  position: absolute;
+  top:37rpx;
+  right:-5rpx;
+}
+
+/* .detail-box .user-task{
+  height: 500rpx;
+} */
+.my-load-more{
+  border-top:1px solid #F7F7FF !important
+}
+.my-load-more view{
+  font-size: 22rpx !important;
+  color: #B1BFCD !important;
+}
+/* 暂无数据样式 */
+.place-text{
+  height:90rpx;
+  font-size: 22rpx;
+  line-height: 90rpx;
+  text-align: center;
+  background-color:#fff;
+  border-bottom:1rpx solid #DDE4EB;
+  padding:30rpx 39rpx 30rpx 30rpx;
+}
+
+.i-load-more-tip{
+  font-size: 24rpx !important;
+}
+
+/* 缺省占位图 */
+.default-img{
+  width:100%;
+  height:100vh;
+  background-image:url("../../images/default-customer.png");
+  background-repeat:no-repeat;
+  background-position:center center;
+}

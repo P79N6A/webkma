@@ -1,0 +1,5 @@
+/* pages/user-customer/user-customer.wxss */
+.container{
+  position: relative;
+  overflow-x: hidden;
+}

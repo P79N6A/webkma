@@ -1,0 +1,8 @@
+﻿{
+    "baseUrl": "/public/",
+    "dependencies": {
+		"custom": [
+           
+        ]
+    }
+}

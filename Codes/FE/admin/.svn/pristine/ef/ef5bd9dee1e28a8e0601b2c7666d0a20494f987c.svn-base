@@ -1,0 +1,32 @@
+import httpConfig from './http.js'
+import sysConfig from './system.js'
+let { apiHost, apiHostNode, kmaApiHost, kpaasApiHost } = httpConfig;
+let api_list = {
+    //登录
+    login: {
+        method: "post",
+        api_url: kmaApiHost + 'user/back/logon'
+    },
+    //获取用户登录信息
+    getLogonInfo: {
+        method: "get",
+        api_url: apiHost + 'backuser/currentuserinfo'
+    },
+    //获取商家列表
+    getBussinessList: {
+        method: "get",
+        api_url: kmaApiHost + 'business/searchbusiness'
+    },
+    //获取商家信息详情
+    getBussinessInfo: {
+        method: "get",
+        api_url: kmaApiHost + 'business/getbusiness'
+    },
+    //添加修改商家信息
+    getBussinessInfo: {
+        method: "post",
+        api_url: kmaApiHost + 'business/savebusiness'
+    },
+}
+
+export default api_list

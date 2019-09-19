@@ -1,0 +1,61 @@
+<!--pages/bussiness-card-detail/bussiness-card-detail.wxml-->
+<view class='card-detail' wx:if="{{!!detail.name}}">
+  <view class='pg_hearder'>
+    <view class='user-dashord flex align-items-center justify-content-between'>
+      <view class='flex_item flex'>
+        <image class='user-img flex_item' src="{{detail.face || 'https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/logo-reverse.png'}}"></image>
+        <view class='user-info flex_item'>
+          <view class='user-name'>{{detail.name}}</view>
+          <view>{{detail.phone || '暂无手机号'}}</view>
+          <view style='margin:5rpx 0 8rpx;'>{{detail.job || '暂无职位'}}</view>
+        </view>
+      </view>
+      <view class='user-data flex_item' wx:if="{{!!selfInfo}}">
+        <view style='margin-bottom: 35rpx;'>营销力 {{detail.marketingForce}}</view>
+        <view>排名 {{detail.ranking == -1 ? '-': detail.ranking}}</view>
+      </view>
+    </view>
+    <view class='btn-group flex justify-content-between'>
+      <view class='flex_item'>
+        <button-form-id bind:click="savePhone">
+          <button class='my-btn'>存入手机</button>
+        </button-form-id>
+      </view>
+      <view class='flex_item' wx:if="{{!!selfInfo}}">
+        <button class='my-btn btn-passcard' bindtap='toPassCardPage' wx:if="{{!!userInfo.phone}}">发名片</button>
+        <button class='my-btn btn-passcard' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" wx:else>发名片</button>
+      </view>
+      <view class='flex_item' wx:else>
+        <button class='my-btn btn-passcard' open-type="share" data-type='share' wx:if="{{!!userInfo.phone}}">转发名片</button>
+      </view>
+    </view>
+  </view>
+  <view class='pg_content'>
+    <view class='content_title flex align-items-center justify-content-between'>
+      <view class='text flex_item'>TA的任务</view>
+      <view class='flex_item'>
+        <button-form-id bind:click="openConditionlist">
+          <view class='condition'>
+            <text>{{task.conditionTxt}}</text>
+            <icon type='icon-zhankai1'></icon>
+          </view>
+        </button-form-id>
+      </view>
+    </view>
+    <view wx:for="{{task.list}}" wx:key="index" wx:if="{{task.list.length > 0}}">
+      <task-list-item  item="{{item}}" showShare="{{false}}" showQueryInfo="{{false}}" showCompleteRate="{{task.showCompleteRate}}" showRanking="{{task.showRanking}}" bind:itemDataEvent="itemDataEvent"></task-list-item>
+    </view>
+    <base-line textinfo="这是我的底线了" wx:if="{{task.list.length > 0 && task.list.length == pagination.total}}"></base-line>
+  </view>
+</view>
+<view class="body_box">
+  <view class="cover_box">
+    <canvas canvas-id="canvas_cover_1" class="canvas_cover_1" style="width: 420px; height: 330px;"></canvas>
+  </view>
+</view>
+<view wx:if="{{!!isShowFastNav}}">
+  <comp-fast-nav></comp-fast-nav>
+</view>
+<view wx:if="{{!!redpackId && !!detail.name}}">
+  <redpack-modal card-detail="{{detail}}" redpack-id="{{redpackId}}"></redpack-modal>
+</view>

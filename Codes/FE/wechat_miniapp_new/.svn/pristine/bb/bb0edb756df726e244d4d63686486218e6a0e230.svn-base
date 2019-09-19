@@ -1,0 +1,92 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/overview/overview",
+    "pages/tasks/tasks",
+    "pages/user/user",
+    "pages/user-info-edit/user-info-edit",
+    "pages/user-setup-phone/user-setup-phone",
+    "pages/user-prizes-list/user-prizes-list",
+    "pages/user-prizes-detail/user-prizes-detail",
+    "pages/user-activity-history/user-activity-history",
+    "pages/user-customer/user-customer",
+    "pages/business-card-list/business-card-list",
+    "pages/business-card-search/business-card-search",
+    "pages/cash-withdrawal/cash-withdrawal",
+    "pages/cash-withdrawal-record/cash-withdrawal-record",
+    "pages/red-envelopes-record/red-envelopes-record",
+    "pages/instant-messenger-list/instant-messenger-list",
+    "pages/instant-messenger-send/instant-messenger-send",
+    "pages/feedback/feedback",
+    "pages/extension-task-detail/extension-task-detail",
+    "pages/extension-task-charts/extension-task-charts",
+    "pages/extension-task-share/extension-task-share",
+    "pages/extension-task-share-cover/extension-task-share-cover",
+    "pages/employees-list/employees-list",
+    "pages/customer/customer",
+    "pages/customer-edit-info/customer-edit-info",
+    "pages/remarks/remarks",
+    "pages/echart-demo/echart-demo"
+  ],
+  "usingComponents": {
+    "icon": "./components/icon/iconfont",
+    "button-form-id": "./components/button-form-id/button-form-id",
+    "charts-flow-radar": "./components/echarts/flow-radar/flow-radar",
+    "charts-map": "./components/echarts/map/map",
+    "charts-daily-browse-line": "./components/echarts/daily-browse-line/daily-browse-line",
+    "charts-task-pie": "./components/echarts/task-pie/task-pie",
+    "charts-gender-pie": "./components/echarts/gender-pie/gender-pie",
+    "charts-activity-plugin-form-pie": "./components/echarts/activity-plugin-form-pie/activity-plugin-form-pie",
+    "charts-activity-plugin-order-pie": "./components/echarts/activity-plugin-order-pie/activity-plugin-order-pie",
+    "charts-connections-graph": "./components/echarts/connections-graph/connections-graph",
+    "ec-canvas": "./vendor/ec-canvas/ec-canvas",
+    "i-row": "./vendor/iview/row/index",
+    "i-col": "./vendor/iview/col/index",
+    "i-input": "./vendor/iview/input/index",
+    "i-button": "./vendor/iview/button/index",
+    "i-cell-group": "./vendor/iview/cell-group/index",
+    "i-cell": "./vendor/iview/cell/index",
+    "i-panel": "./vendor/iview/panel/index",
+    "i-icon": "./vendor/iview/icon/index",
+    "i-load-more": "./vendor/iview/load-more/index",
+    "i-progress": "./vendor/iview/progress/index"
+  },
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#24d0c6",
+    "navigationBarTitleText": "推小宝",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#B1BFCD",
+    "selectedColor": "#24d0c6",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/overview/overview",
+        "text": "营销日报",
+        "iconPath": "/images/icon-overview.png",
+        "selectedIconPath": "/images/icon-overview-active.png"
+      },
+      {
+        "pagePath": "pages/customer/customer",
+        "text": "客户",
+        "iconPath": "/images/icon-customer.png",
+        "selectedIconPath": "/images/icon-customer-active.png"
+      },
+      {
+        "pagePath": "pages/tasks/tasks",
+        "text": "任务",
+        "iconPath": "/images/icon-tasks.png",
+        "selectedIconPath": "/images/icon-tasks-active.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我",
+        "iconPath": "/images/icon-user.png",
+        "selectedIconPath": "/images/icon-user-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

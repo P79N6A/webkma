@@ -1,0 +1,19 @@
+<view class='container'>
+  <block wx:if='{{cashList.length == 0 ? false : true}}'>
+    <!-- 提现 -->
+    <view class='cash_item flex' wx:for='{{cashList}}' wx:key='{{key}}'>
+      <view class='cash-info flex'>
+        <view class='font-bd {{item.state==0?"color-red":""}}'>{{item.state==0?'提现失败':'提现成功'}}
+        </view>
+        <text>{{item.createTime}}</text>
+      </view>
+      <view>
+        <text>￥ {{item.amount}}</text>
+      </view>
+    </view>
+    <i-load-more hidden="{{cashList.length == 0}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.isLoading}}" />
+  </block>
+  <block wx:else>
+    <comp-page-box-tips type="{{myDataPageStatus}}"></comp-page-box-tips>
+  </block>
+</view>

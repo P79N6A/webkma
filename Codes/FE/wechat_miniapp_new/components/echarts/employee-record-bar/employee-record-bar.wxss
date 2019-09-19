@@ -1,0 +1,45 @@
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.cell {
+  height: 100%;
+  background-color: #fff;
+}
+
+.stat-cell {
+  height: 100%;
+  background-color: #fff;
+  font-size: 24rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.row-text {
+  text-align: left;
+}
+
+.row-icon-total {
+  padding-right: 6rpx;
+  color: #24D0C6;
+}
+   
+.row-icon-full {
+  padding-right: 6rpx;
+  color: #F68411;
+}
+
+.row-icon-normal {
+  padding-right: 6rpx;
+  color: #fff;
+}
+
+.row-value {
+  padding-left: 6rpx;
+  color: #F68411;
+  font-weight: 500;
+}

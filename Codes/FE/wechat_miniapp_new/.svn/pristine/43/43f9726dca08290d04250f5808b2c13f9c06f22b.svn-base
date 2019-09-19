@@ -1,0 +1,35 @@
+.tips {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  height: 100vh;
+  box-sizing: border-box;
+  padding-top: 15vh;
+}
+
+.tip-bar {
+  margin: 40rpx;
+}
+
+.share-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.share-bar .button-image {
+  width: 70rpx;
+  height: 70rpx;
+}
+
+.share-bar .weak-button {
+  border: 0px none;
+  line-height: normal;
+  /* margin: 0 40rpx; */
+}
+
+.share-bar .weak-button[disabled] {
+  opacity: 0.5;
+}

@@ -1,0 +1,23 @@
+<i-row i-class="cell">
+  <i-col span="15" i-class="cell">
+    <ec-canvas id="chart_{{uid}}" canvas-id="chart_{{uid}}" ec="{{ec}}" wx:if="{{!isDisposed}}"></ec-canvas>
+  </i-col>
+  <i-col span="9" i-class="stat-cell">
+    <view style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+      <view class="row-text">
+        <text >共发起任务</text>
+        <text class="row-value">{{dataSource.total}}</text>
+      </view>
+      <view class="row-text">
+        <text class="row-icon-completed">●</text>
+        <text class='font-22'>已完成</text>
+        <text class="row-value">{{dataSource.completed}}</text>
+      </view>
+      <view class="row-text">
+        <text class="row-icon-doing">●</text>
+        <text class='font-22'>未完成</text>
+        <text class="row-value">{{dataSource.total-dataSource.completed}}</text>
+      </view>
+    </view>
+  </i-col>
+</i-row>

@@ -1,0 +1,28 @@
+.form_empty_button {
+  background-color: transparent;
+  padding: 0rpx;
+  color: inherit;
+  font-size: inherit;
+  line-height: inhert;
+}
+
+button::after {
+  border: none;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.border-bottom{
+  border-bottom: 1rpx solid #F1F3FC;
+  border-radius: 0;
+}

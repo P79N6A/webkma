@@ -1,0 +1,126 @@
+<template>
+  <div class="sidebar">
+  <el-col :span="24">
+    <el-menu
+      
+      class="el-menu-vertical-demo"
+      @open="handleOpen"
+      @close="handleClose"
+      @select="switchPage"
+      :default-active="activeIndex"
+      :default-openeds="openedsSubIndex"
+
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <el-submenu :index="forIndex([index])" v-for="(item, index) in menuList" :key="index" >
+        <template slot="title">
+          <span><i :class="item.icon"></i>{{item.title}}</span>
+        </template>
+        <el-menu-item-group v-for="(item1,index1) in item.children" :key="index1">
+          <el-menu-item :index="forIndex([index, index1])"><i :class="item1.icon"></i>{{item1.title}}</el-menu-item>
+          <!-- <el-menu-item-group v-else>
+            <el-menu-item>{{item1.title}}</el-menu-item>
+            <el-submenu :index="forIndex([index, index1])">
+                
+                <el-menu-item :index="forIndex([index, index1, index2])" v-for="(item2,index2) in item1.children" :key="index2">
+                  {{item2.title}}
+                </el-menu-item>
+            </el-submenu>
+          </el-menu-item-group> -->
+          
+        </el-menu-item-group>
+      </el-submenu>
+    </el-menu>
+  </el-col>
+</div>
+
+</template>
+<script scoped>
+import menusConfig from '../config/sidebar'
+import eventBus from '../utils/eventBus.js'
+export default {
+  name: 'com-sidebar',
+  data() {
+    return {
+      menuList: [],
+      activeIndex: '',
+      menuLevel: 0, //菜单层级
+      openedsSubIndex: []
+    }
+  },
+  mounted() {
+    this.getMenuList(menusConfig, '');
+  },
+  methods: {
+    getMenuList(menu, index) {
+      let self = this, _index = index !== '' ? index + '-' : '';
+      _.each(menu, (item, index1) => {
+          if(self.$route.name == item.key) {
+            if(_index.split('-').length > 1){
+              self.activeIndex = index;
+            } else {
+              self.activeIndex = _index + index1;
+            }
+            console.log(self.activeIndex)
+          }
+          if(!self.activeIndex && !!item.children && item.children.length > 0) {
+            self.getMenuList(item.children, _index + index1);
+          }
+      });
+      this.menuList = menusConfig;
+    },
+    forIndex(indexArr) {
+      return indexArr.join('-');
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    switchPage(index, path) {
+      let currentPage = this.$route.path, self = this, _indexArr = index.split('-'), _path = '';
+      switch(_indexArr.length){
+        case 1: 
+          _path = self.menuList[parseInt(_indexArr[0])].href;
+          break;
+        case 2: 
+          _path = self.menuList[parseInt(_indexArr[0])].children[parseInt(_indexArr[1])].href;
+          break;
+        case 3: 
+          _path = self.menuList[parseInt(_indexArr[0])].children[parseInt(_indexArr[1])].children[parseInt(_indexArr[2])].href;
+          break;
+      }
+      if (_path != currentPage) {
+        this.$router.push({
+          path: _path
+        });
+        eventBus.$emit('initBreadCrumb');
+      }
+    }
+  }
+};
+</script>
+<style scoped>
+.sidebar{
+  width: 235px;
+  height: calc(100vh - 50px);
+  float: left;
+  background-color: #364150;
+}
+.sidebar >>> .el-submenu .el-menu-item{
+  min-width: 100%;
+}
+.sidebar >>> .el-menu-item-group__title{
+  display: none;
+}
+.sidebar >>> .el-menu{
+  border-right: none;
+}
+.sidebar >>> .el-submenu__title .iconfont,
+.sidebar >>> .el-menu-item .iconfont {
+  margin-right: 3px;
+}
+</style>
+

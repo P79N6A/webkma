@@ -1,0 +1,84 @@
+<!--pages/red-envelopes-record/red-envelopes-record.wxml-->
+<wxs src="../../utils/wxs/convert.wxs" module="cont" />
+<view class='re-main'>
+  <view class='re-navbar'>
+    <view class='nav-menu'>
+      <comp-navbar bind:tabchange="navbarTabChange" tabs="{{[{key:'receivedData',title:'我收到的红包'},{key:'issueData',title:'我发出的红包'}]}}" activeTab="{{activeNavTab}}" lineColor="#f35543" color="#f35543"></comp-navbar>
+    </view>
+    <block wx:if="{{activeNavTab == 'receivedData'}}">
+      <view class='received'>
+        <view style='margin: 60rpx 0 40rpx 0'>
+          <image class='photo' src="{{!imgSrc?'/images/icon-default-photo.png':imgSrc}}"></image>
+        </view>
+        <view class='fs26'>
+          <text class='color-Style'>{{name}}共收到</text>
+          <text class='color-Style' style='margin:0 10rpx;'>{{receiveStat.count==null?0:receiveStat.count}}</text>
+          <text class='color-Style'>个红包，共</text>
+        </view>
+        <view>
+          <text class='fs70 color-black totalTetx' style='margin:0 5rpx 0 10rpx;'>{{cont.fixed(receiveStat.total==null?0:receiveStat.total)}}</text>
+          <text class='fs26 color-black'>元</text>
+        </view>
+      </view>
+      <view class='receivedList'>
+        <view class='received-item flex flex-row justify-content-between' wx:for='{{receiveList}}' wx:key="index" bindtap='toRecordInfo' data-active='{{activeNavTab}}' data-name='{{name}}' data-photo='{{imgSrc}}' data-id='{{item.id}}' wx:if='{{receiveList.length==0?false:true}}'>
+          <view class='flex flex-row'>
+            <view class='icon-photo' style='margin-right:30rpx;'>
+              <image class='icon-photo' src="{{item.fromUserFace==''?'/images/icon-default-photo.png':item.fromUserFace}}"></image>
+            </view>
+            <view class='flex flex-column'>
+              <text class='fs28 color-black marb14'>{{item.typeName}}</text>
+              <text class='fs24 color-gray' style="margin-top:20rpx" wx:if='{{item.type==1||item.type==2}}'>来自 {{item.sourceName}} </text>
+              <text class='fs24 color-gray' style="margin-top:20rpx" wx:if='{{item.type==4}}'>来自 {{item.fromUserName}} </text>
+              <text class='fs24 color-gray' style="margin-top:20rpx" wx:if='{{item.type==3}}'>来自 {{item.fromUserName}}的名片</text>
+            </view>
+          </view>
+          <view style="text-align:right">
+            <text class='fs30' style="color:#FA766B;">{{cont.fixed(item.money)}}元</text>
+            <view class='fs24 color-gray' style="margin-top:18rpx">{{item.createTime}}</view>
+          </view>
+        </view>
+        <view class='empty-data' wx:if='{{receiveList.length!==0?false:true}}'>
+          <image src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/red-envelopes-empty.png'></image>
+          <view>
+            <text class='fs24 color-gray'>小可怜，你还没有收过红包呢!</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{activeNavTab == 'issueData'}}">
+      <view class='issue'>
+        <view style='margin: 60rpx 0 40rpx 0'>
+          <image class='photo' src="{{!imgSrc?'/images/icon-default-photo.png':imgSrc}}"></image>
+        </view>
+        <view class='fs26'>
+          <text class='color-Style'>{{name}}共发出</text>
+          <text class='color-Style' style='margin:0 10rpx;'>{{sendStat.count}}</text>
+          <text class='color-Style'>个红包，共</text>
+        </view>
+        <view>
+          <text class='fs70 totalTetx' style='margin:0 5rpx 0 10rpx;'>{{cont.fixed(sendStat.total==null?0:sendStat.total)}}</text>
+          <text class='fs26 color-black'>元</text>
+        </view>
+      </view>
+      <view class='receivedList'>
+        <view class='received-item flex flex-row justify-content-between' wx:for='{{sendList}}' wx:if='{{sendList.length==0?false:true}}' wx:key="index" bindtap='toRecordInfo' data-active='{{activeNavTab}}' data-id='{{item.id}}' data-sendstate='{{item.state}}'>
+          <view class='flex flex-column'>
+            <text class='fs28 color-black marb14 ellipsis'>{{item.title}}</text>
+            <text class='fs24 color-gray'>{{item.createTime}}</text>
+          </view>
+          <view class='flex flex-column' style='text-align:right;'>
+            <text class='fs28 color-black marb14'>{{cont.fixed(item.money)}}元</text>
+            <text class='fs26 color-gray'>已领取{{item.receiveNum}}/{{item.totalNum}}</text>
+          </view>
+        </view>
+        <view class='empty-data' wx:if='{{sendList.length!==0?false:true}}'>
+          <image src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/red-envelopes-empty.png'></image>
+          <view>
+            <text class='fs24 color-gray'>小气鬼，你还没有发过红包呢!</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

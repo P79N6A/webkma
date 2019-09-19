@@ -1,0 +1,74 @@
+<!--pages/employees-list/employees-list.wxml-->
+<view class='contentAll'>
+  <view class='headers'> 
+    <text catchtap='downloadImg' class='iconfont icon-xiazai'></text>
+    <view class='top_title'>
+      <view class='title_cont'>
+        <view class='circular'></view>
+        <view class='line'></view>
+        <view class='mind'>员工龙虎榜</view>
+        <view class='line'></view>
+        <view class='circular'></view>
+      </view>
+      <view>{{newTime.y}}/{{newTime.m}}/{{newTime.d}}更新</view>
+    </view>
+    <view class='ranking'>
+      <view class='ranking_item'>
+        <view class='rank_imgs' bindtap="{{rankingData.length>1?'employeesInfo':''}}" data-empId='{{rankingData[1].id}}' data-userId='{{rankingData[1].userId}}'>
+          <image class='ranking_img' mode='aspectFit' src="{{(rankingData[1].face==null?rankingData[1].wx_face:rankingData[1].face) || '../../images/icon-default-photo.png'}}"></image>
+          <image class='ranking_num' wx:if="{{rankingData.length>1}}" src='../../images/icon-num2.png'></image>
+        </view>
+        <view class='ranking_info'>
+          <view class='ranking_info_text1'>{{rankingData[1].name || '暂无数据'}}</view>
+          <view class='ranking_info_text2' wx:if="{{rankingData.length>1}}">{{rankingData[1].marketing_power || '0'}}分</view>
+        </view>
+      </view>
+      <view class='ranking_item'>
+        <view class='rank_imgs' style='width:174rpx;top:-16rpx;' bindtap="{{rankingData.length>0?'employeesInfo':''}}" data-empId='{{rankingData[0].id}}' data-userId='{{rankingData[0].userId}}'>
+          <image class='ranking_img' style='width:140rpx;height:140rpx;' mode='aspectFit' src="{{(rankingData[0].face==null?rankingData[0].wx_face:rankingData[0].face) || '../../images/icon-default-photo.png'}}"></image>
+          <image class='ranking_num' style='bottom:-12rpx;right:26rpx;' wx:if="{{rankingData.length>0}}" src='../../images/icon-num1.png'></image>
+        </view>
+        <view class='ranking_info'>
+          <view class='ranking_info_text1'>{{rankingData[0].name || '暂无数据'}}</view>
+          <view class='ranking_info_text2' wx:if="{{rankingData.length>0}}">{{rankingData[0].marketing_power || '0'}}分</view>
+        </view>
+      </view>
+      <view class='ranking_item'>
+        <view class='rank_imgs' bindtap="{{rankingData.length>2?'employeesInfo':''}}" data-empId='{{rankingData[2].id}}' data-userId='{{rankingData[2].userId}}'>
+          <image class='ranking_img' mode='aspectFit' src="{{(rankingData[2].face==null?rankingData[2].wx_face:rankingData[2].face) || '../../images/icon-default-photo.png'}}"></image>
+          <image class='ranking_num' wx:if="{{rankingData.length>2}}" src='../../images/icon-num3.png'></image>
+        </view>
+        <view class='ranking_info'>
+          <view class='ranking_info_text1'>{{rankingData[2].name || '暂无数据'}}</view>
+          <view class='ranking_info_text2' wx:if="{{rankingData.length>2}}">{{rankingData[2].marketing_power || '0'}}分</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='title-search' style='padding: 27rpx 10rpx 28rpx 15rpx;'>
+    <view class='search-box flex justify-content-between'>
+      <view class="search-input flex" style='width:547rpx;'>
+        <icon type="icon-search" class="icon-search tips-gary" style='line-height:1rpx;'></icon>
+        <input bindinput='getKeyword'></input>
+      </view>
+      <view class='drop-option' style='width:165rpx;top:10rpx;right:1rpx;'>
+        <view bindtap="employeesAction" style='position:relative;'>
+          <text class='font-22 tips-gary'>{{employeesTxt}}</text>
+          <text class='corner'></text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <comp-customer-info list="{{employeeslist}}"></comp-customer-info>
+  <i-load-more wx:if="{{employeeslist.length != 0 && pageIndex > 1&&loadingOpj.showLoadMore}}" tip="{{loadingOpj.loadingText}}" loading="{{loadingOpj.loadingText=='玩命加载中'}}" />
+</view>
+<view class="body_box">
+  <view class="cover_box">
+    <canvas canvas-id="canvas_cover" class="canvas_cover" style="width: 750px; height: 376px;"></canvas>
+  </view>
+</view>
+<!-- <view class="footer_box" wx:if="{{coverSaveStatus == 2}}">
+  <block>
+    <button class="weui-btn" hover-class="btn-blue-hover" type="primary" style="width: 80vw;" open-type="openSetting" bindopensetting="saveImg">授权保存</button>
+  </block>
+</view> -->

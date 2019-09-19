@@ -1,0 +1,116 @@
+﻿.goodsAppBox{
+  min-height: 100px;
+  width: 100%;
+  height: 100%;
+}
+.goodsAppBox.initBg{
+  background: url(/public/images/shop_bg.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+#_panelId_ {
+    min-height: 100px;
+    font-size: 12px;
+}
+
+    #_panelId_ a {
+        color: #000;
+    }
+
+        #_panelId_ a:hover {
+            text-decoration: none;
+        }
+
+    #_panelId_ ul {
+        padding-left: 0;
+    }
+
+    #_panelId_ li {
+        list-style-type: none;
+    }
+
+    #_panelId_ .s_goods_list {
+        padding: 8px 8px 0 8px;
+    }
+
+        #_panelId_ .s_goods_list li {
+            height: 8.33rem;
+            margin-bottom: 8px;
+        }
+
+        #_panelId_ .s_goods_list .goods-img {
+            width: 35%;
+        }
+
+            #_panelId_ .s_goods_list .goods-img img {
+                width: 8.33rem;
+                height: 8.33rem;
+            }
+
+        #_panelId_ .s_goods_list .goods-des {
+            font-size: 1.17rem;
+            width: 64%;
+            padding-left: 10px;
+            padding-top: 3px;
+        }
+
+            #_panelId_ .s_goods_list .goods-des .goods-name {
+                height: 3.3rem;
+                overflow: hidden;
+            }
+
+            #_panelId_ .s_goods_list .goods-des .price-div {
+                margin-top: 2.5rem;
+            }
+
+            #_panelId_ .s_goods_list .goods-des .goods-price {
+                font-size: 1.67rem;
+                color: #dc4437;
+            }
+
+            #_panelId_ .s_goods_list .goods-des .market-price {
+                color: #9eabbb;
+                margin-top: 6px;
+                text-decoration: line-through;
+            }
+
+    #_panelId_ .h_goods_list {
+        padding: 6px 6px 6px 0;
+    }
+
+        #_panelId_ .h_goods_list li {
+            height: 20.83rem;
+            margin-left: 0.5rem;
+        }
+
+        #_panelId_ .h_goods_list .goods-img img {
+            width: 12.5rem;
+            height: 12.5rem;
+        }
+
+        #_panelId_ .h_goods_list .goods-des {
+            font-size: 1.17rem;
+            width: 12.5rem;
+            padding-left: 10px;
+            padding-top: 3px;
+        }
+
+            #_panelId_ .h_goods_list .goods-des .goods-name {
+                height: 3.3rem;
+                overflow: hidden;
+            }
+
+            #_panelId_ .h_goods_list .goods-des .price-div {
+                margin-top: 2.5rem;
+            }
+
+            #_panelId_ .h_goods_list .goods-des .goods-price {
+                font-size: 1.67rem;
+                color: #dc4437;
+            }
+
+            #_panelId_ .h_goods_list .goods-des .market-price {
+                color: #9eabbb;
+                margin-top: 0.5rem;
+                text-decoration: line-through;
+            }

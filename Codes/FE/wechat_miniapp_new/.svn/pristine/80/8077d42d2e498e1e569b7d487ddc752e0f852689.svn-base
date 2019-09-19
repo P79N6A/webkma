@@ -1,0 +1,15 @@
+<!--components/plug-in-unit.wxml-->
+<view class='plug-unit'>
+  <view class='infocont'>
+    <image class='photo' src='https://resource.tuixb.cn/beta/00000000-0000-0000-0000-000000000000/KMA/miniapp/reward_bg.png'></image>
+    <view class='info'>
+      <view class='nick-name'>{{item.content}}</view>
+      <view class='phone'>18888888888</view>
+    </view>
+    <view class='price' wx:if="{{isPrice}}">￥0.08</view>
+  </view>
+  <view class='operationBtn'>
+    <text class="iconfont icon-tel" catchtap='callPhon' wx:if="{{isShowIphon!='hide'}}"></text>
+    <text class="iconfont icon-company-information" catchtap='dataInfoData'  wx:if="{{isShowInfo!='hide'}}"></text>
+  </view>
+</view>
